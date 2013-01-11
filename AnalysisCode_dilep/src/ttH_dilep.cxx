@@ -3848,7 +3848,7 @@ void ttH_dilep::ttDilepKinFit(){
 	TLorentzVectorWFlags    z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags;
 	TLorentzVectorWFlags    jet1_HiggsWFlags, jet2_HiggsWFlags;
 	// result of kinematic fit
-	std::vector<myvector> *result;
+	std::vector<myvector> *result = new std::vector<myvector> ();
 
  	// =================================================================
 	// Initialize Solutions Flag
@@ -4037,7 +4037,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 		 // loop over several resolution experiments
 		 for ( int iRes=0; iRes< myNumResTest ; iRes++){
-
+		 	/*
 			// new four-vectors			
 			double n_Px; double n_Py; double n_Pz;	double n_Pt; double n_E;	
 			double delPx; double delPy;
@@ -4154,13 +4154,13 @@ void ttH_dilep::ttDilepKinFit(){
 			// ---------------------------------------
 			z_bl = z_bj + z_lep;
 			c_bl = c_bj + c_lep;
-
+			*/
 			// ---------------------------------------
 			// Find tt dileptonic solutions
 			// ---------------------------------------
 			DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 
-			//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
+			di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 
 			// Run the dileptonic reconstruction 
 			int partial_sol_count;
@@ -4179,6 +4179,25 @@ void ttH_dilep::ttDilepKinFit(){
 			#endif
 
 			HasSolution += partial_sol_count;
+
+			z_lep = di.getZlep();
+			c_lep = di.getClep();
+			z_bj = di.getZbj();
+			c_bj = di.getCbj();
+			z_lepWFlags = di.getZlepW();
+			c_lepWFlags = di.getClepW();
+			z_bjWFlags = di.getZbjW();
+			c_bjWFlags = di.getCbjW();
+			MissPx = di.getMissPx();
+			MissPy = di.getMissPy();
+			in_mpx[0] = di.getInMpx(0);
+			in_mpx[1] = di.getInMpx(1);
+			in_mpy[0] = di.getInMpy(0);
+			in_mpy[1] = di.getInMpy(1);
+			in_mpz[0] = di.getInMpz(0);
+			in_mpz[1] = di.getInMpz(1);
+			z_bl = di.getZbl();
+			c_bl = di.getCbl();
 
 			// ---------------------------------------
 			// Get info from all possible solutions

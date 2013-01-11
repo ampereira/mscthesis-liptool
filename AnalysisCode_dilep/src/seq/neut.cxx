@@ -132,8 +132,6 @@ namespace CPU {
 		#ifdef MEASURE_DILEP
 		long long int time = startTimer();
 		#endif
-		
-		di->print("dilep.txt");
 
 		for (unsigned i = 0; i < iterations; ++i) {
 			std::vector<myvector> *partial_result = new std::vector<myvector> ();
@@ -156,25 +154,6 @@ namespace CPU {
 			lep_b = di->getClep();
 			bl_a = di->getZbl();
 			bl_b = di->getCbl();
-			ofstream file ("dentro.txt", fstream::app);
-
-	file << "in_mpx " << in_mpx[0] << " " << in_mpx[1] << endl;
-	file << "in_mpy " << in_mpy[0] << " " << in_mpy[1] << endl;
-	file << "in_mpz " << in_mpz[0] << " " << in_mpz[1] << endl;
-
-	file << "MissPx " << di->getMissPx() << endl;
-	file << "MissPy " << di->getMissPy() << endl;
-
-	file << "t_mass " << t_mass[0] << " " << t_mass[1] << endl;
-	file << "w_mass " << w_mass[0] << " " << w_mass[1] << endl;
-
-	file << "z_lep " << lep_a.Px() << " " << lep_a.Py() << " " << lep_a.Pz() << " " << lep_a.E() << endl;
-	file << "c_lep " << lep_b.Px() << " " << lep_b.Py() << " " << lep_b.Pz() << " " << lep_b.E() << endl;
-	file << "z_bj " << di->getZbj().Px() << " " << di->getZbj().Py() << " " << di->getZbj().Pz() << " " << di->getZbj().E() << endl;
-	file << "c_bj " << di->getCbj().Px() << " " << di->getCbj().Py() << " " << di->getCbj().Pz() << " " << di->getCbj().E() << endl;
-
-	file.close();
-	exit(0);
 
 			partial_result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, 
 										&lep_b, &bl_a, &bl_b);
