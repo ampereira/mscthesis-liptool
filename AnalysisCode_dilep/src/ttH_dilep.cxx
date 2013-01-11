@@ -3982,6 +3982,7 @@ void ttH_dilep::ttDilepKinFit(){
 	//			     2 jet for H->bbbar
 	// ---------------------------------------
 
+	vector<DilepInput> inputs;
 	if ( ttDKF_JetCombChoice == 1 ){ 
 		for ( int j1=0; j1 < ttDKF_njets ; j1++){
 			for ( int j2=0; j2 < ttDKF_njets ; j2++){
@@ -4031,11 +4032,20 @@ void ttH_dilep::ttDilepKinFit(){
 									// Find tt dileptonic solutions
 									// ---------------------------------------
 									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
+									inputs.push_back(di);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+								for (int stuff = 0; stuff < inputs.size(); ++stuff) {
 
 									//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
-									vector<DilepInput> vec = applyVariance(di, RESOLUTION, 1, EveNumber + JetVec.size()*100);
+									//vector<DilepInput> vec = applyVariance(di, RESOLUTION, 1, EveNumber + JetVec.size()*100);
 
-									DilepInput di2 = vec[0];
+									DilepInput di2 = inputs[0];
 
 									// Run the dileptonic reconstruction 
 									int partial_sol_count;
@@ -4342,12 +4352,12 @@ void ttH_dilep::ttDilepKinFit(){
 								//   C H A N G E   O B J E C T S   W I T H I N   R E S O L U T I O N #
 								// ###################################################################
 
-							}  // for over j4
-						}  
-					}  // for over j3
-				}  // j1!=j2
-			}  // for over j2
-		}  // for over j1
+							//}  // for over j4
+						//}  
+					//}  // for over j3
+				//}  // j1!=j2
+			//}  // for over j2
+		//}  // for over j1
 	}   // JET COMBINATION CHOICE
 
 
