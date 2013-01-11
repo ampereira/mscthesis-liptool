@@ -88,7 +88,7 @@ void DilepInput::print (char* filename) {
 }
 
 vector<DilepInput> applyVariance (DilepInput di, float res, int amount, int seed) {
-	vector<DilepInput> inputs ();
+	vector<DilepInput> inputs;
 
 	for (int i = 0; i < amount; ++i) {
 		DilepInput aux (di);
