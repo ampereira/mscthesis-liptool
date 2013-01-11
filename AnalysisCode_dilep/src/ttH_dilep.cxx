@@ -4045,7 +4045,7 @@ void ttH_dilep::ttDilepKinFit(){
 									//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 									//vector<DilepInput> vec = applyVariance(di, RESOLUTION, 1, EveNumber + JetVec.size()*100);
 
-									DilepInput di2 = inputs[0];
+									DilepInput di = inputs[0];
 
 									// Run the dileptonic reconstruction 
 									int partial_sol_count;
