@@ -1,0 +1,9 @@
+%!TEX root = ../workplan.tex
+\section{Objectives}
+\todoshaky{200 objectivos}
+
+This dissertation will be focused on tuning the performance of the kinematical reconstruction of events, within the framework used for data analysis in ATLAS, on heterogeneous platforms.
+
+The work will be, at first, aimed towards obtaining a highly tuned implementation using GPUs as accelerating devices. Later, the Intel Xeon Phi will also be used as an accelerating device. The execution of the kinematic reconstructions will always occur concurrently on CPU and the accelerating devices, so the load balancing will also be addressed.
+
+Different approaches to the problem will be approached, depending on the accelerating device architecture, where the performance of the application will be fine-tuned. Also, an hybrid implementation will also be tested, using the multicore and available many-core processors on the system. Later, an approach using the GAMA framework will be tested to assess if it provides reasonable performance while reducing the implementation time.

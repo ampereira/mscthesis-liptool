@@ -1,0 +1,9 @@
+%!TEX root = ../workplan.tex
+\section{Methodology}
+\todoshaky{300 metodos}
+
+In an early phase, the main objective is to research similar problems implemented on heterogeneous systems. This can be accomplished through literature search on key areas of the subject. Also, it is important to identify the current limitations of the implementation developed last year.
+
+The second phase will start by tuning the current GPU implementation. The kinematical reconstruction will be optimized for the \nvidia Fermi architecture, and later for the Kepler architecture as well. If possible, an implementation for the \intel Xeon Phi will also be performed. Finally, a simple implementation using the GAMA framework, using only the GPUs as accelerating devices, will also be developed. This will be the most time consuming stage because of the inherent complexity of profiling and tuning the code for each accelerating device, as well as the workload balancing between CPU and the said devices.
+
+The third stage will be dedicated to testing the efficiency of each the implementation using two metrics: performance of the code and time required for the implementation and tuning of the code for each accelerating device. The development time is an important factor because of the strict deadlines that the LIP research group has to face, as explained in the Context section.

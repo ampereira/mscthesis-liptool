@@ -1,0 +1,9 @@
+PWD /Users/andre/Msc Thesis/doc/en
+INPUT /usr/local/texlive/2012/texmf.cnf
+INPUT /usr/local/texlive/2012/texmf/web2c/texmf.cnf
+INPUT /usr/local/texlive/2012/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT 100_context.tex
+OUTPUT 100_context.log
+INPUT /usr/local/texlive/2012/texmf-dist/fonts/map/fontname/texfonts.map
+INPUT /usr/local/texlive/2012/texmf-dist/fonts/map/fontname/texfonts.map
+INPUT /usr/local/texlive/2012/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm

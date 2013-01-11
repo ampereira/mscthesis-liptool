@@ -1,0 +1,125 @@
+\documentclass[a4paper,abstract=on]{scrartcl}
+
+%%% Packages
+% \usepackage{scrextend}
+
+%	Language
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+%	geometry
+\usepackage[paper=a4paper,top=2cm,left=2cm,right=1.5cm,bottom=2cm,foot=1cm]{geometry}
+
+%	todonotes
+\usepackage[disable]{todonotes}
+\newcommand{\todoil}[1]{\todo[inline]{#1}}
+\newcommand{\todoilcolor}[2]{\todo[inline,color=#1]{#2}}
+\newcommand{\tododone}[1]{\todoilcolor{green!40}{#1}}
+\newcommand{\todoshaky}[1]{\todoilcolor{red!40!blue!40}{#1}}
+\newcommand{\todolow}[1]{\todoilcolor{blue!40}{#1}}
+
+%	relative font size
+\usepackage{relsize}
+
+%	IEEEeqnarray
+\usepackage[retainorgcmds]{IEEEtrantools}
+\newcommand{\IEEElabel}[1]{\begingroup\addtocounter{equation}{-1}%
+\refstepcounter{equation}\label{#1}\endgroup}
+
+%	references
+\usepackage{varioref}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue]{hyperref}
+\usepackage[noabbrev,capitalise]{cleveref}
+
+%	smart url breaking
+%	> must come after hyperref
+\usepackage{breakurl}
+
+%	suffix
+%	> for making multi-versioned commands
+\usepackage{suffix}
+
+%	xspace
+\usepackage{xspace}
+
+%	tabto
+\usepackage{tabto}
+\WithSuffix\newcommand\tabto*[1]{\hskip-\maxdimen\tabto{#1}}
+
+%	indent first paragraph line
+\usepackage{indentfirst}
+
+%%% Shortcut commands
+\newcommand{\linklike}[1]{{\smaller\smaller\ttfamily #1}}
+\newcommand\email[1]{\href{mailto:#1}{\linklike{#1}}}
+\WithSuffix\newcommand\email*[2]{\href{mailto:#1}{\linklike{#1}}}
+
+\newcommand{\role}[1]{\smaller{\textit{(#1)}}}
+\newcommand{\student}{\role{Student}}
+\newcommand{\advisor}{\role{Advisor}}
+\newcommand{\coadvisor}{\role{Co-Advisor}}
+\newcommand{\sigspace}[2]{
+
+\begin{minipage}{\columnwidth}%
+\vspace{2cm}%
+% \rule{.6\textwidth}{.2mm}
+%
+%#1\tabto*{2.5cm}{#2}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lr}
+\hline
+{#1} & #2
+\end{tabular*}
+\end{minipage}%
+}
+
+\newcommand{\registered}{\textsuperscript{\smaller\textregistered}}
+\newcommand{\trademark}{\textsuperscript{\smaller\texttrademark}}
+\newcommand{\intel}{Intel\registered\xspace}
+\newcommand{\nvidia}{NVIDIA\registered\xspace}
+\newcommand{\cuda}{CUDA\trademark\xspace}
+
+% %%%%%%%%%%%
+% %  Hacks  %
+% %%%%%%%%%%%
+
+%	Paragraph (title) with linebreak
+\newcommand{\paragraphh}[1]{\paragraph{#1\hfill}\hfill
+
+}
+
+%	Add "Appendix" to the appendices titles, but not to the references
+\usepackage{ifthen}
+\newcommand*{\appendixmore}{%
+  \renewcommand*{\othersectionlevelsformat}[1]{%
+    \ifthenelse{\equal{##1}{section}}{\appendixname~}{}%
+    \csname the##1\endcsname\autodot\enskip}
+  \renewcommand*{\sectionmarkformat}{%
+    \appendixname~\thesection\autodot\enskip}
+}
+
+%	Force paragraph indentation
+\newlength{\paragraphindentationlength}
+\setlength{\paragraphindentationlength}{\parindent}
+\newcommand\sudoindent{\hspace{\paragraphindentationlength}}
+
+\input{en/000_title}
+
+\begin{document}
+\maketitle
+
+\input{en/010_abstract}
+\input{en/100_context}
+\input{en/200_objectives}
+\input{en/300_methodology}
+\input{en/400_timing}
+
+%\nocite{Deadman12}
+\nocite{NAG}
+\bibliographystyle{IEEE}
+\bibliography{references}
+
+\appendix
+\input{en/910_signatures}
+
+\end{document}
