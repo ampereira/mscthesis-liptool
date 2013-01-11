@@ -132,6 +132,9 @@ namespace CPU {
 		#ifdef MEASURE_DILEP
 		long long int time = startTimer();
 		#endif
+		
+		di->print("dilep.txt");
+		exit(0);
 
 		for (unsigned i = 0; i < iterations; ++i) {
 			std::vector<myvector> *partial_result = new std::vector<myvector> ();

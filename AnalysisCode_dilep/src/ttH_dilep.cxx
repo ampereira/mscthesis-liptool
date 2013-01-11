@@ -4028,9 +4028,9 @@ void ttH_dilep::ttDilepKinFit(){
 		 int myNumResTest = 1;
 
 		 // Resolution values
-		 double Sx_e=0.00;  double Sy_e=0.00;  double Sz_e=0.00;  double St_e=0.00; 	double Se_e=0.00;  // electrons
-		 double Sx_m=0.00;  double Sy_m=0.00;  double Sz_m=0.00;  double St_m=0.00; 	double Se_m=0.00;  // muons
-		 double Sx_j=0.00;  double Sy_j=0.00;  double Sz_j=0.00;  double St_j=0.00; 	double Se_j=0.00;  // jets
+		 double Sx_e=0.02;  double Sy_e=0.02;  double Sz_e=0.02;  double St_e=0.02; 	double Se_e=0.02;  // electrons
+		 double Sx_m=0.02;  double Sy_m=0.02;  double Sz_m=0.02;  double St_m=0.02; 	double Se_m=0.02;  // muons
+		 double Sx_j=0.02;  double Sy_j=0.02;  double Sz_j=0.02;  double St_j=0.02; 	double Se_j=0.02;  // jets
 
 		 // Initialize random number seed
 		 rnd.SetSeed( EveNumber + JetVec.size()*100);
@@ -4158,7 +4158,7 @@ void ttH_dilep::ttDilepKinFit(){
 			// ---------------------------------------
 			// Find tt dileptonic solutions
 			// ---------------------------------------
-			//DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
+			DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 
 			//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 			
@@ -4166,10 +4166,8 @@ void ttH_dilep::ttDilepKinFit(){
 			int partial_sol_count;
 
 			#ifdef SEQ
-			//result = CPU::dilep(dilep_iterations, &di, &partial_sol_count);
-			result = CPU::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-			//result = dilep(t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl);
-			//if (result->size() > 0) HasSolution++;
+			result = CPU::dilep(dilep_iterations, &di, &partial_sol_count);
+			//result = CPU::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 			#elif SSE
 			result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 			#elif OMP
