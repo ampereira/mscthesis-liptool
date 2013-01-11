@@ -3848,7 +3848,7 @@ void ttH_dilep::ttDilepKinFit(){
 	TLorentzVectorWFlags    z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags;
 	TLorentzVectorWFlags    jet1_HiggsWFlags, jet2_HiggsWFlags;
 	// result of kinematic fit
-	std::vector<myvector> *result = new std::vector<myvector> ();
+	std::vector<myvector> *result;
 
  	// =================================================================
 	// Initialize Solutions Flag
@@ -4161,30 +4161,7 @@ void ttH_dilep::ttDilepKinFit(){
 			DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 
 			//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
-                ofstream file ("fora.txt", fstream::app);
 
-    file << "in_mpx " << in_mpx[0] << " " << in_mpx[1] << endl;
-    file << "in_mpy " << in_mpy[0] << " " << in_mpy[1] << endl;
-    file << "in_mpz " << in_mpz[0] << " " << in_mpz[1] << endl;
-
-    file << "MissPx " << MissPx << endl;
-    file << "MissPy " << MissPy << endl;
-
-    file << "t_mass " << t_m[0] << " " << t_m[1] << endl;
-    file << "w_mass " << w_m[0] << " " << w_m[1] << endl;
-
-    file << "z_lep " << z_lep.Px() << " " << z_lep.Py() << " " << z_lep.Pz() << " " << z_lep.E() << endl;
-    file << "c_lep " << c_lep.Px() << " " << c_lep.Py() << " " << c_lep.Pz() << " " << c_lep.E() << endl;
-    file << "z_bj " << z_bj.Px() << " " << z_bj.Py() << " " << z_bj.Pz() << " " << z_bj.E() << endl;
-    file << "c_bj " << c_bj.Px() << " " << c_bj.Py() << " " << c_bj.Pz() << " " << c_bj.E() << endl;
-
-    file << "z_bjWFlags " << z_bjWFlags.Px() << " " << z_bjWFlags.Py() << " " << z_bjWFlags.Pz() << " " << z_bjWFlags.E() << endl;
-    file << "c_bjWFlags " << c_bjWFlags.Px() << " " << c_bjWFlags.Py() << " " << c_bjWFlags.Pz() << " " << c_bjWFlags.E() << endl;
-    file << "z_lepWFlags " << z_lepWFlags.Px() << " " << z_lepWFlags.Py() << " " << z_lepWFlags.Pz() << " " << z_lepWFlags.E() << endl;
-    file << "c_lepWFlags " << c_lepWFlags.Px() << " " << c_lepWFlags.Py() << " " << c_lepWFlags.Pz() << " " << c_lepWFlags.E() << endl;
-
-    file.close();
-			
 			// Run the dileptonic reconstruction 
 			int partial_sol_count;
 
