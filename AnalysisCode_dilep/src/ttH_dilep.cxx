@@ -4163,13 +4163,13 @@ void ttH_dilep::ttDilepKinFit(){
 			//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 			
 			// Run the dileptonic reconstruction 
-			int partial_sol_count = 0;
+			int partial_sol_count;
 
 			#ifdef SEQ
 			//result = CPU::dilep(dilep_iterations, &di, &partial_sol_count);
-			//result = CPU::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-			result = dilep(t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl);
-			if (result->size() > 0) HasSolution++;
+			result = CPU::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
+			//result = dilep(t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl);
+			//if (result->size() > 0) HasSolution++;
 			#elif SSE
 			result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 			#elif OMP
@@ -4823,6 +4823,8 @@ void defineDilepIterations (void) {
 // #############################################################################
 Int_t main(Int_t argc, char *argv[]){
 // #############################################################################
+	
+	defineDilepIterations();
 
 	// run the analysis
 	ttH_dilep *t = new ttH_dilep();
