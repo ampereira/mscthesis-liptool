@@ -30,7 +30,7 @@ DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVe
 	w_mass[0] = _w_mass[0];
 	w_mass[1] = _w_mass[1];
 }
-/*
+
 DilepInput::DilepInput (DilepInput &other) {
 	in_mpx[0] = other.getInMpx(0);
 	in_mpx[1] = other.getInMpx(1);
@@ -60,7 +60,7 @@ DilepInput::DilepInput (DilepInput &other) {
 	z_bl = other.getZbl();
 	c_bl = other.getCbl();
 }
-*/
+
 void DilepInput::print (char* filename) {
 	ofstream file (filename, fstream::app);
 
