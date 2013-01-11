@@ -39,23 +39,23 @@ public:
 	void applyVariance (float res, int seed);
 
 	// Getters
-	TLorentzVector getZlep (void);
-	TLorentzVector getClep (void);
-	TLorentzVector getZbj (void);
-	TLorentzVector getCbj (void);
-	TLorentzVector getZbl (void);
-	TLorentzVector getCbl (void);
-	TLorentzVectorWFlags getZlepW (void);
-	TLorentzVectorWFlags getClepW (void);
-	TLorentzVectorWFlags getZbjW (void);
-	TLorentzVectorWFlags getCbjW (void);
-	double getMissPx (void);
-	double getMissPy (void);
-	double getInMpx (int);
-	double getInMpy (int);
-	double getInMpz (int);
-	double getTmass (int);
-	double getWmass (int);
+	TLorentzVector getZlep (void) const;
+	TLorentzVector getClep (void) const;
+	TLorentzVector getZbj (void) const;
+	TLorentzVector getCbj (void) const;
+	TLorentzVector getZbl (void) const;
+	TLorentzVector getCbl (void) const;
+	TLorentzVectorWFlags getZlepW (void) const;
+	TLorentzVectorWFlags getClepW (void) const;
+	TLorentzVectorWFlags getZbjW (void) const;
+	TLorentzVectorWFlags getCbjW (void) const;
+	double getMissPx (void) const;
+	double getMissPy (void) const;
+	double getInMpx (int) const;
+	double getInMpy (int) const;
+	double getInMpz (int) const;
+	double getTmass (int) const;
+	double getWmass (int) const;
 };
 
 //vector<DilepInput> applyVariance (DilepInput di, float res, int amount, int seed);
