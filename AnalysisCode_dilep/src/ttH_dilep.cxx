@@ -3983,6 +3983,8 @@ void ttH_dilep::ttDilepKinFit(){
 	// ---------------------------------------
 
 	vector<DilepInput> inputs;
+	vector<TLorentzVectorWFlags> higgsjets1, higgsjets2;
+
 	if ( ttDKF_JetCombChoice == 1 ){ 
 		for ( int j1=0; j1 < ttDKF_njets ; j1++){
 			for ( int j2=0; j2 < ttDKF_njets ; j2++){
@@ -4012,6 +4014,9 @@ void ttH_dilep::ttDilepKinFit(){
 
 									jet1_HiggsWFlags = MyChoiceJetVec[j3]; // Jet from Higgs Decay (H->bbbar)
 									jet2_HiggsWFlags = MyChoiceJetVec[j4]; // Jet from Higgs Decay (H->bbbar)
+
+									higgsjets1.push_back(jet1_HiggsWFlags);
+									higgsjets2.push_back(jet2_HiggsWFlags);
 
 									// ###################################################################
 									//   C H A N G E   O B J E C T S   W I T H I N   R E S O L U T I O N #
@@ -4085,6 +4090,10 @@ void ttH_dilep::ttDilepKinFit(){
 									in_mpz[1] = di.getInMpz(1);
 									z_bl = di.getZbl();
 									c_bl = di.getCbl();
+
+
+									jet1_HiggsWFlags = higgsjets1[stuff]; // Jet from Higgs Decay (H->bbbar)
+									jet2_HiggsWFlags = higgsjets2[stuff]; // Jet from Higgs Decay (H->bbbar)
 
 									// ---------------------------------------
 									// Get info from all possible solutions
