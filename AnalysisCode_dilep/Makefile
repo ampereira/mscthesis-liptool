@@ -6,8 +6,9 @@ SHELL = /bin/sh
 
 DEFINES = -Dextname
 
-CXX        = g++
-LD         = g++
+CXX  = g++
+LD   = g++
+NVCC = nvcc
 
 ROOTCFLAGS    = $(shell $(ROOTSYS)/bin/root-config --cflags)
 ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
@@ -27,21 +28,39 @@ INCLUDES = -I$(incdir) -I$(ROOTSYS)/include -I$(ROOTCOREDIR)/include
 ################################################################################
 
 LipMiniAnalysis = ../LipMiniAnalysis
-COMMONANALYSISCODE = define_samples_simulation_MarkOwen.cxx define_samples_data_MarkOwen.cxx UserCommandLineOptions.cxx
+COMMONANALYSISCODE = src/define_samples_simulation_MarkOwen.cxx src/define_samples_data_MarkOwen.cxx src/UserCommandLineOptions.cxx
+LIBDIRS = -L$(LipMiniAnalysis) -lLipMiniAnalysis $(LIBS) $(GLIBS)
 
 ################################################################################
 # Rules
 ################################################################################
+seq: CXXFLAGS += -DSEQ
+seq: ttH_dilep_seq
+omp: CXXFLAGS += -DOMP -fopenmp
+omp: ttH_dilep_omp
+cuda: CXXFLAGS += -DCUDA
+cuda: ttH_dilep_cuda
+papi: CXXFLAGS += -DPAPI
+papi: ttH_dilep_papi
+sse: CXXFLAGS += -DSSE -mfpmath=sse -msse4.2
+sse: ttH_dilep_sse
 
-all : neut.o ttH_dilep
+dilep_time: CXXFLAGS += -DMEASURE_DILEP
+dilep_time: seq
 
-neut.o: neut.cxx myvector.h neut.h
-	$(CXX) $(CXXFLAGS) -I$(INCLUDES) -c neut.cxx
+default: seq
+all: seq omp cuda sse
 
-ttH_dilep : ttH_dilep.cxx ttH_dilep.h $(COMMONANALYSISCODE) neut.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
-	$(CXX) $(CXXFLAGS) -o ttH_dilep -I$(INCLUDES) ttH_dilep.cxx neut.o \
-	-L$(LipMiniAnalysis) -lLipMiniAnalysis \
-	$(LIBS) $(GLIBS) -lMinuit -lPhysics
+build/dilep_input.o: src/dilep_input.cxx src/dilep_input.h
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/dilep_input.cxx -o build/dilep_input.o
+
+# Sequential application
+build/neut_seq.o: src/seq/neut.cxx src/myvector.h src/seq/neut.h
+	$(CXX) -Wall -Wextra $(CXXFLAGS) $(INCLUDES) -c src/seq/neut.cxx -o build/neut_seq.o
+
+ttH_dilep_seq: src/ttH_dilep.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/neut_seq.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
+	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_seq $(INCLUDES) src/ttH_dilep.cxx build/neut_seq.o build/dilep_input.o $(LIBDIRS)
 
 clean:
-	rm -f neut.o ttH_dilep.o ttH_dilep
+	rm -f build/* bin/ttH_dilep*
+
