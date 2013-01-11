@@ -225,70 +225,70 @@ void DilepInput::applyVariance (float res, int seed) {
 	c_bl = *c_bj + *c_lep;
 }
 
-TLorentzVector DilepInput::getZlep (void) {
+TLorentzVector DilepInput::getZlep (void) const {
 	return *z_lep;
 }
 
-TLorentzVector DilepInput::getClep (void) {
+TLorentzVector DilepInput::getClep (void) const {
 	return *c_lep;
 }
 
-TLorentzVector DilepInput::getZbj (void) {
+TLorentzVector DilepInput::getZbj (void) const {
 	return *z_bj;
 }
 
-TLorentzVector DilepInput::getCbj (void) {
+TLorentzVector DilepInput::getCbj (void) const {
 	return *c_bj;
 }
 
-TLorentzVector DilepInput::getZbl (void) {
+TLorentzVector DilepInput::getZbl (void) const {
 	return z_bl;
 }
 
-TLorentzVector DilepInput::getCbl (void) {
+TLorentzVector DilepInput::getCbl (void) const {
 	return c_bl;
 }
 
-TLorentzVectorWFlags DilepInput::getZlepW (void) {
+TLorentzVectorWFlags DilepInput::getZlepW (void) const {
 	return *z_lepWFlags;
 }
 
-TLorentzVectorWFlags DilepInput::getClepW (void) {
+TLorentzVectorWFlags DilepInput::getClepW (void) const {
 	return *c_lepWFlags;
 }
 
-TLorentzVectorWFlags DilepInput::getZbjW (void) {
+TLorentzVectorWFlags DilepInput::getZbjW (void) const {
 	return *z_bjWFlags;
 }
 
-TLorentzVectorWFlags DilepInput::getCbjW (void) {
+TLorentzVectorWFlags DilepInput::getCbjW (void) const {
 	return *c_bjWFlags;
 }
 
-double DilepInput::getMissPx (void) {
+double DilepInput::getMissPx (void) const {
 	return MissPx;
 }
 
-double DilepInput::getMissPy (void) {
+double DilepInput::getMissPy (void) const {
 	return MissPy;
 }
 
-double DilepInput::getInMpx (int x) {
+double DilepInput::getInMpx (int x) const {
 	return in_mpx[x];
 }
 
-double DilepInput::getInMpy (int x) {
+double DilepInput::getInMpy (int x) const {
 	return in_mpy[x];
 }
 
-double DilepInput::getInMpz (int x) {
+double DilepInput::getInMpz (int x) const {
 	return in_mpz[x];
 }
 
-double DilepInput::getTmass (int x) {
+double DilepInput::getTmass (int x) const {
 	return t_mass[x];
 }
 
-double DilepInput::getWmass (int x) {
+double DilepInput::getWmass (int x) const {
 	return w_mass[x];
 }
