@@ -58,6 +58,6 @@ public:
 	double getWmass (int) const;
 };
 
-//vector<DilepInput> applyVariance (DilepInput di, float res, int amount, int seed);
+vector<DilepInput> applyVariance (DilepInput di, float res, int amount, int seed);
 
 #endif
