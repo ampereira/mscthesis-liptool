@@ -87,19 +87,18 @@ void DilepInput::print (char* filename) {
 	file.close();
 }
 
-/*
 vector<DilepInput> applyVariance (DilepInput di, float res, int amount, int seed) {
 	vector<DilepInput> inputs (amount);
 
 	for (int i = 0; i < amount; ++i) {
-		DilepInput aux = NULL;
+		DilepInput aux (di);
 		aux.applyVariance (res, seed + i);
 
 		inputs.push_back (aux);
 	}
 
 	return inputs;
-}*/
+}
 
 void DilepInput::applyVariance (float res, int seed) {
 	// Resolution values
