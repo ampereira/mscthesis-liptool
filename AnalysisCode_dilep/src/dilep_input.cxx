@@ -31,7 +31,7 @@ DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVe
 	w_mass[1] = _w_mass[1];
 }
 
-DilepInput::DilepInput (DilepInput &other) {
+DilepInput::DilepInput (const DilepInput &other) {
 	in_mpx[0] = other.getInMpx(0);
 	in_mpx[1] = other.getInMpx(1);
 	in_mpy[0] = other.getInMpy(0);
