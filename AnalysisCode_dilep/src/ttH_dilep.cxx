@@ -4170,8 +4170,8 @@ void ttH_dilep::ttDilepKinFit(){
     file << "MissPx " << MissPx << endl;
     file << "MissPy " << MissPy << endl;
 
-    file << "t_mass " << t_mass[0] << " " << t_mass[1] << endl;
-    file << "w_mass " << w_mass[0] << " " << w_mass[1] << endl;
+    file << "t_mass " << t_m[0] << " " << t_m[1] << endl;
+    file << "w_mass " << w_m[0] << " " << w_m[1] << endl;
 
     file << "z_lep " << z_lep.Px() << " " << z_lep.Py() << " " << z_lep.Pz() << " " << z_lep.E() << endl;
     file << "c_lep " << c_lep.Px() << " " << c_lep.Py() << " " << c_lep.Pz() << " " << c_lep.E() << endl;
