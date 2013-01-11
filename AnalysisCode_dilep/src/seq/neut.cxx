@@ -162,14 +162,14 @@ namespace CPU {
 	file << "in_mpy " << in_mpy[0] << " " << in_mpy[1] << endl;
 	file << "in_mpz " << in_mpz[0] << " " << in_mpz[1] << endl;
 
-	file << "MissPx " << MissPx << endl;
-	file << "MissPy " << MissPy << endl;
+	file << "MissPx " << di->getMissPx() << endl;
+	file << "MissPy " << di->getMissPy() << endl;
 
 	file << "t_mass " << t_mass[0] << " " << t_mass[1] << endl;
 	file << "w_mass " << w_mass[0] << " " << w_mass[1] << endl;
 
-	file << "z_lep " << z_lep.Px() << " " << z_lep.Py() << " " << z_lep.Pz() << " " << z_lep.E() << endl;
-	file << "c_lep " << c_lep.Px() << " " << c_lep.Py() << " " << c_lep.Pz() << " " << c_lep.E() << endl;
+	file << "z_lep " << lep_a.Px() << " " << lep_a.Py() << " " << lep_a.Pz() << " " << lep_a.E() << endl;
+	file << "c_lep " << lep_b.Px() << " " << lep_b.Py() << " " << lep_b.Pz() << " " << lep_b.E() << endl;
 	file << "z_bj " << di->getZbj().Px() << " " << di->getZbj().Py() << " " << di->getZbj().Pz() << " " << di->getZbj().E() << endl;
 	file << "c_bj " << di->getCbj().Px() << " " << di->getCbj().Py() << " " << di->getCbj().Pz() << " " << di->getCbj().E() << endl;
 
