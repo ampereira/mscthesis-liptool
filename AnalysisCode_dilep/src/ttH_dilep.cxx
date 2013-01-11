@@ -4819,6 +4819,52 @@ void defineDilepIterations (void) {
 	}
 }
 
+// Time measurement functions
+long long int startTimer (void) {
+	char *flag = getenv("MEASURE_APP");
+	long long int time;
+	timeval t;
+
+	if (flag != NULL) {
+		cout << "\033[0;31m Measuring time with microssecond precision! \033[0m" << endl << endl;
+
+		gettimeofday(&t, NULL);
+		time = t.tv_sec * APP_TIME_RESOLUTION + t.tv_usec;
+
+		return time;
+	} else
+		return -1;
+}
+
+long long int stopTimer (long long int init) {
+	timeval t;
+	long long int end;
+	char *buff = NULL;
+	char *flag = NULL;
+
+	gettimeofday(&t, NULL);
+	flag = getenv("MEASURE_APP");
+
+	if (flag != NULL) {
+		ofstream file;
+		string filename = "time_";
+
+		stringstream ss;
+		ss << dilep_iterations;
+
+		filename.append(ss.str());
+		filename.append(".txt");
+
+		end = t.tv_sec * APP_TIME_RESOLUTION + t.tv_usec;
+		end -= init;
+
+		file.precision(15);
+		file.open(filename.c_str(), fstream::app);
+		file << end << endl;
+		file.close();
+	} else
+		return -1;
+}
 
 // #############################################################################
 Int_t main(Int_t argc, char *argv[]){
@@ -4826,9 +4872,20 @@ Int_t main(Int_t argc, char *argv[]){
 	
 	defineDilepIterations();
 
+	// Start measuring overall time
+	long long int init = startTimer();
+
 	// run the analysis
 	ttH_dilep *t = new ttH_dilep();
 	t->Start(argc, argv);
+	
+	// Stop measuring overall time
+	stopTimer(init);
+
+	// Print dilep measurements
+	#ifdef MEASURE_DILEP
+	printDilepTimer();
+	#endif
 
 	// exits
 	return(0);
