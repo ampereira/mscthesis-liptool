@@ -4059,7 +4059,7 @@ void ttH_dilep::ttDilepKinFit(){
 								// corre para cada combo todas as variancias
 								for (int stuff = 0; stuff < vec.size(); ++stuff) {
 									vector<DilepInput> vdi = vec[stuff];
-									int *partial_sol_count = new int [dilep_iterations];
+									int *partial_sol_count;
 
 									#ifdef SEQ
 									result = CPU::dilep(&vdi, partial_sol_count);
