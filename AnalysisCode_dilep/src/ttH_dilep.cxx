@@ -4047,10 +4047,13 @@ void ttH_dilep::ttDilepKinFit(){
 		}
 		vector<DilepInput> vec;
 								for (int stuff = 0; stuff < inputs.size(); ++stuff) {
-									//inputs[stuff].applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
+									inputs[stuff].applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 
-									vec = applyVariance(inputs[stuff], RESOLUTION, 1, EveNumber + JetVec.size()*100);
+									//vec = applyVariance(inputs[stuff], RESOLUTION, 1, EveNumber + JetVec.size()*100);
 								}
+								ofstream si ("sizes1.txt", fstream::app);
+								si << inputs.size() << endl;
+								si.close();
 
 								for (int stuff = 0; stuff < vec.size(); ++stuff) {
 									DilepInput di = vec[stuff];
