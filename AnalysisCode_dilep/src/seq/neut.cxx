@@ -134,8 +134,6 @@ namespace CPU {
 		long long int time = startTimer();
 		#endif
 
-		cout << vdi.size() << endl;
-
 		for (unsigned i = 0; i < vdi.size(); ++i) {
 			vector<myvector> *partial_result;
 			DilepInput di = vdi[i];
@@ -164,6 +162,7 @@ namespace CPU {
 
 			// Check if there is any solutions for this reconstruction
 			if (partial_result->size()) {
+				cout << "Sim " << partial_result->size();
 				final->push_back(*partial_result);
 				hasSolution[i] = 1;  // increment solution counter
 			}
