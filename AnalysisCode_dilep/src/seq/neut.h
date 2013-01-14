@@ -34,7 +34,7 @@ std::vector<myvector>* dilep(unsigned iterations, double t_mass[], double w_mass
 							TLorentzVector* lep_a, TLorentzVector* lep_b, 
 							TLorentzVector* bl_a, TLorentzVector* bl_b, int *hasSol);
 
-vector<vector<myvector>>* dilep(vector<DilepInput> &vdi, int *hasSol);
+vector< vector< myvector > > * dilep(vector<DilepInput> &vdi, int *hasSol);
 
 std::vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 
 								double in_mpx[], double in_mpy[], double in_mpz[],

@@ -124,9 +124,9 @@ namespace CPU {
 
 	// Wrapper for the dilep calculation using a vector of the input class
 	// vdi vector with DilepInput varied for a jet combo
-	vector<vector<myvector>>* dilep (vector<DilepInput> &vdi, int *hasSol)
+	vector< vector< myvector > > * dilep (vector<DilepInput> &vdi, int *hasSol)
 	{
-		vector<vector<myvector>> *final = new vector<vector<myvector>> ();
+		vector< vector< myvector > > *final = new vector< vector< myvector > > ();
 		int *hasSolution = new int [vdi.size()];
 		
 		// time measurement
@@ -165,8 +165,6 @@ namespace CPU {
 				final->push_back(partial_result);
 				hasSolution[i] = 1;  // increment solution counter
 			}
-			// Clear the alocated memory for the partial_results
-			delete partial_result;
 		}
 
 		// time measurement
