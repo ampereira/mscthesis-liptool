@@ -4078,7 +4078,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 			partial_sol[stuff] = partial_sol_count;
 		}
-		cout << vec.size() << " - " << res[0]->size() << endl;
+		cout << inputs.size() << " - " << res[0]->size() << endl;
 
 		// iterating through the jets
 		for (int stuff = 0; stuff < vec.size(); ++stuff) {
