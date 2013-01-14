@@ -4046,7 +4046,7 @@ void ttH_dilep::ttDilepKinFit(){
 			}
 		}
 								// Apply the variances to all the inputs
-								vetor< vector< DilepInput > > vec;
+								vector< vector< DilepInput > > vec;
 								for (int stuff = 0; stuff < inputs.size(); ++stuff) {
 									vector<DilepInput> vec2 = applyVariance(inputs[stuff], RESOLUTION, dilep_iterations, EveNumber + JetVec.size()*100);
 									vec.push_back(vec2);
@@ -4058,7 +4058,9 @@ void ttH_dilep::ttDilepKinFit(){
 								// corre para cada combo todas as variancias
 								for (int stuff = 0; stuff < vec.size(); ++stuff) {
 									vector<DilepInput> vdi = vec[stuff];
-									int **partial_sol_count = new int [vec.size()][vdi.size()];
+									const int aux1 = vec.size();
+									const int aux2 = vdi.size();
+									int **partial_sol_count = new int [aux1][aux2];
 
 									#ifdef SEQ
 									result = CPU::dilep(&vdi, partial_sol_count[stuff]);
