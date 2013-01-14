@@ -4056,13 +4056,14 @@ void ttH_dilep::ttDilepKinFit(){
 									// For each input saves the amount of solutions
 								int **partial_sol;
 								*partial_sol = new int [vec.size()];
+								vector< vector< myvector > > *res [vec.size()];
 								// corre para cada combo todas as variancias
 								for (int stuff = 0; stuff < vec.size(); ++stuff) {
 									vector<DilepInput> vdi = vec[stuff];
 									int *partial_sol_count;
 
 									#ifdef SEQ
-									result = CPU::dilep(vdi, partial_sol_count);
+									res[stuff] = CPU::dilep(vdi, partial_sol_count);
 									#elif SSE
 									result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 									#elif OMP
@@ -4084,6 +4085,7 @@ void ttH_dilep::ttDilepKinFit(){
 									DilepInput di = vec2[stuff2];
 
 									HasSolution += partial_sol[stuff][stuff2];
+									result = res[stuff2];
 
 									// Returns the values varied
 									z_lep = di.getZlep();
