@@ -4053,8 +4053,6 @@ void ttH_dilep::ttDilepKinFit(){
 			vec.push_back(vec2);
 		}
 
-		cout << "CHEGOU"<<endl;
-
 		// Run the dileptonic reconstruction
 		// For each input saves the amount of solutions
 		int **partial_sol;
@@ -4080,6 +4078,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 			partial_sol[stuff] = partial_sol_count;
 		}
+		cout << vec.size() << " - " << res[0]->size() << endl;
 
 		// iterating through the jets
 		for (int stuff = 0; stuff < vec.size(); ++stuff) {
