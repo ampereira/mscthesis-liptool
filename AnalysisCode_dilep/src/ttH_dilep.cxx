@@ -4072,7 +4072,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 
 		ofstream of ("stuff.txt", fstream::app);
-		of << result.size() << endl;
+		of << result->size() << endl;
 		of.close();
 
 
