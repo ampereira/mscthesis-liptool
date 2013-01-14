@@ -4046,11 +4046,9 @@ void ttH_dilep::ttDilepKinFit(){
 			}
 		}
 								for (int stuff = 0; stuff < inputs.size(); ++stuff) {
-									DilepInput di = inputs[stuff];
+									inputs[stuff].applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 
 									//vector<DilepInput> vec = applyVariance(di, RESOLUTION, 1, EveNumber + JetVec.size()*100);
-
-									di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 								}
 
 								for (int stuff = 0; stuff < inputs.size(); ++stuff) {
