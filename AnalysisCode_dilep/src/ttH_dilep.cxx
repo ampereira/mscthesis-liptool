@@ -4062,7 +4062,7 @@ void ttH_dilep::ttDilepKinFit(){
 									int *partial_sol_count;
 
 									#ifdef SEQ
-									result = CPU::dilep(&vdi, partial_sol_count);
+									result = CPU::dilep(vdi, partial_sol_count);
 									#elif SSE
 									result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 									#elif OMP
@@ -4083,7 +4083,7 @@ void ttH_dilep::ttDilepKinFit(){
 									for (int stuff2 = 0; stuff2 < vec2.size(); ++stuff2) {
 									DilepInput di = vec2[stuff2];
 
-									HasSolution += partial_sol_count[stuff][stuff2];
+									HasSolution += partial_sol[stuff][stuff2];
 
 									// Returns the values varied
 									z_lep = di.getZlep();
