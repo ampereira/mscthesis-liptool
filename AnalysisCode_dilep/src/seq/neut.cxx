@@ -122,46 +122,48 @@ namespace CPU {
 		return result;
 	}
 
-	// Wrapper for the dilep calculation using the input class
-	vector<myvector>* dilep(unsigned iterations, DilepInput *di, int *hasSol)
+	// Wrapper for the dilep calculation using a vector of the input class
+	// vdi vector with DilepInput varied for a jet combo
+	vector<vector<myvector>>* dilep (vector<DilepInput> &vdi, int *hasSol)
 	{
-		std::vector<myvector> *result = new std::vector<myvector> ();
-		int hasSolution = 0;
+		vector<vector<myvector>> *final = new std::vector<myvector> ();
+		int *hasSolution = new int [vdi.size()];
 		
 		// time measurement
 		#ifdef MEASURE_DILEP
 		long long int time = startTimer();
 		#endif
 
-		for (unsigned i = 0; i < iterations; ++i) {
-			std::vector<myvector> *partial_result = new std::vector<myvector> ();
+		for (unsigned i = 0; i < vdi.size(); ++i) {
+			vector<myvector> partial_result;
+			DilepInput di = vdi[i];
 
 			double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
 			TLorentzVector lep_a, lep_b, bl_a, bl_b;
 
-			in_mpx[0] = di->getInMpx(0);
-			in_mpx[1] = di->getInMpx(1);
-			in_mpy[0] = di->getInMpy(0);
-			in_mpy[1] = di->getInMpy(1);
-			in_mpz[0] = di->getInMpz(0);
-			in_mpz[1] = di->getInMpz(1);
-			t_mass[0] = di->getTmass(0);
-			t_mass[1] = di->getTmass(1);
-			w_mass[0] = di->getWmass(0);
-			w_mass[1] = di->getWmass(1);
+			in_mpx[0] = di.getInMpx(0);
+			in_mpx[1] = di.getInMpx(1);
+			in_mpy[0] = di.getInMpy(0);
+			in_mpy[1] = di.getInMpy(1);
+			in_mpz[0] = di.getInMpz(0);
+			in_mpz[1] = di.getInMpz(1);
+			t_mass[0] = di.getTmass(0);
+			t_mass[1] = di.getTmass(1);
+			w_mass[0] = di.getWmass(0);
+			w_mass[1] = di.getWmass(1);
 
-			lep_a = di->getZlep();
-			lep_b = di->getClep();
-			bl_a = di->getZbl();
-			bl_b = di->getCbl();
+			lep_a = di.getZlep();
+			lep_b = di.getClep();
+			bl_a = di.getZbl();
+			bl_b = di.getCbl();
 
 			partial_result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, 
 										&lep_b, &bl_a, &bl_b);
 
 			// Check if there is any solutions for this reconstruction
-			if (partial_result->size()) {
-				result->insert(result->end(), partial_result->begin(), partial_result->end());
-				++hasSolution;  // increment solution counter
+			if (partial_result.size()) {
+				final->push_back(partial_result);
+				hasSolution[i] = 1;  // increment solution counter
 			}
 			// Clear the alocated memory for the partial_results
 			delete partial_result;
@@ -172,7 +174,7 @@ namespace CPU {
 		stopTimer(time);
 		#endif
 		
-		*hasSol = hasSolution;
+		hasSol = hasSolution;
 		return result;
 	}
 
