@@ -4079,13 +4079,14 @@ void ttH_dilep::ttDilepKinFit(){
 								// iterating through the jets
 								for (int stuff = 0; stuff < vec.size(); ++stuff) {
 									vector<DilepInput> vec2 = vec[stuff];
+									vector< vector< myvector > > *aux = res[stuff];
 
 									// iterating through the variances
 									for (int stuff2 = 0; stuff2 < vec2.size(); ++stuff2) {
 									DilepInput di = vec2[stuff2];
 
 									HasSolution += partial_sol[stuff][stuff2];
-									result = res[stuff2];
+									result = aux[stuff2];
 
 									// Returns the values varied
 									z_lep = di.getZlep();
