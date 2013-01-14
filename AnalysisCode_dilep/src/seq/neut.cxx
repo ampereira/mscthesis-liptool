@@ -126,7 +126,7 @@ namespace CPU {
 	// vdi vector with DilepInput varied for a jet combo
 	vector<vector<myvector>>* dilep (vector<DilepInput> &vdi, int *hasSol)
 	{
-		vector<vector<myvector>> *final = new std::vector<myvector> ();
+		vector<vector<myvector>> *final = new vector<vector<myvector>> ();
 		int *hasSolution = new int [vdi.size()];
 		
 		// time measurement
@@ -175,7 +175,7 @@ namespace CPU {
 		#endif
 		
 		hasSol = hasSolution;
-		return result;
+		return final;
 	}
 
 	// NEUTRINO SOLUTIONS
