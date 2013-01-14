@@ -4045,6 +4045,9 @@ void ttH_dilep::ttDilepKinFit(){
 				}
 			}
 		}
+		ofstream of ("stuff.txt", fstream::app);
+		of << inputs.size() << endl;
+		of.close();
 								for (int stuff = 0; stuff < inputs.size(); ++stuff) {
 
 									//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
@@ -4055,18 +4058,18 @@ void ttH_dilep::ttDilepKinFit(){
 									// Run the dileptonic reconstruction 
 									int partial_sol_count;
 
-#ifdef SEQ
+									#ifdef SEQ
 									result = CPU::dilep(dilep_iterations, &di, &partial_sol_count);
 									//result = CPU::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-#elif SSE
+									#elif SSE
 									result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-#elif OMP
+									#elif OMP
 									result = OMP::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-#elif CUDA
+									#elif CUDA
 									result = CUDA::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-#elif PAPI
+									#elif PAPI
 									result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-#endif
+									#endif
 
 									HasSolution += partial_sol_count;
 
