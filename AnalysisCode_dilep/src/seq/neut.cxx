@@ -135,7 +135,7 @@ namespace CPU {
 		#endif
 
 		for (unsigned i = 0; i < vdi.size(); ++i) {
-			vector<myvector> partial_result;
+			vector<myvector> *partial_result;
 			DilepInput di = vdi[i];
 
 			double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
@@ -161,8 +161,8 @@ namespace CPU {
 										&lep_b, &bl_a, &bl_b);
 
 			// Check if there is any solutions for this reconstruction
-			if (partial_result.size()) {
-				final->push_back(partial_result);
+			if (partial_result->size()) {
+				final->push_back(*partial_result);
 				hasSolution[i] = 1;  // increment solution counter
 			}
 		}
