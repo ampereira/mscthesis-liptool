@@ -172,6 +172,7 @@ namespace CPU {
 		#ifdef MEASURE_DILEP
 		stopTimer(time);
 		#endif
+		cout << "sopas"<<endl;
 		
 		hasSol = hasSolution;
 		return final;
