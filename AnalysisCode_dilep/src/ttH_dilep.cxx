@@ -4038,6 +4038,10 @@ void ttH_dilep::ttDilepKinFit(){
 									// ---------------------------------------
 									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 									inputs.push_back(di);
+
+									ofstream of ("stuff1.txt", fstream::app);
+									of << HasSolution << endl;
+									of.close();
 								}
 							}
 						}
@@ -4047,10 +4051,10 @@ void ttH_dilep::ttDilepKinFit(){
 		}
 								for (int stuff = 0; stuff < inputs.size(); ++stuff) {
 
-									//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 									//vector<DilepInput> vec = applyVariance(di, RESOLUTION, 1, EveNumber + JetVec.size()*100);
 
 									DilepInput di = inputs[stuff];
+									di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 
 									// Run the dileptonic reconstruction 
 									int partial_sol_count;
@@ -4071,9 +4075,9 @@ void ttH_dilep::ttDilepKinFit(){
 									HasSolution += partial_sol_count;
 
 
-									ofstream of ("stuff.txt", fstream::app);
-									of << HasSolution << endl;
-									of.close();
+									//ofstream of ("stuff2.txt", fstream::app);
+									//of << HasSolution << endl;
+									//of.close();
 
 
 
