@@ -4054,16 +4054,15 @@ void ttH_dilep::ttDilepKinFit(){
 
 									// Run the dileptonic reconstruction
 									// For each input saves the amount of solutions
-
+								int **partial_sol;
+								*partial_sol = new int [vec.size()];
 								// corre para cada combo todas as variancias
 								for (int stuff = 0; stuff < vec.size(); ++stuff) {
 									vector<DilepInput> vdi = vec[stuff];
-									const int aux1 = vec.size();
-									const int aux2 = vdi.size();
-									int **partial_sol_count = new int [aux1][dilep_iterations];
+									int *partial_sol_count = new int [dilep_iterations];
 
 									#ifdef SEQ
-									result = CPU::dilep(&vdi, partial_sol_count[stuff]);
+									result = CPU::dilep(&vdi, partial_sol_count);
 									#elif SSE
 									result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 									#elif OMP
@@ -4074,6 +4073,7 @@ void ttH_dilep::ttDilepKinFit(){
 									result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 									#endif
 
+									partial_sol[stuff] = partial_sol_count;
 								}
 								// iterating through the jets
 								for (int stuff = 0; stuff < vec.size(); ++stuff) {
