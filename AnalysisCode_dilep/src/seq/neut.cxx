@@ -162,7 +162,7 @@ namespace CPU {
 
 			// Check if there is any solutions for this reconstruction
 			if (partial_result->size()) {
-				cout << "Sim " << partial_result->size();
+				cout << "Sim " << i << " - " << partial_result->size() << endl;
 				final->push_back(*partial_result);
 				hasSolution[i] = 1;  // increment solution counter
 			}
