@@ -4086,7 +4086,7 @@ void ttH_dilep::ttDilepKinFit(){
 									DilepInput di = vec2[stuff2];
 
 									HasSolution += partial_sol[stuff][stuff2];
-									result = aux->get(stuff2);
+									result = aux->at(stuff2);
 
 									// Returns the values varied
 									z_lep = di.getZlep();
