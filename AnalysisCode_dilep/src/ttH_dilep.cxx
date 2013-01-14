@@ -4063,7 +4063,7 @@ void ttH_dilep::ttDilepKinFit(){
 		for (int stuff = 0; stuff < vec.size(); ++stuff) {
 			vector<DilepInput> vdi = vec[stuff];
 			int *partial_sol_count;
-			cout << vdi.size() << endl;
+
 			#ifdef SEQ
 			res[stuff] = CPU::dilep(vdi, partial_sol_count);
 			#elif SSE

@@ -134,6 +134,8 @@ namespace CPU {
 		long long int time = startTimer();
 		#endif
 
+		cout << vdi.size() << endl;
+
 		for (unsigned i = 0; i < vdi.size(); ++i) {
 			vector<myvector> *partial_result;
 			DilepInput di = vdi[i];
