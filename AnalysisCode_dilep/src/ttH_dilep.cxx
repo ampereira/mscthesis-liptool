@@ -4045,7 +4045,7 @@ void ttH_dilep::ttDilepKinFit(){
 				}
 			}
 		}
-										for (int stuff = 0; stuff < inputs.size(); ++stuff) {
+								for (int stuff = 0; stuff < inputs.size(); ++stuff) {
 
 									//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 									//vector<DilepInput> vec = applyVariance(di, RESOLUTION, 1, EveNumber + JetVec.size()*100);
@@ -4071,9 +4071,9 @@ void ttH_dilep::ttDilepKinFit(){
 									HasSolution += partial_sol_count;
 
 
-		ofstream of ("stuff.txt", fstream::app);
-		of << result->size() << endl;
-		of.close();
+									ofstream of ("stuff.txt", fstream::app);
+									of << HasSolution << endl;
+									of.close();
 
 
 
