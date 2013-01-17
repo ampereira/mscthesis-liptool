@@ -11,12 +11,13 @@ using namespace std;
 
 class DilepInput {
 
-	TLorentzVector *z_lep, *c_lep;
-	TLorentzVector *z_bj, *c_bj;
+	TLorentzVector z_lep, c_lep;
+	TLorentzVector z_bj, c_bj;
 	TLorentzVector z_bl, c_bl;
 
-	TLorentzVectorWFlags *z_bjWFlags, *c_bjWFlags;
-	TLorentzVectorWFlags *z_lepWFlags, *c_lepWFlags;
+	TLorentzVectorWFlags z_bjWFlags, c_bjWFlags;
+	TLorentzVectorWFlags z_lepWFlags, c_lepWFlags;
+	TLorentzVectorWFlags jet1_HiggsWFlags, jet2_HiggsWFlags;
 
 	double in_mpx[2];
 	double in_mpy[2];
@@ -30,7 +31,8 @@ class DilepInput {
 public:
 	DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVector _z_bj, TLorentzVector _c_bj, 
 				TLorentzVectorWFlags _z_bjWFlags, TLorentzVectorWFlags _c_bjWFlags, TLorentzVectorWFlags _z_lepWFlags,
-				TLorentzVectorWFlags _c_lepWFlags, double _in_mpx[], double _in_mpy[], double _in_mpz[], double _MissPx,
+				TLorentzVectorWFlags _c_lepWFlags, TLorentzVectorWFlags _jet1_HiggsWFlags, TLorentzVectorWFlags _jet2_HiggsWFlags, 
+				double _in_mpx[], double _in_mpy[], double _in_mpz[], double _MissPx,
 				double _MissPy, double _t_mass[], double _w_mass[]);
 
 	DilepInput (const DilepInput &other);
@@ -49,6 +51,8 @@ public:
 	TLorentzVectorWFlags getClepW (void) const;
 	TLorentzVectorWFlags getZbjW (void) const;
 	TLorentzVectorWFlags getCbjW (void) const;
+	TLorentzVectorWFlags DilepInput::getJet1HiggsW (void) const;
+	TLorentzVectorWFlags DilepInput::getJet2HiggsW (void) const;
 	double getMissPx (void) const;
 	double getMissPy (void) const;
 	double getInMpx (int) const;
