@@ -51,8 +51,8 @@ public:
 	TLorentzVectorWFlags getClepW (void) const;
 	TLorentzVectorWFlags getZbjW (void) const;
 	TLorentzVectorWFlags getCbjW (void) const;
-	TLorentzVectorWFlags DilepInput::getJet1HiggsW (void) const;
-	TLorentzVectorWFlags DilepInput::getJet2HiggsW (void) const;
+	TLorentzVectorWFlags getJet1HiggsW (void) const;
+	TLorentzVectorWFlags getJet2HiggsW (void) const;
 	double getMissPx (void) const;
 	double getMissPy (void) const;
 	double getInMpx (int) const;
