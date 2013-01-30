@@ -1,0 +1,104 @@
+\begin{thebibliography}{10}
+
+\bibitem{CERN:LHC}
+European {O}rganization for~{N}uclear {R}esearch,
+\newblock ``The {L}arge {H}adron {C}ollider'', November 2012.
+
+\bibitem{CERN}
+European {O}rganization for~{N}uclear {R}esearch,
+\newblock ``C{ERN} {E}uropean {O}rganization for {N}uclear {R}esearch'',
+  November 2012.
+
+\bibitem{CERN:ATLAS}
+European {O}rganization for~{N}uclear {R}esearch,
+\newblock ``A{TLAS} experiment'', November 2012.
+
+\bibitem{LIP}
+Laboratório de~{E}xperimentação e {F}ísica {E}xperimental~de {P}artículas,
+\newblock ``Laboratório de {E}xperimentação e {F}ísica {E}xperimental de
+  {P}artículas'', November 2012.
+
+\bibitem{CERN:ATLAS:DATA}
+C.~Biscarat G. Brandt G. Duckeck P. van Gemmeren A.~Peters RD.~Schaffer,
+  W.~Bhimji and I.~Vukotic,
+\newblock ``I{O} performance of {ATLAS} data formats'', October 2010.
+
+\bibitem{CERN:ROOT}
+B.~Bellenot O. Couet A. Naumann G. Ganis L. Moneta V. Vasilev A. Gheata
+  P.~Russo F.~Rademakers, P.~Canal and R.~Brun,
+\newblock ``R{OOT}'', November 2012.
+
+\bibitem{LIP:PI}
+A.~Pereira and R.~Silva,
+\newblock ``Particle {C}ollision {D}etection {A}pplication'',
+\newblock July 2012.
+
+\bibitem{Hennessy:Patterson:2012:CAQA}
+John~L. Hennessy and David~A. Patterson,
+\newblock {\em Computer Architecture, Fifth Edition: A Quantitative Approach},
+\newblock Morgan Kaufmann Publishers Inc., San Francisco, CA, USA, 5th edition,
+  2011.
+
+\bibitem{NVIDIA:GPGPU}
+NVIDIA Corporation,
+\newblock ``{What is GPU Computing?}'',
+\newblock \url{http://www.nvidia.com/object/what-is-gpu-computing.html},
+\newblock [Online; accessed November 22, 2012].
+
+\bibitem{Intel:MIC}
+Intel Corporation,
+\newblock ``{Many Integrated Core (MIC) Architecture}'',
+\newblock
+  \url{http://www.intel.com/content/www/us/en/architecture-and-technology/many-integrated-core/intel-many-integrated-core-architecture.html},
+\newblock [Online; accessed November 20, 2012].
+
+\bibitem{Texas:DSP}
+Texas Instruments,
+\newblock ``Digital {S}ignal {P}rocessors'',
+\newblock \url{http://www.ti.com/lsds/ti/dsp/overview.page},
+\newblock [Online; accessed November 23, 2012].
+
+\bibitem{NVIDIA:CUDA}
+NVIDIA Corporation,
+\newblock ``{CUDA}'',
+\newblock \url{http://www.nvidia.com/object/cuda_home_new.html},
+\newblock [Online; accessed November 22, 2012].
+
+\bibitem{StarPU}
+C{\'e}dric Augonnet, Samuel Thibault, and Raymond Namyst,
+\newblock ``{StarPU: a Runtime System for Scheduling Tasks over
+  Accelerator-Based Multicore Machines}'',
+\newblock Rapport de recherche RR-7240, INRIA, March 2010.
+
+\bibitem{Barbosa:2012}
+João Barbosa,
+\newblock ``Gama framework: Hardware aware scheduling in heterogeneous
+  environments'',
+\newblock Tech. {R}ep., Informatics Department, University of Minho, September
+  2012.
+
+\bibitem{Mariano:Alves:2012}
+Artur Mariano, Ricardo Alves, João Barbosa, Luís~Paulo Santos, and Alberto
+  Proença,
+\newblock ``A (ir)regularity-aware task scheduler for heterogeneous
+  platforms'',
+\newblock in {\em Proceedings of the 2nd International Conference on High
+  Performance Computing}, Kiev, October 2012, pp. 45--56.
+
+\bibitem{Alves:2012}
+Ricardo D.~Q. Alves,
+\newblock ``Distributed shared memory on heterogeneous cpus+gpus platforms'',
+\newblock Master's thesis, Universidade do Minho, October 2012.
+
+\bibitem{OpenACC}
+{OpenACC Corporation},
+\newblock ``{OpenACC}'', November 2012,
+\newblock [Online; accessed November 20, 2012].
+
+\bibitem{NVIDIA:Kepler}
+NVIDIA Corporation,
+\newblock ``Kepler {A}rchitecture'',
+\newblock \url{http://www.nvidia.com/object/nvidia-kepler.html},
+\newblock [Online; accessed November 23, 2012].
+
+\end{thebibliography}
