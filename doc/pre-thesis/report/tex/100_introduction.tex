@@ -1,0 +1,18 @@
+
+\chapter{Introduction}
+
+The Large Hardron Collider (LHC) [1] is a high-energy particle accelerator, located in the underground of the border between Switzerland and France, built by the European Organization for Nuclear Research (CERN) [2]. It results from a cooperation of tens of countries, involving thousands of scientists around the world. The LHC is used to conduct experiments to validate several high-energy physics (HEP) theories. One of the most popular is proving the existence of the Higgs boson.
+
+At the LHC, an experiment usually consists of a head-on collision of particles (which is considered an event), where detectors gather data about the collision. There are different detectors with different purposes according to the experiments that they were built for, but usually capture information related to the particles resultant from the head-on collision, such as their mass, momentum and energy. There are six detectors spread along the LHC, where millions of particle collisions occur each second, generating massive amounts of data to process [3].
+
+The information gathered passes through a set of computational tiers, where the data is refined and scattered to among the many research groups until it is ready to be used in simulations, where it is analyzed [4].
+
+ATLAS [5] is one of the main experiments being conducted at the LHC. One of the research groups involved in support and analysis of the data of this experiment is the Laboratório de Instrumentação e Física Experimental de Partículas (LIP) [6]. LIP continuously performs analysis on the data gathered by the ATLAS detector, competing against other research groups from the same experiment in order to analyze the most data and be the first to publish relevant results.
+
+The focus of this dissertation work will be on tuning and parallelizing the kinematical reconstruction of events, using as case study a specific analysis application, the ttH\_dilep, developed by LIP, which is very important for their research and, consequently, is widely used within the group. Using a case study will lead to analyze and improve the performance of other application specific tasks, in order to (i) get the maximum performance from the tuned kinematical reconstruction, and (ii) improve the overall performance of the analysis.
+
+The tuning of both the kinematical reconstruction and overall application performance will be performed on heterogeneous architectures, which combine traditional all-around multicore processors with accelerating devices in the same system. Porting code that was original designed for sequential execution to these heterogeneous environments faces a series of problems, such as different architectural and programming paradigms, tuning code for specific devices, which requires deep architectural knowledge of the device, and load balancing of the tasks between CPU and accelerators. This will be explained in-depth in section 3.
+
+To ease this burden on the programmers there are several frameworks that try to create a level of abstraction between the architectural details of the heterogeneous environments, and consequently the programing paradigm, and the programming environment. The GAMA and OpenACC frameworks will be tested in the context of this problem, and the implementations using these frameworks will be compared to optimized implementations that will also be developed, in terms of performance, usability and development time.
+
+\newpage

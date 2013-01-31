@@ -1,0 +1,20 @@
+
+\pdfbookmark{Resumo}{resumo}
+\chapter*{Resumo}
+\itodo{Resumir isto, tuga style}
+
+\newpage \pdfbookmark{Abstract}{abstract}
+\chapter*{Abstract}
+
+Most event data analysis tasks in the ATLAS project require both intensive data access and processing, where some tasks are typically I/O bound while others are compute bound.
+
+This dissertation work will mainly focus on compute bound issues at the latest stages of the ATLAS detector data analysis (the calibrations), complementing a parallel dissertation work that addresses the I/O bound issues.
+
+The main goal of the work is to design, implement, validate and evaluate an improved and more robust data analysis task which involves tuning the performance of the kinematical reconstruction of events within the framework used for data analysis in ATLAS, to run on computing heterogeneous platforms based on multi-core CPU devices coupled to PCI-E boards with many-core devices, such as the \intel Xeon Phi and/or the \nvidia Fermi/Kepler GPU devices.
+
+As a case study, an analysis application will be used, developed by the LIP research group, to tune the kinematical reconstruction, as well as restructure and parallelize other critical areas of this analysis specific code.
+
+An experimental framework, GAMA, will be used to automate (i) the workload distribution among the available resources and (ii) the transparent data management across the physical distributed memory environment between the shared multi-core memory and the many-core device memory. It will be compared against a similar concurrent framework, OpenACC, in terms of performance, development time and usability.
+
+\newpage
+\pagenumbering{arabic}

@@ -1,0 +1,162 @@
+\ProvidesPackage{naps62}
+
+\usepackage{kvoptions}
+
+\SetupKeyvalOptions{
+  family=naps,
+  prefix=naps@
+}
+\DeclareBoolOption[false]{todo}
+\ProcessKeyvalOptions*
+
+\usepackage[utf8]{inputenc} % encoding
+\usepackage[T1]{fontenc}    % font encoding
+\usepackage[english]{babel} % language
+
+%
+% page geometry
+%
+\usepackage[paper=a4paper,top=2cm,left=2cm,right=1.5cm,bottom=2cm,foot=1cm]{geometry}
+
+%
+% random stuff
+%
+\usepackage{subfiles}    % for modular documents awesomeness
+\usepackage{indentfirst} % indent first paragraph
+\usepackage{amsmath}     % math stuff
+\usepackage{fancyhdr}    % headers and footers
+\usepackage{verbatim}    % code include
+\usepackage{fancyvrb}    % verbatins
+\usepackage{listings}    % better than verbatins
+\usepackage{datetime}    % date and time
+\usepackage{xspace}      % spacing helper for macros
+\usepackage{suffix}      % for making multi-versioned commands
+\usepackage{relsize}     % relative font sizes
+\usepackage{color}       % colors
+\usepackage{xcolor}      % more colors
+\usepackage{xparse}      % command parser
+\usepackage{pgffor}      % foreach loop
+\usepackage{bashful}     % bash magic
+\usepackage{pdfpages}    % enables \includepdf
+\usepackage{acronym}     % list of acronyms
+\usepackage{booktabs}    % better tables
+
+%
+% todonotes, optionally disabled
+%
+\ifnaps@todo
+  \RequirePackage{todonotes}
+\else
+  \RequirePackage[disable]{todonotes}
+\fi
+
+%
+% images and plots stuff
+%
+\usepackage{graphicx}    % images
+\usepackage{epstopdf}    % EPS images support
+\usepackage{gnuplottex}  % embed gnuplot in latex
+\usepackage[font=small,labelfont=bf]{caption}
+
+%
+% references
+%
+\usepackage{varioref}
+\usepackage[breaklinks,pdftex,bookmarks=true,colorlinks=true,linkcolor=blue,citecolor=blue]{hyperref}
+\usepackage[noabbrev,capitalise]{cleveref}
+%\usepackage[hyperpageref]{backref}
+\usepackage{csquotes} % biblatex asks for this
+\usepackage[hyperref=true,backref=true,url=true]{biblatex}    % better references
+
+%
+% pseudocode environments
+%
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+\usepackage{algorithm}
+
+%
+% IEEE tools
+%
+\usepackage[retainorgcmds]{IEEEtrantools}
+
+
+%
+% look-up paths
+%
+\graphicspath{ {./} {./img} {../../common/img} }
+
+%
+% different todos
+%
+\newcommand{\itodo}[2][orange]{\todo[inline,color=#1!40]{#2}}
+\newcommand{\tododone}[1]{\itodo[green]{#1}}
+
+
+%
+% include an svg file, cheking it for updates
+%
+\newcommand{\executeiffilenewer}[3]{%
+  \ifnum\pdfstrcmp{\pdffilemoddate{#1}}%
+  {\pdffilemoddate{#2}}>0%
+  {\immediate\write18{#3}}\fi%
+}
+\newcommand{\includesvg}[1]{%
+  \executeiffilenewer{#1.svg}{#1.pdf}{inkscape -z -D --file=#1.svg --export-pdf=#1.pdf export-latex}%
+  \input{#1.pdf_tex}
+}
+
+
+%
+% add "Appendix" to the appendixes titles, but not to the references
+%
+\let\oldappendix\appendix
+\renewcommand{\appendix}{%
+  \oldappendix
+  \gdef\thechapter{Appendix \Alph{chapter}}
+}
+
+
+%
+% backref configuration
+%
+%\renewcommand*{\backref}[1]{}
+%\renewcommand*{\backrefalt}[4]{%
+%\ifcase #1 %
+%(Not cited.)%
+%\or
+% \textbf{Cited} on page~#2.%
+%\else
+% \textbf{Cited} on pages~#2.%
+%\fi}
+%\renewcommand*{\backrefsep}{, }
+%\renewcommand*{\backreftwosep}{ and~}
+%\renewcommand*{\backreflastsep}{ and~}
+
+
+%
+% misc shortcuts
+%
+
+% roles for titles
+\newcommand{\role}[1]{\smaller{\textit{(#1)}}}
+\newcommand{\student}{\role{Student}}
+\newcommand{\advisor}{\role{Advisor}}
+\newcommand{\coadvisor}{\role{Co-Advisor}}
+
+% email
+\newcommand{\linklike}[1]{{\smaller\smaller\ttfamily #1}}
+\newcommand\email[1]{\href{mailto:#1}{\linklike{#1}}}
+\WithSuffix\newcommand\email*[2]{\href{mailto:#1}{\linklike{#1}}}
+
+% better nomenclature usage
+\newcommand*{\nom}[2]{#1\nomenclature{#1}{#2}}
+
+%
+% names
+%
+\newcommand{\registered}{\textsuperscript{\smaller\textregistered}}
+\newcommand{\trademark}{\textsuperscript{\smaller\texttrademark}}
+\newcommand{\intel}{Intel\registered\xspace}
+\newcommand{\nvidia}{NVIDIA\registered\xspace}
+\newcommand{\cuda}{CUDA\trademark\xspace}

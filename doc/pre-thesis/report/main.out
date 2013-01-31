@@ -1,0 +1,19 @@
+\BOOKMARK [0][-]{cover.0}{Cover}{}% 1
+\BOOKMARK [0][-]{resumo.0}{Resumo}{}% 2
+\BOOKMARK [0][-]{abstract.0}{Abstract}{}% 3
+\BOOKMARK [0][-]{contents.0}{Contents}{}% 4
+\BOOKMARK [0][-]{glossary.0}{Glossary}{}% 5
+\BOOKMARK [0][-]{figures.0}{List of Figures}{}% 6
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 7
+\BOOKMARK [0][-]{chapter.2}{Contextualization}{}% 8
+\BOOKMARK [0][-]{chapter.3}{State of the Art}{}% 9
+\BOOKMARK [1][-]{section.3.1}{Hardware}{chapter.3}% 10
+\BOOKMARK [2][-]{subsection.3.1.1}{Graphics Processing Unit}{section.3.1}% 11
+\BOOKMARK [2][-]{subsection.3.1.2}{Intel\256 Many Integrated Core}{section.3.1}% 12
+\BOOKMARK [1][-]{section.3.2}{Software}{chapter.3}% 13
+\BOOKMARK [2][-]{subsection.3.2.1}{OpenMP}{section.3.2}% 14
+\BOOKMARK [2][-]{subsection.3.2.2}{OpenACC}{section.3.2}% 15
+\BOOKMARK [2][-]{subsection.3.2.3}{GAMA}{section.3.2}% 16
+\BOOKMARK [2][-]{subsection.3.2.4}{Debugging}{section.3.2}% 17
+\BOOKMARK [0][-]{chapter.4}{Case study: the ttH\137dilep analysis application}{}% 18
+\BOOKMARK [0][-]{chapter.5}{Conclusions and Future Work}{}% 19
