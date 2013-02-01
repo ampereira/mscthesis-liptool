@@ -81,9 +81,7 @@
       <file>main-blx.bib</file>
     </requires>
     <requires type="editable">
-      <file>../../common/bib/gama.bib</file>
       <file>../../common/bib/gpu.bib</file>
-      <file>../../common/bib/photon_mapping.bib</file>
     </requires>
     <requires type="static">
       <file>biblatex.bst</file>

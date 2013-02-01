@@ -7,9 +7,9 @@ Programming for multicore environments require some knowledge of the underlying 
 
 Heterogeneous computer architectures are becoming increasingly popular. They combine the flexibility of multicore CPUs with the specific capabilities of many-core accelerating devices, connected by PCI-Express interfaces. However, most computational algorithms and applications are designed with the specific characteristics of CPUs in mind. Even multithreaded applications cannot be easily ported to these devices and expect high performance. To optimize the code for these specific devices it is necessary to deeply understand the architectural principles behind their design.
 
-These devices are usually made from small processing units, focused on achieving the most performance possible on specific problem domains, opposed to common all-around CPUs. Usually, they are oriented for massive data parallelism processing (SIMD architectures), offloading the CPU from such data intensive operations. Several many-core accelerating devices are available, ranging from the general purpose GPUs, the \intel Many Integrated Core line, currently known as \intel Xeon Phi [7], and Digital Signal Processors [8]. A heterogeneous system may have one or more accelerating devices of the same or different types.
+These devices are usually made from small processing units, focused on achieving the most performance possible on specific problem domains, opposed to common all-around CPUs. Usually, they are oriented for massive data parallelism processing (SIMD architectures), offloading the CPU from such data intensive operations. Several many-core accelerating devices are available, ranging from the general purpose GPUs, the \intel Many Integrated Core line, currently known as \intel Xeon Phi \cite{Intel:MIC}, and Digital Signal Processors \cite{Texas:DSP}. A heterogeneous system may have one or more accelerating devices of the same or different types.
 
-Many libraries and frameworks were already developed with these new heterogeneous platforms in mind. They range from frameworks to abstract the inherent complexity of these systems, such as OpenACC [15] or GAMA [15.1], to specialized high performance libraries for some specific scientific domains, such as CuBLAS [25].
+Many libraries and frameworks were already developed with these new heterogeneous platforms in mind. They range from frameworks to abstract the inherent complexity of these systems, such as OpenACC \cite{OpenACC} or GAMA \cite{GAMA}, to specialized high performance libraries for some specific scientific domains, such as CuBLAS \cite{NVIDIA:CuBLAS}.
 
 A more in-depth analysis of these two groups of state of the art technology (hardware and software) will be presented through the next sections.
 
@@ -17,9 +17,11 @@ A more in-depth analysis of these two groups of state of the art technology (har
 
 While having the same (conceptual) purpose, different accelerating devices opt to use different approaches to solve their domain specific problems, leading to small, but important, architectural differences. If these details are not taken into account, it is impossible to make efficient code, underusing the specialized resources of these devices.
 
-The Single Instruction Multiple Data parallelism model is common ground for most accelerating devices architectures. It is designed to get the most throughput when processing information by applying the same instruction, in parallel, to large sets of independent data. Considering the GPUs as an example, each pixel that must be rendered is independent from all other pixels, but the same instructions are executed, thus making their processing embarrassingly parallel. For achieving maximum performance, one important characteristic of the code is that it needs to take advantage of the most parallelism possible between the data to be processed. Other device specific properties, with interest for the programmer, will be discussed later.
+The Single Instruction Multiple Data (SIMD) parallelism model is common ground for most accelerating devices architectures. It is designed to get the most throughput when processing information by applying the same instruction, in parallel, to large sets of independent data. Considering the GPUs as an example, each pixel that must be rendered is independent from all other pixels, but the same instructions are executed, thus making their processing embarrassingly parallel. For achieving maximum performance, one important characteristic of the code is that it needs to take advantage of the most parallelism possible between the data to be processed. Other device specific properties, with interest for the programmer, will be discussed later.
 
-These heterogeneous architectures open the possibility of running parallel tasks on both CPU and accelerators simultaneously. However, due to their technical differences, the same task can take different amount of time to complete, depending in where it is executed. This raises the issue of managing the amount of work to be processed on the CPU and on the accelerating device, in such a way that neither of them becomes stalled waiting for the other to complete, and thus not wasting computational resources. This issue is commonly known as load balancing. However, it can also depend on the nature of the problem; regular problems are easier to balance than irregular problems, which usually require a dynamic load balancing strategy at runtime since their execution time is not predictable. Load balancing is one of the most important issues to deal when tuning a parallel algorithm for hybrid systems.
+Load balancing is always a challenge when programming for parallel environments. Even when using only multicore CPUs, it is important to manage how much load each core is working on so that every core is processing most of the time. If the workload is badly distributed, there will be cores stalled waiting for others to complete, wasting the available computatuinal resources. However, it also depends on the nature of the problem; regular problems are easier to balance than irregular problems, which usually require a dynamic load balancing strategy at runtime since the execution time of the parallel tasks is not predictable.
+
+These heterogeneous architectures open the possibility of running parallel tasks on both CPU and accelerators simultaneously. However, due to their technical differences, the same task can take different amount of time to complete, depending in where it is executed. This creates another layer of complexity when dealing with the work balance. Now, while managing the work distribution inside the CPU (between its cores), and also inside the accelerating device chip, it is also important to manage the distribution between CPU and accelerating device. It is important to have a good control over the load balancing, specially in these hybrid systems, in such a way that neither of the processing units (CPU and accelerating devices) becomes stalled waiting for the other to complete, and thus not wasting any computational resources.
 
 \subsection{Graphics Processing Unit}
 
@@ -27,7 +29,7 @@ There are several accelerating devices currently arriving, or already, on the ma
 
 As mentioned before, this type of devices are specialized for massive data parallelism, where the same instruction is applied to large amounts of data simultaneously. One example of a problem domain that can take advantage of these characteristics is the multiplication of matrices, which are very common in scientific applications. As GPGPUs evolved, the support for specific scientific demands, other than image rendering, was added, such as support for double precision float point arithmetic and compliance to all IEEE arithmetic rules.
 
-More recently, \nvidia [10] launched a line of GPUs designed for scientific computation rather than image processing. This category of devices, known as the Tesla, has more GDDR ram, processing units and a slight different design suitable for use in cluster computational nodes (in terms of size and cooling). In this dissertation two different \nvidia GPUs will be used, the \nvidia Tesla C2070 (Fermi architecture [11]) and the \nvidia Tesla \textbf{Nome kepler} (Kepler architecture [12]).
+More recently, \nvidia \cite{NVIDIA} launched a line of GPUs designed for scientific computation rather than image processing \cite{NVIDIA:Tesla}. This category of devices, known as the Tesla, has more GDDR ram, processing units and a slight different design suitable for use in cluster computational nodes (in terms of size and cooling). In this dissertation two different \nvidia GPUs will be used, the \nvidia Tesla C2070 (Fermi architecture \cite{NVIDIA:Fermi}) and the new \nvidia Tesla \textbf{GK110} based (Kepler architecture \cite{NVIDIA:Kepler}).
 
 \nvidia GPUs architecture has two main components: Streaming Multiprocessors (SM) and GDDR5 ram. Each SM contains a set of \cuda cores, which are processing units that perform both integer and float point arithmetic (additions, multiplications and divisions). These SMs also have some specialized processing units for only square roots, sins and cosines, as well as a warp scheduler (warps will later be explained), which match \cuda threads to \cuda cores, load and store units, register files and a 2 level cache.
 
@@ -48,7 +50,7 @@ The relevant architectural details of this architecture, specifically for the Te
 
 \begin{figure}[!htp]
 	\begin{center}
-		\includegraphics[scale=0.3]{../../common/img/fermi_arch.png}
+		\includegraphics[scale=0.25]{../../common/img/fermi_arch.png}
 		\caption{Schematic representation of the \nvidia Fermi architecure.}
 		\label{fig:fermi}
 	\end{center}
@@ -62,7 +64,7 @@ Within a SM there is a block of configurable 64 KB memory. In this architecture 
 
 The L2 cache is slower but larger, with the size of 768 KB. It is shared among the SMs, opposed to the L1 cache. The global memory is the last level of on device memory. The Tesla C2070 has a total of 6 GB GDDR5 ram, with a bandwidth of 192.4 GB/s.
 
-One important detail for efficient memory usage is to perform coalesced memory accesses. Since the load units get memory in blocks of 128 bits, it is possible to reduce the amount of loads by guaranteeing that all the threads that need to load data, preferably if it is continuous on the address space (such as elements of an array), do it at the same time. This allows the memory controller to find the best grouping of thread loads and consolidates them in the fewer memory accesses possible [11].
+One important detail for efficient memory usage is to perform coalesced memory accesses. Since the load units get memory in blocks of 128 bits, it is possible to reduce the amount of loads by guaranteeing that all the threads that need to load data, preferably if it is continuous on the address space (such as elements of an array), do it at the same time. This allows the memory controller to find the best grouping of thread loads and consolidates them in the fewer memory accesses possible \cite{NVIDIA:Fermi}.
 
 Finally, on the Fermi architecture it is only possible to run one kernel (piece of \cuda code designed to be ran by each \cuda thread) at a time on the GPU.
 
@@ -82,11 +84,11 @@ The maximum amount of registers per \cuda thread was increased from 63 to 255. A
 	\end{center}
 \end{figure}
 
-Programming-wise, a set of new important features has been added to this architecture. One of them is the Dynamic Parallelism. Now it is possible to \cuda threads spawn other threads, without it being explicitly required by the host (CPU). It allows for improvements in irregular problems, such as Monte Carlo ray tracing. Another feature is the Hyper-Q, which allows multiple cores of the same CPU to use and spawn kernels on the same GPU. Also, it is now possible to run several different kernels in the same GPU at the same time, where they will be scheduled to different SMX. Finally, a new shuffle instruction has been added to the instruction set. By using this instruction \cuda threads can now read values directly from each other, within the same warp, without the need of using shared memory [12].
+Programming-wise, a set of new important features has been added to this architecture. One of them is the Dynamic Parallelism. Now it is possible to \cuda threads spawn other threads, without it being explicitly required by the host (CPU). It allows for improvements in irregular problems, such as Monte Carlo ray tracing. Another feature is the Hyper-Q, which allows multiple cores of the same CPU to use and spawn kernels on the same GPU. Also, it is now possible to run several different kernels in the same GPU at the same time, where they will be scheduled to different SMX. Finally, a new shuffle instruction has been added to the instruction set. By using this instruction \cuda threads can now read values directly from each other, within the same warp, without the need of using shared memory \cite{NVIDIA:Kepler}.
 
 \subsection{\intel Many Integrated Core}
 
-The \intel Many Integrated Core (MIC), currently known as \intel Xeon Phi, architecture from Intel, Knights Corner, has a different conceptual design than the Nvidia GPUs. A chip can have up to 61 multithread cores, with 4 threads each, and focus more on vector instructions [13]. 
+The \intel Many Integrated Core (MIC), currently known as \intel Xeon Phi, architecture from Intel, Knights Corner, has a different conceptual design than the Nvidia GPUs. A chip can have up to 61 multithread cores, with 4 threads each, and focus more on vector instructions \cite{Intel:MIC:Elgar}. 
 
 \begin{figure}[!htp]
 	\begin{center}
@@ -108,30 +110,32 @@ Application development for homogeneous systems with multicore CPUs is not as re
 
 However, developing applications for heterogeneous systems, with both CPU and accelerating devices, poses a series of new challenges due to its different programming paradigm. Even though, there are some frameworks that attempt to abstract the inherent complexity of these systems.
 
-Frameworks that attempt to ease the programmer’s job, while providing scalable and flexible solutions, which will be used during the dissertation, will be presented through the next subsections.
+Frameworks that attempt to ease the programmer’s job, while providing scalable and flexible solutions, which will be used during the dissertation, will be presented through the next subsections. Other frameworks that will not be used, such as Threading Building Blocks from \intel \cite{Intel:TBB}, will not be discussed.
 
 \subsection{OpenMP}
 
-For shared memory systems, where there is one or more multicore CPUs sharing the same memory address space, one of the most popular libraries is OpenMP [14]. This API is designed for multi-platform shared memory parallel programming in C, C++ and Fortran, on all available CPU architectures. It is portable and scalable, aiming to provide a simple and flexible interface for developing parallel applications, even for the most inexperienced programmers.
+For shared memory systems, where there is one or more multicore CPUs sharing the same memory address space, one of the most popular libraries is OpenMP \cite{OpenMP}. This API is designed for multi-platform shared memory parallel programming in C, C++ and Fortran, on all available CPU architectures. It is portable and scalable, aiming to provide a simple and flexible interface for developing parallel applications, even for the most inexperienced programmers.
 
 While being simple to use, OpenMP allows fine-tuning of the code for the most experienced programmers, providing various task schedulers, as well as instructions for controlling more efficiently the shared memory accesses and parallel execution of the tasks.
 
 \subsection{OpenACC}
 
-OpenACC [15] is a framework for heterogeneous systems with accelerating devices. It is designed to simplify the programing paradigm for CPU/GPU systems by abstracting the memory management, kernel creation and GPU management. Like OpenMP, it is designed for C, C++ and Fortran, but allowing the parallel task to run on both CPU and GPU at the same time.
+OpenACC \cite{OpenACC} is a framework for heterogeneous systems with accelerating devices. It is designed to simplify the programing paradigm for CPU/GPU systems by abstracting the memory management, kernel creation and GPU management. Like OpenMP, it is designed for C, C++ and Fortran, but allowing the parallel task to run on both CPU and GPU at the same time.
 
-While it was originally designed only for CPU/GPU systems, they are currently working on the support for the new Intel Xeon Phi [16]. Also, they are working alongside with the members of OpenMP to create a new specification supporting accelerating devices in future OpenMP releases [17].
+While it was originally designed only for CPU/GPU systems, they are currently working on the support for the new Intel Xeon Phi \cite{OpenACC:HPCWire}. Also, they are working alongside with the members of OpenMP to create a new specification supporting accelerating devices in future OpenMP releases \cite{OpenACC:OpenMP}.
 
 \subsection{GAMA}
 
-\itodo{GAMA stuff.}
+The GAMA \cite{GAMA} framework is a tool similar to OpenACC. It aims to create an abstraction layer between the architectural details of heterogeneous platforms and the programmer, aiding the development of portable and scalable parallel applications. It frees the programmer from managing the workload distribution, memory usage and data transfers between the available resources.
+
+This framework is capble of abstracting the address space of the heterogeneous platform (CPU and the accelerating device memory) used as a shared memory system. One particularity of this tool is that, even though it is capable of handling shared memory systems with one or more multicore CPUs, it is only capable of handling \cuda capable GPUs as accelerating devices on the system.
 
 \subsection{Debugging}
 
-Debugging applications in shared memory systems is a complex task, as the errors are usually harder to replicate than on sequential applications. Bugs can happen due to deadlocks, unexpected changes to the shared memory, data inconsistency and incoherence. While there are some tools to efficiently debug sequential applications, such as the GNU Debugger [26], they lack on the support for multithreaded applications. Unfortunately, there are no debuggers that can efficiently be used to debug a parallel application.
+Debugging applications in shared memory systems is a complex task, as the errors are usually harder to replicate than on sequential applications. Bugs can happen due to deadlocks, unexpected changes to the shared memory, data inconsistency and incoherence. While there are some tools to efficiently debug sequential applications, such as the GNU Debugger \cite{GDB}, they lack on the support for multithreaded applications. Unfortunately, there are no debuggers that can efficiently be used to debug a parallel application.
 
 The effort necessary to debug these applications, without the use of any third-party tools, is directly related to the programmers experience and knowledge of working with shared memory systems. However, even the most experienced will face complex obstacles when debugging for more than 4 threads, as the application behavior is much harder to control.
 
-Nvidia offers a tool for debugging \cuda kernels on their GPUs, which is based on the GNU Debugger [18]. It is useful when used to find bugs in the kernels, but only in the same way that a sequential application is debugged. Also, when using more than 2-4 \cuda threads it does not help the programmer at all, considering that \cuda kernels can reach to the thousands of threads.
+Nvidia offers a tool for debugging \cuda kernels on their GPUs, which is based on the GNU Debugger \cite{NVIDIA:gdb}. It is useful when used to find bugs in the kernels, but only in the same way that a sequential application is debugged. Also, when using more than 2-4 \cuda threads it does not help the programmer at all, considering that \cuda kernels can reach to the thousands of threads.
 
 \newpage

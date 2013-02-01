@@ -16,6 +16,484 @@
   {}
 \endgroup
 
+\entry{GAMA}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Barbosa}{B.}%
+     {João}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {Informatics Department, University of Minho}%
+  }
+  \strng{namehash}{BJ1}
+  \strng{fullhash}{BJ1}
+  \field{sortinit}{B}
+  \field{title}{GAMA framework: Hardware Aware Scheduling in Heterogeneous
+  Environments}
+  \field{type}{techreport}
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{Intel:TBB}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Corporation}{C.}%
+     {Intel}{I.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{CI1}
+  \strng{fullhash}{CI1}
+  \field{sortinit}{C}
+  \field{title}{Threading Building Blocks (Intel TBB)}
+  \verb{url}
+  \verb \url{http://threadingbuildingblocks.org/}
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{NVIDIA:CuBLAS}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Corporation}{C.}%
+     {NVIDIA}{N.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{CN1}
+  \strng{fullhash}{CN1}
+  \field{sortinit}{C}
+  \field{title}{CUBLAS}
+  \verb{url}
+  \verb \url{https://developer.nvidia.com/cublas}
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{NVIDIA:Tesla}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Corporation}{C.}%
+     {NVIDIA}{N.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{CN1}
+  \strng{fullhash}{CN1}
+  \field{sortinit}{C}
+  \field{title}{High Performance Computing: Accelerating Science with Tesla
+  GPUs}
+  \verb{url}
+  \verb \url{http://www.nvidia.com/object/tesla-supercomputing-solutions.html}
+  \endverb
+  \field{year}{2013}
+\endentry
+
+\entry{NVIDIA}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Corporation}{C.}%
+     {NVIDIA}{N.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{CN1}
+  \strng{fullhash}{CN1}
+  \field{sortinit}{C}
+  \field{howpublished}{\url{http://www.nvidia.com/page/home.html}}
+  \field{note}{[Online; accessed November 22, 2012]}
+  \field{title}{{NVIDIA}}
+\endentry
+
+\entry{OpenACC:OpenMP}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Corporation}{C.}%
+     {OpenACC}{O.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{CO1}
+  \strng{fullhash}{CO1}
+  \field{sortinit}{C}
+  \field{howpublished}{\url{http://www.openacc-standard.org/node/49}}
+  \field{note}{[Online; accessed January 21, 2013]}
+  \field{title}{{How does the OpenACC API relate to OpenMP API}}
+\endentry
+
+\entry{OpenMP}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Corporation}{C.}%
+     {OpenACC}{O.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{CO1}
+  \strng{fullhash}{CO1}
+  \field{sortinit}{C}
+  \field{howpublished}{\url{http://openmp.org/wp/}}
+  \field{note}{[Online; accessed January 20, 2013]}
+  \field{title}{{OpenACC: Directives for Accelerators}}
+\endentry
+
+\entry{Callgrind}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Developers}{D.}%
+     {Valgrind}{V.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{DV1}
+  \strng{fullhash}{DV1}
+  \field{sortinit}{D}
+  \field{howpublished}{\url{http://valgrind.org/docs/manual/cl-manual.html}}
+  \field{note}{[Online; accessed January 29, 2013]}
+  \field{title}{{Callgrind: a call-graph generating cache and branch prediction
+  profiler}}
+\endentry
+
+\entry{CERN:ROOT}{online}{}
+  \name{author}{2}{}{%
+    {{}%
+     {F.~Rademakers}{F.~R.}%
+     {B.~Bellenot O. Couet A. Naumann G. Ganis L. Moneta V. Vasilev A. Gheata
+  P.~Russo}{B.~B. O. C. A. N. G. G. L. M. V. V. A. G. P.~R.}%
+     {}{}%
+     {P.~Canal}{P.~C.}}%
+    {{}%
+     {Brun}{B.}%
+     {R.}{R.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{FRPCBBOCANGGLMVVAGPRBR1}
+  \strng{fullhash}{FRPCBBOCANGGLMVVAGPRBR1}
+  \field{sortinit}{F}
+  \field{title}{R{OOT}}
+  \verb{url}
+  \verb \url{http://root.cern.ch/drupal/}
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{GDB}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Foundation}{F.}%
+     {Free~Software}{F.~S.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{FFS1}
+  \strng{fullhash}{FFS1}
+  \field{sortinit}{F}
+  \field{title}{GDB: The GNU Project Debugger}
+  \verb{url}
+  \verb \url{http://www.gnu.org/software/gdb/}
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{Texas:DSP}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Instruments}{I.}%
+     {Texas}{T.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{IT1}
+  \strng{fullhash}{IT1}
+  \field{sortinit}{I}
+  \field{howpublished}{\url{http://www.ti.com/lsds/ti/dsp/overview.page}}
+  \field{note}{[Online; accessed November 23, 2012]}
+  \field{title}{Digital {S}ignal {P}rocessors}
+\endentry
+
+\entry{Intel:MIC:Elgar}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Intel}{I.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {Intel Corporation}%
+  }
+  \strng{namehash}{I1}
+  \strng{fullhash}{I1}
+  \field{sortinit}{I}
+  \field{title}{Intel Many Integrated Core Architecture}
+  \field{type}{techreport}
+  \field{year}{2010}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{Intel:MIC}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Intel}{I.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {Intel}%
+  }
+  \strng{namehash}{I1}
+  \strng{fullhash}{I1}
+  \field{sortinit}{I}
+  \field{title}{The Intel® Xeon PhiTM Coprocessor 5110P}
+  \field{type}{techreport}
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{NVIDIA:gdb}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {NVIDIA}{N.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {NVIDIA}%
+  }
+  \strng{namehash}{N1}
+  \strng{fullhash}{N1}
+  \field{sortinit}{N}
+  \field{title}{CUDA-GDB: The NVIDIA CUDA Debugger User Manual}
+  \field{type}{techreport}
+  \field{year}{2008}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{NVIDIA:Fermi}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {NVIDIA}{N.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {NVIDIA}%
+  }
+  \strng{namehash}{N1}
+  \strng{fullhash}{N1}
+  \field{sortinit}{N}
+  \field{title}{NVIDIA's Next Generation CUDA Compute Architectur: Fermi}
+  \field{type}{techreport}
+  \field{year}{2009}
+\endentry
+
+\entry{NVIDIA:Kepler}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {NVIDIA}{N.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {NVIDIA}%
+  }
+  \strng{namehash}{N1}
+  \strng{fullhash}{N1}
+  \field{sortinit}{N}
+  \field{title}{NVIDIA's Next Generation CUDA Compute Architectur: Kepler
+  GK110}
+  \field{type}{techreport}
+  \field{year}{2012}
+\endentry
+
+\entry{LIP:Ibergrid}{article}{}
+  \name{author}{5}{}{%
+    {{}%
+     {Oliveira}{O.}%
+     {V.}{V.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Pina}{P.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Castro}{C.}%
+     {N.}{N.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Veloso}{V.}%
+     {F.}{F.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Onofre}{O.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{OV+1}
+  \strng{fullhash}{OVPACNVFOA1}
+  \field{sortinit}{O}
+  \field{title}{Even Bigger Data: Preparing for the LHC/ATLAS Upgrade}
+  \field{journaltitle}{6th Iberian Grid Infrastructure Conference}
+  \field{year}{2012}
+\endentry
+
+\entry{OpenACC}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{OpenACC Corporation}}{O.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{O1}
+  \strng{fullhash}{O1}
+  \field{sortinit}{O}
+  \field{note}{[Online; accessed November 20, 2012]}
+  \field{title}{{OpenACC}}
+  \verb{url}
+  \verb \url{http://www.openacc-standard.org/}
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{LIP}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{P}artículas}{P.}%
+     {Laboratório}{L.}%
+     {de~{E}xperimentação e {F}ísica {E}xperimental~de}{d.~E. e. F. E.~d.}%
+     {}{}}%
+  }
+  \strng{namehash}{PLdEeFEd1}
+  \strng{fullhash}{PLdEeFEd1}
+  \field{sortinit}{P}
+  \field{title}{Laboratório de {E}xperimentação e {F}ísica {E}xperimental
+  de {P}artículas}
+  \verb{url}
+  \verb \url{http://www.lip.pt/}
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:DATA}{online}{}
+  \name{author}{2}{}{%
+    {{}%
+     {RD.~Schaffer}{R.~S.}%
+     {C.~Biscarat G. Brandt G. Duckeck P. van Gemmeren A.~Peters}{C.~B. G. B.
+  G. D. P. v. G. A.~P.}%
+     {}{}%
+     {W.~Bhimji}{W.~B.}}%
+    {{}%
+     {Vukotic}{V.}%
+     {I.}{I.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{RSWBCBGBGDPvGAPVI1}
+  \strng{fullhash}{RSWBCBGBGDPvGAPVI1}
+  \field{sortinit}{R}
+  \field{title}{I{O} performance of {ATLAS} data formats}
+  \verb{url}
+  \verb \url{http://cdsweb.cern.ch/record/1299564/files/ATL-SOFT-SLIDE-2010-381
+  \verb .pdf?version=1}
+  \endverb
+  \field{year}{2010}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:ATLAS}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{sortinit}{R}
+  \field{title}{A{TLAS} experiment}
+  \verb{url}
+  \verb \url{http://atlas.ch/}
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{sortinit}{R}
+  \field{title}{C{ERN} {E}uropean {O}rganization for {N}uclear {R}esearch}
+  \verb{url}
+  \verb \url{http://public.web.cern.ch/public/}
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:LHC}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{sortinit}{R}
+  \field{title}{The {L}arge {H}adron {C}ollider}
+  \verb{url}
+  \verb \url{http://public.web.cern.ch/public/en/lhc/lhc-en.html}
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{OpenACC:HPCWire}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Wire}{W.}%
+     {HPC}{H.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{WH1}
+  \strng{fullhash}{WH1}
+  \field{sortinit}{W}
+  \field{howpublished}{\url{http://www.hpcwire.com/hpcwire/2012-06-20/openacc_group_reports_expanding_support_for_accelerator_programming_standard.html}}
+  \field{note}{[Online; accessed January 15, 2013]}
+  \field{title}{{OpenACC Group Reports Expanding Support for Accelerator
+  Programming Standard}}
+\endentry
+
 \lossort
 \endlossort
 
