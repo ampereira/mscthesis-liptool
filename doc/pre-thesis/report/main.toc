@@ -12,9 +12,9 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.1.1}Graphics Processing Unit}{9}{subsection.3.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{NVIDIA\textsuperscript {\smaller \textregistered }\xspace Fermi Architecture}{10}{section*.9}
+\contentsline {subsubsection}{NVIDIA\textsuperscript {\smaller \textregistered }\xspace Fermi Architecture}{10}{section*.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{NVIDIA\textsuperscript {\smaller \textregistered }\xspace Kepler Architecture}{11}{section*.11}
+\contentsline {subsubsection}{NVIDIA\textsuperscript {\smaller \textregistered }\xspace Kepler Architecture}{11}{section*.10}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.1.2}Intel\textsuperscript {\smaller \textregistered }\xspace Many Integrated Core}{12}{subsection.3.1.2}
 \defcounter {refsection}{0}\relax 

@@ -490,7 +490,7 @@ Too many commas in name 1 of "RD. Schaffer, W. Bhimji, C. Biscarat, G. Brandt, G
 while executing---line 2645 of file biblatex.bst
 You've used 25 entries,
             6019 wiz_defined-function locations,
-            1245 strings with 11227 characters,
+            1245 strings with 11125 characters,
 and the built_in function-call counts, 66775 in all, are:
 = -- 2484
 > -- 2242
