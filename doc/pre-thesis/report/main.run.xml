@@ -81,7 +81,7 @@
       <file>main-blx.bib</file>
     </requires>
     <requires type="editable">
-      <file>../../common/bib/gpu.bib</file>
+      <file>../../common/bib/refs.bib</file>
     </requires>
     <requires type="static">
       <file>biblatex.bst</file>

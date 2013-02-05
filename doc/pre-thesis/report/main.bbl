@@ -488,10 +488,14 @@
   \strng{namehash}{WH1}
   \strng{fullhash}{WH1}
   \field{sortinit}{W}
-  \field{howpublished}{http://www.hpcwire.com/hpcwire/2012-06-20/openacc_group_reports_expanding_support_for_accelerator_programming_standard.html}
-  \field{note}{[Online; accessed January 15, 2013]}
-  \field{title}{{OpenACC Group Reports Expanding Support for Accelerator
-  Programming Standard}}
+  \field{title}{OpenACC Group Reports Expanding Support for Accelerator
+  Programming Standard}
+  \verb{url}
+  \verb http://www.hpcwire.com/hpcwire/2012-06-20/openacc_group_reports_expandi
+  \verb ng_support_for_accelerator_programming_standard.html
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
 \endentry
 
 \lossort

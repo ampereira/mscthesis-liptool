@@ -2,15 +2,15 @@
 \pdfbookmark{Resumo}{resumo}
 \chapter*{Resumo}
 
-A maior parte das tarefas de análise de dados de eventos no projeto ATLAS requerem grandes capacidades de acesso a dados e processamento, em que q performance de algumas das tarefas são limitadas pela capacidade de I/O e outras pela capacidade de computação.
+A maior parte das tarefas de análise de dados de eventos no projeto ATLAS requerem grandes capacidades de acesso a dados e processamento, em que a performance de algumas das tarefas são limitadas pela capacidade de I/O e outras pela capacidade de computação.
 
 Esta dissertação irá focar-se principalmente nos problemas limitados computacionalmente nas últimas fases de análise dos dados do detector do ATLAS (as calibrações), complementando uma dissertação paralela que irá lidar com as tarefas limitadas pelo I/O.
 
-O principal objectivo deste trabalho será desenhar, implementar, validar e avaliar uma tarefa de análise mais robusta e melhorada, que envolve aperfeiçoar a performance da reconstrução kinemática de eventos dentro da framework usada para a análise de dados no ATLAS, a ser executada em plataformas de computação heterogénea baseada em CPUs multicore acoplados com placas PCI-E com dispositivos many-core, tais como o \intel Xeon Phi e/ou os dispositivos GPU \nvidia Fermi/Kepler.
+O principal objectivo deste trabalho será desenhar, implementar, validar e avaliar uma tarefa de análise mais robusta e melhorada, que envolve aperfeiçoar a performance da reconstrução kinemática de eventos dentro da framework usada para a análise de dados no ATLAS, a ser executada em plataformas de computação heterogénea, baseadas em CPUs multicore acoplados a placas PCI-E com dispositivos many-core, tais como o \intel Xeon Phi e/ou os dispositivos GPU \nvidia Fermi/Kepler.
 
 Uma aplicação de análise será usada como caso de estudo, desenvolvida pelo grupo LIP, para melhorar a reconstrução kinemática, bem como restruturar e paralelizar outras regiões críticas desta análise.
 
-Uma framework experimental, GAMA, será usada para automatizar (i) a distribuição de carga pelos recursos disponíveis e (ii) a gestão transparente de dados através do ambiente de memória física distribuída, entre a memória partilhada do CPU multicore e da memória dos dispositivos many-core. Ela será comparada com outra framework similar, OpenACC, em termos de performance, tempo de desenvolvimento e usabilidade.
+Uma framework experimental, GAMA, será usada para automatizar (i) a distribuição de carga pelos recursos disponíveis e (ii) a gestão transparente de dados através do ambiente de memória física distribuída, entre a memória partilhada do CPU multicore e da memória dos dispositivos many-core. Ela será comparada com uma outra framework similar, OpenACC, em termos de performance, tempo de desenvolvimento e usabilidade.
 
 \newpage \pdfbookmark{Abstract}{abstract}
 \chapter*{Abstract}

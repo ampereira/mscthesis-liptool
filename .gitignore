@@ -1,5 +1,14 @@
+.DS_Store
 Links
 LipMiniAnalysis
 MiniNtuples
 build
 bin
+*.toc
+*.out
+main.log
+*.lof
+*.fls
+*.blg
+main.aux
+main.fdb_latexmk

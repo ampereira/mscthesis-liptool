@@ -4,9 +4,9 @@
 \usepackage[todo]{../../common/naps62}
 
 \hypersetup{pdfauthor={André Martins Pereira}}
-\hypersetup{pdftitle={Pre-Thesis: Efficient processing of ATLAS events analysis in platforms with accelerating devices}}
+\hypersetup{pdftitle={Pre-Thesis: Efficient processing of ATLAS events analysis in platforms with accelerator devices}}
 
-\bibliography{../../common/bib/gpu}
+\bibliography{../../common/bib/refs}
 
 % reduce chapter margins
 \renewcommand{\chapterheadstartvskip}{\vspace*{-1.6\baselineskip}}
@@ -35,9 +35,7 @@
 %
 % include all tex/ chapter files
 %
-%\bash[stdoutFile=/dev/null,stderrFile=/dev/null,exitCodeFile=/dev/null,scriptFile=bash.out]
-%ls tex/ | egrep ^[^_] | sed "s/\([^.]*\)\.tex/\\\\subfile{tex\/\1}/" > tex/_inputs.tex
-%\END
+
 \input{tex/002_abstract}
 \input{tex/009_before}
 \input{tex/100_introduction}
