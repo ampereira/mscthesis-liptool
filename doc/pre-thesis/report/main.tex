@@ -31,6 +31,20 @@
   \fancyfoot[RO,LE]{\thepage}
 }
 
+\newcommand{\sigspace}[2]{
+
+\begin{minipage}{\columnwidth}%
+\vspace{2cm}%
+% \rule{.6\textwidth}{.2mm}
+%
+%#1\tabto*{2.5cm}{#2}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lr}
+\hline
+{#1} & #2
+\end{tabular*}
+\end{minipage}%
+}
+
 
 %
 % include all tex/ chapter files
@@ -50,5 +64,8 @@
 \newpage % force the bookmark to go to the new page
 \pdfbookmark{References}{references}
 \printbibliography[title=References]
+
+\appendix
+\input{tex/910_signatures}
 
 \end{document}
