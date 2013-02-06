@@ -37,25 +37,6 @@
   \warn{\item Invalid format of field 'month'}
 \endentry
 
-\entry{Intel:TBB}{online}{}
-  \name{author}{1}{}{%
-    {{}%
-     {Corporation}{C.}%
-     {Intel}{I.}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{CI1}
-  \strng{fullhash}{CI1}
-  \field{sortinit}{C}
-  \field{title}{Threading Building Blocks (Intel TBB)}
-  \verb{url}
-  \verb http://threadingbuildingblocks.org/
-  \endverb
-  \field{year}{2013}
-  \warn{\item Invalid format of field 'month'}
-\endentry
-
 \entry{NVIDIA:CuBLAS}{online}{}
   \name{author}{1}{}{%
     {{}%
