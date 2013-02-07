@@ -3982,9 +3982,6 @@ void ttH_dilep::ttDilepKinFit(){
 	//			     2 jet for H->bbbar
 	// ---------------------------------------
 
-	vector<DilepInput> inputs;
-	vector<TLorentzVectorWFlags> higgsjets1, higgsjets2;
-
 	if ( ttDKF_JetCombChoice == 1 ){ 
 		for ( int j1=0; j1 < ttDKF_njets ; j1++){
 			for ( int j2=0; j2 < ttDKF_njets ; j2++){
@@ -4015,9 +4012,6 @@ void ttH_dilep::ttDilepKinFit(){
 									jet1_HiggsWFlags = MyChoiceJetVec[j3]; // Jet from Higgs Decay (H->bbbar)
 									jet2_HiggsWFlags = MyChoiceJetVec[j4]; // Jet from Higgs Decay (H->bbbar)
 
-									higgsjets1.push_back(jet1_HiggsWFlags);
-									higgsjets2.push_back(jet2_HiggsWFlags);
-
 									// ###################################################################
 									//   C H A N G E   O B J E C T S   W I T H I N   R E S O L U T I O N #
 									// ###################################################################
@@ -4037,565 +4031,532 @@ void ttH_dilep::ttDilepKinFit(){
 									// Find tt dileptonic solutions
 									// ---------------------------------------
 									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
-									inputs.push_back(di);
+
+									//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
+									vector<DilepInput> vec = applyVariance(di, RESOLUTION, 1, EveNumber + JetVec.size()*100);
+
+									DilepInput di2 = vec[0];
+
+									// Run the dileptonic reconstruction 
+									int partial_sol_count;
+
+#ifdef SEQ
+									result = CPU::dilep(dilep_iterations, &di2, &partial_sol_count);
+									//result = CPU::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
+#elif SSE
+									result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
+#elif OMP
+									result = OMP::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
+#elif CUDA
+									result = CUDA::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
+#elif PAPI
+									result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
+#endif
+
+									HasSolution += partial_sol_count;
+
+
+									// Returns the values varied
+									z_lep = di.getZlep();
+									c_lep = di.getClep();
+									z_bj = di.getZbj();
+									c_bj = di.getCbj();
+									z_lepWFlags = di.getZlepW();
+									c_lepWFlags = di.getClepW();
+									z_bjWFlags = di.getZbjW();
+									c_bjWFlags = di.getCbjW();
+									MissPx = di.getMissPx();
+									MissPy = di.getMissPy();
+									in_mpx[0] = di.getInMpx(0);
+									in_mpx[1] = di.getInMpx(1);
+									in_mpy[0] = di.getInMpy(0);
+									in_mpy[1] = di.getInMpy(1);
+									in_mpz[0] = di.getInMpz(0);
+									in_mpz[1] = di.getInMpz(1);
+									z_bl = di.getZbl();
+									c_bl = di.getCbl();
+
+									// ---------------------------------------
+									// Get info from all possible solutions
+									// ---------------------------------------
+									std::vector<myvector>::iterator pp;
+									for ( pp = result->begin(); pp < result->end(); pp++) {
+
+										double   px,  py,  pz,  E, 
+												 apx, apy, apz, aE;
+										int     iPDGnu1, iPDGW1, iPDGt1;
+										int     iPDGnu2, iPDGW2, iPDGt2;
+
+										// -------------------------------
+										//  1st top quark Reconstruction
+										// -------------------------------
+										// b-quark 1
+										b1_ttDKF.push_back(z_bjWFlags);
+										// lepton 1
+										l1_ttDKF.push_back(z_lepWFlags);			
+										if ( z_lepWFlags.isb ==  11 ) { iPDGnu1 = -12; iPDGW1 = -24; iPDGt1 = -6; }
+										if ( z_lepWFlags.isb == -11 ) { iPDGnu1 = +12; iPDGW1 = +24; iPDGt1 = +6; }
+										if ( z_lepWFlags.isb ==  13 ) { iPDGnu1 = -14; iPDGW1 = -24; iPDGt1 = -6; }
+										if ( z_lepWFlags.isb == -13 ) { iPDGnu1 = +14; iPDGW1 = +24; iPDGt1 = +6; }
+										// neutrino 1
+										px = pp->Px();
+										py = pp->Py();
+										pz = pp->Pz();
+										E  = sqrt(px*px + py*py + pz*pz);
+										TLorentzVector n1;
+										n1.SetPxPyPzE(  px,   py,   pz,  E);
+										TLorentzVectorWFlags nu1(n1,0,iPDGnu1,999.,-1,-1);
+										n1_ttDKF.push_back(nu1);
+										// W boson 1
+										TLorentzVector w1;
+										w1.SetPxPyPzE(	px + z_lepWFlags.Px(), 
+												py + z_lepWFlags.Py(), 
+												pz + z_lepWFlags.Pz(), 
+												E  + z_lepWFlags.E()   );
+										TLorentzVectorWFlags ww1(w1,0,iPDGW1,999.,-1,-1);
+										W1_ttDKF.push_back(ww1);
+										// top quark 1
+										TLorentzVector t1;
+										t1.SetPxPyPzE(	px + z_lepWFlags.Px() + z_bjWFlags.Px(), 
+												py + z_lepWFlags.Py() + z_bjWFlags.Py(), 
+												pz + z_lepWFlags.Pz() + z_bjWFlags.Pz(), 
+												E  + z_lepWFlags.E()  + z_bjWFlags.E() );
+										TLorentzVectorWFlags tt1(t1,0,iPDGt1,999.,-1,-1);
+										t1_ttDKF.push_back(tt1);
+
+										// -------------------------------
+										//  2nd top quark reconstruction
+										// -------------------------------
+										// b-quark 2
+										b2_ttDKF.push_back(c_bjWFlags);
+										// lepton 2
+										l2_ttDKF.push_back(c_lepWFlags);
+										if ( c_lepWFlags.isb ==  11 ) { iPDGnu2 = -12; iPDGW2 = -24; iPDGt2 = -6; }
+										if ( c_lepWFlags.isb == -11 ) { iPDGnu2 = +12; iPDGW2 = +24; iPDGt2 = +6; }
+										if ( c_lepWFlags.isb ==  13 ) { iPDGnu2 = -14; iPDGW2 = -24; iPDGt2 = -6; }
+										if ( c_lepWFlags.isb == -13 ) { iPDGnu2 = +14; iPDGW2 = +24; iPDGt2 = +6; }
+										// neutrino 2
+										apx = MissPx-px;
+										apy = MissPy-py;
+										apz = pp->aPz();
+										aE  = sqrt(apx*apx + apy*apy + apz*apz);
+										TLorentzVector n2;
+										n2.SetPxPyPzE( apx,  apy,  apz, aE);
+										TLorentzVectorWFlags nu2(n2,0,iPDGnu2,999.,-1,-1);
+										n2_ttDKF.push_back(nu2);
+										// W boson 2
+										TLorentzVector w2;
+										w2.SetPxPyPzE(	apx + c_lepWFlags.Px(), 
+												apy + c_lepWFlags.Py(), 
+												apz + c_lepWFlags.Pz(), 
+												aE  + c_lepWFlags.E()   );
+										TLorentzVectorWFlags ww2(w2,0,iPDGW2,999.,-1,-1);
+										W2_ttDKF.push_back(ww2);
+										// top quark 2
+										TLorentzVector t2;
+										t2.SetPxPyPzE(	apx + c_lepWFlags.Px() + c_bjWFlags.Px(), 
+												apy + c_lepWFlags.Py() + c_bjWFlags.Py(), 
+												apz + c_lepWFlags.Pz() + c_bjWFlags.Pz(), 
+												aE  + c_lepWFlags.E()  + c_bjWFlags.E() );
+										TLorentzVectorWFlags tt2(t2,0,iPDGt2,999.,-1,-1);
+										t2_ttDKF.push_back(tt2);
+
+										// -------------------------------
+										//  (t,tbar) system reconstruction
+										// -------------------------------
+										TLorentzVector ttbar;
+										myttbar_px = px + z_lepWFlags.Px() + z_bjWFlags.Px() + apx + c_lepWFlags.Px() + c_bjWFlags.Px();
+										myttbar_py = py + z_lepWFlags.Py() + z_bjWFlags.Py() + apy + c_lepWFlags.Py() + c_bjWFlags.Py(); 
+										myttbar_pz = pz + z_lepWFlags.Pz() + z_bjWFlags.Pz() + apz + c_lepWFlags.Pz() + c_bjWFlags.Pz();
+										myttbar_E  = E  + z_lepWFlags.E()  + z_bjWFlags.E()  + aE  + c_lepWFlags.E()  + c_bjWFlags.E(); 
+										ttbar.SetPxPyPzE( myttbar_px, myttbar_py, myttbar_pz, myttbar_E);
+										TLorentzVectorWFlags ttbar2(ttbar,0, 999,999.,-1,-1);
+										ttbar_ttDKF.push_back(ttbar2);
+
+										// -------------------------------
+										//   Higgs system reconstruction
+										// -------------------------------
+										// jet 1 from Higgs
+										b1_Higgs_ttDKF.push_back( jet1_HiggsWFlags );
+										// jet 2 from Higgs
+										b2_Higgs_ttDKF.push_back( jet2_HiggsWFlags );
+										// Higgs itself
+										TLorentzVector myHiggs;
+										myHiggs.SetPxPyPzE(	jet1_HiggsWFlags.Px() + jet2_HiggsWFlags.Px(), 
+												jet1_HiggsWFlags.Py() + jet2_HiggsWFlags.Py(), 
+												jet1_HiggsWFlags.Pz() + jet2_HiggsWFlags.Pz(), 
+												jet1_HiggsWFlags.E()  + jet2_HiggsWFlags.E() );
+										TLorentzVectorWFlags Higgs(myHiggs,0, 25 ,999.,-1,-1);
+										Higgs_ttDKF.push_back( Higgs );
+
+
+										// -----------------------------------------------------------------------------
+										// Compute best solution for H->bb
+										// -----------------------------------------------------------------------------
+										// Three methods: 1) Use Mass Constraint          (mj1j2 closest to mH_UserValue)
+										// 		  2) Use Transverse Momentum Constraint ( pT_Higgs = - pT_ttbar )
+										// 		  3) Use Mass from Angle Constraint
+										// -----------------------------------------------------------------------------
+
+										// -----------------------------------------------------------------------------
+										// Method 1:
+										// -----------------------------------------------------------------------------
+										// Mass Constraint: mj1j2 = mH_UserValue
+										// -----------------------------------------------------------------------------
+										double myHiggs_MassDiff = fabs( myHiggs.M() - mH_UserValue );	
+
+										// -----------------------------------------------------------------------------
+										// Method 2:
+										// -----------------------------------------------------------------------------
+										// Transverse Momentum Constraint: pT_Higgs = - pT_ttbar
+										// -----------------------------------------------------------------------------				
+										double myHiggs_PxDiff = fabs( myHiggs.Px() - ttbar.Px() );	
+										double myHiggs_PyDiff = fabs( myHiggs.Py() - ttbar.Py() );	
+										double myHiggs_pTDiff = sqrt( myHiggs_PxDiff*myHiggs_PxDiff + myHiggs_PyDiff*myHiggs_PyDiff );
+
+										// -----------------------------------------------------------------------------				
+										// Method 3 : 
+										// -----------------------------------------------------------------------------				
+										// Mass from Angle Constraint: 	mj1 = mj2 (from the hard process)
+										// 				Compute Hard Process Kinematics for H->bb
+										// -----------------------------------------------------------------------------				
+										// Mass Initialization 
+										mass_j1H_ttbar = -999.;
+										mass_j2H_ttbar = -999.;
+
+										// Higgs Momenta from ttbar system
+										//TVector3 HiggsFromTTbar( - ttbar.Px(), - ttbar.Py(), (Hz - ttbar.Pz()) );	
+										// Try to compute ttbar. without NU !! CHECK!!
+										TVector3 HiggsFromTTbar( - ttbar.Px(), - ttbar.Py(), (Hz + n1.Pz() + n2.Pz() - ttbar.Pz() ) );	
+										// Test jets for Higgs
+										TVector3  jet1_vec( jet1_HiggsWFlags.Px(), jet1_HiggsWFlags.Py(), jet1_HiggsWFlags.Pz() );
+										TVector3  jet2_vec( jet2_HiggsWFlags.Px(), jet2_HiggsWFlags.Py(), jet2_HiggsWFlags.Pz() );
+										// check jet angle with respect to ttbar direction
+										theta_jet1_HiggsFromTTbar = jet1_vec.Angle( HiggsFromTTbar );
+										theta_jet2_HiggsFromTTbar = jet2_vec.Angle( HiggsFromTTbar );
+
+										if ( sin(theta_jet1_HiggsFromTTbar)*sin(theta_jet2_HiggsFromTTbar) ) { 
+											fac_j1j2H_ttbar	= 1. + ( 1. - cos(theta_jet1_HiggsFromTTbar)*cos(theta_jet2_HiggsFromTTbar) ) 
+												/ ( sin(theta_jet1_HiggsFromTTbar)*sin(theta_jet2_HiggsFromTTbar) ) ;
+											mass_j1H_ttbar	= sqrt( 2. * fac_j1j2H_ttbar ) * sin( theta_jet1_HiggsFromTTbar ) * jet1_HiggsWFlags.P()  ;
+											mass_j2H_ttbar	= sqrt( 2. * fac_j1j2H_ttbar ) * sin( theta_jet2_HiggsFromTTbar ) * jet2_HiggsWFlags.P()  ;
+
+											higgs_sele_ang  = fabs( ( mass_j1H_ttbar + mass_j2H_ttbar ) / ( mass_j1H_ttbar - mass_j2H_ttbar ) ) ;
+										}
+
+										//Save Higgs Mass from Angular Kinematic Equations of bjet 1 and bjet 2 				
+										mHiggsJet1_ttDKF.push_back(mass_j1H_ttbar); 
+										mHiggsJet2_ttDKF.push_back(mass_j2H_ttbar);
+
+										/*cout << "Jet1: Pt = " << jet1_vec.Pt() << " mass_j1H_ttbar = " << mass_j1H_ttbar << endl;
+										  cout << "Jet2: Pt = " << jet2_vec.Pt() << " mass_j2H_ttbar = " << mass_j2H_ttbar << endl;
+										  cout << "nTSol = " << nTSol << " mass_j1H_ttbar - mass_j2H_ttbar " << mass_j1H_ttbar - mass_j2H_ttbar <<  endl; 
+										  cout << " " << endl; 
+										 */
+
+										// -----------------------------------------------------------------------------
+										// Higgs Probability : 
+										// -----------------------------------------------------------------------------
+										// Method 1:  Use Mass Constraint  (mj1j2 closest to mH_UserValue)
+										if ( ttDKF_HiggsChoice == 1 ) ProbHiggs_ttDKF.push_back(   1./myHiggs_MassDiff 	);			
+										// -----------------------------------------------------------------------------
+										// Method 2:  Use Transverse Momentum Constraint (pT_Higgs = - pT_ttbar)
+										if ( ttDKF_HiggsChoice == 2 ) ProbHiggs_ttDKF.push_back(   1./myHiggs_pTDiff 	);			
+										// -----------------------------------------------------------------------------
+										// Method 3: Use Mass from Angle Constraint
+										if ( ttDKF_HiggsChoice == 3 ) ProbHiggs_ttDKF.push_back(   higgs_sele_ang 	);			
+
+
+										// -------------------------------
+										// Test Best Solution Now:
+										// (i)  ttDKF_SolutionChoice = 1 
+										//	 (Lowest nupT1*nupT2)
+										// (ii) ttDKF_SolutionChoice = 2 
+										//	 (nupT1,nupT2 p.d.fs)
+										// -------------------------------
+										// (i) Lowest nupT1*nupT2
+										if ( ttDKF_SolutionChoice == 1 ) {
+											double nu_pt_cand = 	sqrt( n1_ttDKF[nTSol].Px() * n1_ttDKF[nTSol].Px() +
+													n1_ttDKF[nTSol].Py() * n1_ttDKF[nTSol].Py() ) * 	
+												sqrt( n2_ttDKF[nTSol].Px() * n2_ttDKF[nTSol].Px() +
+														n2_ttDKF[nTSol].Py() * n2_ttDKF[nTSol].Py() );	
+
+											// ------------------------------------------
+											// ttbar System Probability : 
+											// ------------------------------------------
+											ProbTTbar_ttDKF.push_back( 1./ nu_pt_cand);
+
+											// before checking ttbar take Higgs into account also
+											// nu_pt_cand *= 1./ProbHiggs_ttDKF(nTSol);
+											// decide here !!!!!
+											//if ( nu_pt_cand < nu_sele_pt ) { nu_sele_pt = nu_pt_cand; n_ttDKF_Best = nTSol;}
+										}
+
+										// (ii) nupT1,nupT2 from p.d.fs
+										if ( ttDKF_SolutionChoice == 2 ) {
+
+											// Define used pdf variables (make sure the range of variables meets histos)
+											std::vector<double> Xpdf;
+											Xpdf.push_back(n1_ttDKF[nTSol].Pt()/GeV); // 1st pdf: pT neutrino 1
+											Xpdf.push_back(n2_ttDKF[nTSol].Pt()/GeV); // 2nd pdf: pT neutrino 2
+
+											// Loop over all pdf available and evaluate the pdf product (if it is possible)
+											double myProdXpdf    = 1.;
+											for ( Int_t i_pdf = 0; i_pdf < Xpdf.size() ; ++i_pdf){
+												// get bin for Xpdf[i_pdf]
+												int xBin = int( ( Xpdf[i_pdf] - LowerEdge[i_pdf] ) * Scale[i_pdf] ) + 1;
+												if (  ( xBin >= 1 )  && ( xBin <= NBins[i_pdf] ) ){
+													myProdXpdf   *= pdfKinFitVec[i_pdf][xBin];
+												} else {
+													myProdXpdf   *= 0.;
+												}	
+											}
+
+											// ------------------------------------------
+											// ttbar System Probability : 
+											// ------------------------------------------
+											ProbTTbar_ttDKF.push_back( myProdXpdf );
+
+
+											// before checking ttbar take Higgs into account also
+											// myProdXpdf *= ProbHiggs_ttDKF(nTSol);
+											// decide here !!!!!
+											//if ( ( myProdXpdf > nu_sele_pdf ) && ( myProdXpdf != 0. ) ) { nu_sele_pdf = myProdXpdf ; n_ttDKF_Best = nTSol;}
+
+										}
+										// -------------------------------
+										// Last Action Before Exit:
+										//   Increment Solutions Counter
+										//  (its also the index vectors)
+										// -------------------------------
+										nTSol++;
+
+									}
+									// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+									// %      Code to Evaluate Solutions     %
+									// %      Solutions Found Are Stored     %
+									// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 								}
-							}
-						}
-					}
-				}
-			}
-		}
+								// ###################################################################
+								//   C H A N G E   O B J E C T S   W I T H I N   R E S O L U T I O N #
+								// ###################################################################
 
-		// Apply the variances to all the inputs
-		vector< vector< DilepInput > > vec;
-		for (int stuff = 0; stuff < inputs.size(); ++stuff) {
-			vector<DilepInput> vec2 = applyVariance(inputs[stuff], RESOLUTION, dilep_iterations, EveNumber + JetVec.size()*100);
-			vec.push_back(vec2);
-		}
-
-		// Run the dileptonic reconstruction
-		// For each input saves the amount of solutions
-		int **partial_sol;
-		*partial_sol = new int [vec.size()];
-		vector< vector< myvector > > *res [vec.size()];
-
-		// corre para cada combo todas as variancias
-		for (int stuff = 0; stuff < vec.size(); ++stuff) {
-			vector<DilepInput> vdi = vec[stuff];
-			int *partial_sol_count;
-
-			#ifdef SEQ
-			res[stuff] = CPU::dilep(vdi, partial_sol_count);
-			#elif SSE
-			result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-			#elif OMP
-			result = OMP::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-			#elif CUDA
-			result = CUDA::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-			#elif PAPI
-			result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-			#endif
-
-			partial_sol[stuff] = partial_sol_count;
-		}
-
-		// iterating through the jets
-		for (int stuff = 0; stuff < vec.size(); ++stuff) {
-			vector<DilepInput> vec2 = vec[stuff];
-			vector< vector< myvector > > *aux = res[stuff];
-
-			// iterating through the variances
-			for (int stuff2 = 0; stuff2 < vec2.size(); ++stuff2) {
-				DilepInput di = vec2[stuff2];
-
-				HasSolution += partial_sol[stuff][stuff2];
-				*result = aux->at(stuff2);
-
-				// Returns the values varied
-				z_lep = di.getZlep();
-				c_lep = di.getClep();
-				z_bj = di.getZbj();
-				c_bj = di.getCbj();
-				z_lepWFlags = di.getZlepW();
-				c_lepWFlags = di.getClepW();
-				z_bjWFlags = di.getZbjW();
-				c_bjWFlags = di.getCbjW();
-				MissPx = di.getMissPx();
-				MissPy = di.getMissPy();
-				in_mpx[0] = di.getInMpx(0);
-				in_mpx[1] = di.getInMpx(1);
-				in_mpy[0] = di.getInMpy(0);
-				in_mpy[1] = di.getInMpy(1);
-				in_mpz[0] = di.getInMpz(0);
-				in_mpz[1] = di.getInMpz(1);
-				z_bl = di.getZbl();
-				c_bl = di.getCbl();
+							}  // for over j4
+						}  
+					}  // for over j3
+				}  // j1!=j2
+			}  // for over j2
+		}  // for over j1
+	}   // JET COMBINATION CHOICE
 
 
-				jet1_HiggsWFlags = higgsjets1[stuff]; // Jet from Higgs Decay (H->bbbar)
-				jet2_HiggsWFlags = higgsjets2[stuff]; // Jet from Higgs Decay (H->bbbar)
-
-				// ---------------------------------------
-				// Get info from all possible solutions
-				// ---------------------------------------
-				std::vector<myvector>::iterator pp;
-				for ( pp = result->begin(); pp < result->end(); pp++) {
-
-					double   px,  py,  pz,  E, 
-							 apx, apy, apz, aE;
-					int     iPDGnu1, iPDGW1, iPDGt1;
-					int     iPDGnu2, iPDGW2, iPDGt2;
-
-					// -------------------------------
-					//  1st top quark Reconstruction
-					// -------------------------------
-					// b-quark 1
-					b1_ttDKF.push_back(z_bjWFlags);
-					// lepton 1
-					l1_ttDKF.push_back(z_lepWFlags);			
-					if ( z_lepWFlags.isb ==  11 ) { iPDGnu1 = -12; iPDGW1 = -24; iPDGt1 = -6; }
-					if ( z_lepWFlags.isb == -11 ) { iPDGnu1 = +12; iPDGW1 = +24; iPDGt1 = +6; }
-					if ( z_lepWFlags.isb ==  13 ) { iPDGnu1 = -14; iPDGW1 = -24; iPDGt1 = -6; }
-					if ( z_lepWFlags.isb == -13 ) { iPDGnu1 = +14; iPDGW1 = +24; iPDGt1 = +6; }
-					// neutrino 1
-					px = pp->Px();
-					py = pp->Py();
-					pz = pp->Pz();
-					E  = sqrt(px*px + py*py + pz*pz);
-					TLorentzVector n1;
-					n1.SetPxPyPzE(  px,   py,   pz,  E);
-					TLorentzVectorWFlags nu1(n1,0,iPDGnu1,999.,-1,-1);
-					n1_ttDKF.push_back(nu1);
-					// W boson 1
-					TLorentzVector w1;
-					w1.SetPxPyPzE(	px + z_lepWFlags.Px(), 
-							py + z_lepWFlags.Py(), 
-							pz + z_lepWFlags.Pz(), 
-							E  + z_lepWFlags.E()   );
-					TLorentzVectorWFlags ww1(w1,0,iPDGW1,999.,-1,-1);
-					W1_ttDKF.push_back(ww1);
-					// top quark 1
-					TLorentzVector t1;
-					t1.SetPxPyPzE(	px + z_lepWFlags.Px() + z_bjWFlags.Px(), 
-							py + z_lepWFlags.Py() + z_bjWFlags.Py(), 
-							pz + z_lepWFlags.Pz() + z_bjWFlags.Pz(), 
-							E  + z_lepWFlags.E()  + z_bjWFlags.E() );
-					TLorentzVectorWFlags tt1(t1,0,iPDGt1,999.,-1,-1);
-					t1_ttDKF.push_back(tt1);
-
-					// -------------------------------
-					//  2nd top quark reconstruction
-					// -------------------------------
-					// b-quark 2
-					b2_ttDKF.push_back(c_bjWFlags);
-					// lepton 2
-					l2_ttDKF.push_back(c_lepWFlags);
-					if ( c_lepWFlags.isb ==  11 ) { iPDGnu2 = -12; iPDGW2 = -24; iPDGt2 = -6; }
-					if ( c_lepWFlags.isb == -11 ) { iPDGnu2 = +12; iPDGW2 = +24; iPDGt2 = +6; }
-					if ( c_lepWFlags.isb ==  13 ) { iPDGnu2 = -14; iPDGW2 = -24; iPDGt2 = -6; }
-					if ( c_lepWFlags.isb == -13 ) { iPDGnu2 = +14; iPDGW2 = +24; iPDGt2 = +6; }
-					// neutrino 2
-					apx = MissPx-px;
-					apy = MissPy-py;
-					apz = pp->aPz();
-					aE  = sqrt(apx*apx + apy*apy + apz*apz);
-					TLorentzVector n2;
-					n2.SetPxPyPzE( apx,  apy,  apz, aE);
-					TLorentzVectorWFlags nu2(n2,0,iPDGnu2,999.,-1,-1);
-					n2_ttDKF.push_back(nu2);
-					// W boson 2
-					TLorentzVector w2;
-					w2.SetPxPyPzE(	apx + c_lepWFlags.Px(), 
-							apy + c_lepWFlags.Py(), 
-							apz + c_lepWFlags.Pz(), 
-							aE  + c_lepWFlags.E()   );
-					TLorentzVectorWFlags ww2(w2,0,iPDGW2,999.,-1,-1);
-					W2_ttDKF.push_back(ww2);
-					// top quark 2
-					TLorentzVector t2;
-					t2.SetPxPyPzE(	apx + c_lepWFlags.Px() + c_bjWFlags.Px(), 
-							apy + c_lepWFlags.Py() + c_bjWFlags.Py(), 
-							apz + c_lepWFlags.Pz() + c_bjWFlags.Pz(), 
-							aE  + c_lepWFlags.E()  + c_bjWFlags.E() );
-					TLorentzVectorWFlags tt2(t2,0,iPDGt2,999.,-1,-1);
-					t2_ttDKF.push_back(tt2);
-
-					// -------------------------------
-					//  (t,tbar) system reconstruction
-					// -------------------------------
-					TLorentzVector ttbar;
-					myttbar_px = px + z_lepWFlags.Px() + z_bjWFlags.Px() + apx + c_lepWFlags.Px() + c_bjWFlags.Px();
-					myttbar_py = py + z_lepWFlags.Py() + z_bjWFlags.Py() + apy + c_lepWFlags.Py() + c_bjWFlags.Py(); 
-					myttbar_pz = pz + z_lepWFlags.Pz() + z_bjWFlags.Pz() + apz + c_lepWFlags.Pz() + c_bjWFlags.Pz();
-					myttbar_E  = E  + z_lepWFlags.E()  + z_bjWFlags.E()  + aE  + c_lepWFlags.E()  + c_bjWFlags.E(); 
-					ttbar.SetPxPyPzE( myttbar_px, myttbar_py, myttbar_pz, myttbar_E);
-					TLorentzVectorWFlags ttbar2(ttbar,0, 999,999.,-1,-1);
-					ttbar_ttDKF.push_back(ttbar2);
-
-					// -------------------------------
-					//   Higgs system reconstruction
-					// -------------------------------
-					// jet 1 from Higgs
-					b1_Higgs_ttDKF.push_back( jet1_HiggsWFlags );
-					// jet 2 from Higgs
-					b2_Higgs_ttDKF.push_back( jet2_HiggsWFlags );
-					// Higgs itself
-					TLorentzVector myHiggs;
-					myHiggs.SetPxPyPzE(	jet1_HiggsWFlags.Px() + jet2_HiggsWFlags.Px(), 
-							jet1_HiggsWFlags.Py() + jet2_HiggsWFlags.Py(), 
-							jet1_HiggsWFlags.Pz() + jet2_HiggsWFlags.Pz(), 
-							jet1_HiggsWFlags.E()  + jet2_HiggsWFlags.E() );
-					TLorentzVectorWFlags Higgs(myHiggs,0, 25 ,999.,-1,-1);
-					Higgs_ttDKF.push_back( Higgs );
+	// ==================================================================
+	// Solutions Cycle
+	// ==================================================================
 
 
-					// -----------------------------------------------------------------------------
-					// Compute best solution for H->bb
-					// -----------------------------------------------------------------------------
-					// Three methods: 1) Use Mass Constraint          (mj1j2 closest to mH_UserValue)
-					// 		  2) Use Transverse Momentum Constraint ( pT_Higgs = - pT_ttbar )
-					// 		  3) Use Mass from Angle Constraint
-					// -----------------------------------------------------------------------------
+	for ( int iSol = 0; iSol < nTSol; iSol++) {		
 
-					// -----------------------------------------------------------------------------
-					// Method 1:
-					// -----------------------------------------------------------------------------
-					// Mass Constraint: mj1j2 = mH_UserValue
-					// -----------------------------------------------------------------------------
-					double myHiggs_MassDiff = fabs( myHiggs.M() - mH_UserValue );	
+		ProbTotal_ttDKF.push_back( ProbHiggs_ttDKF[iSol]*ProbTTbar_ttDKF[iSol] );
+		if ( ( ProbTotal_ttDKF[iSol] > MaxTotalProb ) && ( ProbTotal_ttDKF[iSol] != 0. ) ) { MaxTotalProb = ProbTotal_ttDKF[iSol] ; n_ttDKF_Best = iSol;}
 
-					// -----------------------------------------------------------------------------
-					// Method 2:
-					// -----------------------------------------------------------------------------
-					// Transverse Momentum Constraint: pT_Higgs = - pT_ttbar
-					// -----------------------------------------------------------------------------				
-					double myHiggs_PxDiff = fabs( myHiggs.Px() - ttbar.Px() );	
-					double myHiggs_PyDiff = fabs( myHiggs.Py() - ttbar.Py() );	
-					double myHiggs_pTDiff = sqrt( myHiggs_PxDiff*myHiggs_PxDiff + myHiggs_PyDiff*myHiggs_PyDiff );
+		//cout << "ProbHiggs_ttDKF[iSol] " << ProbHiggs_ttDKF[iSol] << "; ProbTTbar_ttDKF[iSol] " << ProbTTbar_ttDKF[iSol] << "; ProbTotal_ttDKF[iSol] " << ProbTotal_ttDKF[iSol] << endl;
 
-					// -----------------------------------------------------------------------------				
-					// Method 3 : 
-					// -----------------------------------------------------------------------------				
-					// Mass from Angle Constraint: 	mj1 = mj2 (from the hard process)
-					// 				Compute Hard Process Kinematics for H->bb
-					// -----------------------------------------------------------------------------				
-					// Mass Initialization 
-					mass_j1H_ttbar = -999.;
-					mass_j2H_ttbar = -999.;
+		//if ( ( ProbHiggs_ttDKF[iSol] > MaxHiggsProb ) && ( ProbHiggs_ttDKF[iSol] != 0. ) ) { MaxHiggsProb = ProbHiggs_ttDKF[iSol] ; n_ttDKF_Best = iSol;}
 
-					// Higgs Momenta from ttbar system
-					//TVector3 HiggsFromTTbar( - ttbar.Px(), - ttbar.Py(), (Hz - ttbar.Pz()) );	
-					// Try to compute ttbar. without NU !! CHECK!!
-					TVector3 HiggsFromTTbar( - ttbar.Px(), - ttbar.Py(), (Hz + n1.Pz() + n2.Pz() - ttbar.Pz() ) );	
-					// Test jets for Higgs
-					TVector3  jet1_vec( jet1_HiggsWFlags.Px(), jet1_HiggsWFlags.Py(), jet1_HiggsWFlags.Pz() );
-					TVector3  jet2_vec( jet2_HiggsWFlags.Px(), jet2_HiggsWFlags.Py(), jet2_HiggsWFlags.Pz() );
-					// check jet angle with respect to ttbar direction
-					theta_jet1_HiggsFromTTbar = jet1_vec.Angle( HiggsFromTTbar );
-					theta_jet2_HiggsFromTTbar = jet2_vec.Angle( HiggsFromTTbar );
+	} // Solutions Cicle
 
-					if ( sin(theta_jet1_HiggsFromTTbar)*sin(theta_jet2_HiggsFromTTbar) ) { 
-						fac_j1j2H_ttbar	= 1. + ( 1. - cos(theta_jet1_HiggsFromTTbar)*cos(theta_jet2_HiggsFromTTbar) ) 
-							/ ( sin(theta_jet1_HiggsFromTTbar)*sin(theta_jet2_HiggsFromTTbar) ) ;
-						mass_j1H_ttbar	= sqrt( 2. * fac_j1j2H_ttbar ) * sin( theta_jet1_HiggsFromTTbar ) * jet1_HiggsWFlags.P()  ;
-						mass_j2H_ttbar	= sqrt( 2. * fac_j1j2H_ttbar ) * sin( theta_jet2_HiggsFromTTbar ) * jet2_HiggsWFlags.P()  ;
-
-						higgs_sele_ang  = fabs( ( mass_j1H_ttbar + mass_j2H_ttbar ) / ( mass_j1H_ttbar - mass_j2H_ttbar ) ) ;
-					}
-
-					//Save Higgs Mass from Angular Kinematic Equations of bjet 1 and bjet 2 				
-					mHiggsJet1_ttDKF.push_back(mass_j1H_ttbar); 
-					mHiggsJet2_ttDKF.push_back(mass_j2H_ttbar);
-
-					/*cout << "Jet1: Pt = " << jet1_vec.Pt() << " mass_j1H_ttbar = " << mass_j1H_ttbar << endl;
-					  cout << "Jet2: Pt = " << jet2_vec.Pt() << " mass_j2H_ttbar = " << mass_j2H_ttbar << endl;
-					  cout << "nTSol = " << nTSol << " mass_j1H_ttbar - mass_j2H_ttbar " << mass_j1H_ttbar - mass_j2H_ttbar <<  endl; 
-					  cout << " " << endl; 
-					 */
-
-					// -----------------------------------------------------------------------------
-					// Higgs Probability : 
-					// -----------------------------------------------------------------------------
-					// Method 1:  Use Mass Constraint  (mj1j2 closest to mH_UserValue)
-					if ( ttDKF_HiggsChoice == 1 ) ProbHiggs_ttDKF.push_back(   1./myHiggs_MassDiff 	);			
-					// -----------------------------------------------------------------------------
-					// Method 2:  Use Transverse Momentum Constraint (pT_Higgs = - pT_ttbar)
-					if ( ttDKF_HiggsChoice == 2 ) ProbHiggs_ttDKF.push_back(   1./myHiggs_pTDiff 	);			
-					// -----------------------------------------------------------------------------
-					// Method 3: Use Mass from Angle Constraint
-					if ( ttDKF_HiggsChoice == 3 ) ProbHiggs_ttDKF.push_back(   higgs_sele_ang 	);			
-
-
-					// -------------------------------
-					// Test Best Solution Now:
-					// (i)  ttDKF_SolutionChoice = 1 
-					//	 (Lowest nupT1*nupT2)
-					// (ii) ttDKF_SolutionChoice = 2 
-					//	 (nupT1,nupT2 p.d.fs)
-					// -------------------------------
-					// (i) Lowest nupT1*nupT2
-					if ( ttDKF_SolutionChoice == 1 ) {
-						double nu_pt_cand = 	sqrt( n1_ttDKF[nTSol].Px() * n1_ttDKF[nTSol].Px() +
-								n1_ttDKF[nTSol].Py() * n1_ttDKF[nTSol].Py() ) * 	
-							sqrt( n2_ttDKF[nTSol].Px() * n2_ttDKF[nTSol].Px() +
-									n2_ttDKF[nTSol].Py() * n2_ttDKF[nTSol].Py() );	
-
-						// ------------------------------------------
-						// ttbar System Probability : 
-						// ------------------------------------------
-						ProbTTbar_ttDKF.push_back( 1./ nu_pt_cand);
-
-						// before checking ttbar take Higgs into account also
-						// nu_pt_cand *= 1./ProbHiggs_ttDKF(nTSol);
-						// decide here !!!!!
-						//if ( nu_pt_cand < nu_sele_pt ) { nu_sele_pt = nu_pt_cand; n_ttDKF_Best = nTSol;}
-					}
-
-					// (ii) nupT1,nupT2 from p.d.fs
-					if ( ttDKF_SolutionChoice == 2 ) {
-
-						// Define used pdf variables (make sure the range of variables meets histos)
-						std::vector<double> Xpdf;
-						Xpdf.push_back(n1_ttDKF[nTSol].Pt()/GeV); // 1st pdf: pT neutrino 1
-						Xpdf.push_back(n2_ttDKF[nTSol].Pt()/GeV); // 2nd pdf: pT neutrino 2
-
-						// Loop over all pdf available and evaluate the pdf product (if it is possible)
-						double myProdXpdf    = 1.;
-						for ( Int_t i_pdf = 0; i_pdf < Xpdf.size() ; ++i_pdf){
-							// get bin for Xpdf[i_pdf]
-							int xBin = int( ( Xpdf[i_pdf] - LowerEdge[i_pdf] ) * Scale[i_pdf] ) + 1;
-							if (  ( xBin >= 1 )  && ( xBin <= NBins[i_pdf] ) ){
-								myProdXpdf   *= pdfKinFitVec[i_pdf][xBin];
-							} else {
-								myProdXpdf   *= 0.;
-							}	
-						}
-
-						// ------------------------------------------
-						// ttbar System Probability : 
-						// ------------------------------------------
-						ProbTTbar_ttDKF.push_back( myProdXpdf );
-
-
-						// before checking ttbar take Higgs into account also
-						// myProdXpdf *= ProbHiggs_ttDKF(nTSol);
-						// decide here !!!!!
-						//if ( ( myProdXpdf > nu_sele_pdf ) && ( myProdXpdf != 0. ) ) { nu_sele_pdf = myProdXpdf ; n_ttDKF_Best = nTSol;}
-
-					}
-					// -------------------------------
-					// Last Action Before Exit:
-					//   Increment Solutions Counter
-					//  (its also the index vectors)
-					// -------------------------------
-					nTSol++;
-				}
-			}
-			// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			// %      Code to Evaluate Solutions     %
-			// %      Solutions Found Are Stored     %
-			// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-		}
-		// ###################################################################
-		//   C H A N G E   O B J E C T S   W I T H I N   R E S O L U T I O N #
-		// ###################################################################
-
-		//}  // for over j4
-		//}  
-		//}  // for over j3
-		//}  // j1!=j2
-		//}  // for over j2
-		//}  // for over j1
-}   // JET COMBINATION CHOICE
-
-
-// ==================================================================
-// Solutions Cycle
-// ==================================================================
-
-
-for ( int iSol = 0; iSol < nTSol; iSol++) {		
-
-	ProbTotal_ttDKF.push_back( ProbHiggs_ttDKF[iSol]*ProbTTbar_ttDKF[iSol] );
-	if ( ( ProbTotal_ttDKF[iSol] > MaxTotalProb ) && ( ProbTotal_ttDKF[iSol] != 0. ) ) { MaxTotalProb = ProbTotal_ttDKF[iSol] ; n_ttDKF_Best = iSol;}
-
-	//cout << "ProbHiggs_ttDKF[iSol] " << ProbHiggs_ttDKF[iSol] << "; ProbTTbar_ttDKF[iSol] " << ProbTTbar_ttDKF[iSol] << "; ProbTotal_ttDKF[iSol] " << ProbTotal_ttDKF[iSol] << endl;
-
-	//if ( ( ProbHiggs_ttDKF[iSol] > MaxHiggsProb ) && ( ProbHiggs_ttDKF[iSol] != 0. ) ) { MaxHiggsProb = ProbHiggs_ttDKF[iSol] ; n_ttDKF_Best = iSol;}
-
-} // Solutions Cicle
-
-// -------------------------------------------------------------------
-// Redefine HasSolution if no other reconstruction criteria met
-// -------------------------------------------------------------------
-HasSolution = (n_ttDKF_Best >= 0) ? HasSolution : 0;
-
-// -------------------------------------------------------------------
-// Make sure backward compatibility is preserved + Few Calculations
-// -------------------------------------------------------------------
-if(  HasSolution > 0  )
-{
-	/*
 	// -------------------------------------------------------------------
-	// Print out Debug Information
+	// Redefine HasSolution if no other reconstruction criteria met
 	// -------------------------------------------------------------------
-	cout << "    " << endl;
-	cout << " ============ ttDilepKinFit =================================== " << endl;
-	for(Int_t i = 0; i < l1_ttDKF.size(); ++i){
+	HasSolution = (n_ttDKF_Best >= 0) ? HasSolution : 0;
 
-	if ( i != n_ttDKF_Best ) cout << " ------ Solution " << i << endl;
-	if ( i == n_ttDKF_Best ) cout << " ------ Solution " << i << " selected as the Best one ---------------" << endl;
-	cout << " top 1: Pt=" << t1_ttDKF[i].Pt() << " Eta=" << t1_ttDKF[i].Eta() << " Phi=" << t1_ttDKF[i].Phi() << " M=" << t1_ttDKF[i].M() << endl;
-	cout << "    b1: Pt=" << b1_ttDKF[i].Pt() << " Eta=" << b1_ttDKF[i].Eta() << " Phi=" << b1_ttDKF[i].Phi() << " M=" << b1_ttDKF[i].M() << endl;
-	cout << "    W1: Pt=" << W1_ttDKF[i].Pt() << " Eta=" << W1_ttDKF[i].Eta() << " Phi=" << W1_ttDKF[i].Phi() << " M=" << W1_ttDKF[i].M() << endl;
-	cout << "    l1: Pt=" << l1_ttDKF[i].Pt() << " Eta=" << l1_ttDKF[i].Eta() << " Phi=" << l1_ttDKF[i].Phi() << " M=" << l1_ttDKF[i].M() << endl;
-	cout << "    n1: Pt=" << n1_ttDKF[i].Pt() << " Eta=" << n1_ttDKF[i].Eta() << " Phi=" << n1_ttDKF[i].Phi() << " M=" << n1_ttDKF[i].M() << endl;
+	// -------------------------------------------------------------------
+	// Make sure backward compatibility is preserved + Few Calculations
+	// -------------------------------------------------------------------
+	if(  HasSolution > 0  )
+	{
+		/*
+		// -------------------------------------------------------------------
+		// Print out Debug Information
+		// -------------------------------------------------------------------
+		cout << "    " << endl;
+		cout << " ============ ttDilepKinFit =================================== " << endl;
+		for(Int_t i = 0; i < l1_ttDKF.size(); ++i){
 
-	cout << " top 2: Pt=" << t2_ttDKF[i].Pt() << " Eta=" << t2_ttDKF[i].Eta() << " Phi=" << t2_ttDKF[i].Phi() << " M=" << t2_ttDKF[i].M() << endl;
-	cout << "    b2: Pt=" << b2_ttDKF[i].Pt() << " Eta=" << b2_ttDKF[i].Eta() << " Phi=" << b2_ttDKF[i].Phi() << " M=" << b2_ttDKF[i].M() << endl;
-	cout << "    W2: Pt=" << W2_ttDKF[i].Pt() << " Eta=" << W2_ttDKF[i].Eta() << " Phi=" << W2_ttDKF[i].Phi() << " M=" << W2_ttDKF[i].M() << endl;
-	cout << "    l2: Pt=" << l2_ttDKF[i].Pt() << " Eta=" << l2_ttDKF[i].Eta() << " Phi=" << l2_ttDKF[i].Phi() << " M=" << l2_ttDKF[i].M() << endl;
-	cout << "    n2: Pt=" << n2_ttDKF[i].Pt() << " Eta=" << n2_ttDKF[i].Eta() << " Phi=" << n2_ttDKF[i].Phi() << " M=" << n2_ttDKF[i].M() << endl;
+		if ( i != n_ttDKF_Best ) cout << " ------ Solution " << i << endl;
+		if ( i == n_ttDKF_Best ) cout << " ------ Solution " << i << " selected as the Best one ---------------" << endl;
+		cout << " top 1: Pt=" << t1_ttDKF[i].Pt() << " Eta=" << t1_ttDKF[i].Eta() << " Phi=" << t1_ttDKF[i].Phi() << " M=" << t1_ttDKF[i].M() << endl;
+		cout << "    b1: Pt=" << b1_ttDKF[i].Pt() << " Eta=" << b1_ttDKF[i].Eta() << " Phi=" << b1_ttDKF[i].Phi() << " M=" << b1_ttDKF[i].M() << endl;
+		cout << "    W1: Pt=" << W1_ttDKF[i].Pt() << " Eta=" << W1_ttDKF[i].Eta() << " Phi=" << W1_ttDKF[i].Phi() << " M=" << W1_ttDKF[i].M() << endl;
+		cout << "    l1: Pt=" << l1_ttDKF[i].Pt() << " Eta=" << l1_ttDKF[i].Eta() << " Phi=" << l1_ttDKF[i].Phi() << " M=" << l1_ttDKF[i].M() << endl;
+		cout << "    n1: Pt=" << n1_ttDKF[i].Pt() << " Eta=" << n1_ttDKF[i].Eta() << " Phi=" << n1_ttDKF[i].Phi() << " M=" << n1_ttDKF[i].M() << endl;
+
+		cout << " top 2: Pt=" << t2_ttDKF[i].Pt() << " Eta=" << t2_ttDKF[i].Eta() << " Phi=" << t2_ttDKF[i].Phi() << " M=" << t2_ttDKF[i].M() << endl;
+		cout << "    b2: Pt=" << b2_ttDKF[i].Pt() << " Eta=" << b2_ttDKF[i].Eta() << " Phi=" << b2_ttDKF[i].Phi() << " M=" << b2_ttDKF[i].M() << endl;
+		cout << "    W2: Pt=" << W2_ttDKF[i].Pt() << " Eta=" << W2_ttDKF[i].Eta() << " Phi=" << W2_ttDKF[i].Phi() << " M=" << W2_ttDKF[i].M() << endl;
+		cout << "    l2: Pt=" << l2_ttDKF[i].Pt() << " Eta=" << l2_ttDKF[i].Eta() << " Phi=" << l2_ttDKF[i].Phi() << " M=" << l2_ttDKF[i].M() << endl;
+		cout << "    n2: Pt=" << n2_ttDKF[i].Pt() << " Eta=" << n2_ttDKF[i].Eta() << " Phi=" << n2_ttDKF[i].Phi() << " M=" << n2_ttDKF[i].M() << endl;
+		}
+		 */
+
+		// -------------------------------------------------------------------
+		Neutrino     = n1_ttDKF[n_ttDKF_Best];  	// Neutrino 1
+		Antineutrino = n2_ttDKF[n_ttDKF_Best];  	// Neutrino 2		
+		// ###  leptons  ###
+		RecLepP 	= l1_ttDKF[n_ttDKF_Best];
+		RecLepN 	= l2_ttDKF[n_ttDKF_Best];
+		// ###  b-quarks ###
+		RecB    	= b1_ttDKF[n_ttDKF_Best];
+		RecBbar 	= b2_ttDKF[n_ttDKF_Best];
+		// ### Neutrinos ###
+		RecNeu    	= n1_ttDKF[n_ttDKF_Best];
+		RecNeubar 	= n2_ttDKF[n_ttDKF_Best];
+		// ###  W bosons ###
+		RecWp    	= W1_ttDKF[n_ttDKF_Best];
+		RecWn    	= W2_ttDKF[n_ttDKF_Best];
+		// ###  t-quarks ###
+		RecT    	= t1_ttDKF[n_ttDKF_Best];
+		RecTbar 	= t2_ttDKF[n_ttDKF_Best];
+		// ###  ttbar system ###
+		RecTTbar    	= ttbar_ttDKF[n_ttDKF_Best];
+		// ###  Higgs system ###
+		RecHiggs    	  = Higgs_ttDKF[n_ttDKF_Best];
+		RecHiggsB1	  = b1_Higgs_ttDKF[n_ttDKF_Best];
+		RecHiggsB2	  = b2_Higgs_ttDKF[n_ttDKF_Best];
+		RecMassHiggsJet1  = mHiggsJet1_ttDKF[n_ttDKF_Best]; //samor 16.Dec.2012
+		RecMassHiggsJet2  = mHiggsJet2_ttDKF[n_ttDKF_Best];
+
+		RecProbTotal_ttH  = ProbTotal_ttDKF[n_ttDKF_Best];
+
+
+		//		cout << "n_ttDKF_Best = " << n_ttDKF_Best << " ; RecMassHiggsJet1 " << RecMassHiggsJet1 << " ; RecMassHiggsJet2 " << RecMassHiggsJet2 << endl;
+		//		cout << "   " << endl;
+
+		// -------------------------------------------------------------------
+
+
+		// ################################
+		// ##    t(tbar) c.m. systems    ##
+		// ################################
+		//...t/tbar...
+		TVector3       t_boost, tb_boost, tt_boost;
+
+		//...get top boosts................
+		t_boost  =  -(RecT).BoostVector();
+		tb_boost =  -(RecTbar).BoostVector();
+		tt_boost =  -(RecT + RecTbar).BoostVector();
+
+		//.................................
+		//...make boost  to t..............
+		//.................................
+		//___b____
+		RecB_BoostedtoT    = RecB;
+		RecB_BoostedtoT.Boost(t_boost);
+		//___W+___
+		RecWp_BoostedtoT   = RecWp;
+		RecWp_BoostedtoT.Boost(t_boost);
+		//___l+___
+		RecLepP_BoostedtoT = RecLepP;
+		RecLepP_BoostedtoT.Boost(t_boost);
+		//___neu__
+		RecNeu_BoostedtoT  = RecNeu;
+		RecNeu_BoostedtoT.Boost(t_boost);
+
+
+		//.................................
+		//...make boost  to tbar...........
+		//.................................
+		//___bbar___
+		RecBbar_BoostedtoTbar   = RecBbar;
+		RecBbar_BoostedtoTbar.Boost(tb_boost);
+		//____W-____
+		RecWn_BoostedtoTbar     = RecWn;
+		RecWn_BoostedtoTbar.Boost(tb_boost);
+		//____l-____
+		RecLepN_BoostedtoTbar   = RecLepN;
+		RecLepN_BoostedtoTbar.Boost(tb_boost);
+		//__neubar__
+		RecNeubar_BoostedtoTbar = RecNeubar;
+		RecNeubar_BoostedtoTbar.Boost(tb_boost);
+
+
+		//.................................
+		//...make boost to ttbar...........
+		//.................................
+		//___t____
+		RecT_Boostedtottbar   =  RecT;
+		RecT_Boostedtottbar.Boost(tt_boost);
+		//__tbar__
+		RecTbar_Boostedtottbar  =  RecTbar;
+		RecTbar_Boostedtottbar.Boost(tt_boost);
+
+
+		//.................................
+		//....Spin Correlations............
+		//.................................
+		//_____l+__in_t__________
+		RecCos_LepP_T_BoostedtoT = cos(  RecLepP_BoostedtoT   .Angle (    RecT_Boostedtottbar.Vect()));
+		//_____nu__in_t__________
+		RecCos_Neu_T_BoostedtoT  = cos(   RecNeu_BoostedtoT   .Angle (    RecT_Boostedtottbar.Vect()));
+		//_____b__in_t___________
+		RecCos_B_T_BoostedtoT    = cos(     RecB_BoostedtoT   .Angle (    RecT_Boostedtottbar.Vect()));
+
+
+		//_____l-__in_tbar_______
+		RecCos_LepN_Tbar_BoostedtoTbar    = cos(  RecLepN_BoostedtoTbar   .Angle ( RecTbar_Boostedtottbar.Vect()));
+		//_____nu__in_t__________
+		RecCos_Neubar_Tbar_BoostedtoTbar  = cos(RecNeubar_BoostedtoTbar   .Angle ( RecTbar_Boostedtottbar.Vect()));
+		//_____b__in_t___________
+		RecCos_Bbar_Tbar_BoostedtoTbar    = cos(  RecBbar_BoostedtoTbar   .Angle ( RecTbar_Boostedtottbar.Vect()));
+
+
+		// ################################
+		// ##     W+/- c.m. systems	 ##
+		// ################################
+		//...W+/-...
+		TVector3       Wp_boost, Wn_boost;
+
+		//...get W+/- boosts................
+		Wp_boost  =  -(RecWp).BoostVector();
+		Wn_boost  =  -(RecWn).BoostVector();
+
+		//.................................
+		//...make boost  to W+.............
+		//.................................
+		//___l+___
+		RecLepP_BoostedtoWp = RecLepP;
+		RecLepP_BoostedtoWp.Boost(Wp_boost);
+		//___b____
+		RecB_BoostedtoWp    = RecB;
+		RecB_BoostedtoWp.Boost(Wp_boost);
+		//__neu___
+		RecNeu_BoostedtoWp = RecNeu;
+		RecNeu_BoostedtoWp.Boost(Wp_boost);
+
+		//.................................
+		//...make boost  to W-.............
+		//.................................
+		//____l-____
+		RecLepN_BoostedtoWn   = RecLepN;
+		RecLepN_BoostedtoWn.Boost(Wn_boost);
+		//__bbar____
+		RecBbar_BoostedtoWn   = RecBbar;
+		RecBbar_BoostedtoWn.Boost(Wn_boost);
+		//__neu___
+		RecNeubar_BoostedtoWn = RecNeubar;
+		RecNeubar_BoostedtoWn.Boost(Wn_boost);
+
+		//.................................
+		//....W Polarizations..............
+		//.................................
+		//_____(l+,b)__in_W+__________
+		RecCos_LepP_B_BoostedtoWp =  -cos(  RecLepP_BoostedtoWp   .Angle (  RecB_BoostedtoWp.Vect()));
+		//_____(l-,bbar)__in_W-_______
+		RecCos_LepN_Bbar_BoostedtoWn =  -cos(  RecLepN_BoostedtoWn   .Angle (  RecBbar_BoostedtoWn.Vect()));
+
 	}
-	 */
-
-	// -------------------------------------------------------------------
-	Neutrino     = n1_ttDKF[n_ttDKF_Best];  	// Neutrino 1
-	Antineutrino = n2_ttDKF[n_ttDKF_Best];  	// Neutrino 2		
-	// ###  leptons  ###
-	RecLepP 	= l1_ttDKF[n_ttDKF_Best];
-	RecLepN 	= l2_ttDKF[n_ttDKF_Best];
-	// ###  b-quarks ###
-	RecB    	= b1_ttDKF[n_ttDKF_Best];
-	RecBbar 	= b2_ttDKF[n_ttDKF_Best];
-	// ### Neutrinos ###
-	RecNeu    	= n1_ttDKF[n_ttDKF_Best];
-	RecNeubar 	= n2_ttDKF[n_ttDKF_Best];
-	// ###  W bosons ###
-	RecWp    	= W1_ttDKF[n_ttDKF_Best];
-	RecWn    	= W2_ttDKF[n_ttDKF_Best];
-	// ###  t-quarks ###
-	RecT    	= t1_ttDKF[n_ttDKF_Best];
-	RecTbar 	= t2_ttDKF[n_ttDKF_Best];
-	// ###  ttbar system ###
-	RecTTbar    	= ttbar_ttDKF[n_ttDKF_Best];
-	// ###  Higgs system ###
-	RecHiggs    	  = Higgs_ttDKF[n_ttDKF_Best];
-	RecHiggsB1	  = b1_Higgs_ttDKF[n_ttDKF_Best];
-	RecHiggsB2	  = b2_Higgs_ttDKF[n_ttDKF_Best];
-	RecMassHiggsJet1  = mHiggsJet1_ttDKF[n_ttDKF_Best]; //samor 16.Dec.2012
-	RecMassHiggsJet2  = mHiggsJet2_ttDKF[n_ttDKF_Best];
-
-	RecProbTotal_ttH  = ProbTotal_ttDKF[n_ttDKF_Best];
-
-
-	//		cout << "n_ttDKF_Best = " << n_ttDKF_Best << " ; RecMassHiggsJet1 " << RecMassHiggsJet1 << " ; RecMassHiggsJet2 " << RecMassHiggsJet2 << endl;
-	//		cout << "   " << endl;
-
-	// -------------------------------------------------------------------
-
-
-	// ################################
-	// ##    t(tbar) c.m. systems    ##
-	// ################################
-	//...t/tbar...
-	TVector3       t_boost, tb_boost, tt_boost;
-
-	//...get top boosts................
-	t_boost  =  -(RecT).BoostVector();
-	tb_boost =  -(RecTbar).BoostVector();
-	tt_boost =  -(RecT + RecTbar).BoostVector();
-
-	//.................................
-	//...make boost  to t..............
-	//.................................
-	//___b____
-	RecB_BoostedtoT    = RecB;
-	RecB_BoostedtoT.Boost(t_boost);
-	//___W+___
-	RecWp_BoostedtoT   = RecWp;
-	RecWp_BoostedtoT.Boost(t_boost);
-	//___l+___
-	RecLepP_BoostedtoT = RecLepP;
-	RecLepP_BoostedtoT.Boost(t_boost);
-	//___neu__
-	RecNeu_BoostedtoT  = RecNeu;
-	RecNeu_BoostedtoT.Boost(t_boost);
-
-
-	//.................................
-	//...make boost  to tbar...........
-	//.................................
-	//___bbar___
-	RecBbar_BoostedtoTbar   = RecBbar;
-	RecBbar_BoostedtoTbar.Boost(tb_boost);
-	//____W-____
-	RecWn_BoostedtoTbar     = RecWn;
-	RecWn_BoostedtoTbar.Boost(tb_boost);
-	//____l-____
-	RecLepN_BoostedtoTbar   = RecLepN;
-	RecLepN_BoostedtoTbar.Boost(tb_boost);
-	//__neubar__
-	RecNeubar_BoostedtoTbar = RecNeubar;
-	RecNeubar_BoostedtoTbar.Boost(tb_boost);
-
-
-	//.................................
-	//...make boost to ttbar...........
-	//.................................
-	//___t____
-	RecT_Boostedtottbar   =  RecT;
-	RecT_Boostedtottbar.Boost(tt_boost);
-	//__tbar__
-	RecTbar_Boostedtottbar  =  RecTbar;
-	RecTbar_Boostedtottbar.Boost(tt_boost);
-
-
-	//.................................
-	//....Spin Correlations............
-	//.................................
-	//_____l+__in_t__________
-	RecCos_LepP_T_BoostedtoT = cos(  RecLepP_BoostedtoT   .Angle (    RecT_Boostedtottbar.Vect()));
-	//_____nu__in_t__________
-	RecCos_Neu_T_BoostedtoT  = cos(   RecNeu_BoostedtoT   .Angle (    RecT_Boostedtottbar.Vect()));
-	//_____b__in_t___________
-	RecCos_B_T_BoostedtoT    = cos(     RecB_BoostedtoT   .Angle (    RecT_Boostedtottbar.Vect()));
-
-
-	//_____l-__in_tbar_______
-	RecCos_LepN_Tbar_BoostedtoTbar    = cos(  RecLepN_BoostedtoTbar   .Angle ( RecTbar_Boostedtottbar.Vect()));
-	//_____nu__in_t__________
-	RecCos_Neubar_Tbar_BoostedtoTbar  = cos(RecNeubar_BoostedtoTbar   .Angle ( RecTbar_Boostedtottbar.Vect()));
-	//_____b__in_t___________
-	RecCos_Bbar_Tbar_BoostedtoTbar    = cos(  RecBbar_BoostedtoTbar   .Angle ( RecTbar_Boostedtottbar.Vect()));
-
-
-	// ################################
-	// ##     W+/- c.m. systems	 ##
-	// ################################
-	//...W+/-...
-	TVector3       Wp_boost, Wn_boost;
-
-	//...get W+/- boosts................
-	Wp_boost  =  -(RecWp).BoostVector();
-	Wn_boost  =  -(RecWn).BoostVector();
-
-	//.................................
-	//...make boost  to W+.............
-	//.................................
-	//___l+___
-	RecLepP_BoostedtoWp = RecLepP;
-	RecLepP_BoostedtoWp.Boost(Wp_boost);
-	//___b____
-	RecB_BoostedtoWp    = RecB;
-	RecB_BoostedtoWp.Boost(Wp_boost);
-	//__neu___
-	RecNeu_BoostedtoWp = RecNeu;
-	RecNeu_BoostedtoWp.Boost(Wp_boost);
-
-	//.................................
-	//...make boost  to W-.............
-	//.................................
-	//____l-____
-	RecLepN_BoostedtoWn   = RecLepN;
-	RecLepN_BoostedtoWn.Boost(Wn_boost);
-	//__bbar____
-	RecBbar_BoostedtoWn   = RecBbar;
-	RecBbar_BoostedtoWn.Boost(Wn_boost);
-	//__neu___
-	RecNeubar_BoostedtoWn = RecNeubar;
-	RecNeubar_BoostedtoWn.Boost(Wn_boost);
-
-	//.................................
-	//....W Polarizations..............
-	//.................................
-	//_____(l+,b)__in_W+__________
-	RecCos_LepP_B_BoostedtoWp =  -cos(  RecLepP_BoostedtoWp   .Angle (  RecB_BoostedtoWp.Vect()));
-	//_____(l-,bbar)__in_W-_______
-	RecCos_LepN_Bbar_BoostedtoWn =  -cos(  RecLepN_BoostedtoWn   .Angle (  RecBbar_BoostedtoWn.Vect()));
-
-}
 
 }
 
