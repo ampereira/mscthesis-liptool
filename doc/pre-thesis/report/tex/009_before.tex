@@ -15,19 +15,20 @@
   \acro{Accelerator device}{Specialized processing unit connected to the system by a PCI-Express interface}
   \acro{CPU}{Central Processing Unit, which may contain one or more cores (multicore)}
   \acro{GPU}{Graphics Processing Unit}
-  \acro{GPGPU}{General Purpose Graphics Processing Unit, recent designation to common GPUs, as opposed to scientific computing oriented GPUs}
+  \acro{GPGPU}{General Purpose Graphics Processing Unit, recent designation to  scientific computing oriented GPUs}
   \acro{DSP}{Digital Signal Processor}
-  \acro{MIC}{Many Integrated Core, accelerating device developed by \intel, currently known as Xeon Phi}
-  \acro{Homogeneous system}{Classic computer system, which may contain a multicore CPU}
-  \acro{Heterogeneous system}{Computer system, which may contain a multicore CPU and one or more accelerator devices}
+  \acro{MIC}{Many Integrated Core, accelerator device architecture developed by \intel, also known as Xeon Phi}
+  \acro{Homogeneous system}{Classic computer system, which contain one or more similar multicore CPUs}
+  \acro{Heterogeneous system}{Computer system, which contains a multicore CPU and one or more accelerator devices}
   \acro{SIMD}{Single Instruction Multiple Data, describes a parallel processing architecture where a single instruction is applied to a large set of data simultaneously}
-  \acro{SM/SMX}{Streaming Multiprocessor, processing unit available in Nvidia GPUs}
+  \acro{SIMT}{Single Instruction Multiple Threads, describes the processing architecture that \nvidia uses, very similar to SIMD, where a thread is responsable for a subset of the data to process}
+  \acro{SM/SMX}{Streaming Multiprocessor, SIMT/SIMD processing unit available in \nvidia GPUs}
   \acro{Kernel}{Parallel portion of an application code designed to run on a CUDA capable GPU}
   \acro{Host}{CPU in a heterogeneous system, using the CUDA designation}
-  \acro{CUDA}{formerly Compute Unified Device Architecture. A parallel computing platform for \nvidia GPUs}
-  \acro{OpenMP}{Open Multi-Processing}
-  \acro{OpenACC}{A programming standard for parallel computing}
-  \acro{GAMA}{GPU and Multicore Aware}
+  \acro{CUDA}{Compute Unified Device Architecture, a parallel computing platform for GPUs}
+  \acro{OpenMP}{Open Multi-Processing, an API for shared memory multiprocessing}
+  \acro{OpenACC}{Open Accelerator, an API to offload code from a host CPU to an attached accelerator}
+  \acro{GAMA}{GPU and Multicore Aware, an API for shared memory multiprocessing in platforms with a host CPU and an attached CUDA enabled accelerators}
 \end{acronym}
 
 \newpage \pdfbookmark{List of Figures}{figures}
