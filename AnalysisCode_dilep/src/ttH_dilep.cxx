@@ -4044,12 +4044,11 @@ void ttH_dilep::ttDilepKinFit(){
 	}
 
 	// Apply the variations to the inputs
-	//inputs = applyVariance(combos, RESOLUTION, dilep_iterations, EveNumber + JetVec.size()*100);
-	inputs = combos;
+	inputs = applyVariance(combos, RESOLUTION, dilep_iterations, EveNumber + JetVec.size()*100);
 
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
 		DilepInput di = inputs[counter];
-		di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
+		//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
