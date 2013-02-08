@@ -123,7 +123,7 @@ namespace CPU {
 	}
 
 	// Wrapper for the dilep calculation using the input class
-	vector<myvector>* dilep(unsigned iterations, DilepInput &di) {
+	void dilep (DilepInput &di) {
 		std::vector<myvector> *result = new std::vector<myvector> ();
 		int hasSolution = 0;
 
@@ -132,11 +132,10 @@ namespace CPU {
 		long long int time = startTimer();
 		#endif
 
-		std::vector<myvector> *partial_result = new std::vector<myvector> ();
-
 		double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
 		TLorentzVector lep_a, lep_b, bl_a, bl_b;
 
+		// Transferring the inputs to local variables
 		in_mpx[0] = di.getInMpx(0);
 		in_mpx[1] = di.getInMpx(1);
 		in_mpy[0] = di.getInMpy(0);
@@ -153,15 +152,11 @@ namespace CPU {
 		bl_a = di.getZbl();
 		bl_b = di.getCbl();
 
-		partial_result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, 
-									&lep_b, &bl_a, &bl_b);
+		result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, &lep_b, &bl_a, &bl_b);
 
 		// Check if there is any solutions for this reconstruction
-		if (partial_result->size()) {
-			result->insert(result->end(), partial_result->begin(), partial_result->end());
+		if (result->size())
 			++hasSolution;  // increment solution counter
-		}
-	
 
 		// time measurement
 		#ifdef MEASURE_DILEP
@@ -169,10 +164,10 @@ namespace CPU {
 		#endif
 
 		di.setHasSol(hasSolution);
-		di.setResult(partial_result);
+		di.setResult(result);
+
 		// Clear the alocated memory for the partial_results
-		delete partial_result;
-		return result;
+		delete result;
 	}
 
 	// Wrapper for the dilep calculation using a vector of the input class
