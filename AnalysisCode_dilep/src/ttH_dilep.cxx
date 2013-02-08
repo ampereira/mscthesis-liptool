@@ -4034,13 +4034,9 @@ void ttH_dilep::ttDilepKinFit(){
 
 									di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 									// Run the dileptonic reconstruction 
-									int *partial_sol_count;
-									std::vector< vector < myvector > > *res_aux;
-									std::vector<DilepInput> vdi;
-									vdi.push_back(di);
+									int partial_sol_count;
 #ifdef SEQ
-									res_aux = CPU::dilep(vdi, partial_sol_count);
-									*result = res_aux->at(0);
+									result = CPU::dilep(dilep_iterations, di, &partial_sol_count);
 									//result = CPU::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #elif SSE
 									result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
