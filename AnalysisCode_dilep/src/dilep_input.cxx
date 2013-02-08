@@ -329,6 +329,6 @@ int DilepInput::getHasSol (void) const {
 
 // Setters
 
-void DilepInput::setHasSol (int x) const {
+void DilepInput::setHasSol (int x) {
 	hasSolution = x;
 }

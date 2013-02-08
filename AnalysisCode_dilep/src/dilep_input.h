@@ -65,7 +65,7 @@ public:
 	int getHasSol (void) const;
 
 	// Setters
-	void setHasSol (int) const;
+	void setHasSol (int);
 };
 
 vector<DilepInput> applyVariance (DilepInput di, float res, int amount, int seed);
