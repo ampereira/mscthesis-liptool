@@ -4048,7 +4048,7 @@ void ttH_dilep::ttDilepKinFit(){
 									result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
 
-									HasSolution += partial_sol_count[0];
+									HasSolution += partial_sol_count;
 
 									
 									// Returns the values varied
