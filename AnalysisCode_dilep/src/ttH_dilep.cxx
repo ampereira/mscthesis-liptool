@@ -4043,7 +4043,9 @@ void ttH_dilep::ttDilepKinFit(){
 		}
 	}
 
-	for (std::vector<DilepInput>::iterator di = inputs.begin(); di != inputs.end(); ++di) {
+	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
+		DilepInput di = inputs[counter];
+		
 		di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 		// Run the dileptonic reconstruction 
 
