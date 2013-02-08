@@ -107,15 +107,20 @@ void DilepInput::print (char* filename) {
 
 // Apply variance to the inputs of the dilep function a given number of times
 // resulting a vector of varied inputs
-vector<DilepInput> applyVariance (DilepInput di, float res, int amount, int seed) {
-	vector<DilepInput> inputs;
+vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount, int seed) {
+	vector<DilepInput> inputs (vdi.size() * amount);
 
-	for (int i = 0; i < amount; ++i) {
-		DilepInput aux (di);
-		aux.applyVariance (res, seed + i);
+	for (int i = 0; i < vdi.size(); ++i) {
+		DilepInput di = vdi[i];
 
-		inputs.push_back (aux);
+		for (int j = 0; i < amount; ++j) {
+			DilepInput aux (di);
+			aux.applyVariance (res, seed + j);
+
+			inputs.push_back (aux);		}
 	}
+
+	delete vdi;
 
 	return inputs;
 }

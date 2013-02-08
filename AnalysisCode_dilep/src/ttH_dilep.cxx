@@ -3982,7 +3982,7 @@ void ttH_dilep::ttDilepKinFit(){
 	//			     2 jet for H->bbbar
 	// ---------------------------------------
 
-	std::vector<DilepInput> inputs;
+	std::vector<DilepInput> inputs, combos;
 
 	if ( ttDKF_JetCombChoice == 1 ){ 
 		for ( int j1=0; j1 < ttDKF_njets ; j1++){
@@ -4033,7 +4033,7 @@ void ttH_dilep::ttDilepKinFit(){
 									// Find tt dileptonic solutions
 									// ---------------------------------------
 									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
-									inputs.push_back(di);
+									combos.push_back(di);
 								}
 							}
 						}
@@ -4043,12 +4043,13 @@ void ttH_dilep::ttDilepKinFit(){
 		}
 	}
 
+	// Apply the variations to the inputs
+	inputs = applyVariations(combos, RESOLUTION, dilep_iterations, EveNumber + JetVec.size()*100);
+	
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
 		DilepInput di = inputs[counter];
 
-		di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 		// Run the dileptonic reconstruction 
-
 #ifdef SEQ
 		CPU::dilep(di);
 #elif SSE
@@ -4350,7 +4351,7 @@ void ttH_dilep::ttDilepKinFit(){
 		// %      Code to Evaluate Solutions     %
 		// %      Solutions Found Are Stored     %
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+
 	// ###################################################################
 	//   C H A N G E   O B J E C T S   W I T H I N   R E S O L U T I O N #
 	// ###################################################################

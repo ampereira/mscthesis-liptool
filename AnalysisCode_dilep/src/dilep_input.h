@@ -73,6 +73,6 @@ public:
 	void setResult (vector<myvector> *);
 };
 
-vector<DilepInput> applyVariance (DilepInput di, float res, int amount, int seed);
+vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount, int seed);
 
 #endif
