@@ -4030,17 +4030,16 @@ void ttH_dilep::ttDilepKinFit(){
 									// ---------------------------------------
 									// Find tt dileptonic solutions
 									// ---------------------------------------
-									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
+									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 
 									//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
-									di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 
 									// Run the dileptonic reconstruction 
 									int partial_sol_count;
 
 #ifdef SEQ
-									result = CPU::dilep(dilep_iterations, &di, &partial_sol_count);
-									//result = CPU::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
+									//result = CPU::dilep(dilep_iterations, &di, &partial_sol_count);
+									result = CPU::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #elif SSE
 									result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #elif OMP
