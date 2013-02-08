@@ -161,8 +161,6 @@ namespace CPU {
 			result->insert(result->end(), partial_result->begin(), partial_result->end());
 			++hasSolution;  // increment solution counter
 		}
-		// Clear the alocated memory for the partial_results
-		delete partial_result;
 	
 
 		// time measurement
@@ -172,6 +170,8 @@ namespace CPU {
 
 		di.setHasSol(hasSolution);
 		di.setResult(partial_result);
+		// Clear the alocated memory for the partial_results
+		delete partial_result;
 		return result;
 	}
 
