@@ -172,6 +172,7 @@ namespace CPU {
 		#endif
 
 		di.setHasSol(hasSolution);
+		di.setResult(partial_result);
 		return result;
 	}
 

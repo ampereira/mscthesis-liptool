@@ -71,6 +71,8 @@ DilepInput::DilepInput (const DilepInput &other) {
 	c_bl = other.getCbl();
 
 	hasSolution = other.getHasSol();
+
+	result = other.getResult();
 }
 
 // Print the private variables of the class for debug purposes
@@ -326,9 +328,16 @@ int DilepInput::getHasSol (void) const {
 	return hasSolution;
 }
 
+vector<myvector> DilepInput::getResult (void) const {
+	return result;
+}
 
 // Setters
 
 void DilepInput::setHasSol (int x) {
 	hasSolution = x;
+}
+
+void DilepInput::setResult (vector<myvector> *x) {
+	result = *x;
 }
