@@ -138,21 +138,21 @@ namespace CPU {
 			double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
 			TLorentzVector lep_a, lep_b, bl_a, bl_b;
 
-			in_mpx[0] = di->getInMpx(0);
-			in_mpx[1] = di->getInMpx(1);
-			in_mpy[0] = di->getInMpy(0);
-			in_mpy[1] = di->getInMpy(1);
-			in_mpz[0] = di->getInMpz(0);
-			in_mpz[1] = di->getInMpz(1);
-			t_mass[0] = di->getTmass(0);
-			t_mass[1] = di->getTmass(1);
-			w_mass[0] = di->getWmass(0);
-			w_mass[1] = di->getWmass(1);
+			in_mpx[0] = di.getInMpx(0);
+			in_mpx[1] = di.getInMpx(1);
+			in_mpy[0] = di.getInMpy(0);
+			in_mpy[1] = di.getInMpy(1);
+			in_mpz[0] = di.getInMpz(0);
+			in_mpz[1] = di.getInMpz(1);
+			t_mass[0] = di.getTmass(0);
+			t_mass[1] = di.getTmass(1);
+			w_mass[0] = di.getWmass(0);
+			w_mass[1] = di.getWmass(1);
 
-			lep_a = di->getZlep();
-			lep_b = di->getClep();
-			bl_a = di->getZbl();
-			bl_b = di->getCbl();
+			lep_a = di.getZlep();
+			lep_b = di.getClep();
+			bl_a = di.getZbl();
+			bl_b = di.getCbl();
 
 			partial_result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, 
 										&lep_b, &bl_a, &bl_b);
