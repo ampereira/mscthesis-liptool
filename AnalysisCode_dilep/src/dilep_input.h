@@ -28,6 +28,8 @@ class DilepInput {
 
 	double MissPx, MissPy;
 
+	int hasSolution;
+
 public:
 	DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVector _z_bj, TLorentzVector _c_bj, 
 				TLorentzVectorWFlags _z_bjWFlags, TLorentzVectorWFlags _c_bjWFlags, TLorentzVectorWFlags _z_lepWFlags,
@@ -60,6 +62,10 @@ public:
 	double getInMpz (int) const;
 	double getTmass (int) const;
 	double getWmass (int) const;
+	int getHasSol (void) const;
+
+	// Setters
+	void setHasSol (int) const;
 };
 
 vector<DilepInput> applyVariance (DilepInput di, float res, int amount, int seed);

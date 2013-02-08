@@ -33,6 +33,8 @@ DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVe
 	t_mass[1] = _t_mass[1];
 	w_mass[0] = _w_mass[0];
 	w_mass[1] = _w_mass[1];
+
+	hasSolution = 0;
 }
 
 // Constructor
@@ -67,6 +69,8 @@ DilepInput::DilepInput (const DilepInput &other) {
 
 	z_bl = other.getZbl();
 	c_bl = other.getCbl();
+
+	hasSolution = other.getHasSol();
 }
 
 // Print the private variables of the class for debug purposes
@@ -316,4 +320,15 @@ double DilepInput::getTmass (int x) const {
 
 double DilepInput::getWmass (int x) const {
 	return w_mass[x];
+}
+
+int DilepInput::getHasSol (void) const {
+	return hasSolution;
+}
+
+
+// Setters
+
+void DilepInput::setHasSol (int x) const {
+	hasSolution = x;
 }

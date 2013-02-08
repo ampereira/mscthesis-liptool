@@ -123,7 +123,7 @@ namespace CPU {
 	}
 
 	// Wrapper for the dilep calculation using the input class
-	vector<myvector>* dilep(unsigned iterations, DilepInput *di, int *hasSol) {
+	vector<myvector>* dilep(unsigned iterations, DilepInput &di) {
 		std::vector<myvector> *result = new std::vector<myvector> ();
 		int hasSolution = 0;
 
@@ -171,7 +171,7 @@ namespace CPU {
 		stopTimer(time);
 		#endif
 
-		*hasSol = hasSolution;
+		di.setHasSol(hasSolution);
 		return result;
 	}
 

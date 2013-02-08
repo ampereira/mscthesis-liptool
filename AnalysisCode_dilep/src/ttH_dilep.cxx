@@ -4034,9 +4034,9 @@ void ttH_dilep::ttDilepKinFit(){
 
 									di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 									// Run the dileptonic reconstruction 
-									int partial_sol_count;
+
 #ifdef SEQ
-									result = CPU::dilep(dilep_iterations, &di, &partial_sol_count);
+									result = CPU::dilep(dilep_iterations, di);
 									//result = CPU::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #elif SSE
 									result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
@@ -4048,7 +4048,7 @@ void ttH_dilep::ttDilepKinFit(){
 									result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
 
-									HasSolution += partial_sol_count;
+									HasSolution += di.getHasSol();
 
 									
 									// Returns the values varied
