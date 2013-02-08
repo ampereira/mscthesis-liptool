@@ -4036,8 +4036,7 @@ void ttH_dilep::ttDilepKinFit(){
 									// Run the dileptonic reconstruction 
 
 #ifdef SEQ
-									result = CPU::dilep(dilep_iterations, di);
-									//result = CPU::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
+									CPU::dilep(dilep_iterations, di);
 #elif SSE
 									result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #elif OMP
@@ -4048,6 +4047,7 @@ void ttH_dilep::ttDilepKinFit(){
 									result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
 
+									*result = di.getResult();
 									HasSolution += di.getHasSol();
 
 									
