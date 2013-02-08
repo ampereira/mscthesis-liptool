@@ -4036,7 +4036,7 @@ void ttH_dilep::ttDilepKinFit(){
 									// Run the dileptonic reconstruction 
 
 #ifdef SEQ
-									CPU::dilep(dilep_iterations, di);
+									CPU::dilep(di);
 #elif SSE
 									result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #elif OMP
