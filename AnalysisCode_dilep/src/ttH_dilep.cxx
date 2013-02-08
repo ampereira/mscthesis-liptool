@@ -4045,7 +4045,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
 		DilepInput di = inputs[counter];
-		
+
 		di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 		// Run the dileptonic reconstruction 
 
@@ -4350,8 +4350,7 @@ void ttH_dilep::ttDilepKinFit(){
 		// %      Code to Evaluate Solutions     %
 		// %      Solutions Found Are Stored     %
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-	}
+		
 	// ###################################################################
 	//   C H A N G E   O B J E C T S   W I T H I N   R E S O L U T I O N #
 	// ###################################################################
