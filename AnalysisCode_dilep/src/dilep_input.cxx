@@ -339,5 +339,6 @@ void DilepInput::setHasSol (int x) {
 }
 
 void DilepInput::setResult (vector<myvector> *x) {
-	result.assign(x->begin(), x->end());
+	//result.assign(x->begin(), x->end());
+	result = *x;
 }
