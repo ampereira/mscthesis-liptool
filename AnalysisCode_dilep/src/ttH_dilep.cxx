@@ -4051,16 +4051,18 @@ void ttH_dilep::ttDilepKinFit(){
 
 									
 									// Returns the values varied
-									//z_lep = di.getZlep();
-									//c_lep = di.getClep();
-									//z_bj = di.getZbj();
-									//c_bj = di.getCbj();
-									//z_lepWFlags = di.getZlepW();
-									//c_lepWFlags = di.getClepW();
-									//z_bjWFlags	 = di.getZbjW();
-									//c_bjWFlags = di.getCbjW();
+									/*
+									z_lep = di.getZlep();
+									c_lep = di.getClep();
+									z_bj = di.getZbj();
+									c_bj = di.getCbj();
+									z_lepWFlags = di.getZlepW();
+									c_lepWFlags = di.getClepW();
+									z_bjWFlags	 = di.getZbjW();
+									c_bjWFlags = di.getCbjW();
 									MissPx = di.getMissPx();
 									MissPy = di.getMissPy();
+									*/
 									in_mpx[0] = di.getInMpx(0);
 									in_mpx[1] = di.getInMpx(1);
 									in_mpy[0] = di.getInMpy(0);
@@ -4134,8 +4136,8 @@ void ttH_dilep::ttDilepKinFit(){
 										if ( di.getClepW().isb ==  13 ) { iPDGnu2 = -14; iPDGW2 = -24; iPDGt2 = -6; }
 										if ( di.getClepW().isb == -13 ) { iPDGnu2 = +14; iPDGW2 = +24; iPDGt2 = +6; }
 										// neutrino 2
-										apx = MissPx-px;
-										apy = MissPy-py;
+										apx = di.getMissPx()-px;
+										apy = di.getMissPy()-py;
 										apz = pp->aPz();
 										aE  = sqrt(apx*apx + apy*apy + apz*apz);
 										TLorentzVector n2;
