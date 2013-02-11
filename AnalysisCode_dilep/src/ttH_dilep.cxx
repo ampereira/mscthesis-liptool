@@ -4047,13 +4047,10 @@ void ttH_dilep::ttDilepKinFit(){
 	inputs = applyVariance(combos, RESOLUTION, dilep_iterations, EveNumber + JetVec.size()*100);
 
 
-	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
-		DilepInput di = inputs[counter];
-		di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
-		CPU::dilep(di);
-		//CPU::dilep(inputs);
+		//CPU::dilep(di);
+		CPU::dilep(inputs);
 #elif SSE
 		result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #elif OMP
@@ -4091,6 +4088,9 @@ void ttH_dilep::ttDilepKinFit(){
 		// ---------------------------------------
 		// Get info from all possible solutions
 		// ---------------------------------------
+
+	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
+		DilepInput di = inputs[counter];
 
 		// result on local variable since it will be accessed plenty of times
 		*result = di.getResult();
