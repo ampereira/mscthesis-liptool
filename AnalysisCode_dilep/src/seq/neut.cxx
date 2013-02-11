@@ -172,10 +172,7 @@ namespace CPU {
 
 	// Wrapper for the dilep calculation using a vector of the input class
 	// vdi vector with DilepInput varied for a jet combo
-	vector< vector< myvector > > * dilep (vector<DilepInput> &vdi, int *hasSol)
-	{
-		vector< vector< myvector > > *final = new vector< vector< myvector > > ();
-		int *hasSolution = new int [vdi.size()];
+	void dilep (vector<DilepInput> &vdi) {
 		
 		// time measurement
 		#ifdef MEASURE_DILEP
@@ -183,36 +180,39 @@ namespace CPU {
 		#endif
 
 		for (unsigned i = 0; i < vdi.size(); ++i) {
-			vector<myvector> *partial_result;
-			DilepInput di = vdi[i];
+			vector<myvector> *result;
+			//DilepInput di = vdi[i];
+			int hasSolution = 0;
 
 			double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
 			TLorentzVector lep_a, lep_b, bl_a, bl_b;
 
-			in_mpx[0] = di.getInMpx(0);
-			in_mpx[1] = di.getInMpx(1);
-			in_mpy[0] = di.getInMpy(0);
-			in_mpy[1] = di.getInMpy(1);
-			in_mpz[0] = di.getInMpz(0);
-			in_mpz[1] = di.getInMpz(1);
-			t_mass[0] = di.getTmass(0);
-			t_mass[1] = di.getTmass(1);
-			w_mass[0] = di.getWmass(0);
-			w_mass[1] = di.getWmass(1);
+			in_mpx[0] = vdi[i].getInMpx(0);
+			in_mpx[1] = vdi[i].getInMpx(1);
+			in_mpy[0] = vdi[i].getInMpy(0);
+			in_mpy[1] = vdi[i].getInMpy(1);
+			in_mpz[0] = vdi[i].getInMpz(0);
+			in_mpz[1] = vdi[i].getInMpz(1);
+			t_mass[0] = vdi[i].getTmass(0);
+			t_mass[1] = vdi[i].getTmass(1);
+			w_mass[0] = vdi[i].getWmass(0);
+			w_mass[1] = vdi[i].getWmass(1);
 
-			lep_a = di.getZlep();
-			lep_b = di.getClep();
-			bl_a = di.getZbl();
-			bl_b = di.getCbl();
+			lep_a = vdi[i].getZlep();
+			lep_b = vdi[i].getClep();
+			bl_a = vdi[i].getZbl();
+			bl_b = vdi[i].getCbl();
 
-			partial_result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, 
+			result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, 
 										&lep_b, &bl_a, &bl_b);
 
 			// Check if there is any solutions for this reconstruction
-			if (partial_result->size()) {
-				final->push_back(*partial_result);
-				hasSolution[i] = 1;  // increment solution counter
+			if (result->size()) {
+				++hasSolution;  // increment solution counter
 			}
+
+			vdi[i].setHasSol(hasSolution);
+			vdi[i].setResult(result);
 		}
 
 		// time measurement
@@ -220,8 +220,6 @@ namespace CPU {
 		stopTimer(time);
 		#endif
 		
-		hasSol = hasSolution;
-		return final;
 	}
 
 	// NEUTRINO SOLUTIONS

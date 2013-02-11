@@ -4046,6 +4046,10 @@ void ttH_dilep::ttDilepKinFit(){
 	// Apply the variations to the inputs
 	inputs = applyVariance(combos, RESOLUTION, dilep_iterations, EveNumber + JetVec.size()*100);
 
+	ofstream file ("coisas.txt", fstream::app);
+	file << inputs.size() << endl;
+	file.close();
+
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
 		DilepInput di = inputs[counter];
 		//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
@@ -4063,11 +4067,10 @@ void ttH_dilep::ttDilepKinFit(){
 		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
 
-		HasSolution += di.getHasSol();
 
 		
-		// Returns the values varied
 		/*
+		// Returns the values varied
 		z_lep = di.getZlep();
 		c_lep = di.getClep();
 		z_bj = di.getZbj();
@@ -4094,6 +4097,8 @@ void ttH_dilep::ttDilepKinFit(){
 
 		// result on local variable since it will be accessed plenty of times
 		*result = di.getResult();
+		HasSolution += di.getHasSol();
+
 		std::vector<myvector>::iterator pp;
 
 		for ( pp = result->begin(); pp < result->end(); pp++) {
