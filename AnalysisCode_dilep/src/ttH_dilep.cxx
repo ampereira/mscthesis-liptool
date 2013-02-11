@@ -4046,17 +4046,12 @@ void ttH_dilep::ttDilepKinFit(){
 	// Apply the variations to the inputs
 	inputs = applyVariance(combos, RESOLUTION, dilep_iterations, EveNumber + JetVec.size()*100);
 
-	ofstream file ("coisas.txt", fstream::app);
-	file << inputs.size() << endl;
-	file.close();
-
-	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
-		DilepInput di = inputs[counter];
 		//di.applyVariance(RESOLUTION, EveNumber + JetVec.size()*100);
 
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
-		CPU::dilep(di);
+		//CPU::dilep(di);
+		CPU::dilep(inputs);
 #elif SSE
 		result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #elif OMP
@@ -4068,6 +4063,8 @@ void ttH_dilep::ttDilepKinFit(){
 #endif
 
 
+	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
+		DilepInput di = inputs[counter];
 		
 		/*
 		// Returns the values varied
