@@ -4044,7 +4044,7 @@ void ttH_dilep::ttDilepKinFit(){
 	}
 
 	// Apply the variations to the inputs
-	//inputs = applyVariance(combos, RESOLUTION, dilep_iterations, EveNumber + JetVec.size()*100);
+	inputs = applyVariance(combos, RESOLUTION, dilep_iterations, EveNumber + JetVec.size()*100);
 
 
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
