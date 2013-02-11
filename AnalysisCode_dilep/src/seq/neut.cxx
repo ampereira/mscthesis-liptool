@@ -158,16 +158,13 @@ namespace CPU {
 		if (result->size())
 			++hasSolution;  // increment solution counter
 
+		di.setHasSol(hasSolution);
+		di.setResult(result);
+
 		// time measurement
 		#ifdef MEASURE_DILEP
 		stopTimer(time);
 		#endif
-
-		di.setHasSol(hasSolution);
-		di.setResult(result);
-
-		// Clear the alocated memory for the partial_results
-		delete result;
 	}
 
 	// Wrapper for the dilep calculation using a vector of the input class
@@ -180,7 +177,7 @@ namespace CPU {
 		#endif
 
 		for (unsigned i = 0; i < vdi.size(); ++i) {
-			/*vector<myvector> *result;
+			vector<myvector> *result;
 			//DilepInput di = vdi[i];
 			int hasSolution = 0;
 
@@ -212,9 +209,7 @@ namespace CPU {
 			}
 
 			vdi[i].setHasSol(hasSolution);
-			vdi[i].setResult(result);*/
-
-			dilep (vdi[i]);
+			vdi[i].setResult(result);
 		}
 
 		// time measurement
