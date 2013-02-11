@@ -111,13 +111,12 @@ void DilepInput::print (char* filename) {
 vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount, int seed) {
 	vector<DilepInput> inputs;
 
-	TRandom3 random (seed);
 	for (int i = 0; i < vdi.size(); ++i) {
 		DilepInput di = vdi[i];
 
 		for (int j = 0; j < amount; ++j) {
 			DilepInput aux (di);
-			aux.applyVariance (res, seed + i * j);
+			aux.applyVariance (res, seed/* + i * j*/);
 
 			inputs.push_back (aux);		}
 	}
@@ -138,7 +137,7 @@ void DilepInput::applyVariance (float res, int seed) {
 	double delPx, delPy;
 
 	// Initialize the random number generator
-	//TRandom3 random (seed);
+	TRandom3 random (seed);
 
 	// Vary!
 
