@@ -180,7 +180,7 @@ namespace CPU {
 		#endif
 
 		for (unsigned i = 0; i < vdi.size(); ++i) {
-			vector<myvector> *result;
+			/*vector<myvector> *result;
 			//DilepInput di = vdi[i];
 			int hasSolution = 0;
 
@@ -212,7 +212,9 @@ namespace CPU {
 			}
 
 			vdi[i].setHasSol(hasSolution);
-			vdi[i].setResult(result);
+			vdi[i].setResult(result);*/
+
+			dilep (vdi[i]);
 		}
 
 		// time measurement

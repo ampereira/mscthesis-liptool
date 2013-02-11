@@ -35,6 +35,12 @@ DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVe
 	w_mass[1] = _w_mass[1];
 
 	hasSolution = 0;
+
+	// ---------------------------------------
+	// Define TLorentzVectors for (b,l) system
+	// ---------------------------------------
+	z_bl = z_bj + z_lep;
+	c_bl = c_bj + c_lep;
 }
 
 // Constructor
