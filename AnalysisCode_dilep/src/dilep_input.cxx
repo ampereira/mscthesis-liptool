@@ -242,7 +242,7 @@ void DilepInput::applyVariance (float res, int seed) {
 	in_mpy[0] += delPy; in_mpy[1] += delPy; // correct miss(Px,Py) neutrino 2
 	in_mpz[0] += 0.   ; in_mpz[1] += 0.;	// initialize neutrinos Pz to zero
 
-	this.setZblCbl();
+	setZblCbl();
 }
 
 // Getters
