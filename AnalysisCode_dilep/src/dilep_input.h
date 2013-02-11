@@ -71,6 +71,7 @@ public:
 	// Setters
 	void setHasSol (int);
 	void setResult (vector<myvector> *);
+	void DilepInput::setZblCbl (void);
 };
 
 vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount, int seed);

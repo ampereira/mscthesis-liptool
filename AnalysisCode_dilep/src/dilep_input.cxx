@@ -36,11 +36,6 @@ DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVe
 
 	hasSolution = 0;
 
-	// ---------------------------------------
-	// Define TLorentzVectors for (b,l) system
-	// ---------------------------------------
-	z_bl = z_bj + z_lep;
-	c_bl = c_bj + c_lep;
 }
 
 // Constructor
@@ -247,12 +242,7 @@ void DilepInput::applyVariance (float res, int seed) {
 	in_mpy[0] += delPy; in_mpy[1] += delPy; // correct miss(Px,Py) neutrino 2
 	in_mpz[0] += 0.   ; in_mpz[1] += 0.;	// initialize neutrinos Pz to zero
 
-
-	// ---------------------------------------
-	// Define TLorentzVectors for (b,l) system
-	// ---------------------------------------
-	z_bl = z_bj + z_lep;
-	c_bl = c_bj + c_lep;
+	this.setZblCbl();
 }
 
 // Getters
@@ -349,4 +339,12 @@ void DilepInput::setHasSol (int x) {
 
 void DilepInput::setResult (vector<myvector> *x) {
 	result = *x;
+}
+
+void DilepInput::setZblCbl (void) {
+	// ---------------------------------------
+	// Define TLorentzVectors for (b,l) system
+	// ---------------------------------------
+	z_bl = z_bj + z_lep;
+	c_bl = c_bj + c_lep;
 }
