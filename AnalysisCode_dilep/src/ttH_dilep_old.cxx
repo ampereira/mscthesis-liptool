@@ -4006,11 +4006,11 @@ void ttH_dilep::ttDilepKinFit(){
 		 double Sx_m=0.02;  double Sy_m=0.02;  double Sz_m=0.02;  double St_m=0.02; 	double Se_m=0.02;  // muons
 		 double Sx_j=0.02;  double Sy_j=0.02;  double Sz_j=0.02;  double St_j=0.02; 	double Se_j=0.02;  // jets
 
-		 // Initialize random number seed
-		 rnd.SetSeed( EveNumber + JetVec.size()*100);
 
 		 // loop over several resolution experiments
 		 for ( int iRes=0; iRes< myNumResTest ; iRes++){
+         // Initialize random number seed
+            rnd.SetSeed( EveNumber + JetVec.size()*100 + iRes);
 
 			// new four-vectors			
 			double n_Px; double n_Py; double n_Pz;	double n_Pt; double n_E;	

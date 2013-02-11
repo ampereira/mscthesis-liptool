@@ -116,7 +116,7 @@ vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount
 
 		for (int j = 0; j < amount; ++j) {
 			DilepInput aux (di);
-			aux.applyVariance (res, seed/* + i * j*/);
+			aux.applyVariance (res, seed + /*i * */j);
 
 			inputs.push_back (aux);		}
 	}
