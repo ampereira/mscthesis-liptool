@@ -5,9 +5,9 @@
 #include <string>
 #include <set>
 using namespace std;
-
+int dilep_iterations = 0;
 #include "myvector.h"
-#include "neut.h"
+#include "seq/neut.h"
 
 #include <TH1.h>
 #include <TH2.h>
@@ -4132,7 +4132,7 @@ void ttH_dilep::ttDilepKinFit(){
 			// ---------------------------------------
 			// Find tt dileptonic solutions
 			// ---------------------------------------
-			result = calc_dilep(t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl);
+			result = CPU::calc_dilep(t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl);
 	                if ( result->size() > 0 ) HasSolution++;  // increment solution counter
 	
 			// ---------------------------------------
