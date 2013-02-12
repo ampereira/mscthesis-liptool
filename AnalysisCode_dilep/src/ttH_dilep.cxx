@@ -4746,6 +4746,8 @@ long long int stopTimer (long long int init) {
 		return -1;
 }
 
+extern long int iteracoes;
+
 // #############################################################################
 Int_t main(Int_t argc, char *argv[]){
 	// #############################################################################
@@ -4766,6 +4768,10 @@ Int_t main(Int_t argc, char *argv[]){
 #ifdef MEASURE_DILEP
 	printDilepTimer();
 #endif
+
+	ofstream f ("dilep.txt");
+	f << iteracoes << endl;
+	f.close();
 
 	// exits
 	return(0);
