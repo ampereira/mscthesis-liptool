@@ -1,24 +1,4 @@
-#include <TH1.h>
-#include <TH2.h>
-#include <TH3.h>
-#include <TStyle.h>
-#include <TCanvas.h>
-#include <iostream>
-#include <vector>
-#include <TRandom.h>
-#include <TROOT.h>
-#include <TLorentzVector.h>
-#include <iomanip>
-#include <math.h>
 #include "neut.h"
-#include <TH2.h>
-#include <TStyle.h>
-#include <sys/time.h>
-#include <string>
-#include <fstream>
-#include <sstream>
-
-
 
 
 long long int totaltime = 0;
