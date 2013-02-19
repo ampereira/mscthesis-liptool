@@ -8,9 +8,6 @@
 #include "myvector.h"
 #include "../../LipMiniAnalysis/LipMiniAnalysis.h"
 
-#define SEED 123456
-TRandom3 random (SEED);
-
 using namespace std;
 
 class DilepInput {
@@ -46,7 +43,6 @@ public:
 	DilepInput (const DilepInput &other);
 
 	void print (char* filename);
-	void applyVariance (float res);
 	void applyVariance (float res, int seed);
 
 	// Getters
@@ -78,7 +74,6 @@ public:
 	void setZblCbl (void);
 };
 
-vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount);
 vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount, int seed);
 
 #endif

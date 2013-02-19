@@ -18,6 +18,7 @@
 #include <fstream>
 #include <sstream>
 
+long int iteracoes = 0;
 
 
 
@@ -201,6 +202,7 @@ namespace CPU {
 			bl_a = vdi[i].getZbl();
 			bl_b = vdi[i].getCbl();
 
+			++iteracoes;
 			result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, 
 										&lep_b, &bl_a, &bl_b);
 
