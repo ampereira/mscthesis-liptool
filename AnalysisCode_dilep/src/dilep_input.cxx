@@ -160,7 +160,7 @@ void DilepInput::applyVariance (float res, int seed) {
 	double delPx, delPy;
 
 	// Initialize the random number generator
-	trandom.SetSeed (seed);
+	t_rnd.SetSeed (seed);
 
 	// Vary!
 
@@ -168,17 +168,17 @@ void DilepInput::applyVariance (float res, int seed) {
 	// _______z_lep___________________
 	// _______________________________
 	if (  abs(  z_lepWFlags.isb  )  ==  11  ){ //___electrons____
-		n_Px = z_lepWFlags.Px() * ( 1. + trandom.Gaus( 0., Sx_e ) );
-		n_Py = z_lepWFlags.Py() * ( 1. + trandom.Gaus( 0., Sy_e ) );
-		n_Pz = z_lepWFlags.Pz() * ( 1. + trandom.Gaus( 0., Sz_e ) );
-		n_Pt = z_lepWFlags.Pt() * ( 1. + trandom.Gaus( 0., St_e ) );
-		n_E  = z_lepWFlags.E()  * ( 1. + trandom.Gaus( 0., Se_e ) );
+		n_Px = z_lepWFlags.Px() * ( 1. + t_rnd.Gaus( 0., Sx_e ) );
+		n_Py = z_lepWFlags.Py() * ( 1. + t_rnd.Gaus( 0., Sy_e ) );
+		n_Pz = z_lepWFlags.Pz() * ( 1. + t_rnd.Gaus( 0., Sz_e ) );
+		n_Pt = z_lepWFlags.Pt() * ( 1. + t_rnd.Gaus( 0., St_e ) );
+		n_E  = z_lepWFlags.E()  * ( 1. + t_rnd.Gaus( 0., Se_e ) );
 	} else if (  abs(z_lepWFlags.isb) == 13 ){ //_____muons______
-		n_Px = z_lepWFlags.Px() * ( 1. + trandom.Gaus( 0., Sx_m ) );
-		n_Py = z_lepWFlags.Py() * ( 1. + trandom.Gaus( 0., Sy_m ) );
-		n_Pz = z_lepWFlags.Pz() * ( 1. + trandom.Gaus( 0., Sz_m ) );
-		n_Pt = z_lepWFlags.Pt() * ( 1. + trandom.Gaus( 0., St_m ) );
-		n_E  = z_lepWFlags.E()  * ( 1. + trandom.Gaus( 0., Se_m ) );
+		n_Px = z_lepWFlags.Px() * ( 1. + t_rnd.Gaus( 0., Sx_m ) );
+		n_Py = z_lepWFlags.Py() * ( 1. + t_rnd.Gaus( 0., Sy_m ) );
+		n_Pz = z_lepWFlags.Pz() * ( 1. + t_rnd.Gaus( 0., Sz_m ) );
+		n_Pt = z_lepWFlags.Pt() * ( 1. + t_rnd.Gaus( 0., St_m ) );
+		n_E  = z_lepWFlags.E()  * ( 1. + t_rnd.Gaus( 0., Se_m ) );
 	}
 	// Recalculate z_lep
 	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_lepWFlags.M()*z_lepWFlags.M() );
@@ -197,17 +197,17 @@ void DilepInput::applyVariance (float res, int seed) {
 	// _______c_lep___________________
 	// _______________________________
 	if (  abs(  c_lepWFlags.isb  )  ==  11  ){ //___electrons____
-		n_Px = c_lepWFlags.Px() * ( 1. + trandom.Gaus( 0., Sx_e ) );
-		n_Py = c_lepWFlags.Py() * ( 1. + trandom.Gaus( 0., Sy_e ) );
-		n_Pz = c_lepWFlags.Pz() * ( 1. + trandom.Gaus( 0., Sz_e ) );
-		n_Pt = c_lepWFlags.Pt() * ( 1. + trandom.Gaus( 0., St_e ) );
-		n_E  = c_lepWFlags.E()  * ( 1. + trandom.Gaus( 0., Se_e ) );
+		n_Px = c_lepWFlags.Px() * ( 1. + t_rnd.Gaus( 0., Sx_e ) );
+		n_Py = c_lepWFlags.Py() * ( 1. + t_rnd.Gaus( 0., Sy_e ) );
+		n_Pz = c_lepWFlags.Pz() * ( 1. + t_rnd.Gaus( 0., Sz_e ) );
+		n_Pt = c_lepWFlags.Pt() * ( 1. + t_rnd.Gaus( 0., St_e ) );
+		n_E  = c_lepWFlags.E()  * ( 1. + t_rnd.Gaus( 0., Se_e ) );
 	} else if (  abs(c_lepWFlags.isb) == 13 ){ //_____muons______
-		n_Px = c_lepWFlags.Px() * ( 1. + trandom.Gaus( 0., Sx_m ) );
-		n_Py = c_lepWFlags.Py() * ( 1. + trandom.Gaus( 0., Sy_m ) );
-		n_Pz = c_lepWFlags.Pz() * ( 1. + trandom.Gaus( 0., Sz_m ) );
-		n_Pt = c_lepWFlags.Pt() * ( 1. + trandom.Gaus( 0., St_m ) );
-		n_E  = c_lepWFlags.E()  * ( 1. + trandom.Gaus( 0., Se_m ) );
+		n_Px = c_lepWFlags.Px() * ( 1. + t_rnd.Gaus( 0., Sx_m ) );
+		n_Py = c_lepWFlags.Py() * ( 1. + t_rnd.Gaus( 0., Sy_m ) );
+		n_Pz = c_lepWFlags.Pz() * ( 1. + t_rnd.Gaus( 0., Sz_m ) );
+		n_Pt = c_lepWFlags.Pt() * ( 1. + t_rnd.Gaus( 0., St_m ) );
+		n_E  = c_lepWFlags.E()  * ( 1. + t_rnd.Gaus( 0., Se_m ) );
 	}
 	// Recalculate c_lep
 	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_lepWFlags.M()*c_lepWFlags.M() );
@@ -225,11 +225,11 @@ void DilepInput::applyVariance (float res, int seed) {
 	// _______________________________
 	// _______z_bj____________________
 	// _______________________________
-	n_Px = z_bjWFlags.Px() * ( 1. + trandom.Gaus( 0., Sx_j ) );
-	n_Py = z_bjWFlags.Py() * ( 1. + trandom.Gaus( 0., Sy_j ) );
-	n_Pz = z_bjWFlags.Pz() * ( 1. + trandom.Gaus( 0., Sz_j ) );
-	n_Pt = z_bjWFlags.Pt() * ( 1. + trandom.Gaus( 0., St_j ) );
-	n_E  = z_bjWFlags.E()  * ( 1. + trandom.Gaus( 0., Se_j ) );
+	n_Px = z_bjWFlags.Px() * ( 1. + t_rnd.Gaus( 0., Sx_j ) );
+	n_Py = z_bjWFlags.Py() * ( 1. + t_rnd.Gaus( 0., Sy_j ) );
+	n_Pz = z_bjWFlags.Pz() * ( 1. + t_rnd.Gaus( 0., Sz_j ) );
+	n_Pt = z_bjWFlags.Pt() * ( 1. + t_rnd.Gaus( 0., St_j ) );
+	n_E  = z_bjWFlags.E()  * ( 1. + t_rnd.Gaus( 0., Se_j ) );
 	// Recalculate z_bj
 	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_bjWFlags.M()*z_bjWFlags.M() );
 	z_bj.SetPx( n_Px );	// Change Px 				
@@ -247,11 +247,11 @@ void DilepInput::applyVariance (float res, int seed) {
 	// _______________________________
 	// _______c_bj____________________
 	// _______________________________
-	n_Px = c_bjWFlags.Px() * ( 1. + trandom.Gaus( 0., Sx_j ) );
-	n_Py = c_bjWFlags.Py() * ( 1. + trandom.Gaus( 0., Sy_j ) );
-	n_Pz = c_bjWFlags.Pz() * ( 1. + trandom.Gaus( 0., Sz_j ) );
-	n_Pt = c_bjWFlags.Pt() * ( 1. + trandom.Gaus( 0., St_j ) );
-	n_E  = c_bjWFlags.E()  * ( 1. + trandom.Gaus( 0., Se_j ) );
+	n_Px = c_bjWFlags.Px() * ( 1. + t_rnd.Gaus( 0., Sx_j ) );
+	n_Py = c_bjWFlags.Py() * ( 1. + t_rnd.Gaus( 0., Sy_j ) );
+	n_Pz = c_bjWFlags.Pz() * ( 1. + t_rnd.Gaus( 0., Sz_j ) );
+	n_Pt = c_bjWFlags.Pt() * ( 1. + t_rnd.Gaus( 0., St_j ) );
+	n_E  = c_bjWFlags.E()  * ( 1. + t_rnd.Gaus( 0., Se_j ) );
 	// Recalculate c_bj
 	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_bjWFlags.M()*c_bjWFlags.M() );
 	c_bj.SetPx( n_Px );	// Change Px 				
@@ -291,17 +291,17 @@ void DilepInput::applyVariance (float res) {
 	// _______z_lep___________________
 	// _______________________________
 	if (  abs(  z_lepWFlags.isb  )  ==  11  ){ //___electrons____
-		n_Px = z_lepWFlags.Px() * ( 1. + trandom.Gaus( 0., Sx_e ) );
-		n_Py = z_lepWFlags.Py() * ( 1. + trandom.Gaus( 0., Sy_e ) );
-		n_Pz = z_lepWFlags.Pz() * ( 1. + trandom.Gaus( 0., Sz_e ) );
-		n_Pt = z_lepWFlags.Pt() * ( 1. + trandom.Gaus( 0., St_e ) );
-		n_E  = z_lepWFlags.E()  * ( 1. + trandom.Gaus( 0., Se_e ) );
+		n_Px = z_lepWFlags.Px() * ( 1. + t_rnd.Gaus( 0., Sx_e ) );
+		n_Py = z_lepWFlags.Py() * ( 1. + t_rnd.Gaus( 0., Sy_e ) );
+		n_Pz = z_lepWFlags.Pz() * ( 1. + t_rnd.Gaus( 0., Sz_e ) );
+		n_Pt = z_lepWFlags.Pt() * ( 1. + t_rnd.Gaus( 0., St_e ) );
+		n_E  = z_lepWFlags.E()  * ( 1. + t_rnd.Gaus( 0., Se_e ) );
 	} else if (  abs(z_lepWFlags.isb) == 13 ){ //_____muons______
-		n_Px = z_lepWFlags.Px() * ( 1. + trandom.Gaus( 0., Sx_m ) );
-		n_Py = z_lepWFlags.Py() * ( 1. + trandom.Gaus( 0., Sy_m ) );
-		n_Pz = z_lepWFlags.Pz() * ( 1. + trandom.Gaus( 0., Sz_m ) );
-		n_Pt = z_lepWFlags.Pt() * ( 1. + trandom.Gaus( 0., St_m ) );
-		n_E  = z_lepWFlags.E()  * ( 1. + trandom.Gaus( 0., Se_m ) );
+		n_Px = z_lepWFlags.Px() * ( 1. + t_rnd.Gaus( 0., Sx_m ) );
+		n_Py = z_lepWFlags.Py() * ( 1. + t_rnd.Gaus( 0., Sy_m ) );
+		n_Pz = z_lepWFlags.Pz() * ( 1. + t_rnd.Gaus( 0., Sz_m ) );
+		n_Pt = z_lepWFlags.Pt() * ( 1. + t_rnd.Gaus( 0., St_m ) );
+		n_E  = z_lepWFlags.E()  * ( 1. + t_rnd.Gaus( 0., Se_m ) );
 	}
 	// Recalculate z_lep
 	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_lepWFlags.M()*z_lepWFlags.M() );
@@ -320,17 +320,17 @@ void DilepInput::applyVariance (float res) {
 	// _______c_lep___________________
 	// _______________________________
 	if (  abs(  c_lepWFlags.isb  )  ==  11  ){ //___electrons____
-		n_Px = c_lepWFlags.Px() * ( 1. + trandom.Gaus( 0., Sx_e ) );
-		n_Py = c_lepWFlags.Py() * ( 1. + trandom.Gaus( 0., Sy_e ) );
-		n_Pz = c_lepWFlags.Pz() * ( 1. + trandom.Gaus( 0., Sz_e ) );
-		n_Pt = c_lepWFlags.Pt() * ( 1. + trandom.Gaus( 0., St_e ) );
-		n_E  = c_lepWFlags.E()  * ( 1. + trandom.Gaus( 0., Se_e ) );
+		n_Px = c_lepWFlags.Px() * ( 1. + t_rnd.Gaus( 0., Sx_e ) );
+		n_Py = c_lepWFlags.Py() * ( 1. + t_rnd.Gaus( 0., Sy_e ) );
+		n_Pz = c_lepWFlags.Pz() * ( 1. + t_rnd.Gaus( 0., Sz_e ) );
+		n_Pt = c_lepWFlags.Pt() * ( 1. + t_rnd.Gaus( 0., St_e ) );
+		n_E  = c_lepWFlags.E()  * ( 1. + t_rnd.Gaus( 0., Se_e ) );
 	} else if (  abs(c_lepWFlags.isb) == 13 ){ //_____muons______
-		n_Px = c_lepWFlags.Px() * ( 1. + trandom.Gaus( 0., Sx_m ) );
-		n_Py = c_lepWFlags.Py() * ( 1. + trandom.Gaus( 0., Sy_m ) );
-		n_Pz = c_lepWFlags.Pz() * ( 1. + trandom.Gaus( 0., Sz_m ) );
-		n_Pt = c_lepWFlags.Pt() * ( 1. + trandom.Gaus( 0., St_m ) );
-		n_E  = c_lepWFlags.E()  * ( 1. + trandom.Gaus( 0., Se_m ) );
+		n_Px = c_lepWFlags.Px() * ( 1. + t_rnd.Gaus( 0., Sx_m ) );
+		n_Py = c_lepWFlags.Py() * ( 1. + t_rnd.Gaus( 0., Sy_m ) );
+		n_Pz = c_lepWFlags.Pz() * ( 1. + t_rnd.Gaus( 0., Sz_m ) );
+		n_Pt = c_lepWFlags.Pt() * ( 1. + t_rnd.Gaus( 0., St_m ) );
+		n_E  = c_lepWFlags.E()  * ( 1. + t_rnd.Gaus( 0., Se_m ) );
 	}
 	// Recalculate c_lep
 	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_lepWFlags.M()*c_lepWFlags.M() );
@@ -348,11 +348,11 @@ void DilepInput::applyVariance (float res) {
 	// _______________________________
 	// _______z_bj____________________
 	// _______________________________
-	n_Px = z_bjWFlags.Px() * ( 1. + trandom.Gaus( 0., Sx_j ) );
-	n_Py = z_bjWFlags.Py() * ( 1. + trandom.Gaus( 0., Sy_j ) );
-	n_Pz = z_bjWFlags.Pz() * ( 1. + trandom.Gaus( 0., Sz_j ) );
-	n_Pt = z_bjWFlags.Pt() * ( 1. + trandom.Gaus( 0., St_j ) );
-	n_E  = z_bjWFlags.E()  * ( 1. + trandom.Gaus( 0., Se_j ) );
+	n_Px = z_bjWFlags.Px() * ( 1. + t_rnd.Gaus( 0., Sx_j ) );
+	n_Py = z_bjWFlags.Py() * ( 1. + t_rnd.Gaus( 0., Sy_j ) );
+	n_Pz = z_bjWFlags.Pz() * ( 1. + t_rnd.Gaus( 0., Sz_j ) );
+	n_Pt = z_bjWFlags.Pt() * ( 1. + t_rnd.Gaus( 0., St_j ) );
+	n_E  = z_bjWFlags.E()  * ( 1. + t_rnd.Gaus( 0., Se_j ) );
 	// Recalculate z_bj
 	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_bjWFlags.M()*z_bjWFlags.M() );
 	z_bj.SetPx( n_Px );	// Change Px 				
@@ -370,11 +370,11 @@ void DilepInput::applyVariance (float res) {
 	// _______________________________
 	// _______c_bj____________________
 	// _______________________________
-	n_Px = c_bjWFlags.Px() * ( 1. + trandom.Gaus( 0., Sx_j ) );
-	n_Py = c_bjWFlags.Py() * ( 1. + trandom.Gaus( 0., Sy_j ) );
-	n_Pz = c_bjWFlags.Pz() * ( 1. + trandom.Gaus( 0., Sz_j ) );
-	n_Pt = c_bjWFlags.Pt() * ( 1. + trandom.Gaus( 0., St_j ) );
-	n_E  = c_bjWFlags.E()  * ( 1. + trandom.Gaus( 0., Se_j ) );
+	n_Px = c_bjWFlags.Px() * ( 1. + t_rnd.Gaus( 0., Sx_j ) );
+	n_Py = c_bjWFlags.Py() * ( 1. + t_rnd.Gaus( 0., Sy_j ) );
+	n_Pz = c_bjWFlags.Pz() * ( 1. + t_rnd.Gaus( 0., Sz_j ) );
+	n_Pt = c_bjWFlags.Pt() * ( 1. + t_rnd.Gaus( 0., St_j ) );
+	n_E  = c_bjWFlags.E()  * ( 1. + t_rnd.Gaus( 0., Se_j ) );
 	// Recalculate c_bj
 	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_bjWFlags.M()*c_bjWFlags.M() );
 	c_bj.SetPx( n_Px );	// Change Px 				

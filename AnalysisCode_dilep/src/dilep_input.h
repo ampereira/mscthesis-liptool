@@ -9,7 +9,7 @@
 #include "../../LipMiniAnalysis/LipMiniAnalysis.h"
 
 #define SEED 123456
-TRandom3 trandom (SEED);
+TRandom3 t_rnd (SEED);
 
 using namespace std;
 
