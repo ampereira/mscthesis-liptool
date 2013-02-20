@@ -3999,7 +3999,7 @@ void ttH_dilep::ttDilepKinFit(){
 		 //				(ONLY EXAMPLES ARE SHOWN; USER CHOICES!)
 		 // ###################################################################
 		 // Define number of experiments for resolution
-		 int myNumResTest = 10;
+		 int myNumResTest = 100;
 
 		 // Resolution values
 		 double Sx_e=0.02;  double Sy_e=0.02;  double Sz_e=0.02;  double St_e=0.02; 	double Se_e=0.02;  // electrons

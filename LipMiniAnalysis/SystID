@@ -1,0 +1,104 @@
+################################################################################
+# RecoType
+################################################################################
+
+RecoType = 10000xSystID + 100xPhIsoCut + PhRecoType
+
+ou seja:
+
+           +------> SystID
+           | +----> PhIsoCut
+           | | +--> PhRecoType
+           | | |
+RecoType = XXYYZZ
+
+################################################################################
+# PhRecoType
+################################################################################
+
+00: standard photons
+10: standard photons without Etcone_ptcorrected cut
+11: anti-tight photons
+
+################################################################################
+# PhIsoCut
+################################################################################
+
+  VAZIO NESTA VERSÃO DO CÓDIGO
+  PODE SER USADO PARA O QCD
+
+  (não esquecendo que
+
+00: referência
+
+  )
+
+################################################################################
+# SystID
+################################################################################
+
+falta: PDF, btag (?)
+
+  32            b-tag scale factor (up)
+  33            b-tag scale factor (up)
+
+00: ref  : referência
+10: eesp : electron energy scale (up)
+11: eesm : electron energy scale (down)
+12: jesp : jet energy scale and pile-up uncertainty (up)
+13: eerp : energy resolution smearing (up)
+14: eerm : energy resolution smearing (down)
+15: mesp : muon momentum scale (up)
+16: mesm : muon momentum scale (down)
+17: merp : muon top-Id efficiency SF (up)
+18: merm : muon top-Id efficiency SF (down)
+19: jesm : jet energy scale and pile-up uncertainty (down)
+20: nowe : sem "smearings" ou "scale factors"
+21: mrsp : muon systematic reco scale factor (up)
+22: mrsm : muon systematic reco scale factor (down)
+23: mtsp : muon systematic trigger scale factor (up)
+24: mtsm : muon systematic trigger scale factor (down)
+25: jre  : jet reco efficiency
+26: ersp : electron systematic reco scale factor (up)
+27: ersm : electron systematic reco scale factor (down)
+28: etsp : electron systematic trigger scale factor (up)
+29: etsm : electron systematic trigger scale factor (down)
+30: eisp : electron systematic id scale factor (up)
+31: eism : electron systematic id scale factor (down)
+32: btagu: b-tag scale factor (up)
+33: btagd: b-tag scale factor (up)
+34: pesp : photon energy scale (up)
+35: pesm : photon energy scale (up)
+36: w36  : ScaleWjets("ptjmin10")
+37: w37  : ScaleWjets("ptjmin20")
+38: w38  : ScaleWjets("iqopt2")
+39: w39  : ScaleWjets("iqopt2")
+              40
+41: wnorp: wnorp
+42: wnorm: wnorm
+43: whf1p: wjets HF content Wcc/Wbb/Wc (up)
+44: whf1m: wjets HF content Wcc/Wbb/Wc (down)
+45: perp : photon energy resolution smearing (up)
+46: perm : photon energy resolution smearing (down)
+47: laru : MET LAr Hole (up)
+48: lard : MET LAr Hole (down)
+49: cou  : MET CellOut + Soft Jet Uncertainty (up)
+50: cod  : MET CellOut + Soft Jet Uncertainty (down)
+51: mmsp : muon momentum resolution (MSUP)
+52: mmsm : muon momentum resolution (MLOW)
+53: midp : muon momentum resolution (IDUP)
+54: midm : muon momentum resolution (IDLOW)
+55: jer  : jet energy resolution (2010)
+56: pilu : MET Pile-up Uncertainty (up)
+57: pild : MET Pile-up Uncertainty (down)
+58: whf2p: wjets HF content Wcc/Wbb aditional 25% (up)
+59: whf2m: wjets HF content Wcc/Wbb aditional 25% (down)
+60: whf3p: wjets HF content Wc aditional 25% (up)
+61: whf3m: wjets HF content Wc aditional 25% (down)
+62: pnoff: no fudgefactors for photons
+63: dbfp : forma dos dibosões (up)
+64: dbfm : forma dos dibosões (down)
+fcnc:
+90: dmzu : mZ window veto (up)
+91: dmzd : mZ window veto (down)
+92: dmzs : mZ smear 10%
