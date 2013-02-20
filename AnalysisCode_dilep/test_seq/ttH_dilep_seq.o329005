@@ -1,0 +1,13 @@
+==16814== Callgrind, a call-graph generating cache profiler
+==16814== Copyright (C) 2002-2012, and GNU GPL'd, by Josef Weidendorfer et al.
+==16814== Using Valgrind-3.8.1 and LibVEX; rerun with -h for copyright info
+==16814== Command: ./ttH_dilep_seq --OutputFileName=ttH125_dilepbb_em --SetSystematicsFileName=../../RefSys/Ref.txt --Sample=901 --User=CutTriggerEleMuo=1 --User=lepSample=23
+==16814== 
+==16814== For interactive control, run 'callgrind_control -h'.
+[0;32mRuning analysis for 100 dilep iterations per event[0m
+
+==16814== 
+==16814== Events    : Ir
+==16814== Collected : 1727579287101
+==16814== 
+==16814== I   refs:      1,727,579,287,101
