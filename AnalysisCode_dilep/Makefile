@@ -17,6 +17,8 @@ ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
 CXXFLAGS   = -O3 $(ROOTCFLAGS)
 #CXXFLAGS   = -g $(ROOTCFLAGS)
+# specific time measurement
+#CXXFLAGS  += -DMEASURE_KINFIT -DMEASURE_DILEP
 
 LIBS       = $(ROOTLIBS)
 GLIBS      = $(ROOTGLIBS)
@@ -34,7 +36,7 @@ LIBDIRS = -L$(LipMiniAnalysis) -lLipMiniAnalysis $(LIBS) $(GLIBS)
 ################################################################################
 # Rules
 ################################################################################
-#seq: CXXFLAGS += -DSEQ -DMEASURE_KINFIT -DMEASURE_DILEP
+
 seq: CXXFLAGS += -DSEQ
 seq: ttH_dilep_seq
 
