@@ -34,19 +34,25 @@ LIBDIRS = -L$(LipMiniAnalysis) -lLipMiniAnalysis $(LIBS) $(GLIBS)
 ################################################################################
 # Rules
 ################################################################################
+#seq: CXXFLAGS += -DSEQ -DMEASURE_KINFIT -DMEASURE_DILEP
 seq: CXXFLAGS += -DSEQ
 seq: ttH_dilep_seq
+
 omp: CXXFLAGS += -DOMP -fopenmp
 omp: ttH_dilep_omp
+
 cuda: CXXFLAGS += -DCUDA
 cuda: ttH_dilep_cuda
+
 papi: CXXFLAGS += -DPAPI
 papi: ttH_dilep_papi
+
 sse: CXXFLAGS += -DSSE -mfpmath=sse -msse4.2
 sse: ttH_dilep_sse
 
 dilep_time: CXXFLAGS += -DMEASURE_DILEP
 dilep_time: seq
+
 
 default: seq
 all: seq omp cuda sse
@@ -54,12 +60,15 @@ all: seq omp cuda sse
 build/dilep_input.o: src/dilep_input.cxx src/dilep_input.h
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/dilep_input.cxx -o build/dilep_input.o
 
+build/utilities.o: src/utilities.cxx src/utilities.h
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/utilities.cxx -o build/utilities.o
+
 # Sequential application
 build/neut_seq.o: src/seq/neut.cxx src/myvector.h src/seq/neut.h
 	$(CXX) -Wall -Wextra $(CXXFLAGS) $(INCLUDES) -c src/seq/neut.cxx -o build/neut_seq.o
 
-ttH_dilep_seq: src/ttH_dilep.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/neut_seq.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
-	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_seq $(INCLUDES) src/ttH_dilep.cxx build/neut_seq.o build/dilep_input.o $(LIBDIRS)
+ttH_dilep_seq: src/ttH_dilep.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
+	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_seq $(INCLUDES) src/ttH_dilep.cxx build/neut_seq.o build/dilep_input.o build/utilities.o $(LIBDIRS)
 
 # OpenMP application
 build/neut_omp.o: src/omp/neut.cxx src/myvector.h src/omp/neut.h
