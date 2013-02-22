@@ -34,8 +34,8 @@
                                                                               
  #################################################################################
 
-  Date and Time:  Tue 19 Feb 2013 17:30:20
-  Host name: compute-511-1.local
+  Date and Time:  Thu 21 Feb 2013 18:41:58
+  Host name: MacBook-Pro-de-Andre-2.local
 
  #################################################################################
 
@@ -71,13 +71,14 @@ Will run for the following ref/systematics:
   Initializing time was 0.00 s 
 
 Size of Original File: 1747730
-Free Space in /dev/shm: 33794056192
+Free Space in /dev/shm: -1
+Free Space in /var/folders/hb/rk_pmysd6dn_s6x042fmps0r0000gn/T/: 12061730930688
 Copy Size : 1747730
   Read time was 0.00 s 
   Speed was inf B/s 
-Used File: /dev/shm/LipMiniAnalysisTempFile2919053433
-Error File Removing: /dev/shm/LipMiniAnalysisTempFile2919053433
-  Partial time was 9.00 s 
+Used File: /var/folders/hb/rk_pmysd6dn_s6x042fmps0r0000gn/T//LipMiniAnalysisTempFile4128797036
+Error File Removing: /var/folders/hb/rk_pmysd6dn_s6x042fmps0r0000gn/T//LipMiniAnalysisTempFile4128797036
+  Partial time was 8.00 s 
 
 
  ################################################################################
@@ -153,5 +154,5 @@ Summary for 0 ../Output/
      19:     1867.0 +-     43.31 (      1858 ;  32.58 +- 0.756 % )
      20:     1732.0 +-     41.73 (      1723 ;  30.21 +- 0.728 % )
      21:     1464.0 +-     38.38 (      1455 ;  25.51 +- 0.669 % )
-  Now is Tue 19 Feb 2013 17:30:32
-  Total time was 12.000 s 
+  Now is Thu 21 Feb 2013 18:42:09
+  Total time was 11.000 s 

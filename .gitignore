@@ -12,3 +12,4 @@ main.log
 *.blg
 main.aux
 main.fdb_latexmk
+*.o
