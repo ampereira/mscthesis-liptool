@@ -1,4 +1,13 @@
-currfile=ttH_dilep_seq
+
+case $1 in
+	"omp")
+		currfile=ttH_dilep_omp
+		;;
+	*)
+		currfile=ttH_dilep_seq
+		;;
+esac
+
 binfile=../bin/$currfile
 
 if [ $binfile -nt $currfile ]
