@@ -4034,8 +4034,15 @@ void ttH_dilep::ttDilepKinFit(){
 									// Define number of experiments for resolution
 									// loop over several resolution experiments
 
-									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
-									inputs.push_back(di);
+									
+
+									// Apply the variations to the inputs
+									for (int j = 0; j < dilep_iterations; ++j) {
+										DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
+										di.applyVariance (RESOLUTION);
+
+										inputs.push_back (di);
+									}
 								}
 							}
 						}
@@ -4044,27 +4051,16 @@ void ttH_dilep::ttDilepKinFit(){
 			}
 		}
 	}
-
-	// WARNING: numa primeira fase apenas para num combos == num parallel tasks
-
-	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
-	float task_id;
-	DilepInput di;
-
-	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
-		// Calculates the new id of the task
-		task_id = (float) counter / (float) dilep_iterations;
-
-		// Check if it needs to pick a new combo
-		if (task_id == (int) task_id)
-			di = inputs[counter];
-		
-		// Apply the variance
-		di.applyVariance(RESOLUTION);
+	// Apply the variations to the inputs
+	//inputs = applyVariance(inputs, RESOLUTION, dilep_iterations, EveNumber + JetVec.size()*100);
+	//applyVariance(inputs, RESOLUTION, dilep_iterations);
 
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
-		Dilep::CPU::dilep(di);
+		//CPU::dilep(di);
+		Dilep::CPU::dilep(inputs);
+#elif SSE
+		result = SSE::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #elif OMP
 		result = OMP::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #elif CUDA
@@ -4078,6 +4074,8 @@ void ttH_dilep::ttDilepKinFit(){
 		// Get info from all possible solutions
 		// ---------------------------------------
 
+	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
+		DilepInput di = inputs[counter];
 
 		// result on local variable since it will be accessed plenty of times
 		*result = di.getResult();

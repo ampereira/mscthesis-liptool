@@ -76,6 +76,10 @@ DilepInput::DilepInput (const DilepInput &other) {
 	result = other.getResult();
 }
 
+// Constructor
+DilepInput::DilepInput (void) {
+	hasSolution = 0;
+}
 // Print the private variables of the class for debug purposes
 void DilepInput::print (char* filename) {
 	ofstream file (filename, fstream::app);
@@ -129,21 +133,18 @@ vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount
 // Apply variance to the inputs of the dilep function a given number of times
 // resulting a vector of varied inputs
 // Uses default seed
-vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount) {
-	vector<DilepInput> inputs;
+void applyVariance (vector<DilepInput> &vdi, float res, int amount) {
+	unsigned size = vdi.size();
 
-	for (int i = 0; i < vdi.size(); ++i) {
-		DilepInput di = vdi[i];
-
+	for (unsigned i = 0; i < size; ++i) {
 		for (int j = 0; j < amount; ++j) {
-			DilepInput aux (di);
+			DilepInput aux (vdi[i]);
 			aux.applyVariance (res);
 
-			inputs.push_back (aux);
+			vdi.push_back (aux);
 		}
+		vdi[i].applyVariance(res);
 	}
-
-	return inputs;
 }
 
 // Apply variance to the inputs of the dilep function, given a resolution and a seed,

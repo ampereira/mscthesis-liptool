@@ -37,6 +37,7 @@ class DilepInput {
 	std::vector<myvector> result;
 
 public:
+
 	DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVector _z_bj, TLorentzVector _c_bj, 
 				TLorentzVectorWFlags _z_bjWFlags, TLorentzVectorWFlags _c_bjWFlags, TLorentzVectorWFlags _z_lepWFlags,
 				TLorentzVectorWFlags _c_lepWFlags, TLorentzVectorWFlags _jet1_HiggsWFlags, TLorentzVectorWFlags _jet2_HiggsWFlags, 
@@ -44,6 +45,7 @@ public:
 				double _MissPy, double _t_mass[], double _w_mass[]);
 
 	DilepInput (const DilepInput &other);
+	DilepInput (void);
 
 	void print (char* filename);
 	void applyVariance (float res);
@@ -78,7 +80,7 @@ public:
 	void setZblCbl (void);
 };
 
-vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount);
+void applyVariance (vector<DilepInput> &vdi, float res, int amount);
 vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount, int seed);
 
 #endif

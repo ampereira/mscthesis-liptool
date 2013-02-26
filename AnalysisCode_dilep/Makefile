@@ -15,7 +15,7 @@ ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 #ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lHtml -lEG -lPhysics -lTreePlayer
 ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
-CXXFLAGS   = -O3 $(ROOTCFLAGS)
+CXXFLAGS   = -O3 -mssse3 $(ROOTCFLAGS)
 #CXXFLAGS   = -g $(ROOTCFLAGS)
 # specific time measurement
 #CXXFLAGS  += -DMEASURE_KINFIT -DMEASURE_DILEP
