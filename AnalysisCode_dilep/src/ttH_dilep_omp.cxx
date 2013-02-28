@@ -3854,7 +3854,7 @@ void ttH_dilep::ttDilepKinFit(){
 	TLorentzVectorWFlags    z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags;
 	TLorentzVectorWFlags    jet1_HiggsWFlags, jet2_HiggsWFlags;
 	// result of kinematic fit
-	std::vector<myvector> *result = new std::vector<myvector> ();
+	std::vector<myvector> *result;
 
 	// =================================================================
 	// Initialize Solutions Flag
@@ -4051,21 +4051,25 @@ void ttH_dilep::ttDilepKinFit(){
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
 	float task_id;
 	DilepInput di;
+	int HasSolution_private = 0;
 
-	#pragma omp parallel for num_threads(2) private(di)
+	#pragma omp parallel for num_threads(2) private(di, result, task_id) reduction(+:HasSolution_private)
 
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		// Calculates the new id of the task
 		task_id = (float) counter / (float) dilep_iterations;	
-/*
+
+		/*
 		#pragma omp critical
 		{
 		ofstream of ("coisas.txt", fstream::app);
 		of << omp_get_thread_num() << " task_id " << task_id << endl;
+		of << omp_get_thread_num() << " size  " << inputs.size() * dilep_iterations << endl;
 		of << omp_get_thread_num() << " counter " << counter << endl << endl;
 		of.close();
 		}
-*/
+		*/
+
 		// Check if it needs to pick a new combo
 		if (task_id == (int) task_id)
 			di = inputs[(int) task_id];
@@ -4093,12 +4097,17 @@ void ttH_dilep::ttDilepKinFit(){
 
 
 		// result on local variable since it will be accessed plenty of times
+		result = new std::vector<myvector> ();
 		*result = di.getResult();
-		HasSolution += di.getHasSol();
+		HasSolution_private += di.getHasSol();
 
-		std::vector<myvector>::iterator pp;
+		//std::vector<myvector>::iterator pp;
 
-		for ( pp = result->begin(); pp < result->end(); pp++) {
+		#pragma omp critical
+		//for ( pp = result->begin(); pp < result->end(); pp++) {
+		for ( int id = 0; id < result->size(); id++) {
+
+			myvector *pp = &result->at(id);
 
 			double   px,  py,  pz,  E, 
 					 apx, apy, apz, aE;
@@ -4347,6 +4356,15 @@ void ttH_dilep::ttDilepKinFit(){
 			//   Increment Solutions Counter
 			//  (its also the index vectors)
 			// -------------------------------
+
+			// ==================================================================
+			// Solutions Cycle
+			// ==================================================================
+			// Instead of iterating through de iSol it calculates the best sol right away
+
+			ProbTotal_ttDKF.push_back( ProbHiggs_ttDKF[nTSol]*ProbTTbar_ttDKF[nTSol] );
+			if ( ( ProbTotal_ttDKF[nTSol] > MaxTotalProb ) && ( ProbTotal_ttDKF[nTSol] != 0. ) ) { MaxTotalProb = ProbTotal_ttDKF[nTSol] ; n_ttDKF_Best = nTSol;}
+
 			nTSol++;
 
 		}
@@ -4360,13 +4378,15 @@ void ttH_dilep::ttDilepKinFit(){
 	// ###################################################################
 	}
 
+	HasSolution = HasSolution_private;
+
 
 	// ==================================================================
 	// Solutions Cycle
 	// ==================================================================
 
 
-	for ( int iSol = 0; iSol < nTSol; iSol++) {		
+	/*for ( int iSol = 0; iSol < nTSol; iSol++) {		
 
 		ProbTotal_ttDKF.push_back( ProbHiggs_ttDKF[iSol]*ProbTTbar_ttDKF[iSol] );
 		if ( ( ProbTotal_ttDKF[iSol] > MaxTotalProb ) && ( ProbTotal_ttDKF[iSol] != 0. ) ) { MaxTotalProb = ProbTotal_ttDKF[iSol] ; n_ttDKF_Best = iSol;}
@@ -4375,7 +4395,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 		//if ( ( ProbHiggs_ttDKF[iSol] > MaxHiggsProb ) && ( ProbHiggs_ttDKF[iSol] != 0. ) ) { MaxHiggsProb = ProbHiggs_ttDKF[iSol] ; n_ttDKF_Best = iSol;}
 
-	} // Solutions Cicle
+	} */// Solutions Cicle
 
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
