@@ -4342,11 +4342,12 @@ void ttH_dilep::ttDilepKinFit(){
 
 			// (ii) nupT1,nupT2 from p.d.fs
 			if ( ttDKF_SolutionChoice == 2 ) {
-
+				/*
 				ofstream of ("hasda.txt", fstream::app);
 				of << EveNumber << " - " << nTSol << " - " << _n1_ttDKF[nTSol].Pt() << endl;
 				of.close();
-
+				*/
+				
 				// Define used pdf variables (make sure the range of variables meets histos)
 				std::vector<double> Xpdf;
 				Xpdf.push_back(_n1_ttDKF[nTSol].Pt()/GeV); // 1st pdf: pT neutrino 1
