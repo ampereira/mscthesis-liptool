@@ -4056,25 +4056,25 @@ void ttH_dilep::ttDilepKinFit(){
 
 	float task_id;		// used to determine the comb to use
 	int HasSolution_private = 0;
-	vector<double> _ProbHiggs_ttDKF = ProbHiggs_ttDKF;
-	vector<double> _ProbTTbar_ttDKF = ProbTTbar_ttDKF;
-	vector<double> _ProbTotal_ttDKF = ProbTotal_ttDKF;
-	vector<TLorentzVectorWFlags> _n1_ttDKF = n1_ttDKF;
-	vector<TLorentzVectorWFlags> _n2_ttDKF = n2_ttDKF;
-	vector<TLorentzVectorWFlags> _b1_ttDKF = b1_ttDKF;
-	vector<TLorentzVectorWFlags> _b2_ttDKF = b2_ttDKF;
-	vector<TLorentzVectorWFlags> _l1_ttDKF = l1_ttDKF;
-	vector<TLorentzVectorWFlags> _l2_ttDKF = l2_ttDKF;
-	vector<TLorentzVectorWFlags> _W1_ttDKF = W1_ttDKF;
-	vector<TLorentzVectorWFlags> _W2_ttDKF = W2_ttDKF;
-	vector<TLorentzVectorWFlags> _t1_ttDKF = t1_ttDKF;
-	vector<TLorentzVectorWFlags> _t2_ttDKF = t2_ttDKF;
-	vector<TLorentzVectorWFlags> _ttbar_ttDKF = ttbar_ttDKF;
-	vector<TLorentzVectorWFlags> _b1_Higgs_ttDKF = b1_Higgs_ttDKF;
-	vector<TLorentzVectorWFlags> _b2_Higgs_ttDKF = b2_Higgs_ttDKF;
-	vector<TLorentzVectorWFlags> _Higgs_ttDKF = Higgs_ttDKF;
-	vector<double> _mHiggsJet1_ttDKF = mHiggsJet1_ttDKF;
-	vector<double> _mHiggsJet2_ttDKF = mHiggsJet2_ttDKF;
+	vector<double> _ProbHiggs_ttDKF (0);
+	vector<double> _ProbTTbar_ttDKF (0);
+	vector<double> _ProbTotal_ttDKF (0);
+	vector<TLorentzVectorWFlags> _n1_ttDKF (0);
+	vector<TLorentzVectorWFlags> _n2_ttDKF (0);
+	vector<TLorentzVectorWFlags> _b1_ttDKF (0);
+	vector<TLorentzVectorWFlags> _b2_ttDKF (0);
+	vector<TLorentzVectorWFlags> _l1_ttDKF (0);
+	vector<TLorentzVectorWFlags> _l2_ttDKF (0);
+	vector<TLorentzVectorWFlags> _W1_ttDKF (0);
+	vector<TLorentzVectorWFlags> _W2_ttDKF (0);
+	vector<TLorentzVectorWFlags> _t1_ttDKF (0);
+	vector<TLorentzVectorWFlags> _t2_ttDKF (0);
+	vector<TLorentzVectorWFlags> _ttbar_ttDKF (0);
+	vector<TLorentzVectorWFlags> _b1_Higgs_ttDKF (0);
+	vector<TLorentzVectorWFlags> _b2_Higgs_ttDKF (0);
+	vector<TLorentzVectorWFlags> _Higgs_ttDKF (0);
+	vector<double> _mHiggsJet1_ttDKF (0);
+	vector<double> _mHiggsJet2_ttDKF (0);
 
 
 	omp_set_num_threads(1);
@@ -4399,7 +4399,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// OpenMP merging of the private variables!!!!!
 	// Only needs to merge the n_ttDKF_Best element from the vectors
 
-	HasSolution = HasSolution_private;
+	HasSolution = HasSolution_private;	// merge the hassolutions
 	ProbHiggs_ttDKF = _ProbHiggs_ttDKF;
 	ProbTTbar_ttDKF = _ProbTTbar_ttDKF;
 	ProbTotal_ttDKF = _ProbTotal_ttDKF;
