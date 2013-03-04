@@ -4399,8 +4399,8 @@ void ttH_dilep::ttDilepKinFit(){
 	// Only needs to merge the n_ttDKF_Best element from the vectors
 
 	HasSolution = HasSolution_private;
-	//ProbHiggs_ttDKF = _ProbHiggs_ttDKF;
-	//ProbTTbar_ttDKF = _ProbTTbar_ttDKF;
+	ProbHiggs_ttDKF = _ProbHiggs_ttDKF;
+	ProbTTbar_ttDKF = _ProbTTbar_ttDKF;
 	ProbTotal_ttDKF = _ProbTotal_ttDKF;
 	n1_ttDKF = _n1_ttDKF;
 	n2_ttDKF = _n2_ttDKF;
@@ -4470,33 +4470,33 @@ void ttH_dilep::ttDilepKinFit(){
 		 */
 
 		// -------------------------------------------------------------------
-		Neutrino     = _n1_ttDKF[n_ttDKF_Best];  	// Neutrino 1
-		Antineutrino = _n2_ttDKF[n_ttDKF_Best];  	// Neutrino 2		
+		Neutrino     = n1_ttDKF[n_ttDKF_Best];  	// Neutrino 1
+		Antineutrino = n2_ttDKF[n_ttDKF_Best];  	// Neutrino 2		
 		// ###  leptons  ###
-		RecLepP 	= _l1_ttDKF[n_ttDKF_Best];
-		RecLepN 	= _l2_ttDKF[n_ttDKF_Best];
+		RecLepP 	= l1_ttDKF[n_ttDKF_Best];
+		RecLepN 	= l2_ttDKF[n_ttDKF_Best];
 		// ###  b-quarks ###
-		RecB    	= _b1_ttDKF[n_ttDKF_Best];
-		RecBbar 	= _b2_ttDKF[n_ttDKF_Best];
+		RecB    	= b1_ttDKF[n_ttDKF_Best];
+		RecBbar 	= b2_ttDKF[n_ttDKF_Best];
 		// ### Neutrinos ###
-		RecNeu    	= _n1_ttDKF[n_ttDKF_Best];
-		RecNeubar 	= _n2_ttDKF[n_ttDKF_Best];
+		RecNeu    	= n1_ttDKF[n_ttDKF_Best];
+		RecNeubar 	= n2_ttDKF[n_ttDKF_Best];
 		// ###  W bosons ###
-		RecWp    	= _W1_ttDKF[n_ttDKF_Best];
-		RecWn    	= _W2_ttDKF[n_ttDKF_Best];
+		RecWp    	= W1_ttDKF[n_ttDKF_Best];
+		RecWn    	= W2_ttDKF[n_ttDKF_Best];
 		// ###  t-quarks ###
-		RecT    	= _t1_ttDKF[n_ttDKF_Best];
-		RecTbar 	= _t2_ttDKF[n_ttDKF_Best];
+		RecT    	= t1_ttDKF[n_ttDKF_Best];
+		RecTbar 	= t2_ttDKF[n_ttDKF_Best];
 		// ###  ttbar system ###
-		RecTTbar    	= _ttbar_ttDKF[n_ttDKF_Best];
+		RecTTbar    	= ttbar_ttDKF[n_ttDKF_Best];
 		// ###  Higgs system ###
-		RecHiggs    	  = _Higgs_ttDKF[n_ttDKF_Best];
-		RecHiggsB1	  = _b1_Higgs_ttDKF[n_ttDKF_Best];
-		RecHiggsB2	  = _b2_Higgs_ttDKF[n_ttDKF_Best];
-		RecMassHiggsJet1  = _mHiggsJet1_ttDKF[n_ttDKF_Best]; //samor 16.Dec.2012
-		RecMassHiggsJet2  = _mHiggsJet2_ttDKF[n_ttDKF_Best];
+		RecHiggs    	  = Higgs_ttDKF[n_ttDKF_Best];
+		RecHiggsB1	  = b1_Higgs_ttDKF[n_ttDKF_Best];
+		RecHiggsB2	  = b2_Higgs_ttDKF[n_ttDKF_Best];
+		RecMassHiggsJet1  = mHiggsJet1_ttDKF[n_ttDKF_Best]; //samor 16.Dec.2012
+		RecMassHiggsJet2  = mHiggsJet2_ttDKF[n_ttDKF_Best];
 
-		RecProbTotal_ttH  = _ProbTotal_ttDKF[n_ttDKF_Best];
+		RecProbTotal_ttH  = ProbTotal_ttDKF[n_ttDKF_Best];
 
 
 		//		cout << "n_ttDKF_Best = " << n_ttDKF_Best << " ; RecMassHiggsJet1 " << RecMassHiggsJet1 << " ; RecMassHiggsJet2 " << RecMassHiggsJet2 << endl;
