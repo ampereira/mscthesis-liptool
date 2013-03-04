@@ -4470,33 +4470,33 @@ void ttH_dilep::ttDilepKinFit(){
 		 */
 
 		// -------------------------------------------------------------------
-		Neutrino     = n1_ttDKF[n_ttDKF_Best];  	// Neutrino 1
-		Antineutrino = n2_ttDKF[n_ttDKF_Best];  	// Neutrino 2		
+		Neutrino     = _n1_ttDKF[n_ttDKF_Best];  	// Neutrino 1
+		Antineutrino = _n2_ttDKF[n_ttDKF_Best];  	// Neutrino 2		
 		// ###  leptons  ###
-		RecLepP 	= l1_ttDKF[n_ttDKF_Best];
-		RecLepN 	= l2_ttDKF[n_ttDKF_Best];
+		RecLepP 	= _l1_ttDKF[n_ttDKF_Best];
+		RecLepN 	= _l2_ttDKF[n_ttDKF_Best];
 		// ###  b-quarks ###
-		RecB    	= b1_ttDKF[n_ttDKF_Best];
-		RecBbar 	= b2_ttDKF[n_ttDKF_Best];
+		RecB    	= _b1_ttDKF[n_ttDKF_Best];
+		RecBbar 	= _b2_ttDKF[n_ttDKF_Best];
 		// ### Neutrinos ###
-		RecNeu    	= n1_ttDKF[n_ttDKF_Best];
-		RecNeubar 	= n2_ttDKF[n_ttDKF_Best];
+		RecNeu    	= _n1_ttDKF[n_ttDKF_Best];
+		RecNeubar 	= _n2_ttDKF[n_ttDKF_Best];
 		// ###  W bosons ###
-		RecWp    	= W1_ttDKF[n_ttDKF_Best];
-		RecWn    	= W2_ttDKF[n_ttDKF_Best];
+		RecWp    	= _W1_ttDKF[n_ttDKF_Best];
+		RecWn    	= _W2_ttDKF[n_ttDKF_Best];
 		// ###  t-quarks ###
-		RecT    	= t1_ttDKF[n_ttDKF_Best];
-		RecTbar 	= t2_ttDKF[n_ttDKF_Best];
+		RecT    	= _t1_ttDKF[n_ttDKF_Best];
+		RecTbar 	= _t2_ttDKF[n_ttDKF_Best];
 		// ###  ttbar system ###
-		RecTTbar    	= ttbar_ttDKF[n_ttDKF_Best];
+		RecTTbar    	= _ttbar_ttDKF[n_ttDKF_Best];
 		// ###  Higgs system ###
-		RecHiggs    	  = Higgs_ttDKF[n_ttDKF_Best];
-		RecHiggsB1	  = b1_Higgs_ttDKF[n_ttDKF_Best];
-		RecHiggsB2	  = b2_Higgs_ttDKF[n_ttDKF_Best];
-		RecMassHiggsJet1  = mHiggsJet1_ttDKF[n_ttDKF_Best]; //samor 16.Dec.2012
-		RecMassHiggsJet2  = mHiggsJet2_ttDKF[n_ttDKF_Best];
+		RecHiggs    	  = _Higgs_ttDKF[n_ttDKF_Best];
+		RecHiggsB1	  = _b1_Higgs_ttDKF[n_ttDKF_Best];
+		RecHiggsB2	  = _b2_Higgs_ttDKF[n_ttDKF_Best];
+		RecMassHiggsJet1  = _mHiggsJet1_ttDKF[n_ttDKF_Best]; //samor 16.Dec.2012
+		RecMassHiggsJet2  = _mHiggsJet2_ttDKF[n_ttDKF_Best];
 
-		RecProbTotal_ttH  = ProbTotal_ttDKF[n_ttDKF_Best];
+		RecProbTotal_ttH  = _ProbTotal_ttDKF[n_ttDKF_Best];
 
 
 		//		cout << "n_ttDKF_Best = " << n_ttDKF_Best << " ; RecMassHiggsJet1 " << RecMassHiggsJet1 << " ; RecMassHiggsJet2 " << RecMassHiggsJet2 << endl;
