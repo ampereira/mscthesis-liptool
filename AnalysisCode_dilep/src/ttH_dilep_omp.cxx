@@ -4344,7 +4344,7 @@ void ttH_dilep::ttDilepKinFit(){
 			if ( ttDKF_SolutionChoice == 2 ) {
 
 				ofstream of ("hasda.txt", fstream::app);
-				of << nTSol << " - " << _n1_ttDKF[nTSol].Pt() << endl;
+				of << EveNumber << " - " << nTSol << " - " << _n1_ttDKF[nTSol].Pt() << endl;
 				of.close();
 
 				// Define used pdf variables (make sure the range of variables meets histos)
