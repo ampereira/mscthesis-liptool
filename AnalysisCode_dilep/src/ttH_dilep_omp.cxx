@@ -4076,6 +4076,12 @@ void ttH_dilep::ttDilepKinFit(){
 	vector<double> _mHiggsJet1_ttDKF = mHiggsJet1_ttDKF;
 	vector<double> _mHiggsJet2_ttDKF = mHiggsJet2_ttDKF;
 
+	ofstream of ("cos.txt", fstream::app);
+	of << _n1_ttDKF.size() << " - " << n1_ttDKF.size() << endl;
+	of.close();
+
+	exit(0);
+
 
 
 	#pragma omp parallel for num_threads(1) reduction(+:HasSolution_private) \
