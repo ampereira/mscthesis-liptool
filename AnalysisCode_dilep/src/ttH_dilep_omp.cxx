@@ -4079,13 +4079,14 @@ void ttH_dilep::ttDilepKinFit(){
 
 	omp_set_num_threads(1);
 
-	#pragma omp parallel for reduction(+:HasSolution_private) \
-	private(di, result, task_id, nTSol, _ProbHiggs_ttDKF, _ProbTTbar_ttDKF, _ProbTotal_ttDKF, n_ttDKF_Best, \
+	#pragma omp private(di, result, task_id, nTSol, _ProbHiggs_ttDKF, _ProbTTbar_ttDKF, _ProbTotal_ttDKF, n_ttDKF_Best, \
 	MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
 	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar, _n1_ttDKF, _n2_ttDKF, \
 	_b1_ttDKF, _b2_ttDKF, _l1_ttDKF, _l2_ttDKF, _W1_ttDKF, _W2_ttDKF, _t1_ttDKF, _t2_ttDKF, _ttbar_ttDKF, \
 	_b1_Higgs_ttDKF, _b2_Higgs_ttDKF, _Higgs_ttDKF, _mHiggsJet1_ttDKF, _mHiggsJet2_ttDKF)
 
+
+	#pragma omp parallel for reduction(+:HasSolution_private)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		// Calculates the new id of the task
 		task_id = (float) counter / (float) dilep_iterations;	
