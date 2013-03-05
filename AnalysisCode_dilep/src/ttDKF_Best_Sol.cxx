@@ -2,6 +2,7 @@
 #include "ttDKF_Best_Sol.h"
 #include <fstream>
 #include <iostream>
+using namespace std;
 
 ttDKF_Best_Sol::ttDKF_Best_Sol (double _probability, double _mHiggsJet1_ttDKF, double _mHiggsJet2_ttDKF,
 								TLorentzVectorWFlags _n1_ttDKF, TLorentzVectorWFlags _n2_ttDKF,
