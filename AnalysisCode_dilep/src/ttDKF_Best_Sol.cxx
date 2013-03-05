@@ -73,27 +73,3 @@ TLorentzVectorWFlags ttDKF_Best_Sol::getBHiggs (int x) const {
 TLorentzVectorWFlags ttDKF_Best_Sol::getHiggs (void) const {
 	return Higgs_ttDKF;
 }
-
-inline bool operator> (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
-	return (t1.getProb() > t2.getProb()) ? true : false;
-}
-
-inline bool operator< (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
-	return operator> (t2, t1);
-}
-
-inline bool operator<= (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
-	return !operator> (t1, t2);
-}
-
-inline bool operator>= (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
-	return !operator< (t1, t2);
-}
-
-inline bool operator== (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
-	return (t1.getProb() == t2.getProb()) ? true : false;
-}
-
-inline bool operator!= (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
-	return !operator== (t1, t2);
-}
