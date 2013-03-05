@@ -31,20 +31,6 @@ ttDKF_Best_Sol::ttDKF_Best_Sol (void) {
 	probability = 0.0;
 	mHiggsJet1_ttDKF = 0.0;
 	mHiggsJet2_ttDKF = 0.0;
-	n1_ttDKF = NULL;
-	n2_ttDKF = NULL;
-	b1_ttDKF = NULL;
-	b2_ttDKF = NULL;
-	l1_ttDKF = NULL;
-	l2_ttDKF = NULL;
-	W1_ttDKF = NULL;
-	W2_ttDKF = NULL;
-	t1_ttDKF = NULL;
-	t2_ttDKF = NULL;
-	ttbar_ttDKF = NULL;
-	b1_Higgs_ttDKF = NULL;
-	b2_Higgs_ttDKF = NULL;
-	Higgs_ttDKF = NULL;
 }
 
 // Getters
