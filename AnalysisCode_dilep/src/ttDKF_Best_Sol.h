@@ -4,6 +4,8 @@
 class ttDKF_Best_Sol {
 
 	double probability;
+	double mHiggsJet1_ttDKF;
+	double mHiggsJet2_ttDKF;
 	TLorentzVectorWFlags n1_ttDKF;
 	TLorentzVectorWFlags n2_ttDKF;
 	TLorentzVectorWFlags b1_ttDKF;
@@ -18,14 +20,23 @@ class ttDKF_Best_Sol {
 	TLorentzVectorWFlags b1_Higgs_ttDKF;
 	TLorentzVectorWFlags b2_Higgs_ttDKF;
 	TLorentzVectorWFlags Higgs_ttDKF;
-	double mHiggsJet1_ttDKF;
-	double mHiggsJet2_ttDKF;
 
 public:
-	ttDKF_Best_Sol (double, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags,
+	ttDKF_Best_Sol (double, double, double, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags,
 					TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags,
-					TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags,
-					double, double);
+					TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags);
+
+	// Getters
+	double getProb (void) const;
+	double getMHiggsJet (int) const;
+	TLorentzVectorWFlags getN (int) const;
+	TLorentzVectorWFlags getB (int) const;
+	TLorentzVectorWFlags getL (int) const;
+	TLorentzVectorWFlags getW (int) const;
+	TLorentzVectorWFlags getT (int) const;
+	TLorentzVectorWFlags getTTbar (void) const;
+	TLorentzVectorWFlags getBHiggs (int) const;
+	TLorentzVectorWFlags getHiggs (void) const;
 
 };
 
