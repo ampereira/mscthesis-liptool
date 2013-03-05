@@ -27,26 +27,26 @@ ttDKF_Best_Sol::ttDKF_Best_Sol (double _probability, TLorentzVectorWFlags _n1_tt
 	mHiggsJet2_ttDKF = _mHiggsJet2_ttDKF;
 }
 
-inline bool operator> (const ttbar_ttDKF &t1, const ttbar_ttDKF &t2) {
+inline bool operator> (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
 	return (t1.getProb() > t2.getProb()) ? true : false;
 }
 
-inline bool operator< (const ttbar_ttDKF &t1, const ttbar_ttDKF &t2) {
+inline bool operator< (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
 	return operator> (t2, t1);
 }
 
-inline bool operator<= (const ttbar_ttDKF &t1, const ttbar_ttDKF &t2) {
+inline bool operator<= (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
 	return !operator> (t1, t2);
 }
-
-inline bool operator>= (const ttbar_ttDKF &t1, const ttbar_ttDKF &t2) {
+cruz
+inline bool operator>= (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
 	return !operator< (t1, t2);
 }
 
-inline bool operator== (const ttbar_ttDKF &t1, const ttbar_ttDKF &t2) {
+inline bool operator== (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
 	return (t1.getProb() == t2.getProb()) ? true : false;
 }
 
-inline bool operator!= (const ttbar_ttDKF &t1, const ttbar_ttDKF &t2) {
+inline bool operator!= (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
 	return !operator== (t1, t2);
 }

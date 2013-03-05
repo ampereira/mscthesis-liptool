@@ -29,9 +29,9 @@ public:
 
 };
 
-inline bool operator> (const ttbar_ttDKF&, const ttbar_ttDKF&);
-inline bool operator< (const ttbar_ttDKF&, const ttbar_ttDKF&);
-inline bool operator<= (const ttbar_ttDKF&, const ttbar_ttDKF&);
-inline bool operator>= (const ttbar_ttDKF&, const ttbar_ttDKF&);
-inline bool operator== (const ttbar_ttDKF&, const ttbar_ttDKF&);
-inline bool operator!= (const ttbar_ttDKF&, const ttbar_ttDKF&);
+inline bool operator> (const ttDKF_Best_Sol&, const ttDKF_Best_Sol&);
+inline bool operator< (const ttDKF_Best_Sol&, const ttDKF_Best_Sol&);
+inline bool operator<= (const ttDKF_Best_Sol&, const ttDKF_Best_Sol&);
+inline bool operator>= (const ttDKF_Best_Sol&, const ttDKF_Best_Sol&);
+inline bool operator== (const ttDKF_Best_Sol&, const ttDKF_Best_Sol&);
+inline bool operator!= (const ttDKF_Best_Sol&, const ttDKF_Best_Sol&);
