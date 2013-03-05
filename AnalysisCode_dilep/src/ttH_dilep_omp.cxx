@@ -4775,6 +4775,7 @@ Int_t main(Int_t argc, char *argv[]){
 	// #############################################################################
 
 	ttH::defineDilepIterations();
+	ttH::defineNumThreads();
 
 	// Start measuring overall time
 	long long int init = ttH::startTimer();
