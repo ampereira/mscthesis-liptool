@@ -44,6 +44,7 @@ using namespace std;
 #include "ttDKF_Best_Sol.h"
 
 extern int dilep_iterations;
+extern int num_threads;
 
 #define RESOLUTION 0.02				// error resolution of de detector
 
@@ -4079,7 +4080,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 
 	// Best solution merge
-	ttDKF_Best_Sol best_sol;
+	ttDKF_Best_Sol best_sols [NUM_THREADS];
 
 
 	#pragma omp private(di, result, task_id, nTSol, _ProbHiggs_ttDKF, _ProbTTbar_ttDKF, _ProbTotal_ttDKF, n_ttDKF_Best, \
@@ -4088,9 +4089,9 @@ void ttH_dilep::ttDilepKinFit(){
 	_b1_ttDKF, _b2_ttDKF, _l1_ttDKF, _l2_ttDKF, _W1_ttDKF, _W2_ttDKF, _t1_ttDKF, _t2_ttDKF, _ttbar_ttDKF, \
 	_b1_Higgs_ttDKF, _b2_Higgs_ttDKF, _Higgs_ttDKF, _mHiggsJet1_ttDKF, _mHiggsJet2_ttDKF)
 
-	#pragma omp parallel num_threads(1) reduction(max:best_sol)
+	#pragma omp parallel num_threads(NUM_THREADS)
 	{
-	#pragma omp parallel for
+	#pragma omp parallel for reduction(+:HasSolution_private)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		// Calculates the new id of the task
 		task_id = (float) counter / (float) dilep_iterations;	
@@ -4408,10 +4409,27 @@ void ttH_dilep::ttDilepKinFit(){
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	}
 
+	ttDKF_Best_Sol sol (_ProbTotal_ttDKF[n_ttDKF_Best], _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
+						_n1_ttDKF[n_ttDKF_Best], _n2_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best],
+						_l1_ttDKF[n_ttDKF_Best], _l2_ttDKF[n_ttDKF_Best], _W1_ttDKF[n_ttDKF_Best], _W2_ttDKF[n_ttDKF_Best],
+						_t1_ttDKF[n_ttDKF_Best], _t2_ttDKF[n_ttDKF_Best], _ttbar_ttDKF[n_ttDKF_Best],
+						_b1_Higgs_ttDKF[n_ttDKF_Best], _b2_Higgs_ttDKF[n_ttDKF_Best], _Higgs_ttDKF[n_ttDKF_Best]);
+
+	best_sols[omp_get_thread_num()] = sol;
+
 	// end of pragma omp parallel
 	}
 
-	//HasSolution = HasSolution_private;	// merge the hassolutions
+	ttDKF_Best_Sol best;
+	// OPTIMIZAR ISTO DEPOIS!
+	for (int i = 0; i < num_threads; ++i) {
+		if (i == 0)
+			best = best_sols[i];
+		else
+			best = (best < best_sols[i]) ? best_sols[i] : best;
+	}
+
+	HasSolution = HasSolution_private;	// merge the hassolutions
 	
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
@@ -4426,26 +4444,36 @@ void ttH_dilep::ttDilepKinFit(){
 		// OpenMP merging of the private variables!!!!!
 		// Only needs to merge the n_ttDKF_Best element from the vectors
 
-		ProbTotal_ttDKF = _ProbTotal_ttDKF;
-		n1_ttDKF = _n1_ttDKF;
-		n2_ttDKF = _n2_ttDKF;
-		b1_ttDKF = _b1_ttDKF;
-		b2_ttDKF = _b2_ttDKF;
-		l1_ttDKF = _l1_ttDKF;
-		l2_ttDKF = _l2_ttDKF;
-		W1_ttDKF = _W1_ttDKF;
-		W2_ttDKF = _W2_ttDKF;
-		t1_ttDKF = _t1_ttDKF;
-		t2_ttDKF = _t2_ttDKF;
-		ttbar_ttDKF = _ttbar_ttDKF;
-		b1_Higgs_ttDKF = _b1_Higgs_ttDKF;
-		b2_Higgs_ttDKF = _b2_Higgs_ttDKF;
-		Higgs_ttDKF = _Higgs_ttDKF;
-		mHiggsJet1_ttDKF = _mHiggsJet1_ttDKF;
-		mHiggsJet2_ttDKF = _mHiggsJet2_ttDKF;
-
-
 		// -------------------------------------------------------------------
+		Neutrino     = best.getN(1);  	// Neutrino 1
+		Antineutrino = best.getN(2);  	// Neutrino 2		
+		// ###  leptons  ###
+		RecLepP 	= best.getL(1);
+		RecLepN 	= best.getL(2);
+		// ###  b-quarks ###
+		RecB    	= best.getB(1);
+		RecBbar 	= best.getB(2);
+		// ### Neutrinos ###
+		RecNeu    	= best.getN(1);
+		RecNeubar 	= best.getN(2);
+		// ###  W bosons ###
+		RecWp    	= best.getW(1);
+		RecWn    	= best.getW(2);
+		// ###  t-quarks ###
+		RecT    	= best.getT(1);
+		RecTbar 	= best.getT(2);
+		// ###  ttbar system ###
+		RecTTbar    	= best.getTTbar();
+		// ###  Higgs system ###
+		RecHiggs    	  = best.getHiggs();
+		RecHiggsB1	  = best.getBHiggs(1);
+		RecHiggsB2	  = best.getBHiggs(2);
+		RecMassHiggsJet1  = best.getMHiggsJet(1); //samor 16.Dec.2012
+		RecMassHiggsJet2  = best.getMHiggsJet(2);
+
+		RecProbTotal_ttH  = best.getProb();
+
+/*
 		Neutrino     = n1_ttDKF[n_ttDKF_Best];  	// Neutrino 1
 		Antineutrino = n2_ttDKF[n_ttDKF_Best];  	// Neutrino 2		
 		// ###  leptons  ###
@@ -4472,7 +4500,7 @@ void ttH_dilep::ttDilepKinFit(){
 		RecMassHiggsJet1  = mHiggsJet1_ttDKF[n_ttDKF_Best]; //samor 16.Dec.2012
 		RecMassHiggsJet2  = mHiggsJet2_ttDKF[n_ttDKF_Best];
 
-		RecProbTotal_ttH  = ProbTotal_ttDKF[n_ttDKF_Best];
+		RecProbTotal_ttH  = ProbTotal_ttDKF[n_ttDKF_Best];*/
 
 
 		//		cout << "n_ttDKF_Best = " << n_ttDKF_Best << " ; RecMassHiggsJet1 " << RecMassHiggsJet1 << " ; RecMassHiggsJet2 " << RecMassHiggsJet2 << endl;

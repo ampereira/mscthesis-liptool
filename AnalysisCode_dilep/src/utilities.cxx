@@ -5,6 +5,7 @@ using namespace std;
 
 
 int dilep_iterations;
+int num_threads;
 static long long int totaltime = 0;
 static long long int num_measurements = 0;
 
@@ -23,6 +24,21 @@ namespace ttH {
 			cout << "\033[0;31mNumber of dilep iterations not defined!" << endl;
 			cout << "Running analysis for the default value of ";
 			cout << dilep_iterations << " dilep iterations\033[0m" << endl << endl;
+		}
+	}
+	// Defines the number of threads
+	void defineNumThreads (void) {
+		char *num = getenv("NUM_THREADS");
+
+		if (num != NULL) {
+			num_threads = atoi(num);
+			cout << "\033[0;32mRuning analysis with " << num_threads;
+			cout << " threads\033[0m" << endl << endl;
+		} else {
+			num_threads = DEFAULT_THREADS;
+			cout << "\033[0;31mNumber of threads not defined!" << endl;
+			cout << "Running analysis for the default value of ";
+			cout << num_threads << " threads\033[0m" << endl << endl;
 		}
 	}
 
