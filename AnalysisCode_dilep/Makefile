@@ -76,8 +76,11 @@ ttH_dilep_seq: src/ttH_dilep_seq.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build
 #build/neut_omp.o: src/omp/neut.cxx src/myvector.h src/omp/neut.h
 #	$(CXX) -Wall -Wextra $(CXXFLAGS) $(INCLUDES) -c src/omp/neut.cxx -o build/neut_omp.o
 
-ttH_dilep_omp: src/ttH_dilep_omp.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
-	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_omp $(INCLUDES) src/ttH_dilep_omp.cxx build/neut_seq.o build/dilep_input.o build/utilities.o $(LIBDIRS)
+build/ttDKF_Best_sol.o: src/ttDKF_Best_sol.cxx src/ttDKF_Best_sol.h
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/ttDKF_Best_sol.cxx -o build/ttDKF_Best_sol.o
+
+ttH_dilep_omp: src/ttH_dilep_omp.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o build/ttDKF_Best_sol.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
+	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_omp $(INCLUDES) src/ttH_dilep_omp.cxx build/neut_seq.o build/dilep_input.o build/utilities.o build/ttDKF_Best_sol.o $(LIBDIRS)
 
 clean:
 	rm -f build/* bin/ttH_dilep*

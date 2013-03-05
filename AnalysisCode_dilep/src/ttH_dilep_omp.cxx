@@ -41,6 +41,7 @@ using namespace std;
 
 #include "dilep_input.h"
 #include "utilities.h"
+#include "ttDKF_Best_Sol.h"
 
 extern int dilep_iterations;
 
@@ -4384,7 +4385,7 @@ void ttH_dilep::ttDilepKinFit(){
 			// ==================================================================
 			// Instead of iterating through de iSol it calculates the best sol right away
 
-			_ProbTotal_ttDKF.push_back( _ProbHiggs_ttDKF[nTSol]*_ProbTTbar_ttDKF[nTSol] );
+			_ProbTotal_ttDKF.push_back( _ProbHiggs_ttDKF[nTSol] * _ProbTTbar_ttDKF[nTSol] );
 
 			// n_ttDKF_Best vai ter o indice da melhor solucao desta thread e MaxTotalProb a sua probabilidade
 			if ( ( _ProbTotal_ttDKF[nTSol] > MaxTotalProb ) && ( _ProbTotal_ttDKF[nTSol] != 0. ) ) {
@@ -4416,8 +4417,6 @@ void ttH_dilep::ttDilepKinFit(){
 		// OpenMP merging of the private variables!!!!!
 		// Only needs to merge the n_ttDKF_Best element from the vectors
 
-		//ProbHiggs_ttDKF = _ProbHiggs_ttDKF;
-		//ProbTTbar_ttDKF = _ProbTTbar_ttDKF;
 		ProbTotal_ttDKF = _ProbTotal_ttDKF;
 		n1_ttDKF = _n1_ttDKF;
 		n2_ttDKF = _n2_ttDKF;
