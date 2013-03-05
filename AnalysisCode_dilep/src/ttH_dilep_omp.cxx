@@ -4078,15 +4078,19 @@ void ttH_dilep::ttDilepKinFit(){
 	vector<double> _mHiggsJet2_ttDKF (0);
 
 
+	// Best solution merge
+	ttDKF_Best_Sol best_sol;
+
+
 	#pragma omp private(di, result, task_id, nTSol, _ProbHiggs_ttDKF, _ProbTTbar_ttDKF, _ProbTotal_ttDKF, n_ttDKF_Best, \
 	MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
 	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar, _n1_ttDKF, _n2_ttDKF, \
 	_b1_ttDKF, _b2_ttDKF, _l1_ttDKF, _l2_ttDKF, _W1_ttDKF, _W2_ttDKF, _t1_ttDKF, _t2_ttDKF, _ttbar_ttDKF, \
 	_b1_Higgs_ttDKF, _b2_Higgs_ttDKF, _Higgs_ttDKF, _mHiggsJet1_ttDKF, _mHiggsJet2_ttDKF)
 
-	#pragma omp parallel
+	#pragma omp parallel num_threads(1) reduction(max:best_sol)
 	{
-	#pragma omp parallel for num_threads(1) reduction(+:HasSolution_private)
+	#pragma omp parallel for
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		// Calculates the new id of the task
 		task_id = (float) counter / (float) dilep_iterations;	
@@ -4407,7 +4411,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// end of pragma omp parallel
 	}
 
-	HasSolution = HasSolution_private;	// merge the hassolutions
+	//HasSolution = HasSolution_private;	// merge the hassolutions
 	
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
