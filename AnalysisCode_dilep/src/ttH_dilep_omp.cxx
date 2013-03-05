@@ -4427,6 +4427,10 @@ void ttH_dilep::ttDilepKinFit(){
 
 	best_sols[omp_get_thread_num()] = sol;
 
+	of.open ("dbg.txt", fstream::app);
+	of << "depois" << endl << endl;
+	of.close();
+
 	// end of pragma omp parallel
 	}
 
