@@ -4415,7 +4415,7 @@ void ttH_dilep::ttDilepKinFit(){
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	}
 	of.open ("dbg.txt", fstream::app);
-	of << "aqui" << endl << endl;
+	of << "aqui" << n_ttDKF_Best << " - " << EveNumber <<  endl << endl;
 	of.close();
 
 	ttDKF_Best_Sol sol (MaxTotalProb, _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
@@ -4426,7 +4426,7 @@ void ttH_dilep::ttDilepKinFit(){
 						_Higgs_ttDKF[n_ttDKF_Best]);
 
 	of.open ("dbg.txt", fstream::app);
-	of << "depois " << n_ttDKF_Best << " - " << EveNumber << endl << endl;
+	of << "depois " << endl << endl;
 	of.close();
 
 	best_sols[omp_get_thread_num()] = sol;
