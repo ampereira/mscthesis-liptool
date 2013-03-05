@@ -4387,7 +4387,10 @@ void ttH_dilep::ttDilepKinFit(){
 			_ProbTotal_ttDKF.push_back( _ProbHiggs_ttDKF[nTSol]*_ProbTTbar_ttDKF[nTSol] );
 
 			// n_ttDKF_Best vai ter o indice da melhor solucao desta thread e MaxTotalProb a sua probabilidade
-			if ( ( _ProbTotal_ttDKF[nTSol] > MaxTotalProb ) && ( _ProbTotal_ttDKF[nTSol] != 0. ) ) { MaxTotalProb = _ProbTotal_ttDKF[nTSol] ; n_ttDKF_Best = nTSol;}
+			if ( ( _ProbTotal_ttDKF[nTSol] > MaxTotalProb ) && ( _ProbTotal_ttDKF[nTSol] != 0. ) ) {
+				MaxTotalProb = _ProbTotal_ttDKF[nTSol];
+				n_ttDKF_Best = nTSol;
+			}
 
 			nTSol++;
 
@@ -4398,46 +4401,8 @@ void ttH_dilep::ttDilepKinFit(){
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	}
 
-	// OpenMP merging of the private variables!!!!!
-	// Only needs to merge the n_ttDKF_Best element from the vectors
-
 	HasSolution = HasSolution_private;	// merge the hassolutions
-	ProbHiggs_ttDKF = _ProbHiggs_ttDKF;
-	ProbTTbar_ttDKF = _ProbTTbar_ttDKF;
-	ProbTotal_ttDKF = _ProbTotal_ttDKF;
-	n1_ttDKF = _n1_ttDKF;
-	n2_ttDKF = _n2_ttDKF;
-	b1_ttDKF = _b1_ttDKF;
-	b2_ttDKF = _b2_ttDKF;
-	l1_ttDKF = _l1_ttDKF;
-	l2_ttDKF = _l2_ttDKF;
-	W1_ttDKF = _W1_ttDKF;
-	W2_ttDKF = _W2_ttDKF;
-	t1_ttDKF = _t1_ttDKF;
-	t2_ttDKF = _t2_ttDKF;
-	ttbar_ttDKF = _ttbar_ttDKF;
-	b1_Higgs_ttDKF = _b1_Higgs_ttDKF;
-	b2_Higgs_ttDKF = _b2_Higgs_ttDKF;
-	Higgs_ttDKF = _Higgs_ttDKF;
-	mHiggsJet1_ttDKF = _mHiggsJet1_ttDKF;
-	mHiggsJet2_ttDKF = _mHiggsJet2_ttDKF;
-
-	// ==================================================================
-	// Solutions Cycle
-	// ==================================================================
-
-
-	/*for ( int iSol = 0; iSol < nTSol; iSol++) {		
-
-		ProbTotal_ttDKF.push_back( ProbHiggs_ttDKF[iSol]*ProbTTbar_ttDKF[iSol] );
-		if ( ( ProbTotal_ttDKF[iSol] > MaxTotalProb ) && ( ProbTotal_ttDKF[iSol] != 0. ) ) { MaxTotalProb = ProbTotal_ttDKF[iSol] ; n_ttDKF_Best = iSol;}
-
-		//cout << "ProbHiggs_ttDKF[iSol] " << ProbHiggs_ttDKF[iSol] << "; ProbTTbar_ttDKF[iSol] " << ProbTTbar_ttDKF[iSol] << "; ProbTotal_ttDKF[iSol] " << ProbTotal_ttDKF[iSol] << endl;
-
-		//if ( ( ProbHiggs_ttDKF[iSol] > MaxHiggsProb ) && ( ProbHiggs_ttDKF[iSol] != 0. ) ) { MaxHiggsProb = ProbHiggs_ttDKF[iSol] ; n_ttDKF_Best = iSol;}
-
-	} */// Solutions Cicle
-
+	
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
 	// -------------------------------------------------------------------
@@ -4446,31 +4411,31 @@ void ttH_dilep::ttDilepKinFit(){
 	// -------------------------------------------------------------------
 	// Make sure backward compatibility is preserved + Few Calculations
 	// -------------------------------------------------------------------
-	if(  HasSolution > 0  )
-	{
-		/*
-		// -------------------------------------------------------------------
-		// Print out Debug Information
-		// -------------------------------------------------------------------
-		cout << "    " << endl;
-		cout << " ============ ttDilepKinFit =================================== " << endl;
-		for(Int_t i = 0; i < l1_ttDKF.size(); ++i){
+	if(  HasSolution > 0  ) {
 
-		if ( i != n_ttDKF_Best ) cout << " ------ Solution " << i << endl;
-		if ( i == n_ttDKF_Best ) cout << " ------ Solution " << i << " selected as the Best one ---------------" << endl;
-		cout << " top 1: Pt=" << t1_ttDKF[i].Pt() << " Eta=" << t1_ttDKF[i].Eta() << " Phi=" << t1_ttDKF[i].Phi() << " M=" << t1_ttDKF[i].M() << endl;
-		cout << "    b1: Pt=" << b1_ttDKF[i].Pt() << " Eta=" << b1_ttDKF[i].Eta() << " Phi=" << b1_ttDKF[i].Phi() << " M=" << b1_ttDKF[i].M() << endl;
-		cout << "    W1: Pt=" << W1_ttDKF[i].Pt() << " Eta=" << W1_ttDKF[i].Eta() << " Phi=" << W1_ttDKF[i].Phi() << " M=" << W1_ttDKF[i].M() << endl;
-		cout << "    l1: Pt=" << l1_ttDKF[i].Pt() << " Eta=" << l1_ttDKF[i].Eta() << " Phi=" << l1_ttDKF[i].Phi() << " M=" << l1_ttDKF[i].M() << endl;
-		cout << "    n1: Pt=" << _n1_ttDKF[i].Pt() << " Eta=" << n1_ttDKF[i].Eta() << " Phi=" << n1_ttDKF[i].Phi() << " M=" << n1_ttDKF[i].M() << endl;
+		// OpenMP merging of the private variables!!!!!
+		// Only needs to merge the n_ttDKF_Best element from the vectors
 
-		cout << " top 2: Pt=" << t2_ttDKF[i].Pt() << " Eta=" << t2_ttDKF[i].Eta() << " Phi=" << t2_ttDKF[i].Phi() << " M=" << t2_ttDKF[i].M() << endl;
-		cout << "    b2: Pt=" << b2_ttDKF[i].Pt() << " Eta=" << b2_ttDKF[i].Eta() << " Phi=" << b2_ttDKF[i].Phi() << " M=" << b2_ttDKF[i].M() << endl;
-		cout << "    W2: Pt=" << W2_ttDKF[i].Pt() << " Eta=" << W2_ttDKF[i].Eta() << " Phi=" << W2_ttDKF[i].Phi() << " M=" << W2_ttDKF[i].M() << endl;
-		cout << "    l2: Pt=" << l2_ttDKF[i].Pt() << " Eta=" << l2_ttDKF[i].Eta() << " Phi=" << l2_ttDKF[i].Phi() << " M=" << l2_ttDKF[i].M() << endl;
-		cout << "    n2: Pt=" << n2_ttDKF[i].Pt() << " Eta=" << n2_ttDKF[i].Eta() << " Phi=" << n2_ttDKF[i].Phi() << " M=" << n2_ttDKF[i].M() << endl;
-		}
-		 */
+		//ProbHiggs_ttDKF = _ProbHiggs_ttDKF;
+		//ProbTTbar_ttDKF = _ProbTTbar_ttDKF;
+		ProbTotal_ttDKF = _ProbTotal_ttDKF;
+		n1_ttDKF = _n1_ttDKF;
+		n2_ttDKF = _n2_ttDKF;
+		b1_ttDKF = _b1_ttDKF;
+		b2_ttDKF = _b2_ttDKF;
+		l1_ttDKF = _l1_ttDKF;
+		l2_ttDKF = _l2_ttDKF;
+		W1_ttDKF = _W1_ttDKF;
+		W2_ttDKF = _W2_ttDKF;
+		t1_ttDKF = _t1_ttDKF;
+		t2_ttDKF = _t2_ttDKF;
+		ttbar_ttDKF = _ttbar_ttDKF;
+		b1_Higgs_ttDKF = _b1_Higgs_ttDKF;
+		b2_Higgs_ttDKF = _b2_Higgs_ttDKF;
+		Higgs_ttDKF = _Higgs_ttDKF;
+		mHiggsJet1_ttDKF = _mHiggsJet1_ttDKF;
+		mHiggsJet2_ttDKF = _mHiggsJet2_ttDKF;
+
 
 		// -------------------------------------------------------------------
 		Neutrino     = n1_ttDKF[n_ttDKF_Best];  	// Neutrino 1
