@@ -1,5 +1,6 @@
 
 #include "../../LipMiniAnalysis/TLorentzVectorWFlags.h"
+#include "../../LipMiniAnalysis/LipMiniAnalysis.h"
 
 class ttDKF_Best_Sol {
 
