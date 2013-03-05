@@ -4080,6 +4080,10 @@ void ttH_dilep::ttDilepKinFit(){
 
 
 	// Best solution merge
+	ofstream of ("dbg.txt", fstream::app);
+	of << "antes" << endl << endl;
+	of.close();
+
 	ttDKF_Best_Sol best_sols [num_threads];
 
 
@@ -4410,7 +4414,7 @@ void ttH_dilep::ttDilepKinFit(){
 		// %      Solutions Found Are Stored     %
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	}
-	ofstream of ("dbg.txt", fstream::app);
+	of.open ("dbg.txt", fstream::app);
 	of << "aqui" << endl << endl;
 	of.close();
 
