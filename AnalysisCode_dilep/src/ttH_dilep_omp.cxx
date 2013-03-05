@@ -4425,11 +4425,11 @@ void ttH_dilep::ttDilepKinFit(){
 						_b1_Higgs_ttDKF[n_ttDKF_Best], _b2_Higgs_ttDKF[n_ttDKF_Best],
 						_Higgs_ttDKF[n_ttDKF_Best]);
 
-	best_sols[omp_get_thread_num()] = sol;
-
 	of.open ("dbg.txt", fstream::app);
 	of << "depois" << endl << endl;
 	of.close();
+	
+	best_sols[omp_get_thread_num()] = sol;
 
 	// end of pragma omp parallel
 	}
