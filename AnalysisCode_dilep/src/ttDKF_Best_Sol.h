@@ -26,6 +26,8 @@ public:
 					TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags,
 					TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags, TLorentzVectorWFlags);
 
+	ttDKF_Best_Sol (void);
+
 	// Getters
 	double getProb (void) const;
 	double getMHiggsJet (int) const;
