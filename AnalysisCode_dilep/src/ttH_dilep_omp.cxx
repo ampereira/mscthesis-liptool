@@ -4411,7 +4411,7 @@ void ttH_dilep::ttDilepKinFit(){
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	}
 
-	ttDKF_Best_Sol sol (_ProbTotal_ttDKF[n_ttDKF_Best], _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
+	ttDKF_Best_Sol sol (MaxTotalProb, _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
 						_n1_ttDKF[n_ttDKF_Best], _n2_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best],
 						_l1_ttDKF[n_ttDKF_Best], _l2_ttDKF[n_ttDKF_Best], _W1_ttDKF[n_ttDKF_Best], _W2_ttDKF[n_ttDKF_Best],
 						_t1_ttDKF[n_ttDKF_Best], _t2_ttDKF[n_ttDKF_Best], _ttbar_ttDKF[n_ttDKF_Best],
