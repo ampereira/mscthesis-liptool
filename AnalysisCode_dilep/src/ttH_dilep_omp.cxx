@@ -4413,8 +4413,8 @@ void ttH_dilep::ttDilepKinFit(){
 			}
 
 			nTSol++;
-			
-	#pragma omp critical
+
+	//#pragma omp critical
 		{
 		ofstream of ("dbg.txt", fstream::app);
 		of << "depois: " << omp_get_thread_num() << " - " << EveNumber << endl << endl;
