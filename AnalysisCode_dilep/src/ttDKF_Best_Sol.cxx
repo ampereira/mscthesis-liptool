@@ -28,9 +28,7 @@ ttDKF_Best_Sol::ttDKF_Best_Sol (double _probability, double _mHiggsJet1_ttDKF, d
 }
 
 ttDKF_Best_Sol::ttDKF_Best_Sol (void) {
-	probability = 0.0;
-	mHiggsJet1_ttDKF = 0.0;
-	mHiggsJet2_ttDKF = 0.0;
+	probability = -1.0;
 }
 
 // Getters

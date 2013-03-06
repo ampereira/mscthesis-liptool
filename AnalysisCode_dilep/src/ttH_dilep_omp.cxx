@@ -4424,8 +4424,10 @@ void ttH_dilep::ttDilepKinFit(){
 							_Higgs_ttDKF[n_ttDKF_Best]);
 
 		best_sols[omp_get_thread_num()] = sol;
-	} else
-		best_sols[omp_get_thread_num()] = NULL;
+	} else {
+		ttDKF_Best_Sol sol ();
+		best_sols[omp_get_thread_num()] = sol;
+	}
 
 	// end of pragma omp parallel
 	}
@@ -4434,9 +4436,9 @@ void ttH_dilep::ttDilepKinFit(){
 
 	// OPTIMIZAR ISTO DEPOIS!
 	for (int i = 0; i < num_threads; ++i) {
-		if (i == 0 && best_sols[i] != NULL)
+		if (i == 0 && best_sols[i].getProb() != -1.0)
 			best = best_sols[i];
-		else if (best_sols[i] != NULL)
+		else if (best_sols[i].getProb() != -1.0)
 			best = (best < best_sols[i]) ? best_sols[i] : best;
 	}
 	
