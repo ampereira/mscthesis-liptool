@@ -4098,7 +4098,7 @@ void ttH_dilep::ttDilepKinFit(){
 		#pragma omp critical
 		{
 		ofstream of ("dbg.txt", fstream::app);
-		of << "antes: " << omp_get_thread_num() << endl << endl;
+		of << "antes: " << omp_get_thread_num() << " - " << EveNumber << endl << endl;
 		of.close();
 		}
 	#pragma omp parallel for reduction(+:HasSolution_private)
