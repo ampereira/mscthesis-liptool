@@ -4133,17 +4133,21 @@ void ttH_dilep::ttDilepKinFit(){
 
 		//std::vector<myvector>::iterator pp;
 
-	#pragma omp critical
+	/*#pragma omp critical
 		{
 		ofstream of ("dbg.txt", fstream::app);
 		of << "antes: " << omp_get_thread_num() << " - " << EveNumber << endl;
 		of.close();
-		}
+		}*/
 
 
 		#pragma omp critical
 		for ( int id = 0; id < result->size(); id++) {
 
+		ofstream of ("dbg.txt", fstream::app);
+		of << "antes: " << omp_get_thread_num() << " - " << EveNumber << endl;
+		of.close();
+		
 			myvector *pp = &result->at(id);
 
 			double   px,  py,  pz,  E, 
