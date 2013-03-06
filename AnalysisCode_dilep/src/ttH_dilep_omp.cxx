@@ -4426,7 +4426,7 @@ void ttH_dilep::ttDilepKinFit(){
 		best_sols[omp_get_thread_num()] = sol;
 	} else {
 		const ttDKF_Best_Sol sol ();
-		best_sols[omp_get_thread_num()] = sol;
+		best_sols[omp_get_thread_num()] = &sol;
 	}
 
 	// end of pragma omp parallel
