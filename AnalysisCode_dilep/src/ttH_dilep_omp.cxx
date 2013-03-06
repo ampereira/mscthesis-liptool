@@ -4132,7 +4132,7 @@ void ttH_dilep::ttDilepKinFit(){
 		HasSolution_private += di.getHasSol();
 
 		//std::vector<myvector>::iterator pp;
-			
+
 	#pragma omp critical
 		{
 		ofstream of ("dbg.txt", fstream::app);
@@ -4413,6 +4413,14 @@ void ttH_dilep::ttDilepKinFit(){
 			}
 
 			nTSol++;
+			
+	#pragma omp critical
+		{
+		ofstream of ("dbg.txt", fstream::app);
+		of << "depois: " << omp_get_thread_num() << " - " << EveNumber << endl << endl;
+		of.close();
+		}
+
 
 		}
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -4434,13 +4442,6 @@ void ttH_dilep::ttDilepKinFit(){
 		ttDKF_Best_Sol *sol = new ttDKF_Best_Sol ();
 		best_sols[omp_get_thread_num()] = *sol;
 	}
-	#pragma omp critical
-		{
-		ofstream of ("dbg.txt", fstream::app);
-		of << "depois: " << omp_get_thread_num() << " - " << EveNumber << endl << endl;
-		of.close();
-		}
-
 
 	// end of pragma omp parallel
 	}
