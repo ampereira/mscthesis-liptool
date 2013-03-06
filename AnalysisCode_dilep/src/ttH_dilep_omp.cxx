@@ -4416,10 +4416,10 @@ void ttH_dilep::ttDilepKinFit(){
 	#pragma omp critical
 		{
 		ofstream of ("dbg.txt", fstream::app);
-		of << "antes: " << omp_get_thread_num() << " - " << EveNumber << endl << endl;
+		of << "antes: " << omp_get_thread_num() << " - " << EveNumber << endl;
 		of.close();
 		}
-	
+
 	if (n_ttDKF_Best >= 0) {	
 		ttDKF_Best_Sol sol (MaxTotalProb, _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
 							_n1_ttDKF[n_ttDKF_Best], _n2_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best],
@@ -4433,6 +4433,13 @@ void ttH_dilep::ttDilepKinFit(){
 		ttDKF_Best_Sol *sol = new ttDKF_Best_Sol ();
 		best_sols[omp_get_thread_num()] = *sol;
 	}
+	#pragma omp critical
+		{
+		ofstream of ("dbg.txt", fstream::app);
+		of << "depois: " << omp_get_thread_num() << " - " << EveNumber << endl << endl;
+		of.close();
+		}
+
 
 	// end of pragma omp parallel
 	}
