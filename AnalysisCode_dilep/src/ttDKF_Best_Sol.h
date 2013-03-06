@@ -59,6 +59,8 @@ public:
 		b1_Higgs_ttDKF = rhs.getBHiggs(1);
 		b2_Higgs_ttDKF = rhs.getBHiggs(2);
 		Higgs_ttDKF = rhs.getHiggs();
+
+		return *this;
 	}
 };
 
