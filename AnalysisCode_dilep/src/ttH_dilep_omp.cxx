@@ -4080,10 +4080,12 @@ void ttH_dilep::ttDilepKinFit(){
 
 
 	// Best solution merge
-	ttDKF_Best_Sol best_sols [2];
+	
+
+	ttDKF_Best_Sol best_sols [num_threads];
 
 
-	omp_set_num_threads(2);
+	omp_set_num_threads(num_threads);
 
 	#pragma omp private(di, result, task_id, nTSol, _ProbHiggs_ttDKF, _ProbTTbar_ttDKF, _ProbTotal_ttDKF, n_ttDKF_Best, \
 	MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
@@ -4093,6 +4095,12 @@ void ttH_dilep::ttDilepKinFit(){
 
 	#pragma omp parallel
 	{
+		#pragma omp critical
+		{
+		ofstream of ("dbg.txt", fstream::app);
+		of << "antes: " << omp_get_thread_num() << endl << endl;
+		of.close();
+		}
 	#pragma omp parallel for reduction(+:HasSolution_private)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		// Calculates the new id of the task
