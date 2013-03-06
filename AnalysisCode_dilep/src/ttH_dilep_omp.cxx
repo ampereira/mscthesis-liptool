@@ -4095,6 +4095,13 @@ void ttH_dilep::ttDilepKinFit(){
 
 	#pragma omp parallel
 	{
+		
+	#pragma omp critical
+		{
+		ofstream of ("dbg.txt", fstream::app);
+		of << "antes: " << omp_get_thread_num() << " - " << EveNumber << endl;
+		of.close();
+		}
 	#pragma omp parallel for reduction(+:HasSolution_private)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		// Calculates the new id of the task
@@ -4412,13 +4419,6 @@ void ttH_dilep::ttDilepKinFit(){
 		// %      Solutions Found Are Stored     %
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	}
-
-	#pragma omp critical
-		{
-		ofstream of ("dbg.txt", fstream::app);
-		of << "antes: " << omp_get_thread_num() << " - " << EveNumber << endl;
-		of.close();
-		}
 
 	if (n_ttDKF_Best >= 0) {	
 		ttDKF_Best_Sol sol (MaxTotalProb, _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
