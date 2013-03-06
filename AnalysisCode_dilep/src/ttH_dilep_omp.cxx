@@ -4427,9 +4427,9 @@ void ttH_dilep::ttDilepKinFit(){
 	// end of pragma omp parallel
 	}
 
-	if (n_ttDKF_Best >= 0) {
 	ttDKF_Best_Sol best;
-	// OPTIMIZAR ISTO DEPOIS!
+
+	if (n_ttDKF_Best >= 0) {	// OPTIMIZAR ISTO DEPOIS!
 	for (int i = 0; i < num_threads; ++i) {
 		if (i == 0)
 			best = best_sols[i];
