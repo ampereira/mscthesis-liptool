@@ -4414,7 +4414,8 @@ void ttH_dilep::ttDilepKinFit(){
 		// %      Solutions Found Are Stored     %
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	}
-
+	
+	if (n_ttDKF_Best >= 0) {	
 	ttDKF_Best_Sol sol (MaxTotalProb, _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
 						_n1_ttDKF[n_ttDKF_Best], _n2_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best],
 						_l1_ttDKF[n_ttDKF_Best], _l2_ttDKF[n_ttDKF_Best], _W1_ttDKF[n_ttDKF_Best], _W2_ttDKF[n_ttDKF_Best],
@@ -4423,20 +4424,22 @@ void ttH_dilep::ttDilepKinFit(){
 						_Higgs_ttDKF[n_ttDKF_Best]);
 
 	best_sols[omp_get_thread_num()] = sol;
+	} else
+		best_sols[omp_get_thread_num()] = NULL;
 
 	// end of pragma omp parallel
 	}
 
 	ttDKF_Best_Sol best;
 
-	if (n_ttDKF_Best >= 0) {	// OPTIMIZAR ISTO DEPOIS!
+	// OPTIMIZAR ISTO DEPOIS!
 	for (int i = 0; i < num_threads; ++i) {
-		if (i == 0)
+		if (i == 0 && best_sols[i] != NULL)
 			best = best_sols[i];
-		else
+		else if (best_sols[i] != NULL)
 			best = (best < best_sols[i]) ? best_sols[i] : best;
 	}
-	}
+	
 
 	HasSolution = HasSolution_private;	// merge the hassolutions
 	
