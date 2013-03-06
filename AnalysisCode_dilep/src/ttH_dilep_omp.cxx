@@ -4425,7 +4425,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 		best_sols[omp_get_thread_num()] = sol;
 	} else {
-		ttDKF_Best_Sol sol ();
+		const ttDKF_Best_Sol sol ();
 		best_sols[omp_get_thread_num()] = sol;
 	}
 
