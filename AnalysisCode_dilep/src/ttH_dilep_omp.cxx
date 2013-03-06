@@ -4080,14 +4080,10 @@ void ttH_dilep::ttDilepKinFit(){
 
 
 	// Best solution merge
-	ofstream of ("dbg.txt", fstream::app);
-	of << "antes" << endl << endl;
-	of.close();
-
-	ttDKF_Best_Sol best_sols [num_threads];
+	ttDKF_Best_Sol best_sols [2];
 
 
-	omp_set_num_threads(num_threads);
+	omp_set_num_threads(2);
 
 	#pragma omp private(di, result, task_id, nTSol, _ProbHiggs_ttDKF, _ProbTTbar_ttDKF, _ProbTotal_ttDKF, n_ttDKF_Best, \
 	MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
