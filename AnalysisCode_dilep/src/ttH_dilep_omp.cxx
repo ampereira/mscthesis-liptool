@@ -4416,14 +4416,14 @@ void ttH_dilep::ttDilepKinFit(){
 	}
 	
 	if (n_ttDKF_Best >= 0) {	
-	ttDKF_Best_Sol sol (MaxTotalProb, _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
-						_n1_ttDKF[n_ttDKF_Best], _n2_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best],
-						_l1_ttDKF[n_ttDKF_Best], _l2_ttDKF[n_ttDKF_Best], _W1_ttDKF[n_ttDKF_Best], _W2_ttDKF[n_ttDKF_Best],
-						_t1_ttDKF[n_ttDKF_Best], _t2_ttDKF[n_ttDKF_Best], _ttbar_ttDKF[n_ttDKF_Best],
-						_b1_Higgs_ttDKF[n_ttDKF_Best], _b2_Higgs_ttDKF[n_ttDKF_Best],
-						_Higgs_ttDKF[n_ttDKF_Best]);
+		ttDKF_Best_Sol sol (MaxTotalProb, _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
+							_n1_ttDKF[n_ttDKF_Best], _n2_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best],
+							_l1_ttDKF[n_ttDKF_Best], _l2_ttDKF[n_ttDKF_Best], _W1_ttDKF[n_ttDKF_Best], _W2_ttDKF[n_ttDKF_Best],
+							_t1_ttDKF[n_ttDKF_Best], _t2_ttDKF[n_ttDKF_Best], _ttbar_ttDKF[n_ttDKF_Best],
+							_b1_Higgs_ttDKF[n_ttDKF_Best], _b2_Higgs_ttDKF[n_ttDKF_Best],
+							_Higgs_ttDKF[n_ttDKF_Best]);
 
-	best_sols[omp_get_thread_num()] = sol;
+		best_sols[omp_get_thread_num()] = sol;
 	} else
 		best_sols[omp_get_thread_num()] = NULL;
 
