@@ -4100,6 +4100,13 @@ void ttH_dilep::ttDilepKinFit(){
 		// Calculates the new id of the task
 		task_id = (float) counter / (float) dilep_iterations;	
 
+	#pragma omp critical
+		{
+		ofstream of ("dbg.txt", fstream::app);
+		of << "antes: " << omp_get_thread_num() << " - " << EveNumber << endl;
+		of.close();
+		}
+
 		// Check if it needs to pick a new combo
 		if (task_id == (int) task_id)
 			di = inputs[(int) task_id];
@@ -4132,21 +4139,15 @@ void ttH_dilep::ttDilepKinFit(){
 		HasSolution_private += di.getHasSol();
 
 		//std::vector<myvector>::iterator pp;
-
-	/*#pragma omp critical
+#pragma omp critical
 		{
 		ofstream of ("dbg.txt", fstream::app);
-		of << "antes: " << omp_get_thread_num() << " - " << EveNumber << endl;
+		of << "depois: " << omp_get_thread_num() << " - " << EveNumber << endl << endl;
 		of.close();
-		}*/
+		}
 
-
-		#pragma omp critical
+		//#pragma omp critical
 		for ( int id = 0; id < result->size(); id++) {
-
-		ofstream of ("dbg.txt", fstream::app);
-		of << "antes: " << omp_get_thread_num() << " - " << EveNumber << endl;
-		of.close();
 		
 			myvector *pp = &result->at(id);
 
@@ -4418,12 +4419,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 			nTSol++;
 
-	//#pragma omp critical
-		{
-		ofstream of ("dbg.txt", fstream::app);
-		of << "depois: " << omp_get_thread_num() << " - " << EveNumber << endl << endl;
-		of.close();
-		}
+	//
 
 
 		}
