@@ -4146,7 +4146,7 @@ void ttH_dilep::ttDilepKinFit(){
 		of.close();
 		}*/
 
-		//#pragma omp critical
+		#pragma omp critical
 		for ( int id = 0; id < result->size(); id++) {
 		
 			myvector *pp = &result->at(id);
