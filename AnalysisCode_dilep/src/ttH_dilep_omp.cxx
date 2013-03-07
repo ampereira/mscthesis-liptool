@@ -4101,7 +4101,7 @@ void ttH_dilep::ttDilepKinFit(){
 		task_id = (float) counter / (float) dilep_iterations - 0.5;	
 
 		// Check if it needs to pick a new combo
-		#pragma omp critical
+		//#pragma omp critical
 		//if (task_id == (int) task_id)
 		di = inputs[(int) task_id];
 		
