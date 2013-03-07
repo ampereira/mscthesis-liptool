@@ -23,7 +23,7 @@ CXXFLAGS   = -ggdb3 $(ROOTCFLAGS)
 LIBS       = $(ROOTLIBS)
 GLIBS      = $(ROOTGLIBS)
 
-INCLUDES = -I$(incdir) -I$(ROOTSYS)/include -I$(ROOTCOREDIR)/include
+INCLUDES = -I$(HOME)/stlport/stlport -I$(incdir) -I$(ROOTSYS)/include -I$(ROOTCOREDIR)/include
 
 ################################################################################
 # analysis code
@@ -31,7 +31,7 @@ INCLUDES = -I$(incdir) -I$(ROOTSYS)/include -I$(ROOTCOREDIR)/include
 
 LipMiniAnalysis = ../LipMiniAnalysis
 COMMONANALYSISCODE = src/define_samples_simulation_MarkOwen.cxx src/define_samples_data_MarkOwen.cxx src/UserCommandLineOptions.cxx
-LIBDIRS = -L$(LipMiniAnalysis) -lLipMiniAnalysis $(LIBS) $(GLIBS)
+LIBDIRS = -L$(HOME)/stlport/stlport -lstlport -L$(LipMiniAnalysis) -lLipMiniAnalysis $(LIBS) $(GLIBS)
 
 ################################################################################
 # Rules
@@ -40,7 +40,7 @@ LIBDIRS = -L$(LipMiniAnalysis) -lLipMiniAnalysis $(LIBS) $(GLIBS)
 seq: CXXFLAGS += -DSEQ
 seq: ttH_dilep_seq
 
-omp: CXXFLAGS += -DOMP -fopenmp
+omp: CXXFLAGS += -DOMP -pthread -fopenmp
 omp: ttH_dilep_omp
 
 cuda: CXXFLAGS += -DCUDA
