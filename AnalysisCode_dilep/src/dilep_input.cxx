@@ -6,6 +6,7 @@ DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVe
 						TLorentzVectorWFlags _c_lepWFlags, TLorentzVectorWFlags _jet1_HiggsWFlags, TLorentzVectorWFlags _jet2_HiggsWFlags,
 						double _in_mpx[], double _in_mpy[], double _in_mpz[], double _MissPx,
 						double _MissPy, double _t_mass[], double _w_mass[]) {
+	t_rnd.SetSeed(SEED);
 
 	z_lep = _z_lep;
 	c_lep = _c_lep;
@@ -40,6 +41,8 @@ DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVe
 
 // Constructor
 DilepInput::DilepInput (const DilepInput &other) {
+	t_rnd.SetSeed(SEED);
+
 	in_mpx[0] = other.getInMpx(0);
 	in_mpx[1] = other.getInMpx(1);
 	in_mpy[0] = other.getInMpy(0);
@@ -78,6 +81,7 @@ DilepInput::DilepInput (const DilepInput &other) {
 
 // Constructor
 DilepInput::DilepInput (void) {
+	t_rnd.SetSeed(SEED);
 	hasSolution = 0;
 }
 // Print the private variables of the class for debug purposes

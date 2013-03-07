@@ -14,7 +14,7 @@ using namespace std;
 
 class DilepInput {
 	
-	static TRandom3 t_rnd (SEED);
+	TRandom3 t_rnd;
 
 	TLorentzVector z_lep, c_lep;
 	TLorentzVector z_bj, c_bj;
