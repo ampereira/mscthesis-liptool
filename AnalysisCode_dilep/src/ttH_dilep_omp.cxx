@@ -4098,12 +4098,12 @@ void ttH_dilep::ttDilepKinFit(){
 	#pragma omp parallel for reduction(+:HasSolution_private)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		// Calculates the new id of the task
-		task_id = (float) counter / (float) dilep_iterations;	
+		task_id = (float) counter / (float) dilep_iterations - 0.5;	
 
 		// Check if it needs to pick a new combo
-		#pragma omp critical
-		if (task_id == (int) task_id)
-			di = inputs[(int) task_id];
+		//#pragma omp critical
+		//if (task_id == (int) task_id)
+		di = inputs[(int) task_id];
 		
 		// Apply the variance (thread safe)
 		di.applyVariance(RESOLUTION);
