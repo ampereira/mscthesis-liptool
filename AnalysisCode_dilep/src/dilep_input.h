@@ -9,11 +9,12 @@
 #include "../../LipMiniAnalysis/LipMiniAnalysis.h"
 
 #define SEED 123456
-static TRandom3 t_rnd (SEED);
 
 using namespace std;
 
 class DilepInput {
+	
+	static TRandom3 t_rnd (SEED);
 
 	TLorentzVector z_lep, c_lep;
 	TLorentzVector z_bj, c_bj;
