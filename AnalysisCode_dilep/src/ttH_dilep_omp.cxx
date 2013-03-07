@@ -4100,29 +4100,19 @@ void ttH_dilep::ttDilepKinFit(){
 		// Calculates the new id of the task
 		task_id = (float) counter / (float) dilep_iterations;	
 
-	/*#pragma omp critical
-		{
-		ofstream of ("dbg.txt", fstream::app);
-		of << "antes: " << omp_get_thread_num() << " - " << EveNumber << endl;
-		of.close();
-		}*/
-
 		// Check if it needs to pick a new combo
-
 		#pragma omp critical
 		if (task_id == (int) task_id)
 			di = inputs[(int) task_id];
 		
-		// Apply the variance
-		// nao sei se o gerador e thread safe...
-		#pragma omp critical
+		// Apply the variance (thread safe)
 		di.applyVariance(RESOLUTION);
 
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
 		Dilep::CPU::dilep(di);
 #elif OMP
-		//#pragma omp critical
+		#pragma omp critical
 		Dilep::CPU::dilep(di);
 #elif CUDA
 		result = CUDA::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
