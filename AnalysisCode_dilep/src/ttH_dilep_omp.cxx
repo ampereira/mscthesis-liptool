@@ -4095,7 +4095,7 @@ void ttH_dilep::ttDilepKinFit(){
 		vector<TLorentzVectorWFlags> _Higgs_ttDKF (0);
 		vector<double> _mHiggsJet1_ttDKF (0);
 		vector<double> _mHiggsJet2_ttDKF (0);
-		
+
 	#pragma omp parallel for reduction(+:HasSolution_private)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
@@ -4146,7 +4146,7 @@ void ttH_dilep::ttDilepKinFit(){
 		of.close();
 		}*/
 
-		#pragma omp critical
+		//#pragma omp critical
 		for ( int id = 0; id < result->size(); id++) {
 		
 			myvector *pp = &result->at(id);
