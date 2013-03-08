@@ -4051,59 +4051,61 @@ void ttH_dilep::ttDilepKinFit(){
 	// WARNING: numa primeira fase apenas para num combos <= num parallel tasks
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
 
-	DilepInput di;
-
 	// OpenMP variable declarations - cannot use class variables in OpenMP clauses
 	// Variables starting with the '_' are private for each thread
 
-	float task_id;		// used to determine the comb to use
-	int HasSolution_private = 0;
-	vector<double> _ProbHiggs_ttDKF (0);
-	vector<double> _ProbTTbar_ttDKF (0);
-	vector<double> _ProbTotal_ttDKF (0);
-	vector<TLorentzVectorWFlags> _n1_ttDKF (0);
-	vector<TLorentzVectorWFlags> _n2_ttDKF (0);
-	vector<TLorentzVectorWFlags> _b1_ttDKF (0);
-	vector<TLorentzVectorWFlags> _b2_ttDKF (0);
-	vector<TLorentzVectorWFlags> _l1_ttDKF (0);
-	vector<TLorentzVectorWFlags> _l2_ttDKF (0);
-	vector<TLorentzVectorWFlags> _W1_ttDKF (0);
-	vector<TLorentzVectorWFlags> _W2_ttDKF (0);
-	vector<TLorentzVectorWFlags> _t1_ttDKF (0);
-	vector<TLorentzVectorWFlags> _t2_ttDKF (0);
-	vector<TLorentzVectorWFlags> _ttbar_ttDKF (0);
-	vector<TLorentzVectorWFlags> _b1_Higgs_ttDKF (0);
-	vector<TLorentzVectorWFlags> _b2_Higgs_ttDKF (0);
-	vector<TLorentzVectorWFlags> _Higgs_ttDKF (0);
-	vector<double> _mHiggsJet1_ttDKF (0);
-	vector<double> _mHiggsJet2_ttDKF (0);
 
 
 	// Best solution merge
+
 	
 
 	ttDKF_Best_Sol best_sols [num_threads];
 
 
 	omp_set_num_threads(num_threads);
-
+/*
 	#pragma omp private(di, result, task_id, nTSol, _ProbHiggs_ttDKF, _ProbTTbar_ttDKF, _ProbTotal_ttDKF, n_ttDKF_Best, \
 	MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
 	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar, _n1_ttDKF, _n2_ttDKF, \
 	_b1_ttDKF, _b2_ttDKF, _l1_ttDKF, _l2_ttDKF, _W1_ttDKF, _W2_ttDKF, _t1_ttDKF, _t2_ttDKF, _ttbar_ttDKF, \
-	_b1_Higgs_ttDKF, _b2_Higgs_ttDKF, _Higgs_ttDKF, _mHiggsJet1_ttDKF, _mHiggsJet2_ttDKF)
+	_b1_Higgs_ttDKF, _b2_Higgs_ttDKF, _Higgs_ttDKF, _mHiggsJet1_ttDKF, _mHiggsJet2_ttDKF)*/
 
-	#pragma omp parallel
+	#pragma omp parallel private(result, nTSol, n_ttDKF_Best, MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
+	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar)
 	{
 	#pragma omp parallel for reduction(+:HasSolution_private)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
+		float task_id;		// used to determine the comb to use
+		int HasSolution_private = 0;
+		vector<double> _ProbHiggs_ttDKF (0);
+		vector<double> _ProbTTbar_ttDKF (0);
+		vector<double> _ProbTotal_ttDKF (0);
+		vector<TLorentzVectorWFlags> _n1_ttDKF (0);
+		vector<TLorentzVectorWFlags> _n2_ttDKF (0);
+		vector<TLorentzVectorWFlags> _b1_ttDKF (0);
+		vector<TLorentzVectorWFlags> _b2_ttDKF (0);
+		vector<TLorentzVectorWFlags> _l1_ttDKF (0);
+		vector<TLorentzVectorWFlags> _l2_ttDKF (0);
+		vector<TLorentzVectorWFlags> _W1_ttDKF (0);
+		vector<TLorentzVectorWFlags> _W2_ttDKF (0);
+		vector<TLorentzVectorWFlags> _t1_ttDKF (0);
+		vector<TLorentzVectorWFlags> _t2_ttDKF (0);
+		vector<TLorentzVectorWFlags> _ttbar_ttDKF (0);
+		vector<TLorentzVectorWFlags> _b1_Higgs_ttDKF (0);
+		vector<TLorentzVectorWFlags> _b2_Higgs_ttDKF (0);
+		vector<TLorentzVectorWFlags> _Higgs_ttDKF (0);
+		vector<double> _mHiggsJet1_ttDKF (0);
+		vector<double> _mHiggsJet2_ttDKF (0);
+
+
 		// Calculates the new id of the task
 		task_id = (float) counter / (float) dilep_iterations - 0.5;	
 
 		// Check if it needs to pick a new combo
 		//#pragma omp critical
 		//if (task_id == (int) task_id)
-		di = inputs[(int) task_id];
+		DilepInput di (inputs[(int) task_id]);
 		
 		// Apply the variance (thread safe)
 		di.applyVariance(RESOLUTION);
