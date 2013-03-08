@@ -4061,6 +4061,7 @@ void ttH_dilep::ttDilepKinFit(){
 	
 
 	ttDKF_Best_Sol best_sols [num_threads];
+		int HasSolution_private = 0;
 
 
 	omp_set_num_threads(num_threads);
@@ -4075,7 +4076,6 @@ void ttH_dilep::ttDilepKinFit(){
 	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar)
 	{
 		float task_id;		// used to determine the comb to use
-		int HasSolution_private = 0;
 		vector<double> _ProbHiggs_ttDKF (0);
 		vector<double> _ProbTTbar_ttDKF (0);
 		vector<double> _ProbTotal_ttDKF (0);
