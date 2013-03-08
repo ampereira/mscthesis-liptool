@@ -4074,8 +4074,6 @@ void ttH_dilep::ttDilepKinFit(){
 	#pragma omp parallel private(result, nTSol, n_ttDKF_Best, MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
 	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar)
 	{
-	#pragma omp parallel for reduction(+:HasSolution_private)
-	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		float task_id;		// used to determine the comb to use
 		int HasSolution_private = 0;
 		vector<double> _ProbHiggs_ttDKF (0);
@@ -4097,6 +4095,10 @@ void ttH_dilep::ttDilepKinFit(){
 		vector<TLorentzVectorWFlags> _Higgs_ttDKF (0);
 		vector<double> _mHiggsJet1_ttDKF (0);
 		vector<double> _mHiggsJet2_ttDKF (0);
+		
+	#pragma omp parallel for reduction(+:HasSolution_private)
+	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
+		
 
 
 		// Calculates the new id of the task
