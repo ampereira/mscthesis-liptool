@@ -16,14 +16,14 @@ ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
 #CXXFLAGS   = -O3 $(ROOTCFLAGS)
-CXXFLAGS   = -ggdb3 $(ROOTCFLAGS)
+CXXFLAGS   = -ggdb3 -std=c++11 $(ROOTCFLAGS)
 # specific time measurement
 #CXXFLAGS  += -DMEASURE_KINFIT -DMEASURE_DILEP
 
 LIBS       = $(ROOTLIBS)
 GLIBS      = $(ROOTGLIBS)
 
-INCLUDES = -I$(HOME)/stlport/stlport -I$(incdir) -I$(ROOTSYS)/include -I$(ROOTCOREDIR)/include
+INCLUDES = -I$(incdir) -I$(ROOTSYS)/include -I$(ROOTCOREDIR)/include
 
 ################################################################################
 # analysis code
@@ -31,7 +31,7 @@ INCLUDES = -I$(HOME)/stlport/stlport -I$(incdir) -I$(ROOTSYS)/include -I$(ROOTCO
 
 LipMiniAnalysis = ../LipMiniAnalysis
 COMMONANALYSISCODE = src/define_samples_simulation_MarkOwen.cxx src/define_samples_data_MarkOwen.cxx src/UserCommandLineOptions.cxx
-LIBDIRS = -L$(HOME)/stlport/stlport -lstlport -L$(LipMiniAnalysis) -lLipMiniAnalysis $(LIBS) $(GLIBS)
+LIBDIRS = -lstlport -L$(LipMiniAnalysis) -lLipMiniAnalysis $(LIBS) $(GLIBS)
 
 ################################################################################
 # Rules

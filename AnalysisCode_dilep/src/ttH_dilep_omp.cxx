@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <string>
 #include <set>
-using namespace _STL;
+using namespace std;
 
 #include "myvector.h"
 
