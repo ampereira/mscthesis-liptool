@@ -4062,6 +4062,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 	ttDKF_Best_Sol best_sols [num_threads];
 		int HasSolution_private = 0;
+				std::vector<double> Xpdf;
 
 
 	omp_set_num_threads(num_threads);
@@ -4073,7 +4074,7 @@ void ttH_dilep::ttDilepKinFit(){
 	_b1_Higgs_ttDKF, _b2_Higgs_ttDKF, _Higgs_ttDKF, _mHiggsJet1_ttDKF, _mHiggsJet2_ttDKF)*/
 
 	#pragma omp parallel private(result, nTSol, n_ttDKF_Best, MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
-	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar)
+	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar, Xpdf)
 	{
 		float task_id;		// used to determine the comb to use
 		vector<double> _ProbHiggs_ttDKF (0);
@@ -4370,7 +4371,7 @@ void ttH_dilep::ttDilepKinFit(){
 				*/
 
 				// Define used pdf variables (make sure the range of variables meets histos)
-				std::vector<double> Xpdf;
+				Xpdf.clear();
 				Xpdf.push_back(_n1_ttDKF[nTSol].Pt()/GeV); // 1st pdf: pT neutrino 1
 				Xpdf.push_back(_n2_ttDKF[nTSol].Pt()/GeV); // 2nd pdf: pT neutrino 2
 
