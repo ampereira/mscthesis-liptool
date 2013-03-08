@@ -31,7 +31,7 @@ INCLUDES = -I$(incdir) -I$(ROOTSYS)/include -I$(ROOTCOREDIR)/include
 
 LipMiniAnalysis = ../LipMiniAnalysis
 COMMONANALYSISCODE = src/define_samples_simulation_MarkOwen.cxx src/define_samples_data_MarkOwen.cxx src/UserCommandLineOptions.cxx
-LIBDIRS = -lstlport -L$(LipMiniAnalysis) -lLipMiniAnalysis $(LIBS) $(GLIBS)
+LIBDIRS = -L$(LipMiniAnalysis) -lLipMiniAnalysis $(LIBS) $(GLIBS)
 
 ################################################################################
 # Rules
