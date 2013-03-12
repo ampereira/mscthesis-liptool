@@ -4489,7 +4489,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// Make sure backward compatibility is preserved + Few Calculations
 	// -------------------------------------------------------------------
 	if(  HasSolution > 0  ) {
-
+int n_ttDKF_Best = 0;
 		// OpenMP merging of the private variables!!!!!
 		// Only needs to merge the n_ttDKF_Best element from the vectors
 /*
