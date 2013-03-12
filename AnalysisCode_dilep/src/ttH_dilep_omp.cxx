@@ -4096,6 +4096,8 @@ void ttH_dilep::ttDilepKinFit(){
 		vector<double> _mHiggsJet1_ttDKF (0);
 		vector<double> _mHiggsJet2_ttDKF (0);
 
+		nTSol = 0;
+
 	#pragma omp parallel for reduction(+:HasSolution_private)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
@@ -4363,11 +4365,11 @@ void ttH_dilep::ttDilepKinFit(){
 
 			// (ii) nupT1,nupT2 from p.d.fs
 			if ( ttDKF_SolutionChoice == 2 ) {
-				n
+				/*
 				ofstream of ("hasda.txt", fstream::app);
 				of << EveNumber << " - " << nTSol << " - " << _n1_ttDKF.size() << endl;
 				of.close();
-				
+				*/
 
 				// Define used pdf variables (make sure the range of variables meets histos)
 				std::vector<double> Xpdf;
