@@ -4412,6 +4412,10 @@ void ttH_dilep::ttDilepKinFit(){
 			if ( ( _ProbTotal_ttDKF[nTSol] > MaxTotalProb ) && ( _ProbTotal_ttDKF[nTSol] != 0. ) ) {
 				MaxTotalProb = _ProbTotal_ttDKF[nTSol];
 				n_ttDKF_Best = nTSol;
+							
+				ofstream of ("hasda.txt", fstream::app);
+				of << omp_get_thread_num() << " - " << n_ttDKF_Best << " - " << nTSol << endl;
+				of.close();
 			}
 
 			nTSol++;
@@ -4425,10 +4429,6 @@ void ttH_dilep::ttDilepKinFit(){
 		// %      Solutions Found Are Stored     %
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	}
-				
-	ofstream of ("hasda.txt", fstream::app);
-	of << omp_get_thread_num() << " - " << n_ttDKF_Best << " - "  << endl;
-	of.close();
 				
 
 	if (n_ttDKF_Best >= 0) {	
