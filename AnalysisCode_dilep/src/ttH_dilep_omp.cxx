@@ -4096,7 +4096,7 @@ void ttH_dilep::ttDilepKinFit(){
 		vector<double> _mHiggsJet1_ttDKF (0);
 		vector<double> _mHiggsJet2_ttDKF (0);
 
-		//nTSol = 0;
+		nTSol = 0;
 		//n_ttDKF_Best = -999;
 
 	#pragma omp parallel for reduction(+:HasSolution_private)
