@@ -4448,17 +4448,15 @@ void ttH_dilep::ttDilepKinFit(){
 	of << omp_get_thread_num() << " - " << HasSolution_private << " - " << HasSolution << " - " << n_ttDKF_Best << endl;
 	of.close();
 */
-	coisas = n_ttDKF_Best;
 	// end of pragma omp parallel
 	}
 
-	ttDKF_Best_Sol best;
+	// initialize
+	ttDKF_Best_Sol best = best_sols[0];
 
 	// OPTIMIZAR ISTO DEPOIS!
-	for (int i = 0; i < num_threads; ++i) {
-		if (i == 0 && best_sols[i].getProb() != -1.0)
-			best = best_sols[i];
-		else if (best_sols[i].getProb() != -1.0)
+	for (int i = 1; i < num_threads; ++i) {
+		if (best_sols[i].getProb() != -1.0)
 			best = (best < best_sols[i]) ? best_sols[i] : best;
 	}
 	
@@ -4468,7 +4466,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
 	// -------------------------------------------------------------------
-	HasSolution = (coisas >= 0) ? HasSolution : 0;
+	HasSolution = (best.getProb() >= 0) ? HasSolution : 0;
 
 
 	// -------------------------------------------------------------------
