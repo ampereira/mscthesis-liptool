@@ -4363,9 +4363,9 @@ void ttH_dilep::ttDilepKinFit(){
 
 			// (ii) nupT1,nupT2 from p.d.fs
 			if ( ttDKF_SolutionChoice == 2 ) {
-				
+				n
 				ofstream of ("hasda.txt", fstream::app);
-				of << EveNumber << " - " << nTSol << " - " << _n1_ttDKF[nTSol].Pt() << endl;
+				of << EveNumber << " - " << nTSol << " - " << _n1_ttDKF.size() << endl;
 				of.close();
 				
 
