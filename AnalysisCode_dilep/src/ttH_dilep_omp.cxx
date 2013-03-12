@@ -4460,6 +4460,9 @@ void ttH_dilep::ttDilepKinFit(){
 	mHiggsJet2_ttDKF = _mHiggsJet2_ttDKF;
 	ProbTotal_ttDKF = _ProbTotal_ttDKF;
 
+	ofstream of ("hasda.txt", fstream::app);
+	of << omp_get_thread_num() << " - " << HasSolution_private << " - " << HasSolution << " - " << n_ttDKF_Best << endl;
+	of.close();
 	// end of pragma omp parallel
 	}
 
@@ -4479,11 +4482,8 @@ void ttH_dilep::ttDilepKinFit(){
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
 	// -------------------------------------------------------------------
-	HasSolution = (n_ttDKF_Best >= 0) ? HasSolution : 0;
+	HasSolution = (-1 >= 0) ? HasSolution : 0;
 
-	ofstream of ("hasda.txt", fstream::app);
-	of << omp_get_thread_num() << " - " << HasSolution_private << " - " << HasSolution << " - " << n_ttDKF_Best << endl;
-	of.close();
 
 	// -------------------------------------------------------------------
 	// Make sure backward compatibility is preserved + Few Calculations
