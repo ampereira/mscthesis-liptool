@@ -4061,22 +4061,15 @@ void ttH_dilep::ttDilepKinFit(){
 	
 
 	ttDKF_Best_Sol best_sols [num_threads];
-		int HasSolution_private = 0;
-		int coisas;
-
 
 	omp_set_num_threads(num_threads);
-/*
-	#pragma omp private(di, result, task_id, nTSol, _ProbHiggs_ttDKF, _ProbTTbar_ttDKF, _ProbTotal_ttDKF, n_ttDKF_Best, \
-	MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
-	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar, _n1_ttDKF, _n2_ttDKF, \
-	_b1_ttDKF, _b2_ttDKF, _l1_ttDKF, _l2_ttDKF, _W1_ttDKF, _W2_ttDKF, _t1_ttDKF, _t2_ttDKF, _ttbar_ttDKF, \
-	_b1_Higgs_ttDKF, _b2_Higgs_ttDKF, _Higgs_ttDKF, _mHiggsJet1_ttDKF, _mHiggsJet2_ttDKF)*/
 
 	#pragma omp parallel private(result, MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
 	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar)
 	{
 		float task_id;		// used to determine the comb to use
+
+		// Thread private variables initialization
 		vector<double> _ProbHiggs_ttDKF (0);
 		vector<double> _ProbTTbar_ttDKF (0);
 		vector<double> _ProbTotal_ttDKF (0);
@@ -4100,7 +4093,7 @@ void ttH_dilep::ttDilepKinFit(){
 		int nTSol = 0;
 		int n_ttDKF_Best = -999;
 
-	#pragma omp parallel for reduction(+:HasSolution_private)
+	#pragma omp parallel for reduction(+:HasSolution)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 
@@ -4140,7 +4133,7 @@ void ttH_dilep::ttDilepKinFit(){
 		{
 		result = new std::vector<myvector> ();
 		*result = di.getResult();
-		HasSolution_private += di.getHasSol();
+		HasSolution += di.getHasSol();
 		}
 		//std::vector<myvector>::iterator pp;
 		/*#pragma omp critical
@@ -4415,12 +4408,7 @@ void ttH_dilep::ttDilepKinFit(){
 				MaxTotalProb = _ProbTotal_ttDKF[nTSol];
 				n_ttDKF_Best = nTSol;
 			}
-
 			nTSol++;
-
-	//
-
-
 		}
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		// %      Code to Evaluate Solutions     %
@@ -4428,7 +4416,7 @@ void ttH_dilep::ttDilepKinFit(){
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	}
 				
-
+	// Create the class instance holding the best result, or empty if no suitable result is found
 	if (n_ttDKF_Best >= 0) {	
 		ttDKF_Best_Sol sol (MaxTotalProb, _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
 							_n1_ttDKF[n_ttDKF_Best], _n2_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best],
@@ -4443,11 +4431,6 @@ void ttH_dilep::ttDilepKinFit(){
 		best_sols[omp_get_thread_num()] = *sol;
 	}
 
-/*
-	ofstream of ("hasda.txt", fstream::app);
-	of << omp_get_thread_num() << " - " << HasSolution_private << " - " << HasSolution << " - " << n_ttDKF_Best << endl;
-	of.close();
-*/
 	// end of pragma omp parallel
 	}
 
@@ -4455,13 +4438,11 @@ void ttH_dilep::ttDilepKinFit(){
 	ttDKF_Best_Sol best = best_sols[0];
 
 	// OPTIMIZAR ISTO DEPOIS!
+	// Gets the best solution from all threads
 	for (int i = 1; i < num_threads; ++i) {
 		if (best_sols[i].getProb() != -1.0)
 			best = (best < best_sols[i]) ? best_sols[i] : best;
 	}
-	
-
-	HasSolution = HasSolution_private;	// merge the hassolutions
 	
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
