@@ -4481,6 +4481,10 @@ void ttH_dilep::ttDilepKinFit(){
 	// -------------------------------------------------------------------
 	HasSolution = (n_ttDKF_Best >= 0) ? HasSolution : 0;
 
+	ofstream of ("hasda.txt", fstream::app);
+	of << omp_get_thread_num() << " - " << HasSolution_private << " - " << HasSolution << " - " << n_ttDKF_Best << endl;
+	of.close();
+
 	// -------------------------------------------------------------------
 	// Make sure backward compatibility is preserved + Few Calculations
 	// -------------------------------------------------------------------
