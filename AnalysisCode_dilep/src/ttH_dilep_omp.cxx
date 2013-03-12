@@ -4097,6 +4097,7 @@ void ttH_dilep::ttDilepKinFit(){
 		vector<double> _mHiggsJet2_ttDKF (0);
 
 		nTSol = 0;
+		n_ttDKF_Best = -999;
 
 	#pragma omp parallel for reduction(+:HasSolution_private)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
@@ -4412,10 +4413,12 @@ void ttH_dilep::ttDilepKinFit(){
 			if ( ( _ProbTotal_ttDKF[nTSol] > MaxTotalProb ) && ( _ProbTotal_ttDKF[nTSol] != 0. ) ) {
 				MaxTotalProb = _ProbTotal_ttDKF[nTSol];
 				n_ttDKF_Best = nTSol;
-							
+				
+				/*			
 				ofstream of ("hasda.txt", fstream::app);
 				of << omp_get_thread_num() << " - " << n_ttDKF_Best << " - " << nTSol << endl;
 				of.close();
+				*/
 			}
 
 			nTSol++;
