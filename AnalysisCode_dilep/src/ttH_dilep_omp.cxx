@@ -4460,12 +4460,6 @@ void ttH_dilep::ttDilepKinFit(){
 	mHiggsJet2_ttDKF = _mHiggsJet2_ttDKF;
 	ProbTotal_ttDKF = _ProbTotal_ttDKF;
 
-		
-	ofstream of ("hasda.txt", fstream::app);
-	of << omp_get_thread_num() << " - " << _n1_ttDKF.size() << " - " << _ProbTotal_ttDKF.size() << " - " << n_ttDKF_Best << endl;
-	of.close();
-	
-
 	// end of pragma omp parallel
 	}
 
@@ -4524,6 +4518,10 @@ void ttH_dilep::ttDilepKinFit(){
 
 		RecProbTotal_ttH  = best.getProb();
 */
+	ofstream of ("hasda.txt", fstream::app);
+	of << omp_get_thread_num() << " - " << n1_ttDKF.size() << " - " << ProbTotal_ttDKF.size() << " - " << HasSolution << endl;
+	of.close();
+	
 
 		Neutrino     = n1_ttDKF[n_ttDKF_Best];  	// Neutrino 1
 		Antineutrino = n2_ttDKF[n_ttDKF_Best];  	// Neutrino 2		
