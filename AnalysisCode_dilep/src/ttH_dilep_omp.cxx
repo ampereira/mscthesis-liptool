@@ -4093,7 +4093,7 @@ void ttH_dilep::ttDilepKinFit(){
 		int nTSol = 0;
 		int n_ttDKF_Best = -999;
 
-	#pragma omp parallel for reduction(+:HasSolution)
+	#pragma omp parallel for reduction(+:_HasSolution)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 
@@ -4133,7 +4133,7 @@ void ttH_dilep::ttDilepKinFit(){
 		{
 		result = new std::vector<myvector> ();
 		*result = di.getResult();
-		HasSolution += di.getHasSol();
+		_HasSolution += di.getHasSol();
 		}
 		//std::vector<myvector>::iterator pp;
 		/*#pragma omp critical
@@ -4443,18 +4443,16 @@ void ttH_dilep::ttDilepKinFit(){
 		if (best_sols[i].getProb() != -1.0)
 			best = (best < best_sols[i]) ? best_sols[i] : best;
 	}
-	
+
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
 	// -------------------------------------------------------------------
-	HasSolution = (best.getProb() >= 0) ? HasSolution : 0;
-
+	HasSolution = (best.getProb() >= 0) ? _HasSolution : 0;
 
 	// -------------------------------------------------------------------
 	// Make sure backward compatibility is preserved + Few Calculations
 	// -------------------------------------------------------------------
 	if(  HasSolution > 0  ) {
-		int n_ttDKF_Best = coisas;
 		// OpenMP merging of the private variables!!!!!
 		// Only needs to merge the n_ttDKF_Best element from the vectors
 
