@@ -3844,7 +3844,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// =================================================================================================================
 	// Define usefull variables 
 	// =================================================================================================================
-	int  nTSol =  0;			// initialize Total number of solutions counter
+	//int  nTSol =  0;			// initialize Total number of solutions counter
 	double    t_m[2] = {mt, mt};		// initialize top quarks masses
 	double    w_m[2] = {mW, mW};		// initialize W bosons masses
 	double in_mpx[2] = {MissPx, MissPx};    // initialize miss(Px_neutrino1, Px_neutrino2)
@@ -3955,7 +3955,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// =================================================================  \\
 	// initialize Best Solution Methods (ttDKF_SolutionChoice = 1 and = 2)
 	// index of best solution (if any)
-	int n_ttDKF_Best = -999;
+	//int n_ttDKF_Best = -999;
 
 	// ttbar Probability Factors
 	double nu_sele_pt  	=  10e+15;
@@ -4072,7 +4072,7 @@ void ttH_dilep::ttDilepKinFit(){
 	_b1_ttDKF, _b2_ttDKF, _l1_ttDKF, _l2_ttDKF, _W1_ttDKF, _W2_ttDKF, _t1_ttDKF, _t2_ttDKF, _ttbar_ttDKF, \
 	_b1_Higgs_ttDKF, _b2_Higgs_ttDKF, _Higgs_ttDKF, _mHiggsJet1_ttDKF, _mHiggsJet2_ttDKF)*/
 
-	#pragma omp parallel private(result, nTSol, n_ttDKF_Best, MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
+	#pragma omp parallel private(result, MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
 	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar)
 	{
 		float task_id;		// used to determine the comb to use
@@ -4096,8 +4096,8 @@ void ttH_dilep::ttDilepKinFit(){
 		vector<double> _mHiggsJet1_ttDKF (0);
 		vector<double> _mHiggsJet2_ttDKF (0);
 
-		nTSol = 0;
-		//n_ttDKF_Best = -999;
+		int nTSol = 0;
+		int n_ttDKF_Best = -999;
 
 	#pragma omp parallel for reduction(+:HasSolution_private)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
