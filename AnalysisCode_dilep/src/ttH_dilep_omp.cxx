@@ -4365,11 +4365,6 @@ void ttH_dilep::ttDilepKinFit(){
 
 			// (ii) nupT1,nupT2 from p.d.fs
 			if ( ttDKF_SolutionChoice == 2 ) {
-				/*
-				ofstream of ("hasda.txt", fstream::app);
-				of << EveNumber << " - " << nTSol << " - " << _n1_ttDKF.size() << endl;
-				of.close();
-				*/
 
 				// Define used pdf variables (make sure the range of variables meets histos)
 				std::vector<double> Xpdf;
@@ -4430,6 +4425,11 @@ void ttH_dilep::ttDilepKinFit(){
 		// %      Solutions Found Are Stored     %
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	}
+				
+	ofstream of ("hasda.txt", fstream::app);
+	of << omp_get_thread_num() << " - " << n_ttDKF_Best << " - "  << endl;
+	of.close();
+				
 
 	if (n_ttDKF_Best >= 0) {	
 		ttDKF_Best_Sol sol (MaxTotalProb, _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
