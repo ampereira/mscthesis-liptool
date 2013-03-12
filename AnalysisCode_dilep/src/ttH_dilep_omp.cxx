@@ -4062,6 +4062,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 	ttDKF_Best_Sol best_sols [num_threads];
 		int HasSolution_private = 0;
+		int coisas;
 
 
 	omp_set_num_threads(num_threads);
@@ -4463,6 +4464,8 @@ void ttH_dilep::ttDilepKinFit(){
 	ofstream of ("hasda.txt", fstream::app);
 	of << omp_get_thread_num() << " - " << HasSolution_private << " - " << HasSolution << " - " << n_ttDKF_Best << endl;
 	of.close();
+
+	coisas = n_ttDKF_Best;
 	// end of pragma omp parallel
 	}
 
@@ -4482,14 +4485,14 @@ void ttH_dilep::ttDilepKinFit(){
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
 	// -------------------------------------------------------------------
-	HasSolution = (-1 >= 0) ? HasSolution : 0;
+	HasSolution = (coisas >= 0) ? HasSolution : 0;
 
 
 	// -------------------------------------------------------------------
 	// Make sure backward compatibility is preserved + Few Calculations
 	// -------------------------------------------------------------------
 	if(  HasSolution > 0  ) {
-int n_ttDKF_Best = 0;
+int n_ttDKF_Best = coisas;
 		// OpenMP merging of the private variables!!!!!
 		// Only needs to merge the n_ttDKF_Best element from the vectors
 /*
