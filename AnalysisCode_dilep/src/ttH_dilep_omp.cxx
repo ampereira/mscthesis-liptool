@@ -4448,6 +4448,24 @@ void ttH_dilep::ttDilepKinFit(){
 		best_sols[omp_get_thread_num()] = *sol;
 	}
 
+	n1_ttDKF = _n1_ttDKF;
+	n2_ttDKF = _n2_ttDKF;
+	b1_ttDKF = _b1_ttDKF;
+	b2_ttDKF = _b2_ttDKF;
+	l1_ttDKF = _l1_ttDKF;
+	l2_ttDKF = _l2_ttDKF;
+	W1_ttDKF = _W1_ttDKF;
+	W2_ttDKF = _W2_ttDKF;
+	t1_ttDKF = _t1_ttDKF;
+	t2_ttDKF = _t2_ttDKF;
+	ttbar_ttDKF = _ttbar_ttDKF;
+	b1_Higgs_ttDKF = _b1_Higgs_ttDKF;
+	b2_Higgs_ttDKF = _b2_Higgs_ttDKF;
+	Higgs_ttDKF = _Higgs_ttDKF;
+	mHiggsJet1_ttDKF = _mHiggsJet1_ttDKF;
+	mHiggsJet2_ttDKF = _mHiggsJet2_ttDKF;
+	ProbTotal_ttDKF = _ProbTotal_ttDKF;
+
 	// end of pragma omp parallel
 	}
 
@@ -4476,7 +4494,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 		// OpenMP merging of the private variables!!!!!
 		// Only needs to merge the n_ttDKF_Best element from the vectors
-
+/*
 		// -------------------------------------------------------------------
 		Neutrino     = best.getN(1);  	// Neutrino 1
 		Antineutrino = best.getN(2);  	// Neutrino 2		
@@ -4505,8 +4523,8 @@ void ttH_dilep::ttDilepKinFit(){
 		RecMassHiggsJet2  = best.getMHiggsJet(2);
 
 		RecProbTotal_ttH  = best.getProb();
+*/
 
-/*
 		Neutrino     = n1_ttDKF[n_ttDKF_Best];  	// Neutrino 1
 		Antineutrino = n2_ttDKF[n_ttDKF_Best];  	// Neutrino 2		
 		// ###  leptons  ###
@@ -4533,7 +4551,7 @@ void ttH_dilep::ttDilepKinFit(){
 		RecMassHiggsJet1  = mHiggsJet1_ttDKF[n_ttDKF_Best]; //samor 16.Dec.2012
 		RecMassHiggsJet2  = mHiggsJet2_ttDKF[n_ttDKF_Best];
 
-		RecProbTotal_ttH  = ProbTotal_ttDKF[n_ttDKF_Best];*/
+		RecProbTotal_ttH  = ProbTotal_ttDKF[n_ttDKF_Best];
 
 
 		//		cout << "n_ttDKF_Best = " << n_ttDKF_Best << " ; RecMassHiggsJet1 " << RecMassHiggsJet1 << " ; RecMassHiggsJet2 " << RecMassHiggsJet2 << endl;
