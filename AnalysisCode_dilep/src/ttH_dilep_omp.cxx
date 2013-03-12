@@ -4061,6 +4061,7 @@ void ttH_dilep::ttDilepKinFit(){
 	
 
 	ttDKF_Best_Sol best_sols [num_threads];
+	int _HasSolution = 0;
 
 	omp_set_num_threads(num_threads);
 
