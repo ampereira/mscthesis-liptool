@@ -4087,7 +4087,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 	//omp_set_num_threads(num_threads);
 
-	#pragma omp parallel for reduction(+:_HasSolution)
+	#pragma omp parallel for reduction(+:_HasSolution) ordered
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task
@@ -4099,13 +4099,13 @@ void ttH_dilep::ttDilepKinFit(){
 		// Apply the variance (thread safe)
 		di.applyVariance(RESOLUTION);
 
-	/*	#pragma omp critical
+		#pragma omp critical
 		{
 			ofstream of ("dbg.txt", fstream::app);
 			of << omp_get_thread_num() << " - " << task_id << " - " << counter << endl;
 			of.close();
 		}
-*/
+
 
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
