@@ -4103,7 +4103,6 @@ void ttH_dilep::ttDilepKinFit(){
 #ifdef SEQ
 		Dilep::CPU::dilep(di);
 #elif OMP
-		//#pragma omp critical
 		Dilep::CPU::dilep(di);
 #elif CUDA
 		result = CUDA::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
@@ -4116,7 +4115,7 @@ void ttH_dilep::ttDilepKinFit(){
 		// ---------------------------------------
 		// result on local variable since it will be accessed plenty of times
 
-		#pragma omp critical
+		//#pragma omp critical
 		{
 			result = new std::vector<myvector> ();
 			*result = di.getResult();
