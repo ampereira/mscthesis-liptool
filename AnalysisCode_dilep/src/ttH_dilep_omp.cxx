@@ -4115,12 +4115,8 @@ void ttH_dilep::ttDilepKinFit(){
 		// ---------------------------------------
 		// result on local variable since it will be accessed plenty of times
 
-		//#pragma omp critical
-		{
-			result = new std::vector<myvector> ();
-			*result = di.getResult();
-			_HasSolution += di.getHasSol();
-		}
+		*result = di.getResult();
+		_HasSolution += di.getHasSol();
 		
 		for ( int id = 0; id < result->size(); id++) {
 		
