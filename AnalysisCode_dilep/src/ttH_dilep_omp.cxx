@@ -4106,10 +4106,6 @@ void ttH_dilep::ttDilepKinFit(){
 			of.close();
 		}
 
-		#pragma omp barrier
-
-		exit(0);
-
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
 		Dilep::CPU::dilep(di);
@@ -4628,6 +4624,10 @@ void ttH_dilep::ttDilepKinFit(){
 		RecCos_LepN_Bbar_BoostedtoWn =  -cos(  RecLepN_BoostedtoWn   .Angle (  RecBbar_BoostedtoWn.Vect()));
 
 	}
+
+		#pragma omp barrier
+
+		exit(0);
 
 }
 
