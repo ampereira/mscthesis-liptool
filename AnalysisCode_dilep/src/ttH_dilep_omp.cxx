@@ -4099,6 +4099,13 @@ void ttH_dilep::ttDilepKinFit(){
 		// Apply the variance (thread safe)
 		di.applyVariance(RESOLUTION);
 
+		#pragma omp critical
+		{
+			ofstream of ("dbg.txt", fstream::app);
+			of << omp_get_thread_num() << " - " << task_id << " - " << inputs.size() << " - " << counter << endl;
+			of.close();
+		}
+
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
 		Dilep::CPU::dilep(di);
@@ -4115,6 +4122,7 @@ void ttH_dilep::ttDilepKinFit(){
 		// ---------------------------------------
 		// result on local variable since it will be accessed plenty of times
 
+		result = new std::vector<myvector> ();
 		*result = di.getResult();
 		_HasSolution += di.getHasSol();
 		
