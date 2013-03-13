@@ -4106,6 +4106,10 @@ void ttH_dilep::ttDilepKinFit(){
 			of.close();
 		}
 
+		#pragma omp barrier
+
+		exit(0);
+
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
 		Dilep::CPU::dilep(di);
