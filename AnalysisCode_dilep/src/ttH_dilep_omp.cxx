@@ -4051,15 +4051,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// WARNING: numa primeira fase apenas para num combos <= num parallel tasks
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
 
-	// OpenMP variable declarations - cannot use class variables in OpenMP clauses
-	// Variables starting with the '_' are private for each thread
-
-
-
 	// Best solution merge
-
-	
-
 	ttDKF_Best_Sol best_sols [num_threads];
 	int _HasSolution = 0;
 
@@ -4070,7 +4062,8 @@ void ttH_dilep::ttDilepKinFit(){
 	{
 		float task_id;		// used to determine the comb to use
 
-		// Thread private variables initialization
+		// OpenMP variable declarations - cannot use class variables in OpenMP clauses
+		// Variables starting with the '_' are private for each thread
 		vector<double> _ProbHiggs_ttDKF (0);
 		vector<double> _ProbTTbar_ttDKF (0);
 		vector<double> _ProbTotal_ttDKF (0);
@@ -4097,14 +4090,10 @@ void ttH_dilep::ttDilepKinFit(){
 	#pragma omp parallel for reduction(+:_HasSolution)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
-
-
 		// Calculates the new id of the task
 		task_id = (float) counter / (float) dilep_iterations - 0.5;	
 
-		// Check if it needs to pick a new combo
-		//#pragma omp critical
-		//if (task_id == (int) task_id)
+		// Always pick the original combo
 		DilepInput di (inputs[(int) task_id]);
 		
 		// Apply the variance (thread safe)
@@ -4114,7 +4103,7 @@ void ttH_dilep::ttDilepKinFit(){
 #ifdef SEQ
 		Dilep::CPU::dilep(di);
 #elif OMP
-		#pragma omp critical
+		//#pragma omp critical
 		Dilep::CPU::dilep(di);
 #elif CUDA
 		result = CUDA::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
@@ -4122,29 +4111,18 @@ void ttH_dilep::ttDilepKinFit(){
 		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
 
-
 		// ---------------------------------------
 		// Get info from all possible solutions
 		// ---------------------------------------
-
-
 		// result on local variable since it will be accessed plenty of times
 
 		#pragma omp critical
 		{
-		result = new std::vector<myvector> ();
-		*result = di.getResult();
-		_HasSolution += di.getHasSol();
+			result = new std::vector<myvector> ();
+			*result = di.getResult();
+			_HasSolution += di.getHasSol();
 		}
-		//std::vector<myvector>::iterator pp;
-		/*#pragma omp critical
-		{
-		ofstream of ("dbg.txt", fstream::app);
-		of << "depois: " << omp_get_thread_num() << " - " << EveNumber << endl << endl;
-		of.close();
-		}*/
-
-		//#pragma omp critical
+		
 		for ( int id = 0; id < result->size(); id++) {
 		
 			myvector *pp = &result->at(id);
