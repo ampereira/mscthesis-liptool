@@ -4099,6 +4099,14 @@ void ttH_dilep::ttDilepKinFit(){
 		// Apply the variance (thread safe)
 		di.applyVariance(RESOLUTION);
 
+		#pragma omp critical
+		{
+			ofstream of ("dbg.txt", fstream::app);
+			of << omp_get_thread_num() << " - " << task_id << " - " << counter << endl;
+			of.close();
+		}
+
+
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
 		Dilep::CPU::dilep(di);
@@ -4390,13 +4398,7 @@ void ttH_dilep::ttDilepKinFit(){
 		// %      Solutions Found Are Stored     %
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	} // end of parallel for
-		#pragma omp critical
-		{
-			ofstream of ("dbg.txt", fstream::app);
-			of << omp_get_num_threads() << " - " << task_id << " - " << omp_get_thread_num() << endl;
-			of.close();
-		}
-				
+
 	// Create the class instance holding the best result, or empty if no suitable result is found
 	if (n_ttDKF_Best >= 0) {	
 		ttDKF_Best_Sol sol (MaxTotalProb, _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
