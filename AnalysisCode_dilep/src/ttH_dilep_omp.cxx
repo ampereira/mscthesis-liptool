@@ -4056,10 +4056,10 @@ void ttH_dilep::ttDilepKinFit(){
 	int _HasSolution = 0;
 
 	
-	omp_set_num_threads(num_threads);
+//	omp_set_num_threads(num_threads);
 
 	#pragma omp parallel private(result, MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
-	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar) reduction(+:_HasSolution)
+	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar) reduction(+:_HasSolution) num_threads(1)
 	{
 		float task_id;		// used to determine the comb to use
 
@@ -4088,7 +4088,7 @@ void ttH_dilep::ttDilepKinFit(){
 		int nTSol = 0;
 		int n_ttDKF_Best = -999;
 
-	#pragma omp for nowait
+	#pragma omp parallel for nowait
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task
