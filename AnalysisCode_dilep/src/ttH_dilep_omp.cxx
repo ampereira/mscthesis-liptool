@@ -4103,7 +4103,7 @@ void ttH_dilep::ttDilepKinFit(){
 		#pragma omp critical
 		{
 			ofstream of ("dbg.txt", fstream::app);
-			of << omp_get_thread_num() << " - " << (int) task_id << " - " << counter << " - " << inputs.size() << endl;
+			of << omp_get_thread_num() << " - " << task_id << " - " << (int) task_id << " - " << counter << " - " << inputs.size() << endl;
 			of.close();
 		}
 
