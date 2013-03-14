@@ -4092,7 +4092,7 @@ void ttH_dilep::ttDilepKinFit(){
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task
-		task_id = (float) counter / (float) dilep_iterations - 0.5;	
+		task_id = (float) counter / (float) dilep_iterations;	
 
 		// Always pick the original combo
 		DilepInput di (inputs[(int) task_id]);
