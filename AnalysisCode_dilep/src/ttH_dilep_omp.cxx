@@ -4096,7 +4096,7 @@ void ttH_dilep::ttDilepKinFit(){
 		di.applyVariance(RESOLUTION);
 
 	
-		#pragma omp critical
+		#pragma omp ordered
 		{
 			ofstream of ("dbg.txt", fstream::app);
 			of << omp_get_thread_num() << " - " << task_id << " - " << (int) task_id << " - " << counter << " - " << inputs.size() << endl;
