@@ -4087,7 +4087,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 	//omp_set_num_threads(num_threads);
 
-	#pragma omp parallel for reduction(+:_HasSolution)
+	#pragma omp for reduction(+:_HasSolution)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task
