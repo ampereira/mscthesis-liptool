@@ -4120,12 +4120,12 @@ void ttH_dilep::ttDilepKinFit(){
 		// ---------------------------------------
 		// result on local variable since it will be accessed plenty of times
 
-		std::vector<myvector> *result = di.getResult();
+		std::vector<myvector> result = di.getResult();
 		_HasSolution += di.getHasSol();
 		
-		for ( int id = 0; id < result->size(); id++) {
+		for ( int id = 0; id < result.size(); id++) {
 		
-			myvector *pp = &result->at(id);
+			myvector *pp = &result.at(id);
 
 			double   px,  py,  pz,  E, 
 					 apx, apy, apz, aE;
