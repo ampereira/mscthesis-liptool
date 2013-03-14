@@ -4095,13 +4095,13 @@ void ttH_dilep::ttDilepKinFit(){
 		// Apply the variance (thread safe)
 		di.applyVariance(RESOLUTION);
 
-		/*
+	
 		#pragma omp critical
 		{
 			ofstream of ("dbg.txt", fstream::app);
 			of << omp_get_thread_num() << " - " << task_id << " - " << (int) task_id << " - " << counter << " - " << inputs.size() << endl;
 			of.close();
-		}*/
+		}
 
 
 		// Run the dileptonic reconstruction 
@@ -4591,10 +4591,10 @@ void ttH_dilep::ttDilepKinFit(){
 
 	}
 
-		/*#pragma omp barrier
+		#pragma omp barrier
 
 		exit(0);
-		*/
+
 }
 
 // #############################################################################
