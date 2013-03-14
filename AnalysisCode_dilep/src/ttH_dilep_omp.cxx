@@ -4042,7 +4042,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 	#pragma omp parallel reduction(+:_HasSolution)
 	{
-		float task_id;		// used to determine the comb to use
+		unsigned task_id;		// used to determine the comb to use
 
 		// OpenMP variable declarations - cannot use class variables in OpenMP clauses
 		// Variables starting with the '_' are private for each thread
@@ -4090,7 +4090,7 @@ void ttH_dilep::ttDilepKinFit(){
 		task_id = (float) counter / (float) dilep_iterations;	
 
 		// Always pick the original combo
-		DilepInput di (inputs[(int) task_id]);
+		DilepInput di (inputs[task_id]);
 		
 		// Apply the variance (thread safe)
 		di.applyVariance(RESOLUTION);
