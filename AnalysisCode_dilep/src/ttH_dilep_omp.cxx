@@ -4040,7 +4040,7 @@ void ttH_dilep::ttDilepKinFit(){
 	
 	omp_set_num_threads(num_threads);
 
-//	#pragma omp parallel reduction(+:_HasSolution)
+	#pragma omp parallel reduction(+:_HasSolution)
 	{
 		float task_id;		// used to determine the comb to use
 
