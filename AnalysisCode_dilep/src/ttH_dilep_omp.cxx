@@ -3856,7 +3856,6 @@ void ttH_dilep::ttDilepKinFit(){
 	TLorentzVectorWFlags    z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags;
 	TLorentzVectorWFlags    jet1_HiggsWFlags, jet2_HiggsWFlags;
 	// result of kinematic fit
-	std::vector<myvector> *result;
 
 	// =================================================================
 	// Initialize Solutions Flag
@@ -3964,23 +3963,6 @@ void ttH_dilep::ttDilepKinFit(){
 	double higgs_sele_pt  	=   0.;
 	double higgs_sele_ang  	= -10e+15;
 
-	// ttH->lnublnubbbar Probability Factors
-	double MaxTotalProb = -10e+15;
-	double MaxHiggsProb = -10e+15;
-
-	// ttbar variables
-	double myttbar_px;
-	double myttbar_py;
-	double myttbar_pz;
-	double myttbar_E;
-
-	// Higgs helpfull variables
-	double theta_jet1_HiggsFromTTbar;
-	double theta_jet2_HiggsFromTTbar;
-	double fac_j1j2H_ttbar;
-	double mass_j1H_ttbar;
-	double mass_j2H_ttbar;
-
 	// ---------------------------------------
 	// by: S.Amor 13.Dez.2012
 	//
@@ -4056,10 +4038,9 @@ void ttH_dilep::ttDilepKinFit(){
 	int _HasSolution = 0;
 
 	
-//	omp_set_num_threads(num_threads);
+	omp_set_num_threads(num_threads);
 
-	#pragma omp parallel private(result, MaxTotalProb, MaxHiggsProb, myttbar_px, myttbar_py, myttbar_pz, myttbar_E, theta_jet1_HiggsFromTTbar, \
-	theta_jet2_HiggsFromTTbar, fac_j1j2H_ttbar, mass_j1H_ttbar, mass_j2H_ttbar) reduction(+:_HasSolution) num_threads(1)
+//	#pragma omp parallel reduction(+:_HasSolution)
 	{
 		float task_id;		// used to determine the comb to use
 
@@ -4084,6 +4065,20 @@ void ttH_dilep::ttDilepKinFit(){
 		vector<TLorentzVectorWFlags> _Higgs_ttDKF (0);
 		vector<double> _mHiggsJet1_ttDKF (0);
 		vector<double> _mHiggsJet2_ttDKF (0);
+		// ttbar variables
+		double myttbar_px;
+		double myttbar_py;
+		double myttbar_pz;
+		double myttbar_E;
+		// ttH->lnublnubbbar Probability Factors
+		double MaxTotalProb = -10e+15;
+		double MaxHiggsProb = -10e+15;
+		// Higgs helpfull variables
+		double theta_jet1_HiggsFromTTbar;
+		double theta_jet2_HiggsFromTTbar;
+		double fac_j1j2H_ttbar;
+		double mass_j1H_ttbar;
+		double mass_j2H_ttbar;
 
 		int nTSol = 0;
 		int n_ttDKF_Best = -999;
@@ -4125,8 +4120,7 @@ void ttH_dilep::ttDilepKinFit(){
 		// ---------------------------------------
 		// result on local variable since it will be accessed plenty of times
 
-		result = new std::vector<myvector> ();
-		*result = di.getResult();
+		std::vector<myvector> *result = di.getResult();
 		_HasSolution += di.getHasSol();
 		
 		for ( int id = 0; id < result->size(); id++) {
