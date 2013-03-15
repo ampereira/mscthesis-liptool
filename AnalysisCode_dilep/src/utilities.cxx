@@ -133,6 +133,38 @@ namespace ttH {
 			file << "Average time: " << totaltimeKinFit / measurements << " usec" << endl;
 			file.close();
 		}
+
+		#ifdef OMP
+		
+		ttDKF_Best_Sol reduce (ttDKF_Best_Sol &list) {
+			unsigned size =list.size();
+			float tdp = log2f(size)
+			unsigned depth = (tdp > (int) tdp) ? tdp + 1 : tdp;
+			unsigned tid = omp_get_thread_num();
+
+			// Cycle through all levels of the reduction tree
+			#pragma omp for
+			for (unsigned i = 0; i < depth; ++i) {
+				// First level of the tree is a special scenario
+				if (i == 0) {
+					// Checks if there is any thread to the right
+					if ((tid % 2) == 0 && (tid + 1) < size)
+						if (list[tid].getProb() < list[tid + 1].getProb())
+							list[tid] = list[tid + 1];
+				} else {
+					unsigned stride = 2 * i;
+
+					if ((tid % stride) == 0 && (tid + stride) < size)
+						if (list[tid].getProb() < list[tid + stride].getProb())
+							list[tid] = list[tid + stride];
+				}
+				#pragma omp barrier flush
+			}
+
+			return list[0];
+		}
+		
+		#endif
 	}
 }
 

@@ -4397,13 +4397,17 @@ void ttH_dilep::ttDilepKinFit(){
 
 		best_sols[omp_get_thread_num()] = sol;
 	} else {
+		// Creates an empty solution if no result is found. It will have a probability of -1.0
 		ttDKF_Best_Sol *sol = new ttDKF_Best_Sol ();
 		best_sols[omp_get_thread_num()] = *sol;
 	}
-
+	
+	#pragma omp flush
+	ttDKF_Best_Sol best = ttH::KinFit::reduce(best_sols);
 	// end of pragma omp parallel
 	}
 
+	/*
 	// initialize
 	ttDKF_Best_Sol best = best_sols[0];
 
@@ -4413,7 +4417,7 @@ void ttH_dilep::ttDilepKinFit(){
 		if (best_sols[i].getProb() != -1.0)
 			best = (best < best_sols[i]) ? best_sols[i] : best;
 	}
-
+*/
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
 	// -------------------------------------------------------------------
