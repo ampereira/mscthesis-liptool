@@ -39,7 +39,7 @@ namespace ttH {
 		void printTimer (void);
 
 		#ifdef OMP
-		ttDKF_Best_Sol reduce (ttDKF_Best_Sol&);
+		ttDKF_Best_Sol reduce (ttDKF_Best_Sol[]);
 		#endif
 	}
 }

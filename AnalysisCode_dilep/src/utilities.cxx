@@ -136,7 +136,7 @@ namespace ttH {
 
 		#ifdef OMP
 		
-		ttDKF_Best_Sol reduce (ttDKF_Best_Sol &list) {
+		ttDKF_Best_Sol reduce (ttDKF_Best_Sol list[]) {
 			unsigned size =list.size();
 			float tdp = log2f(size)
 			unsigned depth = (tdp > (int) tdp) ? tdp + 1 : tdp;
