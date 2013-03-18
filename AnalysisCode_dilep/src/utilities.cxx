@@ -143,15 +143,8 @@ namespace ttH {
 			unsigned tid = omp_get_thread_num();
 			ttDKF_Best_Sol *list2;
 
-			#pragma omp master
-			memcpy(list2, list, sizeof(ttDKF_Best_Sol) * size);
-
-			/*#pragma omp critical
-			{
-				ofstream of ("sols.txt", fstream::app);
-				of << tid << " - " << list[tid].getProb() << endl;
-				of.close();
-			}*/
+			//#pragma omp master
+			//memcpy(list2, list, sizeof(ttDKF_Best_Sol) * size);
 
 			#pragma omp barrier
 			
@@ -172,7 +165,8 @@ namespace ttH {
 				}
 				#pragma omp barrier
 			}
-			#pragma omp master
+			
+			/*#pragma omp master
 			{
 				ttDKF_Best_Sol best = list2[0];
 				for (int i = 1; i < size; ++i) {
@@ -186,7 +180,7 @@ namespace ttH {
 					of << "Sol - " << list[0].getProb() << endl;
 					of.close();
 				}
-			}
+			}*/
 			
 			return list[0];
 		}
