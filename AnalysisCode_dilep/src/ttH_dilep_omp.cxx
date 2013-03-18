@@ -4036,6 +4036,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// Best solution merge
 	ttDKF_Best_Sol best_sols [num_threads];
 	int _HasSolution = 0;
+	ttDKF_Best_Sol best;
 
 	
 	omp_set_num_threads(num_threads);
@@ -4403,7 +4404,7 @@ void ttH_dilep::ttDilepKinFit(){
 	}
 	
 	#pragma omp flush
-	ttDKF_Best_Sol best = ttH::KinFit::reduce(best_sols);
+	best = ttH::KinFit::reduce(best_sols);
 	// end of pragma omp parallel
 	}
 
