@@ -159,7 +159,7 @@ namespace ttH {
 						if (list[tid].getProb() < list[tid + stride].getProb())
 							list[tid] = list[tid + stride];
 				}
-				#pragma omp flush
+				#pragma omp barrier
 			}
 			
 			return list[0];
