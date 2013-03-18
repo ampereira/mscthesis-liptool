@@ -150,7 +150,6 @@ namespace ttH {
 				of.close();
 			}*/
 			
-			#pragma omp barrier
 			// Cycle through all levels of the reduction tree
 			for (unsigned i = 0; i < depth; ++i) {
 				// First level of the tree is a special scenario
