@@ -152,9 +152,7 @@ namespace ttH {
 			*/
 
 			// Cycle through all levels of the reduction tree
-			unsigned i;
-			#pragma omp for private(i)
-			for (i = 0; i < depth; ++i) {
+			for (unsigned i = 0; i < depth; ++i) {
 				// First level of the tree is a special scenario
 				if (i == 0) {
 					// Checks if there is any thread to the right
