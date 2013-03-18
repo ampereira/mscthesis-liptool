@@ -186,8 +186,6 @@ namespace ttH {
 					of.close();
 				}
 			}
-			#pragma omp barrier
-			exit(0);
 			
 			return list[0];
 		}
