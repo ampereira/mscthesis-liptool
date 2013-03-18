@@ -143,6 +143,7 @@ namespace ttH {
 			unsigned tid = omp_get_thread_num();
 			ttDKF_Best_Sol *list2;
 
+			#pragma omp master
 			memcpy(list2, list, sizeof(ttDKF_Best_Sol) * size);
 
 			/*#pragma omp critical
