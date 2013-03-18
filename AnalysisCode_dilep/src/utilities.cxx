@@ -142,13 +142,7 @@ namespace ttH {
 			unsigned depth = (tdp > (int) tdp) ? tdp + 1 : tdp;
 			unsigned tid = omp_get_thread_num();
 
-			/*
-			#pragma omp critical
-			{
-				ofstream of ("sols.txt", fstream::app);
-				of << tid << " - " << " - " << depth << " - " << list[tid].getProb() << endl;
-				of.close();
-			}*/
+			#pragma omp barrier
 			
 			// Cycle through all levels of the reduction tree
 			for (unsigned i = 0; i < depth; ++i) {
@@ -165,20 +159,8 @@ namespace ttH {
 						if (list[tid].getProb() < list[tid + stride].getProb())
 							list[tid] = list[tid + stride];
 				}
-				#pragma omp barrier
 				#pragma omp flush
 			}
-			
-			/*#pragma omp master
-			{
-
-
-				ofstream of ("sols.txt", fstream::app);
-				of << "Best - " << list[0].getProb() << endl;
-				of.close();
-			}
-			#pragma omp barrier
-			exit(0);*/
 			
 			return list[0];
 		}
