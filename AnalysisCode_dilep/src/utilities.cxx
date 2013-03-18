@@ -145,7 +145,7 @@ namespace ttH {
 			#pragma omp critical
 			{
 				ofstream of ("sols.txt", fstream::app);
-				of << tid << " - " << list[tid].getProb() << endl;
+				of << tid << " - " << " - " << depth << " - " << list[tid].getProb() << endl;
 				of.close();
 			}
 
