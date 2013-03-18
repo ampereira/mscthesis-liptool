@@ -141,7 +141,6 @@ namespace ttH {
 			float tdp = log2f(size);
 			unsigned depth = (tdp > (int) tdp) ? tdp + 1 : tdp;
 			unsigned tid = omp_get_thread_num();
-			ttDKF_Best_Sol list2 = list;
 
 			/*
 			#pragma omp critical
