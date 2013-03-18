@@ -137,10 +137,17 @@ namespace ttH {
 		#ifdef OMP
 		
 		ttDKF_Best_Sol reduce (ttDKF_Best_Sol list[]) {
-			unsigned size =omp_get_num_threads();
+			unsigned size = omp_get_num_threads();
 			float tdp = log2f(size);
 			unsigned depth = (tdp > (int) tdp) ? tdp + 1 : tdp;
 			unsigned tid = omp_get_thread_num();
+
+			#pragma omp critical
+			{
+				ofstream of ("sols.txt", fstream::app);
+				of << tid << " - " << list[tid].getProb() << endl;
+				of.close();
+			}
 
 			// Cycle through all levels of the reduction tree
 			#pragma omp for
@@ -160,6 +167,14 @@ namespace ttH {
 				}
 				#pragma omp flush
 			}
+			
+			#pragma omp critical
+			{
+				ofstream of ("sols.txt", fstream::app);
+				of << "Best - " << list[0].getProb() << endl;
+				of.close();
+			}
+			exit(0);
 
 			return list[0];
 		}
