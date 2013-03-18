@@ -165,15 +165,15 @@ namespace ttH {
 						if (list[tid].getProb() < list[tid + stride].getProb())
 							list[tid] = list[tid + stride];
 				}
-				#pragma omp flush
 			}
-			
-			#pragma omp critical
+
+			#pragma omp master
 			{
 				ofstream of ("sols.txt", fstream::app);
 				of << "Best - " << list[0].getProb() << endl;
 				of.close();
 			}
+			#pragma omp barrier
 			exit(0);
 
 			return list[0];
