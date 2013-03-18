@@ -137,8 +137,8 @@ namespace ttH {
 		#ifdef OMP
 		
 		ttDKF_Best_Sol reduce (ttDKF_Best_Sol list[]) {
-			unsigned size =list.size();
-			float tdp = log2f(size)
+			unsigned size =omp_get_num_threads();
+			float tdp = log2f(size);
 			unsigned depth = (tdp > (int) tdp) ? tdp + 1 : tdp;
 			unsigned tid = omp_get_thread_num();
 
@@ -158,6 +158,7 @@ namespace ttH {
 						if (list[tid].getProb() < list[tid + stride].getProb())
 							list[tid] = list[tid + stride];
 				}
+				
 				#pragma omp barrier flush
 			}
 
