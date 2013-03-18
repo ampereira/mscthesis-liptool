@@ -171,14 +171,23 @@ namespace ttH {
 				}
 				#pragma omp barrier
 			}
-			/*#pragma omp master
+			#pragma omp master
 			{
-				ofstream of ("sols.txt", fstream::app);
-				of << "Best - " << list[0].getProb() << endl;
-				of.close();
+				ttDKF_Best_Sol best = list2[0];
+				for (int i = 1; i < size; ++i) {
+					if (list2[i].getProb() < best.getProb())
+							best = list2[i];
+				}
+
+				if (best.getProb() != list[0].getProb()) {
+					ofstream of ("sols.txt", fstream::app);
+					of << "Best - " << best.getProb() << endl;
+					of << "Sol - " << list[0].getProb() << endl;
+					of.close();
+				}
 			}
 			#pragma omp barrier
-			exit(0);*/
+			exit(0);
 			
 			return list[0];
 		}
