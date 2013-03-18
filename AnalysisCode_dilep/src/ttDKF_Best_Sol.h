@@ -1,3 +1,5 @@
+#ifndef TTDKFBESTSOL
+#define TTDKFBESTSOL
 
 #include "../../LipMiniAnalysis/TLorentzVectorWFlags.h"
 #include "../../LipMiniAnalysis/LipMiniAnalysis.h"
@@ -67,3 +69,5 @@ inline bool operator== (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
 inline bool operator!= (const ttDKF_Best_Sol &t1, const ttDKF_Best_Sol &t2) {
 	return !operator== (t1, t2);
 }
+
+#endif
