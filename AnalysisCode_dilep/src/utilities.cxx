@@ -145,7 +145,7 @@ namespace ttH {
 			#pragma omp critical
 			{
 				ofstream of ("sols.txt", fstream::app);
-				of << tid << " - " << list[tid] << endl;
+				of << tid << " - " << list[tid].getProb() << endl;
 				of.close();
 			}
 
@@ -171,7 +171,7 @@ namespace ttH {
 			#pragma omp master
 			{
 				ofstream of ("sols.txt", fstream::app);
-				of << "Best - " << list[tid] << endl;
+				of << "Best - " << list[0].getProb() << endl;
 				of.close();
 			}
 			#pragma omp barrier
