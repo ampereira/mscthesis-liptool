@@ -171,9 +171,10 @@ namespace ttH {
 						} else {
 							// If there is any thread on hold it is paired with the current
 							if (!on_hold.empty()) {
-								unsigned remain = on_hold.pop_back();
+								unsigned remain = on_hold.back();
 								if (list[tid].getProb() < list[remain].getProb())
 									list[tid] = list[remain];
+								on_hold.pop_back();
 							} else {
 								on_hold.push_back(tid);
 							}
