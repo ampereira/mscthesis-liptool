@@ -141,6 +141,7 @@ namespace ttH {
 			float tdp = log2f(size);
 			unsigned depth = (tdp > (int) tdp) ? tdp + 1 : tdp;
 			unsigned tid = omp_get_thread_num();
+			vector<unsigned> on_hold ();
 
 
 			#pragma omp barrier
@@ -150,15 +151,28 @@ namespace ttH {
 				// First level of the tree is a special case
 				if (i == 0) {
 					// Checks if there is any thread to the right
-					if ((tid % 2) == 0 && (tid + 1) < size)
-						if (list[tid].getProb() < list[tid + 1].getProb())
-							list[tid] = list[tid + 1];
+					if ((tid % 2) == 0)
+						if (tid + 1) < size) {
+							if (list[tid].getProb() < list[tid + 1].getProb())
+								list[tid] = list[tid + 1];
+						} else
+							on_hold.push_back(tid);
 				} else {
 					unsigned stride = pow(2, i + 1);
 
-					if ((tid % stride) == 0 && (tid + stride / 2) < size)
-						if (list[tid].getProb() < list[tid + stride / 2].getProb())
-							list[tid] = list[tid + stride / 2];
+					if ((tid % stride) == 0)
+						if (tid + stride / 2) < size){
+							if (list[tid].getProb() < list[tid + stride / 2].getProb())
+								list[tid] = list[tid + stride / 2];
+						} else {
+							if (!on_hold.empty()) {
+								unsigned remain = on_hold.pop_back();
+								if (list[tid].getProb() < list[remain].getProb())
+									list[tid] = list[remain];
+							} else
+								on_hold.push_back(tid);
+						}
+
 				}
 				// To ensure memory consistency
 				#pragma omp barrier
