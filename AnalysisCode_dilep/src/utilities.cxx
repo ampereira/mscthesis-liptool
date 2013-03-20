@@ -141,12 +141,16 @@ namespace ttH {
 			float tdp = log2f(size);
 			unsigned depth = (tdp > (int) tdp) ? tdp + 1 : tdp;
 			unsigned tid = omp_get_thread_num();
-			ttDKF_Best_Sol *list2;
 
-			//#pragma omp master
-			//memcpy(list2, list, sizeof(ttDKF_Best_Sol) * size);
+			#pragma omp master
+			{
+				ofstream of ("coi.txt", fstream::app);
+				of << tdp << " - " << depth << endl;
+				of.close();
+			}
 
 			#pragma omp barrier
+			exit(0);
 			
 			// Cycle through all levels of the reduction tree
 			for (unsigned i = 0; i < depth; ++i) {
@@ -163,6 +167,7 @@ namespace ttH {
 						if (list[tid].getProb() < list[tid + stride].getProb())
 							list[tid] = list[tid + stride];
 				}
+				// To ensure memory consistency
 				#pragma omp barrier
 			}
 			
