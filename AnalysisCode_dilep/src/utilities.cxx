@@ -151,28 +151,34 @@ namespace ttH {
 				// First level of the tree is a special case
 				if (i == 0) {
 					// Checks if there is any thread to the right
-					if ((tid % 2) == 0)
+					if ((tid % 2) == 0) {
+						// If the tid has the partner
 						if (tid + 1) < size) {
 							if (list[tid].getProb() < list[tid + 1].getProb())
 								list[tid] = list[tid + 1];
-						} else
+						} else {
+							// If there is no partner the thread is put on hold
 							on_hold.push_back(tid);
+						}
+					}
 				} else {
 					unsigned stride = pow(2, i + 1);
 
-					if ((tid % stride) == 0)
-						if (tid + stride / 2) < size){
+					if ((tid % stride) == 0) {
+						if (tid + stride / 2) < size) {
 							if (list[tid].getProb() < list[tid + stride / 2].getProb())
 								list[tid] = list[tid + stride / 2];
 						} else {
+							// If there is any thread on hold it is paired with the current
 							if (!on_hold.empty()) {
 								unsigned remain = on_hold.pop_back();
 								if (list[tid].getProb() < list[remain].getProb())
 									list[tid] = list[remain];
-							} else
+							} else {
 								on_hold.push_back(tid);
+							}
 						}
-
+					}
 				}
 				// To ensure memory consistency
 				#pragma omp barrier
