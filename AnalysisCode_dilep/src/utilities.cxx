@@ -141,7 +141,7 @@ namespace ttH {
 			float tdp = log2f(size);
 			unsigned depth = (tdp > (int) tdp) ? tdp + 1 : tdp;
 			unsigned tid = omp_get_thread_num();
-			std::vector<unsigned> on_hold;
+			std::queue<unsigned> on_hold;
 
 
 			#pragma omp barrier
@@ -158,7 +158,7 @@ namespace ttH {
 								list[tid] = list[tid + 1];
 						} else {
 							// If there is no partner the thread is put on hold
-							on_hold.push_back(tid);
+							on_hold.push(tid);
 						}
 					}
 				} else {
@@ -171,12 +171,12 @@ namespace ttH {
 						} else {
 							// If there is any thread on hold it is paired with the current
 							if (!on_hold.empty()) {
-								unsigned remain = on_hold.back();
+								unsigned remain = on_hold.front();
 								if (list[tid].getProb() < list[remain].getProb())
 									list[tid] = list[remain];
-								on_hold.pop_back();
+								on_hold.pop();
 							} else {
-								on_hold.push_back(tid);
+								on_hold.push(tid);
 							}
 						}
 					}
