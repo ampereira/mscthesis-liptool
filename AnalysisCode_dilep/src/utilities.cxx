@@ -153,7 +153,7 @@ namespace ttH {
 					// Checks if there is any thread to the right
 					if ((tid % 2) == 0) {
 						// If the tid has the partner
-						if (tid + 1) < size) {
+						if (tid + 1 < size) {
 							if (list[tid].getProb() < list[tid + 1].getProb())
 								list[tid] = list[tid + 1];
 						} else {
