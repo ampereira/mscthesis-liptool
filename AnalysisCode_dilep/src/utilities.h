@@ -7,6 +7,7 @@
 #include <sstream>
 #include <sys/time.h>
 #include <cmath>
+#include <queue>
 
 #ifdef OMP
 	#include <omp.h>

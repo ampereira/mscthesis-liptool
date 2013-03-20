@@ -4403,20 +4403,10 @@ void ttH_dilep::ttDilepKinFit(){
 		best_sols[omp_get_thread_num()] = *sol;
 	}
 	
+	// Performs a reduction to get the best solution
 	best = ttH::KinFit::reduce(best_sols);
 	// end of pragma omp parallel
 	}
-
-	
-	// initialize
-	/*best = best_sols[0];
-
-	// OPTIMIZAR ISTO DEPOIS!
-	// Gets the best solution from all threads
-	for (int i = 1; i < num_threads; ++i) {
-		if (best_sols[i].getProb() != -1.0)
-			best = (best < best_sols[i]) ? best_sols[i] : best;
-	}*/
 
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
