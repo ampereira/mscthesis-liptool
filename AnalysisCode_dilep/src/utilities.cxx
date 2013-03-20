@@ -141,7 +141,7 @@ namespace ttH {
 			float tdp = log2f(size);
 			unsigned depth = (tdp > (int) tdp) ? tdp + 1 : tdp;
 			unsigned tid = omp_get_thread_num();
-			vector<unsigned> on_hold ();
+			std::vector<unsigned> on_hold;
 
 
 			#pragma omp barrier
@@ -165,7 +165,7 @@ namespace ttH {
 					unsigned stride = pow(2, i + 1);
 
 					if ((tid % stride) == 0) {
-						if (tid + stride / 2) < size) {
+						if (tid + stride / 2 < size) {
 							if (list[tid].getProb() < list[tid + stride / 2].getProb())
 								list[tid] = list[tid + stride / 2];
 						} else {
