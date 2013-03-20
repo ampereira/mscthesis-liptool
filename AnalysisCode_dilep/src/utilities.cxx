@@ -142,30 +142,23 @@ namespace ttH {
 			unsigned depth = (tdp > (int) tdp) ? tdp + 1 : tdp;
 			unsigned tid = omp_get_thread_num();
 
-			#pragma omp master
-			{
-				ofstream of ("coi.txt", fstream::app);
-				of << tdp << " - " << depth << endl;
-				of.close();
-			}
 
 			#pragma omp barrier
-			exit(0);
 			
 			// Cycle through all levels of the reduction tree
 			for (unsigned i = 0; i < depth; ++i) {
-				// First level of the tree is a special scenario
+				// First level of the tree is a special case
 				if (i == 0) {
 					// Checks if there is any thread to the right
 					if ((tid % 2) == 0 && (tid + 1) < size)
 						if (list[tid].getProb() < list[tid + 1].getProb())
 							list[tid] = list[tid + 1];
 				} else {
-					unsigned stride = 2 * i;
+					unsigned stride = pow(2, i + 1);
 
-					if ((tid % stride) == 0 && (tid + stride) < size)
-						if (list[tid].getProb() < list[tid + stride].getProb())
-							list[tid] = list[tid + stride];
+					if ((tid % stride) == 0 && (tid + stride / 2) < size)
+						if (list[tid].getProb() < list[tid + stride / 2].getProb())
+							list[tid] = list[tid + stride / 2];
 				}
 				// To ensure memory consistency
 				#pragma omp barrier
