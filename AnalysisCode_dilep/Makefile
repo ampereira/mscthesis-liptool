@@ -15,8 +15,8 @@ ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 #ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lHtml -lEG -lPhysics -lTreePlayer
 ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
-#CXXFLAGS   = -O3 -std=c++11 $(ROOTCFLAGS)
-CXXFLAGS   = -ggdb3 -std=c++11 $(ROOTCFLAGS)
+CXXFLAGS   = -g -O3 -std=c++11 $(ROOTCFLAGS)
+#CXXFLAGS   = -ggdb3 -std=c++11 $(ROOTCFLAGS)
 # specific time measurement
 #CXXFLAGS  += -DMEASURE_KINFIT -DMEASURE_DILEP
 
@@ -80,7 +80,7 @@ build/ttDKF_Best_Sol.o: src/ttDKF_Best_Sol.cxx src/ttDKF_Best_Sol.h
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/ttDKF_Best_Sol.cxx -o build/ttDKF_Best_Sol.o
 
 ttH_dilep_omp: src/ttH_dilep_omp.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o build/ttDKF_Best_Sol.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
-	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_omp $(INCLUDES) src/ttH_dilep_omp.cxx build/neut_seq.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRS)
+	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_omp2 $(INCLUDES) src/ttH_dilep_omp.cxx build/neut_seq.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRS)
 
 clean:
 	rm -f build/* bin/ttH_dilep*
