@@ -12,9 +12,11 @@
 
 using namespace std;
 
+static TRandom3 t_rnd (SEED);
+
 class DilepInput {
 	
-	TRandom3 t_rnd;
+	//TRandom3 t_rnd;
 
 	TLorentzVector z_lep, c_lep;
 	TLorentzVector z_bj, c_bj;
