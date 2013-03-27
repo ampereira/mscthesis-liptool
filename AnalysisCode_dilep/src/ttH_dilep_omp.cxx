@@ -4081,7 +4081,7 @@ void ttH_dilep::ttDilepKinFit(){
 		int nTSol = 0;
 		int n_ttDKF_Best = -999;
 
-	#pragma omp for schedule(STATIC)
+	#pragma omp for schedule(static)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task
