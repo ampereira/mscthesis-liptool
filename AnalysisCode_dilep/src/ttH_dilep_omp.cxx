@@ -2602,15 +2602,7 @@ void ttH_dilep::DoCuts(){
 	//====   Do tt System Reconstruction   ========
 	//=============================================
 
-#ifdef MEASURE_KINFIT
-	long long int time = ttH::KinFit::startTimer();
-#endif
-
 	ttDilepKinFit();
-
-#ifdef MEASURE_KINFIT
-	ttH::KinFit::stopTimer(time);
-#endif
 
 	//=============================================
 	//=============================================
@@ -4038,6 +4030,11 @@ void ttH_dilep::ttDilepKinFit(){
 	int _HasSolution = 0;
 	ttDKF_Best_Sol best;
 
+
+#ifdef MEASURE_KINFIT
+	long long int time = ttH::KinFit::startTimer();
+#endif
+
 	
 	omp_set_num_threads(num_threads);
 
@@ -4084,7 +4081,7 @@ void ttH_dilep::ttDilepKinFit(){
 		int nTSol = 0;
 		int n_ttDKF_Best = -999;
 
-	#pragma omp for
+	#pragma omp for schedule(STATIC)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task
@@ -4407,6 +4404,12 @@ void ttH_dilep::ttDilepKinFit(){
 	best = ttH::KinFit::reduce(best_sols);
 	// end of pragma omp parallel
 	}
+
+
+
+	#ifdef MEASURE_KINFIT
+		ttH::KinFit::stopTimer(time);
+	#endif
 
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
