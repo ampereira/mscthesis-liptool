@@ -45,7 +45,7 @@ using namespace std;
 
 extern int dilep_iterations;
 extern int num_threads;
-
+//extern TRandom3 t_rnd;
 #define RESOLUTION 0.02				// error resolution of de detector
 
 
@@ -4011,7 +4011,8 @@ void ttH_dilep::ttDilepKinFit(){
 									// Define number of experiments for resolution
 									// loop over several resolution experiments
 
-									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
+		TRandom3 *_t_rnd = new TRandom3 (SEED);
+									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m, *_t_rnd);
 									inputs.push_back(di);
 								}
 							}
@@ -4077,19 +4078,23 @@ void ttH_dilep::ttDilepKinFit(){
 		double fac_j1j2H_ttbar;
 		double mass_j1H_ttbar;
 		double mass_j2H_ttbar;
+		
 
 		int nTSol = 0;
 		int n_ttDKF_Best = -999;
-
-	#pragma omp for schedule(static)
+		int first = 0;
+		DilepInput di;
+	#pragma omp for schedule(dynamic)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task
 		task_id = (float) counter / (float) dilep_iterations;	
 
 		// Always pick the original combo
-		DilepInput di (inputs[task_id]);
-		
+		if (task_id == (int) task_id || !first) {
+			di = inputs[task_id];
+			++first;
+		}
 		// Apply the variance (thread safe)
 		di.applyVariance(RESOLUTION);
 
