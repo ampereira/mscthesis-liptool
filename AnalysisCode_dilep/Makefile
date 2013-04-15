@@ -15,10 +15,10 @@ ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 #ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lHtml -lEG -lPhysics -lTreePlayer
 ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
-CXXFLAGS   = -g -O3 -std=c++11 $(ROOTCFLAGS)
+CXXFLAGS   = -O3 -std=c++11 $(ROOTCFLAGS)
 #CXXFLAGS   = -ggdb3 -std=c++11 $(ROOTCFLAGS)
 # specific time measurement
-#CXXFLAGS  += -DMEASURE_KINFIT -DMEASURE_DILEP
+#CXXFLAGS  += -DMEASURE_KINFIT #-DMEASURE_DILEP
 
 LIBS       = $(ROOTLIBS)
 GLIBS      = $(ROOTGLIBS)
@@ -40,7 +40,7 @@ LIBDIRS = -L$(LipMiniAnalysis) -lLipMiniAnalysis $(LIBS) $(GLIBS)
 seq: CXXFLAGS += -DSEQ
 seq: ttH_dilep_seq
 
-omp: CXXFLAGS += -DOMP -pthread -fopenmp
+omp: CXXFLAGS += -DOMP -fopenmp
 omp: ttH_dilep_omp
 
 cuda: CXXFLAGS += -DCUDA
@@ -69,8 +69,8 @@ build/utilities.o: src/utilities.cxx src/utilities.h
 build/neut_seq.o: src/seq/neut.cxx src/myvector.h src/seq/neut.h
 	$(CXX) -Wall -Wextra $(CXXFLAGS) $(INCLUDES) -c src/seq/neut.cxx -o build/neut_seq.o
 
-ttH_dilep_seq: src/ttH_dilep_seq.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
-	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_seq $(INCLUDES) src/ttH_dilep_seq.cxx build/neut_seq.o build/dilep_input.o build/utilities.o $(LIBDIRS)
+ttH_dilep_seq: src/ttH_dilep_old.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
+	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_seq $(INCLUDES) src/ttH_dilep_old.cxx build/neut_seq.o build/dilep_input.o build/utilities.o $(LIBDIRS)
 
 # OpenMP application
 #build/neut_omp.o: src/omp/neut.cxx src/myvector.h src/omp/neut.h
@@ -80,7 +80,7 @@ build/ttDKF_Best_Sol.o: src/ttDKF_Best_Sol.cxx src/ttDKF_Best_Sol.h
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/ttDKF_Best_Sol.cxx -o build/ttDKF_Best_Sol.o
 
 ttH_dilep_omp: src/ttH_dilep_omp.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o build/ttDKF_Best_Sol.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
-	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_omp2 $(INCLUDES) src/ttH_dilep_omp.cxx build/neut_seq.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRS)
+	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_omp $(INCLUDES) src/ttH_dilep_omp.cxx build/neut_seq.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRS)
 
 clean:
 	rm -f build/* bin/ttH_dilep*

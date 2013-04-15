@@ -5,7 +5,8 @@
 #include <string>
 #include <set>
 using namespace std;
-int dilep_iterations = 0;
+extern unsigned dilep_iterations;
+#include "utilities.h"
 #include "myvector.h"
 #include "seq/neut.h"
 
@@ -3999,7 +4000,7 @@ void ttH_dilep::ttDilepKinFit(){
 		 //				(ONLY EXAMPLES ARE SHOWN; USER CHOICES!)
 		 // ###################################################################
 		 // Define number of experiments for resolution
-		 int myNumResTest = 100;
+		 int myNumResTest = dilep_iterations;
 
 		 // Resolution values
 		 double Sx_e=0.02;  double Sy_e=0.02;  double Sz_e=0.02;  double St_e=0.02; 	double Se_e=0.02;  // electrons
@@ -4132,7 +4133,7 @@ void ttH_dilep::ttDilepKinFit(){
 			// ---------------------------------------
 			// Find tt dileptonic solutions
 			// ---------------------------------------
-			result = CPU::calc_dilep(t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl);
+			result = Dilep::CPU::calc_dilep(t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl);
 	                if ( result->size() > 0 ) HasSolution++;  // increment solution counter
 	
 			// ---------------------------------------
@@ -4760,10 +4761,16 @@ double ttH_dilep::DeltaR2( double eta1, double eta2, double phi1, double phi2){
 // #############################################################################
 Int_t main(Int_t argc, char *argv[]){
 // #############################################################################
+	
+	ttH::defineDilepIterations();
 
+		long long int init = ttH::startTimer();
 	// run the analysis
 	ttH_dilep *t = new ttH_dilep();
 	t->Start(argc, argv);
+
+		// Stop measuring overall time
+		ttH::stopTimer(init);
 
 	// exits
 	return(0);
