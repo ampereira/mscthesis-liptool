@@ -139,6 +139,9 @@
 % misc shortcuts
 %
 
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
 % roles for titles
 \newcommand{\role}[1]{\smaller{\textit{(#1)}}}
 \newcommand{\student}{\role{Student}}
@@ -159,6 +162,7 @@
 \newcommand{\registered}{\textsuperscript{\smaller\textregistered}}
 \newcommand{\trademark}{\textsuperscript{\smaller\texttrademark}}
 \newcommand{\intel}{Intel\xspace}
+\newcommand{\amd}{AMD}
 \newcommand{\nvidia}{NVidia\xspace}
 \newcommand{\cuda}{CUDA\xspace}
 \newcommand{\tth}{\texttt{ttH\_dilep}\xspace}
