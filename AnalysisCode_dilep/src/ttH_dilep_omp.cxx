@@ -42,7 +42,7 @@ using namespace std;
 #include "dilep_input.h"
 #include "utilities.h"
 #include "ttDKF_Best_Sol.h"
-
+extern TRandom3 t_rnd;
 extern int dilep_iterations;
 extern int num_threads;
 //extern TRandom3 t_rnd;
@@ -4011,7 +4011,8 @@ void ttH_dilep::ttDilepKinFit(){
 									// Define number of experiments for resolution
 									// loop over several resolution experiments
 
-		TRandom3 *_t_rnd = new TRandom3 (SEED);
+									TRandom3 *_t_rnd = new TRandom3 (SEED);
+									//DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m, *_t_rnd);
 									inputs.push_back(di);
 								}
@@ -4042,7 +4043,6 @@ void ttH_dilep::ttDilepKinFit(){
 	#pragma omp parallel reduction(+:_HasSolution)
 	{
 		unsigned task_id;		// used to determine the comb to use
-
 		// OpenMP variable declarations - cannot use class variables in OpenMP clauses
 		// Variables starting with the '_' are private for each thread
 		vector<double> _ProbHiggs_ttDKF (0);
@@ -4084,7 +4084,7 @@ void ttH_dilep::ttDilepKinFit(){
 		int n_ttDKF_Best = -999;
 		int first = 0;
 		DilepInput di;
-	#pragma omp for schedule(dynamic)
+	#pragma omp for schedule(runtime)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task

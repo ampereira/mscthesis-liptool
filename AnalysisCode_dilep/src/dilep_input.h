@@ -12,7 +12,7 @@
 
 using namespace std;
 
-//static TRandom3 t_rnd (SEED);
+//static TRandom3 t_rnd;
 
 class DilepInput {
 	
