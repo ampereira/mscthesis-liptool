@@ -8,27 +8,20 @@ The \ttDilepKinFit workflow can be divided in three main stages. Each event can 
 
 \ttDilepKinFit has a main loop, for each jet/lepton combination and for each variation of each combination, where the most intensive computation occurs, which will be explained next, and a final section of code that iterates through all the reconstructions and picks only the best, discarding all the others computed.
 
-Inside the main loop of \ttDilepKinFit is possible to identify three distinct stages of the reconstruction. The first is the variation of the jets and leptons momentums, as explained before. The second stage is the kinematical reconstruction of the \ttbar system, using the varied combinations. It attempts to reconstruct the \ttbar system, presented in section \ref{Motivation} and produces a result (the Top Quarks), which has an computed probability associated to its accuracy. This probability determines the quality of the reconstruction. The third stage is the reconstruction of the Higgs boson, using the results of the kinematical reconstruction. This reconstruction also has a probability associated, and the final quality of the overall reconstruction of the event is given by the multiplication of this probability with the one of the kinematical reconstruction of the \ttbar system. Figure \ref{fig:SeqPipeline} presents the explained workflow of \ttDilepKinFit.
+Inside the main loop of \ttDilepKinFit is possible to identify three distinct stages of the reconstruction. The first is the variation of the jets and leptons momentums, as explained before. The second stage is the kinematical reconstruction of the \ttbar system, using the varied combinations. It attempts to reconstruct the \ttbar system, presented in section \ref{Motivation} and produces a result (the Top Quarks), which has an computed probability associated to its accuracy. This probability determines the quality of the reconstruction. The third stage is the reconstruction of the Higgs boson, using the results of the kinematical reconstruction. This reconstruction also has a probability associated, and the final quality of the overall reconstruction of the event is given by the multiplication of this probability with the one of the kinematical reconstruction of the \ttbar system. Figure \ref{fig:SeqPipeline} (left) presents the explained workflow of \ttDilepKinFit.
 
 \begin{figure}[!htp]
 	\begin{center}
-		\includegraphics[scale=0.5]{../../common/img/numa_qpi.png}
-		\caption{Schematic representation of the \ttDilepKinFit workflow.}
+		\raisebox{-0.5\height}{\includegraphics[scale=0.5]{../../common/img/seq_pipeline.png}}
+		\raisebox{-0.5\height}{\includegraphics[scale=0.5]{../../common/img/parallel_pipeline.png}}
+		\caption{Schematic representation of the \ttDilepKinFit sequential (left) and the new parallel (right) workflows.}
 		\label{fig:SeqPipeline}
 	\end{center}
 \end{figure}
 
 Note that there is data dependencies between loop iterations, since that for chosing the next jet/lepton combination it is necessary to know which combinations were already picked, and between the three stages within the loop. The kinematical reconstruction needs the combination already varied, and the Higgs boson reconstruction needs the result from the kinematical reconstruction in order to chose different particles (since one particle cannot belong to the \ttbar system and the Higgs boson decay). The current workflow is not suitable for parallelization.
 
-A generalist workflow suited for parallelization is presented in figure \ref{fig:ParallelPipeline}. The combinations must be computed, and also all the variations, and their information stored in a data structure, so that the main loop of \ttDilepKinFit is eliminated. Now, each stage of the workflow can have its own loop, which is not represented in the figure since it is considered to be part of the stage itself. By having their own loop, the stages can now be executed in parallel, but maintaining the same data dependencies between stages.
-
-\begin{figure}[!htp]
-	\begin{center}
-		\includegraphics[scale=0.5]{../../common/img/numa_qpi.png}
-		\caption{Schematic representation of the \ttDilepKinFit workflow.}
-		\label{fig:ParallelPipeline}
-	\end{center}
-\end{figure}
+A generalist workflow suited for parallelization is presented in figure \ref{fig:SeqPipeline} (right). The combinations must be computed, and also all the variations, and their information stored in a data structure, so that the main loop of \ttDilepKinFit is eliminated. Now, each stage of the workflow can have its own loop, which is not represented in the figure since it is considered to be part of the stage itself. By having their own loop, the stages can now be executed in parallel, but maintaining the same data dependencies between stages.
 
 \pdfbookmark{Shared Memory Parallelization}{shared memory parallelization}
 \section{Shared Memory Parallelization}
@@ -38,8 +31,8 @@ The parallel workflow model proposed for this implementation is similar to the g
 
 \begin{figure}[!htp]
 	\begin{center}
-		\includegraphics[scale=0.5]{../../common/img/numa_qpi.png}
-		\caption{Schematic representation of the \ttDilepKinFit workflow.}
+		\includegraphics[scale=0.5]{../../common/img/sharedmem_pipeline.png}
+		\caption{Schematic representation of the parallel \ttDilepKinFit workflow for the shared memory implementation.}
 		\label{fig:SharedMemPipeline}
 	\end{center}
 \end{figure}
@@ -48,6 +41,24 @@ In this implementation it does not make any sense to use different tasks for dif
 
 The second step, the kinematical reconstruction of the \ttbar system, will be performed within the same task, meaning that there is no synchronization between this and the previous steps among different tasks. The same happens between this and the third step, the Higgs boson reconstruction. By aggregating these three steps the grain size of the tasks is increased, compared to the generalist parallelization model presented before, which benefits their execution on CPU (a lesser number of coarser tasks means that the CPU spends more time performing computations relevant to the application and less time switching context, which is very slow).
 
-As explained before, after these three stages, on the original workflow, there is an iteration through all the solutions and the best is chosen. Instead of saving all the solutions, after each iteration of the loop of the current workflow the solution is compared to the previous and only the best of the two is save. When all tasks finish all their respective iterations, each will have the best solution for the subset of combinations and variations that they processed. A reduction can be made so that the best solution from all the tasks is found. However, another data structure must be created, since the best solution is a set of variables and TLorentzVectorWFlags (from the LipMiniAnalysis library) class instances. The final ``uploading'' of the best solution to global variables is only made by the task with the best solution.
+As explained before, after these three stages, on the original workflow, there is an iteration through all the solutions and the best is chosen. Instead of saving all the solutions, after each iteration of the loop of the current workflow the solution is compared to the previous and only the best of the two is save. When all tasks finish all their respective iterations, each will have the best solution for the subset of combinations and variations that they processed. A parallel reduction must be made so that the best solution from all the tasks is found. However, another data structure must be created, since the best solution is a set of variables and TLorentzVectorWFlags (from the LipMiniAnalysis library) class instances. The final ``uploading'' of the best solution to global variables is only made by the task with the best solution.
 
-This workflow will have two limitations to the performance scalling, the creation of the data structure holding the combinations and the best solutions and the creation and work sharing between the tasks. Its time increases with the number of combinations and variations and the number of parallel tasks to use.
+This workflow will have two limitations to the performance scalling, the creation of the data structure holding the combinations and the creation of the data structure for the best solutions and respective merging. Its time increases with the number of combinations and variations and the number of parallel tasks to use.
+
+\pdfbookmark{GPU Parallelization}{gpu parallelization}
+\section{GPU Parallelization}
+\label{Parallelization:GPU}
+
+An early analysis of the code was made before designing the the workflow for the GPU parallelization. The implementation of this version will be restricted by the dependencies that \ttDilepKinFit has on ROOT classes, namely on its third stage of the generalist parallelizable workflow (figure \ref{fig:SeqPipeline}, right). It uses several functions and classes from ROOT, which can possibly be adapted to the GPU but the amount of time and work necessary to do so makes it unviable. The kinematic reconstruction also uses ROOT classes, namely TLorentzVectors, however it is read-only so it can be transformed in a data structure fit to be used on GPU. Note that this transformation will have a cost associated, which can slightly affect the performance.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=0.5]{../../common/img/gpu_pipeline.png}
+		\caption{Schematic representation of the \ttDilepKinFit workflow.}
+		\label{fig:GPUPipeline}
+	\end{center}
+\end{figure}
+
+The first two stages of the the workflow presented in figure \ref{fig:SeqPipeline} (right), the computation of the variances and the kinematical reconstruction, can be adapted to run on the GPU. After computing the data structure holding the jets and leptons combinations, it must be transferred to the GPU (device) memory and then launch the kernel, where each task (which is refers to one combination) is assigned to one thread. The variation of the combinations is done by each thread, on the assigned combination, the kinematical reconstruction is computed and the results are transferred back to the CPU (host) memory. Then, the third stage of the workflow, the Higgs boson reconstruction, is performed on the host. Note that this process, copying the memory to the device and back to the host is done one time for each event processed. The schematic representation of the workflow for this implementation is presented in figure \ref{fig:GPUPipeline}.
+
+This implementation has two factors which will restrict the performance. The first is the overhead associated to the transformation of the data (ROOT classes) to a suitable data structure to be used by the device. This happens with the input and output of the kernel. Even though this process can be tuned, which will be explained in section \ref{GPUImplementation}, there is no alternatives to study, algorithm-wise. The second factor is the synchronization and data transfer between host and device. The transfer time is affected by the amount of data to transfer, but it cannot be reduced since it is always necessary to transfer the jet/lepton combinations. Note that they are only transferred once per event, where the kernel threads copy the information so they can change it. However, the synchronization can be removed. The kernel can be launched and the threads are blocked while waiting for work, and then each time the one thread of the host computes a combination it is transferred to the device memory and the respective threads start the computation. Meanwhile, there is another thread in the host waiting for the results and starting the parallel computation of the Higgs boson reconstruction each time a group of kernel threads finish. If this asynchronous communication can be correctly implemented it might offer significant better performance than the synchronous version.

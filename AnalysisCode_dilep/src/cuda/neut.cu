@@ -174,46 +174,148 @@ namespace Dilep {
 		__host__
 		void dilep (vector<DilepInput> &vdi) {
 			
+			double in_mpx[2 * vdi.size()], in_mpy[2 * vdi.size()], in_mpz[2 * vdi.size()], 
+				   t_mass[2 * vdi.size()], w_mass[2 * vdi.size()];
+			
+			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy, *dev_in_mpz;
+			double a[5 * vdi.size()], b[5 * vdi.size()], c[5 * vdi.size()], d[5 * vdi.size()];
+		
+			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b;
+			double nc[16*NUM_THREADS];
+			double *dev_nc;
+			int count[NUM_THREADS], *dev_count;
+			int hasSolution = 0;
+
 			// time measurement
 			#ifdef MEASURE_DILEP
 			long long int time = startTimer();
 			#endif
 
 			for (unsigned i = 0; i < vdi.size(); ++i) {
-				vector<myvector> *result;
-				//DilepInput di = vdi[i];
 				int hasSolution = 0;
 
-				double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
 				TLorentzVector lep_a, lep_b, bl_a, bl_b;
 
-				in_mpx[0] = vdi[i].getInMpx(0);
-				in_mpx[1] = vdi[i].getInMpx(1);
-				in_mpy[0] = vdi[i].getInMpy(0);
-				in_mpy[1] = vdi[i].getInMpy(1);
-				in_mpz[0] = vdi[i].getInMpz(0);
-				in_mpz[1] = vdi[i].getInMpz(1);
-				t_mass[0] = vdi[i].getTmass(0);
-				t_mass[1] = vdi[i].getTmass(1);
-				w_mass[0] = vdi[i].getWmass(0);
-				w_mass[1] = vdi[i].getWmass(1);
+				in_mpx[i * 2]		= vdi[i].getInMpx(0);
+				in_mpx[(i * 2) + 1] = vdi[i].getInMpx(1);
+				in_mpy[i * 2]		= vdi[i].getInMpy(0);
+				in_mpy[(i * 2) + 1] = vdi[i].getInMpy(1);
+				in_mpz[i * 2]		= vdi[i].getInMpz(0);
+				in_mpz[(i * 2) + 1] = vdi[i].getInMpz(1);
+				t_mass[i * 2]		= vdi[i].getTmass(0);
+				t_mass[(i * 2) + 1] = vdi[i].getTmass(1);
+				w_mass[i * 2]		= vdi[i].getWmass(0);
+				w_mass[(i * 2) + 1] = vdi[i].getWmass(1);
+					
+				a[i * 5]	   = vdi[i].getZlep().Px();
+				a[(i * 5) + 1] = vdi[i].getZlep().Py();
+				a[(i * 5) + 2] = vdi[i].getZlep().Pz();
+				a[(i * 5) + 3] = vdi[i].getZlep().E();
+				a[(i * 5) + 4] = vdi[i].getZlep().M();
 
-				lep_a = vdi[i].getZlep();
-				lep_b = vdi[i].getClep();
-				bl_a = vdi[i].getZbl();
-				bl_b = vdi[i].getCbl();
+				b[i * 5]	   = vdi[i].getClep().Px();
+				b[(i * 5) + 1] = vdi[i].getClep().Py();
+				b[(i * 5) + 2] = vdi[i].getClep().Pz();
+				b[(i * 5) + 3] = vdi[i].getClep().E();
+				b[(i * 5) + 4] = vdi[i].getClep().M();
 
-				result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, 
-											&lep_b, &bl_a, &bl_b);
+				c[i * 5]	   = vdi[i].getZbl().Px();
+				c[(i * 5) + 1] = vdi[i].getZbl().Py();
+				c[(i * 5) + 2] = vdi[i].getZbl().Pz();
+				c[(i * 5) + 3] = vdi[i].getZbl().E();
+				c[(i * 5) + 4] = vdi[i].getZbl().M();
 
-				// Check if there is any solutions for this reconstruction
-				if (result->size()) {
-					++hasSolution;  // increment solution counter
+				d[i * 5]	   = vdi[i].getCbl().Px();
+				d[(i * 5) + 1] = vdi[i].getCbl().Py();
+				d[(i * 5) + 2] = vdi[i].getCbl().Pz();
+				d[(i * 5) + 3] = vdi[i].getCbl().E();
+				d[(i * 5) + 4] = vdi[i].getCbl().M();
+			}
+
+			// GPU memory allocation of the inputs and outputs of the dilep kernel
+			cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
+			cudaMalloc(&dev_w_mass, vdi.size()*2*sizeof(double));
+			cudaMalloc(&dev_in_mpx, vdi.size()*2*sizeof(double));
+			cudaMalloc(&dev_in_mpy, vdi.size()*2*sizeof(double));
+			cudaMalloc(&dev_in_mpz, vdi.size()*2*sizeof(double));
+
+			cudaMalloc(&dev_lep_a, vdi.size()*sizeof(a));
+			cudaMalloc(&dev_lep_b, vdi.size()*sizeof(b));
+			cudaMalloc(&dev_bl_a, vdi.size()*sizeof(c));
+			cudaMalloc(&dev_bl_b, vdi.size()*sizeof(d));
+			
+			// allocation of the results
+			//FALTA VARIACOES
+			cudaMalloc(&dev_nc, 16*vdi.size()*sizeof(double));
+			cudaMalloc(&dev_count, vdi.size()*sizeof(int));
+
+
+			// transfer the inputs to GPU memory
+			cudaMemcpy(dev_t_mass, t_mass, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_w_mass, w_mass, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpx, in_mpx, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpy, in_mpy, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpz, in_mpz, 2*sizeof(double), cudaMemcpyHostToDevice);
+
+			cudaMemcpy(dev_lep_a, &a, vdi.size()*sizeof(a), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_b, &b, vdi.size()*sizeof(b), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_a, &c, vdi.size()*sizeof(c), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_b, &d, vdi.size()*sizeof(d), cudaMemcpyHostToDevice);
+
+			// define the dimensions of the grid and blocks
+			// i.e. the number of times dilep is executed
+			dim3 dimGrid(GRID_SIZE, 1);
+			dim3 dimBlock(BLOCK_SIZE, 1);
+
+			// dilep kernel call
+			calc_dilep<<<dimGrid,dimBlock>>>(
+					dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_in_mpz, 
+					dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
+
+
+			// memory transfer of the results from the GPU
+			//FALTA VARIACOES
+			cudaMemcpy(nc, dev_nc, 16*vdi.size()*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(count, dev_count, vdi.size()*sizeof(int), cudaMemcpyDeviceToHost);
+
+			unsigned int aux_size = GRID_SIZE*BLOCK_SIZE*16, is;
+
+			// reconstruction of the normal output of dilep
+			// o num de combs*vars e o num de threads
+			for (unsigned thread = 0; i < vdi.size(); ++thread) {
+				vector<myvector> result;
+				
+				for (int sol = 0 ; sol < count[thread] && sol<4 ; sol++) {
+					myvector *mv = new myvector( 
+						TO1D(nc,thread,sol,0),
+						TO1D(nc,thread,sol,1),
+						TO1D(nc,thread,sol,2),
+						TO1D(nc,thread,sol,3) );
+					
+					result.push_back(*mv);
 				}
 
-				vdi[i].setHasSol(hasSolution);
-				vdi[i].setResult(result);
+				if (result.size()) {
+					++hasSolution;  // increment solution counter
+				}
+				vdi[thread].setHasSol(hasSolution);
+				vdi[thread].setResult(result);
 			}
+
+			// frees the memory allocated on GPU
+			cudaFree(dev_t_mass);
+			cudaFree(dev_w_mass);
+			cudaFree(dev_in_mpx);
+			cudaFree(dev_in_mpy);
+			cudaFree(dev_in_mpz);
+
+			cudaFree(dev_lep_a);
+			cudaFree(dev_lep_b);
+			cudaFree(dev_bl_a);
+			cudaFree(dev_bl_b);
+
+			cudaFree(dev_count);
+			cudaFree(dev_nc);
 
 			// time measurement
 			#ifdef MEASURE_DILEP
