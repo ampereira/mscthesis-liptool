@@ -4028,8 +4028,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
 
 	// Best solution merge
-	ttDKF_Best_Sol best_sols [num_threads];
-	int _HasSolution = 0;
+		int _HasSolution = 0;
 	ttDKF_Best_Sol best;
 
 
@@ -4037,33 +4036,11 @@ void ttH_dilep::ttDilepKinFit(){
 	long long int time = ttH::KinFit::startTimer();
 #endif
 
-	
-	omp_set_num_threads(num_threads);
-
-	#pragma omp parallel reduction(+:_HasSolution)
-	{
+		{
 		unsigned task_id;		// used to determine the comb to use
 		// OpenMP variable declarations - cannot use class variables in OpenMP clauses
 		// Variables starting with the '_' are private for each thread
-		vector<double> _ProbHiggs_ttDKF (0);
-		vector<double> _ProbTTbar_ttDKF (0);
-		vector<double> _ProbTotal_ttDKF (0);
-		vector<TLorentzVectorWFlags> _n1_ttDKF (0);
-		vector<TLorentzVectorWFlags> _n2_ttDKF (0);
-		vector<TLorentzVectorWFlags> _b1_ttDKF (0);
-		vector<TLorentzVectorWFlags> _b2_ttDKF (0);
-		vector<TLorentzVectorWFlags> _l1_ttDKF (0);
-		vector<TLorentzVectorWFlags> _l2_ttDKF (0);
-		vector<TLorentzVectorWFlags> _W1_ttDKF (0);
-		vector<TLorentzVectorWFlags> _W2_ttDKF (0);
-		vector<TLorentzVectorWFlags> _t1_ttDKF (0);
-		vector<TLorentzVectorWFlags> _t2_ttDKF (0);
-		vector<TLorentzVectorWFlags> _ttbar_ttDKF (0);
-		vector<TLorentzVectorWFlags> _b1_Higgs_ttDKF (0);
-		vector<TLorentzVectorWFlags> _b2_Higgs_ttDKF (0);
-		vector<TLorentzVectorWFlags> _Higgs_ttDKF (0);
-		vector<double> _mHiggsJet1_ttDKF (0);
-		vector<double> _mHiggsJet2_ttDKF (0);
+
 		// ttbar variables
 		double myttbar_px;
 		double myttbar_py;
@@ -4084,7 +4061,7 @@ void ttH_dilep::ttDilepKinFit(){
 		int n_ttDKF_Best = -999;
 		int first = 0;
 		DilepInput di;
-	#pragma omp for schedule(runtime)
+
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task
@@ -4104,7 +4081,7 @@ void ttH_dilep::ttDilepKinFit(){
 #elif OMP
 		Dilep::CPU::dilep(di);
 #elif CUDA
-		result = CUDA::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
+		Dlep::GPU::dilep(di);
 #elif PAPI
 		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
@@ -4115,7 +4092,7 @@ void ttH_dilep::ttDilepKinFit(){
 		// result on local variable since it will be accessed plenty of times
 
 		std::vector<myvector> result = di.getResult();
-		_HasSolution += di.getHasSol();
+		HasSolution += di.getHasSol();
 		
 		for ( int id = 0; id < result.size(); id++) {
 		
@@ -4130,9 +4107,9 @@ void ttH_dilep::ttDilepKinFit(){
 			//  1st top quark Reconstruction
 			// -------------------------------
 			// b-quark 1
-			_b1_ttDKF.push_back(di.getZbjW());
+			b1_ttDKF.push_back(di.getZbjW());
 			// lepton 1
-			_l1_ttDKF.push_back(di.getZlepW());			
+			l1_ttDKF.push_back(di.getZlepW());			
 			if ( di.getZlepW().isb ==  11 ) { iPDGnu1 = -12; iPDGW1 = -24; iPDGt1 = -6; }
 			if ( di.getZlepW().isb == -11 ) { iPDGnu1 = +12; iPDGW1 = +24; iPDGt1 = +6; }
 			if ( di.getZlepW().isb ==  13 ) { iPDGnu1 = -14; iPDGW1 = -24; iPDGt1 = -6; }
@@ -4145,7 +4122,7 @@ void ttH_dilep::ttDilepKinFit(){
 			TLorentzVector n1;
 			n1.SetPxPyPzE(  px,   py,   pz,  E);
 			TLorentzVectorWFlags nu1(n1,0,iPDGnu1,999.,-1,-1);
-			_n1_ttDKF.push_back(nu1);
+			n1_ttDKF.push_back(nu1);
 			// W boson 1
 			TLorentzVector w1;
 			w1.SetPxPyPzE(	px + di.getZlepW().Px(), 
@@ -4153,7 +4130,7 @@ void ttH_dilep::ttDilepKinFit(){
 					pz + di.getZlepW().Pz(), 
 					E  + di.getZlepW().E()   );
 			TLorentzVectorWFlags ww1(w1,0,iPDGW1,999.,-1,-1);
-			_W1_ttDKF.push_back(ww1);
+			W1_ttDKF.push_back(ww1);
 			// top quark 1
 			TLorentzVector t1;
 			t1.SetPxPyPzE(	px + di.getZlepW().Px() + di.getZbjW().Px(), 
@@ -4161,15 +4138,15 @@ void ttH_dilep::ttDilepKinFit(){
 					pz + di.getZlepW().Pz() + di.getZbjW().Pz(), 
 					E  + di.getZlepW().E()  + di.getZbjW().E() );
 			TLorentzVectorWFlags tt1(t1,0,iPDGt1,999.,-1,-1);
-			_t1_ttDKF.push_back(tt1);
+			t1_ttDKF.push_back(tt1);
 
 			// -------------------------------
 			//  2nd top quark reconstruction
 			// -------------------------------
 			// b-quark 2
-			_b2_ttDKF.push_back(di.getCbjW());
+			b2_ttDKF.push_back(di.getCbjW());
 			// lepton 2
-			_l2_ttDKF.push_back(di.getClepW());
+			l2_ttDKF.push_back(di.getClepW());
 			if ( di.getClepW().isb ==  11 ) { iPDGnu2 = -12; iPDGW2 = -24; iPDGt2 = -6; }
 			if ( di.getClepW().isb == -11 ) { iPDGnu2 = +12; iPDGW2 = +24; iPDGt2 = +6; }
 			if ( di.getClepW().isb ==  13 ) { iPDGnu2 = -14; iPDGW2 = -24; iPDGt2 = -6; }
@@ -4182,7 +4159,7 @@ void ttH_dilep::ttDilepKinFit(){
 			TLorentzVector n2;
 			n2.SetPxPyPzE( apx,  apy,  apz, aE);
 			TLorentzVectorWFlags nu2(n2,0,iPDGnu2,999.,-1,-1);
-			_n2_ttDKF.push_back(nu2);
+			n2_ttDKF.push_back(nu2);
 			// W boson 2
 			TLorentzVector w2;
 			w2.SetPxPyPzE(	apx + di.getClepW().Px(), 
@@ -4190,7 +4167,7 @@ void ttH_dilep::ttDilepKinFit(){
 					apz + di.getClepW().Pz(), 
 					aE  + di.getClepW().E()   );
 			TLorentzVectorWFlags ww2(w2,0,iPDGW2,999.,-1,-1);
-			_W2_ttDKF.push_back(ww2);
+			W2_ttDKF.push_back(ww2);
 			// top quark 2
 			TLorentzVector t2;
 			t2.SetPxPyPzE(	apx + di.getClepW().Px() + di.getCbjW().Px(), 
@@ -4198,7 +4175,7 @@ void ttH_dilep::ttDilepKinFit(){
 					apz + di.getClepW().Pz() + di.getCbjW().Pz(), 
 					aE  + di.getClepW().E()  + di.getCbjW().E() );
 			TLorentzVectorWFlags tt2(t2,0,iPDGt2,999.,-1,-1);
-			_t2_ttDKF.push_back(tt2);
+			t2_ttDKF.push_back(tt2);
 
 			// -------------------------------
 			//  (t,tbar) system reconstruction
@@ -4210,15 +4187,15 @@ void ttH_dilep::ttDilepKinFit(){
 			myttbar_E  = E  + di.getZlepW().E()  + di.getZbjW().E()  + aE  + di.getClepW().E()  + di.getCbjW().E(); 
 			ttbar.SetPxPyPzE( myttbar_px, myttbar_py, myttbar_pz, myttbar_E);
 			TLorentzVectorWFlags ttbar2(ttbar,0, 999,999.,-1,-1);
-			_ttbar_ttDKF.push_back(ttbar2);
+			ttbar_ttDKF.push_back(ttbar2);
 
 			// -------------------------------
 			//   Higgs system reconstruction
 			// -------------------------------
 			// jet 1 from Higgs
-			_b1_Higgs_ttDKF.push_back( jet1_HiggsWFlags );
+			b1_Higgs_ttDKF.push_back( jet1_HiggsWFlags );
 			// jet 2 from Higgs
-			_b2_Higgs_ttDKF.push_back( jet2_HiggsWFlags );
+			b2_Higgs_ttDKF.push_back( jet2_HiggsWFlags );
 			// Higgs itself
 			TLorentzVector myHiggs;
 			myHiggs.SetPxPyPzE(	jet1_HiggsWFlags.Px() + jet2_HiggsWFlags.Px(), 
@@ -4226,7 +4203,7 @@ void ttH_dilep::ttDilepKinFit(){
 					jet1_HiggsWFlags.Pz() + jet2_HiggsWFlags.Pz(), 
 					jet1_HiggsWFlags.E()  + jet2_HiggsWFlags.E() );
 			TLorentzVectorWFlags Higgs(myHiggs,0, 25 ,999.,-1,-1);
-			_Higgs_ttDKF.push_back( Higgs );
+			Higgs_ttDKF.push_back( Higgs );
 
 
 			// -----------------------------------------------------------------------------
@@ -4284,8 +4261,8 @@ void ttH_dilep::ttDilepKinFit(){
 			}
 
 			//Save Higgs Mass from Angular Kinematic Equations of bjet 1 and bjet 2 				
-			_mHiggsJet1_ttDKF.push_back(mass_j1H_ttbar); 
-			_mHiggsJet2_ttDKF.push_back(mass_j2H_ttbar);
+			mHiggsJet1_ttDKF.push_back(mass_j1H_ttbar); 
+			mHiggsJet2_ttDKF.push_back(mass_j2H_ttbar);
 
 			/*cout << "Jet1: Pt = " << jet1_vec.Pt() << " mass_j1H_ttbar = " << mass_j1H_ttbar << endl;
 			  cout << "Jet2: Pt = " << jet2_vec.Pt() << " mass_j2H_ttbar = " << mass_j2H_ttbar << endl;
@@ -4315,15 +4292,15 @@ void ttH_dilep::ttDilepKinFit(){
 			// -------------------------------
 			// (i) Lowest nupT1*nupT2
 			if ( ttDKF_SolutionChoice == 1 ) {
-				double nu_pt_cand = 	sqrt( _n1_ttDKF[nTSol].Px() * _n1_ttDKF[nTSol].Px() +
-						_n1_ttDKF[nTSol].Py() * _n1_ttDKF[nTSol].Py() ) * 	
-					sqrt( _n2_ttDKF[nTSol].Px() * _n2_ttDKF[nTSol].Px() +
-							_n2_ttDKF[nTSol].Py() * _n2_ttDKF[nTSol].Py() );	
+				double nu_pt_cand = 	sqrt( _n1_ttDKF[nTSol].Px() * n1_ttDKF[nTSol].Px() +
+						n1_ttDKF[nTSol].Py() * _n1_ttDKF[nTSol].Py() ) * 	
+					sqrt( n2_ttDKF[nTSol].Px() * _n2_ttDKF[nTSol].Px() +
+							n2_ttDKF[nTSol].Py() * _n2_ttDKF[nTSol].Py() );	
 
 				// ------------------------------------------
 				// ttbar System Probability : 
 				// ------------------------------------------
-				_ProbTTbar_ttDKF.push_back( 1./ nu_pt_cand);
+				ProbTTbar_ttDKF.push_back( 1./ nu_pt_cand);
 
 				// before checking ttbar take Higgs into account also
 				// nu_pt_cand *= 1./ProbHiggs_ttDKF(nTSol);
@@ -4336,8 +4313,8 @@ void ttH_dilep::ttDilepKinFit(){
 
 				// Define used pdf variables (make sure the range of variables meets histos)
 				std::vector<double> Xpdf;
-				Xpdf.push_back(_n1_ttDKF[nTSol].Pt()/GeV); // 1st pdf: pT neutrino 1
-				Xpdf.push_back(_n2_ttDKF[nTSol].Pt()/GeV); // 2nd pdf: pT neutrino 2
+				Xpdf.push_back(n1_ttDKF[nTSol].Pt()/GeV); // 1st pdf: pT neutrino 1
+				Xpdf.push_back(n2_ttDKF[nTSol].Pt()/GeV); // 2nd pdf: pT neutrino 2
 
 				// Loop over all pdf available and evaluate the pdf product (if it is possible)
 				double myProdXpdf    = 1.;
@@ -4354,7 +4331,7 @@ void ttH_dilep::ttDilepKinFit(){
 				// ------------------------------------------
 				// ttbar System Probability : 
 				// ------------------------------------------
-				_ProbTTbar_ttDKF.push_back( myProdXpdf );
+				ProbTTbar_ttDKF.push_back( myProdXpdf );
 
 
 				// before checking ttbar take Higgs into account also
@@ -4374,11 +4351,11 @@ void ttH_dilep::ttDilepKinFit(){
 			// ==================================================================
 			// Instead of iterating through de iSol it calculates the best sol right away
 
-			_ProbTotal_ttDKF.push_back( _ProbHiggs_ttDKF[nTSol] * _ProbTTbar_ttDKF[nTSol] );
+			ProbTotal_ttDKF.push_back( ProbHiggs_ttDKF[nTSol] * ProbTTbar_ttDKF[nTSol] );
 
 			// n_ttDKF_Best vai ter o indice da melhor solucao desta thread e MaxTotalProb a sua probabilidade
-			if ( ( _ProbTotal_ttDKF[nTSol] > MaxTotalProb ) && ( _ProbTotal_ttDKF[nTSol] != 0. ) ) {
-				MaxTotalProb = _ProbTotal_ttDKF[nTSol];
+			if ( ( ProbTotal_ttDKF[nTSol] > MaxTotalProb ) && ( ProbTotal_ttDKF[nTSol] != 0. ) ) {
+				MaxTotalProb = ProbTotal_ttDKF[nTSol];
 				n_ttDKF_Best = nTSol;
 			}
 			nTSol++;
@@ -4390,7 +4367,7 @@ void ttH_dilep::ttDilepKinFit(){
 	} // end of parallel for
 
 	// Create the class instance holding the best result, or empty if no suitable result is found
-	if (n_ttDKF_Best >= 0) {	
+	/*if (n_ttDKF_Best >= 0) {	
 		ttDKF_Best_Sol sol (MaxTotalProb, _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
 							_n1_ttDKF[n_ttDKF_Best], _n2_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best],
 							_l1_ttDKF[n_ttDKF_Best], _l2_ttDKF[n_ttDKF_Best], _W1_ttDKF[n_ttDKF_Best], _W2_ttDKF[n_ttDKF_Best],
@@ -4408,6 +4385,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// Performs a reduction to get the best solution
 	best = ttH::KinFit::reduce(best_sols);
 	// end of pragma omp parallel
+	*/
 	}
 
 
@@ -4429,33 +4407,33 @@ void ttH_dilep::ttDilepKinFit(){
 		// Only needs to merge the n_ttDKF_Best element from the vectors
 
 		// -------------------------------------------------------------------
-		Neutrino     = best.getN(1);  	// Neutrino 1
-		Antineutrino = best.getN(2);  	// Neutrino 2		
+		Neutrino     = n1_ttDKF[n_ttDKF_Best];  	// Neutrino 1
+		Antineutrino = n2_ttDKF[n_ttDKF_Best];  	// Neutrino 2		
 		// ###  leptons  ###
-		RecLepP 	= best.getL(1);
-		RecLepN 	= best.getL(2);
+		RecLepP 	= l1_ttDKF[n_ttDKF_Best];
+		RecLepN 	= l2_ttDKF[n_ttDKF_Best];
 		// ###  b-quarks ###
-		RecB    	= best.getB(1);
-		RecBbar 	= best.getB(2);
+		RecB    	= b1_ttDKF[n_ttDKF_Best];
+		RecBbar 	= b2_ttDKF[n_ttDKF_Best];
 		// ### Neutrinos ###
-		RecNeu    	= best.getN(1);
-		RecNeubar 	= best.getN(2);
+		RecNeu    	= n1_ttDKF[n_ttDKF_Best];
+		RecNeubar 	= n2_ttDKF[n_ttDKF_Best];
 		// ###  W bosons ###
-		RecWp    	= best.getW(1);
-		RecWn    	= best.getW(2);
+		RecWp    	= W1_ttDKF[n_ttDKF_Best];
+		RecWn    	= W2_ttDKF[n_ttDKF_Best];
 		// ###  t-quarks ###
-		RecT    	= best.getT(1);
-		RecTbar 	= best.getT(2);
+		RecT    	= t1_ttDKF[n_ttDKF_Best];
+		RecTbar 	= t2_ttDKF[n_ttDKF_Best];
 		// ###  ttbar system ###
-		RecTTbar    	= best.getTTbar();
+		RecTTbar    	= ttbar_ttDKF[n_ttDKF_Best];
 		// ###  Higgs system ###
-		RecHiggs    	  = best.getHiggs();
-		RecHiggsB1	  = best.getBHiggs(1);
-		RecHiggsB2	  = best.getBHiggs(2);
-		RecMassHiggsJet1  = best.getMHiggsJet(1); //samor 16.Dec.2012
-		RecMassHiggsJet2  = best.getMHiggsJet(2);
+		RecHiggs    	  = Higgs_ttDKF[n_ttDKF_Best];
+		RecHiggsB1	  = b1_Higgs_ttDKF[n_ttDKF_Best];
+		RecHiggsB2	  = b2_Higgs_ttDKF[n_ttDKF_Best];
+		RecMassHiggsJet1  = mHiggsJet1_ttDKF[n_ttDKF_Best]; //samor 16.Dec.2012
+		RecMassHiggsJet2  = mHiggsJet2_ttDKF[n_ttDKF_Best];
 
-		RecProbTotal_ttH  = best.getProb();
+		RecProbTotal_ttH  = ProbTotal_ttDKF[n_ttDKF_Best];
 
 		//		cout << "n_ttDKF_Best = " << n_ttDKF_Best << " ; RecMassHiggsJet1 " << RecMassHiggsJet1 << " ; RecMassHiggsJet2 " << RecMassHiggsJet2 << endl;
 		//		cout << "   " << endl;
