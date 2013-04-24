@@ -22,7 +22,7 @@ namespace Dilep {
 			// Implementation taken from 
 			// UNURAN (c) 2000  W. Hoermann & J. Leydold, Institut f. Statistik, WU Wien 
 			
-			unsigned tid = threadIdx.x + blockIdx.x * BLOCK_SIZE;
+			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
 
 			const double kC1 = 1.448242853;
 			const double kC2 = 3.307147487;
@@ -98,6 +98,8 @@ namespace Dilep {
 		             else if (y<x+kT)
 		                 if (rn*rn<4*(kB-log(x))) {
 		                     result = rn; break; }
+		         }
+   } while(0);
 
 			return mean + sigma * result;
 		}
