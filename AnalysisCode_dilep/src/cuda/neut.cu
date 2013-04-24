@@ -156,7 +156,7 @@ namespace Dilep {
 			bl_a = di.getZbl();
 			bl_b = di.getCbl();
 
-			result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, &lep_b, &bl_a, &bl_b);
+			//result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, &lep_b, &bl_a, &bl_b);
 
 			// Check if there is any solutions for this reconstruction
 			if (result->size())
@@ -284,7 +284,7 @@ namespace Dilep {
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
-			for (unsigned thread = 0; i < vdi.size(); ++thread) {
+			for (unsigned thread = 0; thread < vdi.size(); ++thread) {
 				vector<myvector> result;
 
 				for (int sol = 0 ; sol < count[thread] && sol<4 ; sol++) {
@@ -301,7 +301,7 @@ namespace Dilep {
 					++hasSolution;  // increment solution counter
 				}
 				vdi[thread].setHasSol(hasSolution);
-				vdi[thread].setResult(result);
+				vdi[thread].setResult(&result);
 			}
 
 			// frees the memory allocated on GPU
@@ -334,7 +334,7 @@ namespace Dilep {
 		// NEUTRINO SOLUTIONS
 		// TLorentzVector are now arrays
 		__global__
-		vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 
+		void calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double in_mpz[], double lep_a[], 
 				double lep_b[], double bl_a[], double bl_b[], 
 				double nc[], int a[])
@@ -511,8 +511,6 @@ namespace Dilep {
 			int ncand(0);
 
 			double rec_x1, rec_y1, rec_z1, rec_e1, rec_x2, rec_y2, rec_z2, rec_e2;
-
-			unsigned long tid = threadIdx.x + blockIdx.x * blockDim.x;
 
 			for (int j=0; j<8; j+=2){
 				double delta = k_1*output[j]*output[j] + k_2*output[j] + k_3;
