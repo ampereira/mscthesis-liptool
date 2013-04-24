@@ -4274,13 +4274,13 @@ void ttH_dilep::ttDilepKinFit(){
 			// Higgs Probability : 
 			// -----------------------------------------------------------------------------
 			// Method 1:  Use Mass Constraint  (mj1j2 closest to mH_UserValue)
-			if ( ttDKF_HiggsChoice == 1 ) _ProbHiggs_ttDKF.push_back(   1./myHiggs_MassDiff 	);			
+			if ( ttDKF_HiggsChoice == 1 ) ProbHiggs_ttDKF.push_back(   1./myHiggs_MassDiff 	);			
 			// -----------------------------------------------------------------------------
 			// Method 2:  Use Transverse Momentum Constraint (pT_Higgs = - pT_ttbar)
-			if ( ttDKF_HiggsChoice == 2 ) _ProbHiggs_ttDKF.push_back(   1./myHiggs_pTDiff 	);			
+			if ( ttDKF_HiggsChoice == 2 ) ProbHiggs_ttDKF.push_back(   1./myHiggs_pTDiff 	);			
 			// -----------------------------------------------------------------------------
 			// Method 3: Use Mass from Angle Constraint
-			if ( ttDKF_HiggsChoice == 3 ) _ProbHiggs_ttDKF.push_back(   higgs_sele_ang 	);			
+			if ( ttDKF_HiggsChoice == 3 ) ProbHiggs_ttDKF.push_back(   higgs_sele_ang 	);			
 
 
 			// -------------------------------
@@ -4292,10 +4292,10 @@ void ttH_dilep::ttDilepKinFit(){
 			// -------------------------------
 			// (i) Lowest nupT1*nupT2
 			if ( ttDKF_SolutionChoice == 1 ) {
-				double nu_pt_cand = 	sqrt( _n1_ttDKF[nTSol].Px() * n1_ttDKF[nTSol].Px() +
-						n1_ttDKF[nTSol].Py() * _n1_ttDKF[nTSol].Py() ) * 	
-					sqrt( n2_ttDKF[nTSol].Px() * _n2_ttDKF[nTSol].Px() +
-							n2_ttDKF[nTSol].Py() * _n2_ttDKF[nTSol].Py() );	
+				double nu_pt_cand = 	sqrt( n1_ttDKF[nTSol].Px() * n1_ttDKF[nTSol].Px() +
+						n1_ttDKF[nTSol].Py() * n1_ttDKF[nTSol].Py() ) * 	
+					sqrt( n2_ttDKF[nTSol].Px() * n2_ttDKF[nTSol].Px() +
+							n2_ttDKF[nTSol].Py() * n2_ttDKF[nTSol].Py() );	
 
 				// ------------------------------------------
 				// ttbar System Probability : 
