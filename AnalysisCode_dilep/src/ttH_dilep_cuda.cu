@@ -4036,7 +4036,7 @@ void ttH_dilep::ttDilepKinFit(){
 	long long int time = ttH::KinFit::startTimer();
 #endif
 
-		{
+		
 		unsigned task_id;		// used to determine the comb to use
 		// OpenMP variable declarations - cannot use class variables in OpenMP clauses
 		// Variables starting with the '_' are private for each thread
@@ -4081,7 +4081,7 @@ void ttH_dilep::ttDilepKinFit(){
 #elif OMP
 		Dilep::CPU::dilep(di);
 #elif CUDA
-		Dlep::GPU::dilep(di);
+		Dilep::GPU::dilep(di);
 #elif PAPI
 		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
@@ -4364,7 +4364,6 @@ void ttH_dilep::ttDilepKinFit(){
 		// %      Code to Evaluate Solutions     %
 		// %      Solutions Found Are Stored     %
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	} // end of parallel for
 
 	// Create the class instance holding the best result, or empty if no suitable result is found
 	/*if (n_ttDKF_Best >= 0) {	
