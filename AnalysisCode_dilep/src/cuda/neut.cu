@@ -1,5 +1,4 @@
 #include "neut.cuh"
-#include <curand_kernel.h>
 /* include MTGP host helper functions */
 #include <curand_mtgp32_host.h>
 /* include MTGP pre-computed parameter sets */

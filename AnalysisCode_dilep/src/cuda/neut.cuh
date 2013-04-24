@@ -22,6 +22,7 @@
 
 #include <cuda.h>
 #include <cuda_runtime.h>
+#include <curand_kernel.h>
 
 
 #define PI 3.14159265358979312
