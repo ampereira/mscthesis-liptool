@@ -22,11 +22,6 @@
 
 #include <cuda.h>
 #include <cuda_runtime.h>
-#include <curand_kernel.h>
-/* include MTGP host helper functions */
-#include <curand_mtgp32_host.h>
-/* include MTGP pre-computed parameter sets */
-#include <curand_mtgp32dc_p_11213.h>
 
 
 #define PI 3.14159265358979312
