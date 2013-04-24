@@ -26,6 +26,7 @@
 #include <curand_mtgp32dc_p_11213.h>
 
 
+#define PI 3.14159265358979312
 // Transpose the 2D abstraction of the array to 1D
 #define TO1D(nc,tid,sol,did)	nc[tid*16+sol*4+did]
 
