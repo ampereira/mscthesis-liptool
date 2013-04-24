@@ -32,8 +32,9 @@
 // Normalize the random number generated
 #define cuRand(x) (((double) curand(x))/((double) UINT_MAX))
 
+
 namespace Dilep {
-	namespace CUDA {
+	namespace GPU {
 		unsigned GRID_SIZE;
 		unsigned BLOCK_SIZE;
 		unsigned NUM_THREADS;
@@ -56,7 +57,7 @@ namespace Dilep {
 
 		__host__ void dilep (DilepInput &di);
 
-		__global__ std::vector<myvector>* calc_dilep(double t_mass[], double w_mass[], double in_mpx[], 
+		__global__ void calc_dilep(double t_mass[], double w_mass[], double in_mpx[], 
 										double in_mpy[], double in_mpz[], double lep_a[], double lep_b[], 
 										double bl_a[], double bl_b[], double nc[], int a[]);
 	}

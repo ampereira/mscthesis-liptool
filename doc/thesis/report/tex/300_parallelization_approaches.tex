@@ -23,6 +23,8 @@ Note that there is data dependencies between loop iterations, since that for cho
 
 A generalist workflow suited for parallelization is presented in figure \ref{fig:SeqPipeline} (right). The combinations must be computed, and also all the variations, and their information stored in a data structure, so that the main loop of \ttDilepKinFit is eliminated. Now, each stage of the workflow can have its own loop, which is not represented in the figure since it is considered to be part of the stage itself. By having their own loop, the stages can now be executed in parallel, but maintaining the same data dependencies between stages.
 
+Within the same event, different combinations (or even variations) may be reconstructable, both the \ttbar system and the Higgs boson, while others may not. If the kinematical reconstruction produces no results the Higgs boson reconstruction will not be performed and the next combination or variation will be processed. If the reconstructions are parallelized, some tasks may take more time to process than others due to this irregularity of the reconstructions, which will cause load balancing issues. If the heuristic used for load balancing is not suitable for the type of the tasks (regular vs irregular) the computational resources will be underused, limiting the possible performance increase of the parallelization.
+
 \pdfbookmark{Shared Memory Parallelization}{shared memory parallelization}
 \section{Shared Memory Parallelization}
 \label{Parallelization:SharedMem}

@@ -4,7 +4,7 @@ using std::vector;
 using namespace std;
 
 namespace Dilep {
-	namespace CUDA {
+	namespace GPU {
 		__device__
 		double gaus_kernel (double mean, double sigma, curandStateMtgp32 *state) {
 			// Samples a random number from the standard Normal (Gaussian) Distribution 
@@ -284,7 +284,7 @@ namespace Dilep {
 			// o num de combs*vars e o num de threads
 			for (unsigned thread = 0; i < vdi.size(); ++thread) {
 				vector<myvector> result;
-				
+
 				for (int sol = 0 ; sol < count[thread] && sol<4 ; sol++) {
 					myvector *mv = new myvector( 
 						TO1D(nc,thread,sol,0),
