@@ -33,11 +33,11 @@
 #define cuRand(x) (((double) curand(x))/((double) UINT_MAX))
 
 
-namespace Dilep {
-	namespace GPU {
 		unsigned GRID_SIZE;
 		unsigned BLOCK_SIZE;
 		unsigned NUM_THREADS;
+namespace Dilep {
+	namespace GPU {
 
 		__device__ double gaus_kernel (double mean, double sigma, curandStateMtgp32 *state);
 		__device__ void applyVariance ();
