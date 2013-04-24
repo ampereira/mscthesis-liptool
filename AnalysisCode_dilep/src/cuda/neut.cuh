@@ -1,3 +1,6 @@
+#ifndef NEUT_CUDA
+#define NEUT_CUDA
+
 #include <TH1.h>
 #include <TH2.h>
 #include <TH3.h>
@@ -63,3 +66,4 @@ namespace Dilep {
 										double bl_a[], double bl_b[], double nc[], int a[]);
 	}
 }
+#endif
