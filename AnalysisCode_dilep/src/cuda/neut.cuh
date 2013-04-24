@@ -33,9 +33,6 @@
 #define cuRand(x) (((double) curand(x))/((double) UINT_MAX))
 
 
-		unsigned GRID_SIZE;
-		unsigned BLOCK_SIZE;
-		unsigned NUM_THREADS;
 namespace Dilep {
 	namespace GPU {
 
