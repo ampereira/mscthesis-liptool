@@ -241,7 +241,7 @@ namespace Dilep {
 				d[(i * 5) + 3] = vdi[i].getCbl().E();
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
-			if(!(
+			/*if((
 				in_mpx[0] == vdi[0].getInMpx(0) &&
 				in_mpx[1] == vdi[0].getInMpx(1) &&
 				in_mpy[0] == vdi[0].getInMpy(0) &&
@@ -280,9 +280,9 @@ namespace Dilep {
 				ofstream of ("lawl.txt", fstream::app);
 				of << "falhou" << endl;
 				of.close();
-}
+}*/
 				
-
+/*
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
 			cudaMalloc(&dev_w_mass, vdi.size()*2*sizeof(double));
@@ -317,17 +317,22 @@ namespace Dilep {
 			// i.e. the number of times dilep is executed
 			dim3 dimGrid(GRID_SIZE, 1);
 			dim3 dimBlock(BLOCK_SIZE, 1);
-
+*/
 			// dilep kernel call
-			calc_dilep<<<dimGrid,dimBlock>>>(
-					dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_in_mpz, 
-					dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
+			//calc_dilep<<<dimGrid,dimBlock>>>(
+			//		dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_in_mpz, 
+			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 
+			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
+					a, b, c, d, dev_nc, dev_count);
 
 			// memory transfer of the results from the GPU
 			//FALTA VARIACOES
-			cudaMemcpy(nc, dev_nc, 16*vdi.size()*sizeof(double), cudaMemcpyDeviceToHost);
-			cudaMemcpy(count, dev_count, vdi.size()*sizeof(int), cudaMemcpyDeviceToHost);
+			//cudaMemcpy(nc, dev_nc, 16*vdi.size()*sizeof(double), cudaMemcpyDeviceToHost);
+			//cudaMemcpy(count, dev_count, vdi.size()*sizeof(int), cudaMemcpyDeviceToHost);
+
+			nc = dev_nc;
+			count = dev_count;
 
 			unsigned int aux_size = GRID_SIZE*BLOCK_SIZE*16, is;
 
@@ -354,7 +359,7 @@ namespace Dilep {
 			}
 
 			// frees the memory allocated on GPU
-			cudaFree(dev_t_mass);
+			/*cudaFree(dev_t_mass);
 			cudaFree(dev_w_mass);
 			cudaFree(dev_in_mpx);
 			cudaFree(dev_in_mpy);
@@ -366,7 +371,7 @@ namespace Dilep {
 			cudaFree(dev_bl_b);
 
 			cudaFree(dev_count);
-			cudaFree(dev_nc);
+			cudaFree(dev_nc);*/
 
 			// time measurement
 			#ifdef MEASURE_DILEP
@@ -382,7 +387,8 @@ namespace Dilep {
 
 		// NEUTRINO SOLUTIONS
 		// TLorentzVector are now arrays
-		__global__
+		//__global__
+		__host__
 		void calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double in_mpz[], double lep_a[], 
 				double lep_b[], double bl_a[], double bl_b[], 
