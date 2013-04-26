@@ -238,7 +238,7 @@ namespace Dilep {
 				d[(i * 5) + 3] = vdi[i].getCbl().E();
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
-		if(!(
+/*		if(!(
 				in_mpx[0] == vdi[0].getInMpx(0) &&
 				in_mpx[1] == vdi[0].getInMpx(1) &&
 				in_mpy[0] == vdi[0].getInMpy(0) &&
@@ -277,7 +277,7 @@ namespace Dilep {
 				ofstream of ("lawl.txt", fstream::app);
 				of << "falhou" << endl;
 				of.close();
-}
+}*/
 				
 /*
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
