@@ -4097,6 +4097,10 @@ void ttH_dilep::ttDilepKinFit(){
 
 		std::vector<myvector> result = di.getResult();
 		HasSolution += di.getHasSol();
+
+		ofstream of("result.txt", fstream::app);
+		of << EveNumber << " - " << result.size() << endl;
+		of.close();
 		
 		for ( int id = 0; id < result.size(); id++) {
 		
@@ -4401,10 +4405,6 @@ void ttH_dilep::ttDilepKinFit(){
 	// Redefine HasSolution if no other reconstruction criteria met
 	// -------------------------------------------------------------------
 	HasSolution = (n_ttDKF_Best >= 0) ? HasSolution : 0;
-
-		/*ofstream of("result.txt", fstream::app);
-		of << EveNumber << " - " << HasSolution << endl;
-		of.close();*/
 
 	// -------------------------------------------------------------------
 	// Make sure backward compatibility is preserved + Few Calculations
