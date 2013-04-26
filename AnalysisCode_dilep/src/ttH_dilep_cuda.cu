@@ -27,7 +27,8 @@ using namespace std;
 #include "seq/neut.h"
 #include <omp.h>
 #elif CUDA
-#include "cuda/neut.cuh"
+#include "seq/neut.h"
+//#include "cuda/neut.cuh"
 #elif SEQ
 #include "seq/neut.h"
 #elif SSE
@@ -4081,7 +4082,8 @@ void ttH_dilep::ttDilepKinFit(){
 #elif OMP
 		Dilep::CPU::dilep(di);
 #elif CUDA
-		Dilep::GPU::dilep(di);
+		Dilep::CPU::dilep(di);
+		//Dilep::GPU::dilep(di);
 #elif PAPI
 		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
