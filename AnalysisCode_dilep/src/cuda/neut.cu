@@ -331,8 +331,6 @@ namespace Dilep {
 			//cudaMemcpy(nc, dev_nc, 16*vdi.size()*sizeof(double), cudaMemcpyDeviceToHost);
 			//cudaMemcpy(count, dev_count, vdi.size()*sizeof(int), cudaMemcpyDeviceToHost);
 
-			nc = dev_nc;
-			count = dev_count;
 
 			unsigned int aux_size = GRID_SIZE*BLOCK_SIZE*16, is;
 
@@ -341,12 +339,12 @@ namespace Dilep {
 			for (unsigned thread = 0; thread < vdi.size(); ++thread) {
 				vector<myvector> result;
 
-				for (int sol = 0 ; sol < count[thread] && sol<4 ; sol++) {
+				for (int sol = 0 ; sol < dev_count[thread] && sol<4 ; sol++) {
 					myvector *mv = new myvector( 
-						TO1D(nc,thread,sol,0),
-						TO1D(nc,thread,sol,1),
-						TO1D(nc,thread,sol,2),
-						TO1D(nc,thread,sol,3) );
+						TO1D(dev_nc,thread,sol,0),
+						TO1D(dev_nc,thread,sol,1),
+						TO1D(dev_nc,thread,sol,2),
+						TO1D(dev_nc,thread,sol,3) );
 					
 					result.push_back(*mv);
 				}
