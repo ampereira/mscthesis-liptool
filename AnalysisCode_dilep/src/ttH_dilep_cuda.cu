@@ -28,7 +28,7 @@ using namespace std;
 #include <omp.h>
 #elif CUDA
 #include "seq/neut.h"
-//#include "cuda/neut.cuh"
+#include "cuda/neut.cuh"
 #elif SEQ
 #include "seq/neut.h"
 #elif SSE
