@@ -349,8 +349,8 @@ namespace Dilep {
 				if (result.size()) {
 					++hasSolution;  // increment solution counter
 				}
-				vdi[thread].setHasSol(hasSolution);
-				vdi[thread].setResult(&result);
+				vdi[comb].setHasSol(hasSolution);
+				vdi[comb].setResult(&result);
 			}
 
 			// frees the memory allocated on GPU
