@@ -6,16 +6,17 @@ SHELL = /bin/sh
 
 DEFINES = -Dextname
 
+NVCC = nvcc
 CXX  = g++
 LD   = g++
-NVCC = nvcc
 
 ROOTCFLAGS    = $(shell $(ROOTSYS)/bin/root-config --cflags)
 ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 #ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lHtml -lEG -lPhysics -lTreePlayer
 ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
-CXXFLAGS   = -O3 -std=c++11 $(ROOTCFLAGS)
+NVCCFLAGS  = -arch=sm_20 -DCUDA 
+CXXFLAGS   = -O3 $(ROOTCFLAGS)
 #CXXFLAGS   = -ggdb3 -std=c++11 $(ROOTCFLAGS)
 # specific time measurement
 #CXXFLAGS  += -DMEASURE_KINFIT #-DMEASURE_DILEP
@@ -43,7 +44,9 @@ seq: ttH_dilep_seq
 omp: CXXFLAGS += -DOMP -fopenmp
 omp: ttH_dilep_omp
 
-cuda: CXXFLAGS += -DCUDA -arch=sm_20
+cuda: NVCCFLAGS += $(filter-out -pthread,$(CXXFLAGS))
+cuda: LIBDIRS2 = $(filter-out -pthread,$(LIBDIRS))
+cuda: LIBDIRSCUDA = $(filter-out -rdynamic,$(LIBDIRS2))
 cuda: ttH_dilep_cuda
 
 papi: CXXFLAGS += -DPAPI
@@ -70,7 +73,7 @@ build/neut_seq.o: src/seq/neut.cxx src/myvector.h src/seq/neut.h
 	$(CXX) -Wall -Wextra $(CXXFLAGS) $(INCLUDES) -c src/seq/neut.cxx -o build/neut_seq.o
 
 build/neut_cuda.o: src/cuda/neut.cu src/myvector.h src/cuda/neut.cuh
-	$(CXX) -Wall -Wextra $(CXXFLAGS) $(INCLUDES) -c src/cuda/neut.cu -o build/neut_cuda.o
+	$(NVCC) $(NVCCFLAGS) $(INCLUDES) -c src/cuda/neut.cu -o build/neut_cuda.o
 
 ttH_dilep_seq: src/ttH_dilep_old.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
 	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_seq $(INCLUDES) src/ttH_dilep_old.cxx build/neut_seq.o build/dilep_input.o build/utilities.o $(LIBDIRS)
@@ -86,7 +89,7 @@ ttH_dilep_omp: src/ttH_dilep_omp.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build
 	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_omp $(INCLUDES) src/ttH_dilep_omp.cxx build/neut_seq.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRS)
 
 ttH_dilep_cuda: src/ttH_dilep_cuda.cu src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_cuda.o build/ttDKF_Best_Sol.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
-	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_cuda $(INCLUDES) src/ttH_dilep_cuda.cu build/neut_cuda.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRS)
+	$(NVCC) $(NVCCFLAGS) -o bin/ttH_dilep_cuda $(INCLUDES) src/ttH_dilep_cuda.cu build/neut_cuda.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRSCUDA)
 
 clean:
 	rm -f build/* bin/ttH_dilep*
