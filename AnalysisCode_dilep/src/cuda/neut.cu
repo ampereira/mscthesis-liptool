@@ -321,7 +321,7 @@ namespace Dilep {
 			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 			int ja = 16 * NUM_THREADS;
 
-			for (int ii = 0; ii < ja; ++ii) {
+			for (int ii = 0; ii < ja; ii++) {
 				dev_count[ii] = -1;
 				dev_nc[ii] = -1;
 			}
