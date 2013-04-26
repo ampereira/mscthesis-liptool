@@ -242,40 +242,40 @@ namespace Dilep {
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
 			if(!(
-				in_mpx[0] == vdi[i].getInMpx(0) &&
-				in_mpx[1] == vdi[i].getInMpx(1) &&
-				in_mpy[0] == vdi[i].getInMpy(0) &&
-				in_mpy[1] == vdi[i].getInMpy(1) &&
-				in_mpz[0] == vdi[i].getInMpz(0) &&
-				in_mpz[1] == vdi[i].getInMpz(1) &&
-				t_mass[0] == vdi[i].getTmass(0) &&
-				t_mass[1] == vdi[i].getTmass(1) &&
-				w_mass[0] == vdi[i].getWmass(0) &&
-				w_mass[1] == vdi[i].getWmass(1) &&
+				in_mpx[0] == vdi[0].getInMpx(0) &&
+				in_mpx[1] == vdi[0].getInMpx(1) &&
+				in_mpy[0] == vdi[0].getInMpy(0) &&
+				in_mpy[1] == vdi[0].getInMpy(1) &&
+				in_mpz[0] == vdi[0].getInMpz(0) &&
+				in_mpz[1] == vdi[0].getInMpz(1) &&
+				t_mass[0] == vdi[0].getTmass(0) &&
+				t_mass[1] == vdi[0].getTmass(1) &&
+				w_mass[0] == vdi[0].getWmass(0) &&
+				w_mass[1] == vdi[0].getWmass(1) &&
 				
-				a[0]	   == vdi[i].getZlep().Px() &&
-				a[1] == vdi[i].getZlep().Py() &&
-				a[2] == vdi[i].getZlep().Pz() &&
-				a[3] == vdi[i].getZlep().E() &&
-				a[4] == vdi[i].getZlep().M() &&
+				a[0]	   == vdi[0].getZlep().Px() &&
+				a[1] == vdi[0].getZlep().Py() &&
+				a[2] == vdi[0].getZlep().Pz() &&
+				a[3] == vdi[0].getZlep().E() &&
+				a[4] == vdi[0].getZlep().M() &&
 
-				b[0]	   == vdi[i].getClep().Px() &&
-				b[1] == vdi[i].getClep().Py() &&
-				b[2] == vdi[i].getClep().Pz() &&
-				b[3] == vdi[i].getClep().E() &&
-				b[4] == vdi[i].getClep().M() &&
+				b[0]	   == vdi[0].getClep().Px() &&
+				b[1] == vdi[0].getClep().Py() &&
+				b[2] == vdi[0].getClep().Pz() &&
+				b[3] == vdi[0].getClep().E() &&
+				b[4] == vdi[0].getClep().M() &&
 
-				c[0]	   == vdi[i].getZbl().Px() &&
-				c[1] == vdi[i].getZbl().Py() &&
-				c[2] == vdi[i].getZbl().Pz() &&
-				c[3] == vdi[i].getZbl().E() &&
-				c[4] == vdi[i].getZbl().M() &&
+				c[0]	   == vdi[0].getZbl().Px() &&
+				c[1] == vdi[0].getZbl().Py() &&
+				c[2] == vdi[0].getZbl().Pz() &&
+				c[3] == vdi[0].getZbl().E() &&
+				c[4] == vdi[0].getZbl().M() &&
 
-				d[0]	   == vdi[i].getCbl().Px() &&
-				d[1] == vdi[i].getCbl().Py() &&
-				d[2] == vdi[i].getCbl().Pz() &&
-				d[3] == vdi[i].getCbl().E() &&
-				d[4] == vdi[i].getCbl().M()
+				d[0]	   == vdi[0].getCbl().Px() &&
+				d[1] == vdi[0].getCbl().Py() &&
+				d[2] == vdi[0].getCbl().Pz() &&
+				d[3] == vdi[0].getCbl().E() &&
+				d[4] == vdi[0].getCbl().M()
 				)) {
 				ofstream of ("lawl.txt", fstream::app);
 				of << "falhou" << endl;
