@@ -119,7 +119,7 @@ namespace Dilep {
 			NUM_THREADS=blocks*threads;
 		}
 	
-		__host__
+		__device__
 		double calcMass (double x, double y, double z, double e) {
 			double mm, mass;
 
@@ -238,48 +238,8 @@ namespace Dilep {
 				d[(i * 5) + 3] = vdi[i].getCbl().E();
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
-/*		if(!(
-				in_mpx[0] == vdi[0].getInMpx(0) &&
-				in_mpx[1] == vdi[0].getInMpx(1) &&
-				in_mpy[0] == vdi[0].getInMpy(0) &&
-				in_mpy[1] == vdi[0].getInMpy(1) &&
-				in_mpz[0] == vdi[0].getInMpz(0) &&
-				in_mpz[1] == vdi[0].getInMpz(1) &&
-				t_mass[0] == vdi[0].getTmass(0) &&
-				t_mass[1] == vdi[0].getTmass(1) &&
-				w_mass[0] == vdi[0].getWmass(0) &&
-				w_mass[1] == vdi[0].getWmass(1) &&
 				
-				a[0]	   == vdi[0].getZlep().Px() &&
-				a[1] == vdi[0].getZlep().Py() &&
-				a[2] == vdi[0].getZlep().Pz() &&
-				a[3] == vdi[0].getZlep().E() &&
-				a[4] == vdi[0].getZlep().M() &&
 
-				b[0]	   == vdi[0].getClep().Px() &&
-				b[1] == vdi[0].getClep().Py() &&
-				b[2] == vdi[0].getClep().Pz() &&
-				b[3] == vdi[0].getClep().E() &&
-				b[4] == vdi[0].getClep().M() &&
-
-				c[0]	   == vdi[0].getZbl().Px() &&
-				c[1] == vdi[0].getZbl().Py() &&
-				c[2] == vdi[0].getZbl().Pz() &&
-				c[3] == vdi[0].getZbl().E() &&
-				c[4] == vdi[0].getZbl().M() &&
-
-				d[0]	   == vdi[0].getCbl().Px() &&
-				d[1] == vdi[0].getCbl().Py() &&
-				d[2] == vdi[0].getCbl().Pz() &&
-				d[3] == vdi[0].getCbl().E() &&
-				d[4] == vdi[0].getCbl().M()
-				)) {
-				ofstream of ("lawl.txt", fstream::app);
-				of << "falhou" << endl;
-				of.close();
-}*/
-				
-/*
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
 			cudaMalloc(&dev_w_mass, vdi.size()*2*sizeof(double));
@@ -314,22 +274,14 @@ namespace Dilep {
 			// i.e. the number of times dilep is executed
 			dim3 dimGrid(GRID_SIZE, 1);
 			dim3 dimBlock(BLOCK_SIZE, 1);
-*/
+
 			// dilep kernel call
-			//calc_dilep<<<dimGrid,dimBlock>>>(
-			//		dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_in_mpz, 
-			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
-			/*int ja = 16 * NUM_THREADS;
-
-
-			for (int i = 0; i < ja; ++i)
-			{
-				dev_nc[i] = -1;
-				dev_count[i] = -1;
-			}*/
-
-			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
-					a, b, c, d, dev_nc, dev_count);
+			calc_dilep<<<dimGrid,dimBlock>>>(
+					dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_in_mpz, 
+					dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
+		
+			//calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
+			//		a, b, c, d, dev_nc, dev_count);
 				
 			//	ofstream of ("lawl2.txt", fstream::app);
 			//	of << dev_count[0] << endl;
@@ -339,8 +291,8 @@ namespace Dilep {
 
 			// memory transfer of the results from the GPU
 			//FALTA VARIACOES
-			//cudaMemcpy(nc, dev_nc, 16*vdi.size()*sizeof(double), cudaMemcpyDeviceToHost);
-			//cudaMemcpy(count, dev_count, vdi.size()*sizeof(int), cudaMemcpyDeviceToHost);
+			cudaMemcpy(nc, dev_nc, 16*vdi.size()*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(count, dev_count, vdi.size()*sizeof(int), cudaMemcpyDeviceToHost);
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
@@ -349,10 +301,10 @@ namespace Dilep {
 
 				for (int sol = 0 ; sol < dev_count[comb] && sol<4 ; sol++) {
 					myvector *mv = new myvector( 
-						TO1D(dev_nc,comb,sol,0),
-						TO1D(dev_nc,comb,sol,1),
-						TO1D(dev_nc,comb,sol,2),
-						TO1D(dev_nc,comb,sol,3) );
+						TO1D(nc,comb,sol,0),
+						TO1D(nc,comb,sol,1),
+						TO1D(nc,comb,sol,2),
+						TO1D(nc,comb,sol,3) );
 					
 					result.push_back(*mv);
 				}
@@ -365,7 +317,7 @@ namespace Dilep {
 			}
 
 			// frees the memory allocated on GPU
-			/*cudaFree(dev_t_mass);
+			cudaFree(dev_t_mass);
 			cudaFree(dev_w_mass);
 			cudaFree(dev_in_mpx);
 			cudaFree(dev_in_mpy);
@@ -377,7 +329,7 @@ namespace Dilep {
 			cudaFree(dev_bl_b);
 
 			cudaFree(dev_count);
-			cudaFree(dev_nc);*/
+			cudaFree(dev_nc);
 
 			// time measurement
 			#ifdef MEASURE_DILEP
@@ -394,7 +346,7 @@ namespace Dilep {
 		// NEUTRINO SOLUTIONS
 		// TLorentzVector are now arrays
 		//__global__
-		__host__
+		__global__
 		void calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double in_mpz[], double lep_a[], 
 				double lep_b[], double bl_a[], double bl_b[], 
@@ -629,7 +581,7 @@ namespace Dilep {
 		}
 
 		//////////////////////////////////////
-		__host__
+		__device__
 		void toz(double k[], double l[], double g[]){
 			//// checked !!
 			///////////////////////////////////////////////////////////////////////////
@@ -665,7 +617,7 @@ namespace Dilep {
 
 
 		///////////////////////////////////////////
-		__host__
+		__device__
 		void my_qu( double my_in[], double my_val[])
 		{
 
@@ -878,7 +830,7 @@ namespace Dilep {
 		////////////////////end of main
 		///////////////////////////////////////////////////////////////
 		////+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		__host__
+		__device__
 		void Csqrt(double _ar, double _ai, double _my[])
 		{
 			///// complex sqrt
@@ -911,7 +863,7 @@ namespace Dilep {
 		//////////////////////////////////////////////////////////////////
 		/// cubic /// a[0]x^3+a[1]x^2+a[2]x+a[3]=0
 		//////////////////////////////////////////////////////////////////
-		__host__
+		__device__
 		void cubic(double a[], double rr[], double ri[])
 		{
 			int i;
