@@ -322,26 +322,26 @@ namespace Dilep {
 
 			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
 					a, b, c, d, dev_nc, dev_count);
+				ofstream of ("lawl2.txt", fstream::app);
+				of << dev_count[0] << endl;
+				of.close();
 
 			// memory transfer of the results from the GPU
 			//FALTA VARIACOES
 			//cudaMemcpy(nc, dev_nc, 16*vdi.size()*sizeof(double), cudaMemcpyDeviceToHost);
 			//cudaMemcpy(count, dev_count, vdi.size()*sizeof(int), cudaMemcpyDeviceToHost);
 
-
-			unsigned int aux_size = GRID_SIZE*BLOCK_SIZE*16, is;
-
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
-			for (unsigned thread = 0; thread < vdi.size(); ++thread) {
+			for (unsigned comb = 0; thread < vdi.size(); ++comb) {
 				vector<myvector> result;
 
-				for (int sol = 0 ; sol < dev_count[thread] && sol<4 ; sol++) {
+				for (int sol = 0 ; sol < dev_count[comb] && sol<4 ; sol++) {
 					myvector *mv = new myvector( 
-						TO1D(dev_nc,thread,sol,0),
-						TO1D(dev_nc,thread,sol,1),
-						TO1D(dev_nc,thread,sol,2),
-						TO1D(dev_nc,thread,sol,3) );
+						TO1D(dev_nc,comb,sol,0),
+						TO1D(dev_nc,comb,sol,1),
+						TO1D(dev_nc,comb,sol,2),
+						TO1D(dev_nc,comb,sol,3) );
 					
 					result.push_back(*mv);
 				}
