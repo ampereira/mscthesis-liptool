@@ -238,7 +238,7 @@ namespace Dilep {
 				d[(i * 5) + 3] = vdi[i].getCbl().E();
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
-		if((
+/*		if((
 				in_mpx[0] == vdi[0].getInMpx(0) &&
 				in_mpx[1] == vdi[0].getInMpx(1) &&
 				in_mpy[0] == vdi[0].getInMpy(0) &&
@@ -277,7 +277,7 @@ namespace Dilep {
 				ofstream of ("lawl.txt", fstream::app);
 				of << "falhou" << endl;
 				of.close();
-}
+}*/
 				
 /*
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
@@ -320,11 +320,17 @@ namespace Dilep {
 			//		dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_in_mpz, 
 			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 
+			for (unsigned i = 0; i < 16*NUM_THREADS; ++i) {
+				dev_count[i] = -1;
+				dev_nc[i] = -1;
+			}
+
 			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
 					a, b, c, d, dev_nc, dev_count);
-				ofstream of ("lawl2.txt", fstream::app);
-				of << dev_count[0] << endl;
-				of.close();
+				
+			//	ofstream of ("lawl2.txt", fstream::app);
+			//	of << dev_count[0] << endl;
+			//	of.close();
 
 			// memory transfer of the results from the GPU
 			//FALTA VARIACOES
