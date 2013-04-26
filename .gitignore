@@ -13,3 +13,4 @@ main.log
 main.aux
 main.fdb_latexmk
 *.o
+test_*
