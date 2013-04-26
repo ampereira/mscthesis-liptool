@@ -10,7 +10,7 @@ using namespace std;
 		unsigned GRID_SIZE;
 		unsigned BLOCK_SIZE;
 		unsigned NUM_THREADS;
-		
+
 namespace Dilep {
 	namespace GPU {
 		__device__
@@ -241,6 +241,47 @@ namespace Dilep {
 				d[(i * 5) + 3] = vdi[i].getCbl().E();
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
+			if(!(
+				in_mpx[0] == vdi[i].getInMpx(0) &&
+				in_mpx[1] == vdi[i].getInMpx(1) &&
+				in_mpy[0] == vdi[i].getInMpy(0) &&
+				in_mpy[1] == vdi[i].getInMpy(1) &&
+				in_mpz[0] == vdi[i].getInMpz(0) &&
+				in_mpz[1] == vdi[i].getInMpz(1) &&
+				t_mass[0] == vdi[i].getTmass(0) &&
+				t_mass[1] == vdi[i].getTmass(1) &&
+				w_mass[0] == vdi[i].getWmass(0) &&
+				w_mass[1] == vdi[i].getWmass(1) &&
+				
+				a[0]	   == vdi[i].getZlep().Px() &&
+				a[1] == vdi[i].getZlep().Py() &&
+				a[2] == vdi[i].getZlep().Pz() &&
+				a[3] == vdi[i].getZlep().E() &&
+				a[4] == vdi[i].getZlep().M() &&
+
+				b[0]	   == vdi[i].getClep().Px() &&
+				b[1] == vdi[i].getClep().Py() &&
+				b[2] == vdi[i].getClep().Pz() &&
+				b[3] == vdi[i].getClep().E() &&
+				b[4] == vdi[i].getClep().M() &&
+
+				c[0]	   == vdi[i].getZbl().Px() &&
+				c[1] == vdi[i].getZbl().Py() &&
+				c[2] == vdi[i].getZbl().Pz() &&
+				c[3] == vdi[i].getZbl().E() &&
+				c[4] == vdi[i].getZbl().M() &&
+
+				d[0]	   == vdi[i].getCbl().Px() &&
+				d[1] == vdi[i].getCbl().Py() &&
+				d[2] == vdi[i].getCbl().Pz() &&
+				d[3] == vdi[i].getCbl().E() &&
+				d[4] == vdi[i].getCbl().M()
+				)) {
+				ofstream of ("lawl.txt", fstream::app);
+				of << "falhou" << endl;
+				of.close();
+}
+				
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
