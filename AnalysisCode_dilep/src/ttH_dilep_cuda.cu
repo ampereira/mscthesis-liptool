@@ -4077,10 +4077,6 @@ void ttH_dilep::ttDilepKinFit(){
 		di.applyVariance(RESOLUTION);
 		vector<DilepInput> vdi;
 		vdi.push_back(di);
-
-		ofstream of("result.txt", fstream::app);
-		of << EveNumber << " - " << vdi.size() << endl;
-		of.close();
 		
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
@@ -4093,6 +4089,7 @@ void ttH_dilep::ttDilepKinFit(){
 #elif PAPI
 		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
+		di = vdi[0];
 
 		// ---------------------------------------
 		// Get info from all possible solutions
@@ -4101,6 +4098,10 @@ void ttH_dilep::ttDilepKinFit(){
 
 		std::vector<myvector> result = di.getResult();
 		HasSolution += di.getHasSol();
+
+		ofstream of("result.txt", fstream::app);
+		of << EveNumber << " - " << result.size() << endl;
+		of.close();
 
 		for ( int id = 0; id < result.size(); id++) {
 		
