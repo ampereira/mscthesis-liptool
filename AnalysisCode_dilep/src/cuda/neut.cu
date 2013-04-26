@@ -325,7 +325,7 @@ namespace Dilep {
 			for (int i = 0; i < ja; ++i)
 			{
 				dev_nc[i] = -1;
-				dev_count = -1;
+				dev_count[i] = -1;
 			}
 
 			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
