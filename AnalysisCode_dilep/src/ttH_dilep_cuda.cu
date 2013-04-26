@@ -4075,6 +4075,8 @@ void ttH_dilep::ttDilepKinFit(){
 		}
 		// Apply the variance (thread safe)
 		di.applyVariance(RESOLUTION);
+		vector<DilepInput> vdi (1);
+		vdi.push_back(di);
 
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
@@ -4083,7 +4085,7 @@ void ttH_dilep::ttDilepKinFit(){
 		Dilep::CPU::dilep(di);
 #elif CUDA
 		//Dilep::CPU::dilep(di);
-		Dilep::GPU::dilep(di);
+		Dilep::GPU::dilep(vdi);
 #elif PAPI
 		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
