@@ -331,9 +331,9 @@ namespace Dilep {
 			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
 					a, b, c, d, dev_nc, dev_count);
 				
-			//	ofstream of ("lawl2.txt", fstream::app);
-			//	of << dev_count[0] << endl;
-			//	of.close();
+				ofstream of ("lawl2.txt", fstream::app);
+				of << dev_count[0] << endl;
+				of.close();
 
 			// A TESTAR SE O SET A -1 RESULTA
 
