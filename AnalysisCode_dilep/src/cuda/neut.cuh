@@ -39,11 +39,16 @@ namespace Dilep {
 		__device__ double gaus_kernel (double mean, double sigma, curandStateMtgp32 *state);
 		__device__ void applyVariance ();
 		__host__ void gpu_init (int blocks, int threads);
-		__device__ void Csqrt (double _ar, double _ai, double _my[]);
-		__device__ void cubic (double a[], double rr[], double ri[]);
-		__device__ void toz (double k[], double l[], double g[]);
-		__device__ void my_qu (double my_in[], double my_val[]);
-		__device__ double calcMass (double x, double y, double z, double e);
+		//__device__ void Csqrt (double _ar, double _ai, double _my[]);
+		//__device__ void cubic (double a[], double rr[], double ri[]);
+		//__device__ void toz (double k[], double l[], double g[]);
+		//__device__ void my_qu (double my_in[], double my_val[]);
+		//__device__ double calcMass (double x, double y, double z, double e);
+		__host__ void Csqrt (double _ar, double _ai, double _my[]);
+		__host__ void cubic (double a[], double rr[], double ri[]);
+		__host__ void toz (double k[], double l[], double g[]);
+		__host__ void my_qu (double my_in[], double my_val[]);
+		__host__ double calcMass (double x, double y, double z, double e);
 
 		__host__ std::vector<myvector>* dilep(unsigned iterations, double t_mass[], double w_mass[], 
 									double in_mpx[], double in_mpy[], double in_mpz[],

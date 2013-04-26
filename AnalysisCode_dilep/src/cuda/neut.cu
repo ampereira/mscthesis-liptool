@@ -119,7 +119,7 @@ namespace Dilep {
 			NUM_THREADS=blocks*threads;
 		}
 	
-		__device__
+		__host__
 		double calcMass (double x, double y, double z, double e) {
 			double mm, mass;
 
@@ -620,7 +620,7 @@ namespace Dilep {
 		}
 
 		//////////////////////////////////////
-		__device__
+		__host__
 		void toz(double k[], double l[], double g[]){
 			//// checked !!
 			///////////////////////////////////////////////////////////////////////////
@@ -656,7 +656,7 @@ namespace Dilep {
 
 
 		///////////////////////////////////////////
-		__device__
+		__host__
 		void my_qu( double my_in[], double my_val[])
 		{
 
@@ -869,7 +869,7 @@ namespace Dilep {
 		////////////////////end of main
 		///////////////////////////////////////////////////////////////
 		////+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		__device__
+		__host__
 		void Csqrt(double _ar, double _ai, double _my[])
 		{
 			///// complex sqrt
@@ -902,7 +902,7 @@ namespace Dilep {
 		//////////////////////////////////////////////////////////////////
 		/// cubic /// a[0]x^3+a[1]x^2+a[2]x+a[3]=0
 		//////////////////////////////////////////////////////////////////
-		__device__
+		__host__
 		void cubic(double a[], double rr[], double ri[])
 		{
 			int i;
