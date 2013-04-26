@@ -4075,7 +4075,7 @@ void ttH_dilep::ttDilepKinFit(){
 		}
 		// Apply the variance (thread safe)
 		di.applyVariance(RESOLUTION);
-		vector<DilepInput> vdi (1);
+		vector<DilepInput> vdi;
 		vdi.push_back(di);
 
 		ofstream of("result.txt", fstream::app);
