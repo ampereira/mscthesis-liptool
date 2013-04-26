@@ -192,8 +192,8 @@ namespace Dilep {
 		
 			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b;
 			double nc[16*NUM_THREADS];
-			double *dev_nc;
-			int count[NUM_THREADS], *dev_count;
+			double dev_nc[16*NUM_THREADS];
+			int count[NUM_THREADS], dev_count[16*NUM_THREADS];
 			int hasSolution = 0;
 
 			// time measurement
