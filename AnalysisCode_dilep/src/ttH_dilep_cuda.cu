@@ -4078,6 +4078,10 @@ void ttH_dilep::ttDilepKinFit(){
 		vector<DilepInput> vdi (1);
 		vdi.push_back(di);
 
+		ofstream of("result.txt", fstream::app);
+		of << EveNumber << " - " << vdi.size() << endl;
+		of.close();
+		
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
 		Dilep::CPU::dilep(di);
@@ -4098,10 +4102,6 @@ void ttH_dilep::ttDilepKinFit(){
 		std::vector<myvector> result = di.getResult();
 		HasSolution += di.getHasSol();
 
-		ofstream of("result.txt", fstream::app);
-		of << EveNumber << " - " << result.size() << endl;
-		of.close();
-		
 		for ( int id = 0; id < result.size(); id++) {
 		
 			myvector *pp = &result.at(id);
