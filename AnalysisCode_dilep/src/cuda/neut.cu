@@ -321,9 +321,11 @@ namespace Dilep {
 			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 			int ja = 16 * NUM_THREADS;
 
-			for (int ii = 0; ii < ja; ii++) {
-				dev_count[ii] = -1;
-				dev_nc[ii] = -1;
+
+			for (int i = 0; i < ja; ++i)
+			{
+				dev_nc[i] = -1;
+				dev_count = -1;
 			}
 
 			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
