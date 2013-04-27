@@ -201,7 +201,7 @@ namespace Dilep {
 			long long int time = startTimer();
 			#endif
 
-/*			for (unsigned i = 0; i < vdi.size(); ++i) {
+			for (unsigned i = 0; i < vdi.size(); ++i) {
 
 				in_mpx[i * 2]		= vdi[i].getInMpx(0);
 				in_mpx[(i * 2) + 1] = vdi[i].getInMpx(1);
@@ -239,7 +239,7 @@ namespace Dilep {
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
 
-			if (EveNumber == 26598) {
+/*			if (EveNumber == 26598) {
 				int i = 0;
 				ofstream of ("outs.txt", fstream::app);
 				of << vdi[i].getInMpx(0) << endl;
@@ -275,7 +275,7 @@ namespace Dilep {
 				of.close();
 				exit(0);
 			}*/
-				int i = 0;
+			/*	int i = 0;
 
 			in_mpx[i * 2]		= 357.46;
 			in_mpx[(i * 2) + 1] = 357.46;
@@ -306,7 +306,7 @@ namespace Dilep {
 			d[(i * 5) + 1] = -57818.7;
 			d[(i * 5) + 2] = -21768.8;
 			d[(i * 5) + 3] = 147468;
-			d[(i * 5) + 4] = 50815.9;
+			d[(i * 5) + 4] = 50815.9;*/
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
@@ -350,7 +350,7 @@ namespace Dilep {
 			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 		
 			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
-					a, b, c, d, nc, count);
+						a, b, c, d, nc, count);
 				
 			// A TESTAR SE O SET A -1 RESULTA
 
@@ -373,9 +373,9 @@ namespace Dilep {
 					
 					result.push_back(*mv);
 				}
-				ofstream of("result.txt", fstream::app);
-		of << result.size() << endl;
-		of.close();
+				//ofstream of("result.txt", fstream::app);
+				//of << result.size() << endl;
+				//of.close();
 
 				if (result.size()) {
 					++hasSolution;  // increment solution counter
@@ -383,7 +383,7 @@ namespace Dilep {
 				vdi[comb].setHasSol(hasSolution);
 				vdi[comb].setResult(&result);
 			}
-			exit(0);
+			//exit(0);
 
 
 			// frees the memory allocated on GPU
