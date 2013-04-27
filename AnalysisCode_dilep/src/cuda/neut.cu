@@ -10,7 +10,6 @@ using namespace std;
 		unsigned GRID_SIZE;
 		unsigned BLOCK_SIZE;
 		unsigned NUM_THREADS;
-		extern int EveNumber;
 
 namespace Dilep {
 	namespace GPU {
@@ -183,7 +182,7 @@ namespace Dilep {
 		// Wrapper for the dilep calculation using a vector of the input class
 		// vdi vector with DilepInput varied for a jet combo
 		__host__
-		void dilep (vector<DilepInput> &vdi) {
+		void dilep (vector<DilepInput> &vdi, int EveNumber) {
 			
 			double in_mpx[2 * vdi.size()], in_mpy[2 * vdi.size()], in_mpz[2 * vdi.size()], 
 				   t_mass[2 * vdi.size()], w_mass[2 * vdi.size()];

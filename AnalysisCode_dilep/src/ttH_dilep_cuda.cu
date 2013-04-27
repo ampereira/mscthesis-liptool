@@ -4085,7 +4085,7 @@ void ttH_dilep::ttDilepKinFit(){
 		Dilep::CPU::dilep(di);
 #elif CUDA
 		//Dilep::CPU::dilep(di);
-		Dilep::GPU::dilep(vdi);
+		Dilep::GPU::dilep(vdi, EveNumber);
 #elif PAPI
 		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
@@ -4099,9 +4099,6 @@ void ttH_dilep::ttDilepKinFit(){
 		std::vector<myvector> result = di.getResult();
 		HasSolution += di.getHasSol();
 
-			ofstream of ("lawl2.txt", fstream::app);
-			of << EveNumber << " - " << result.size() << endl;
-			of.close();
 /*
 		ofstream of("result.txt", fstream::app);
 		of << EveNumber << " - " << result.size() << endl;

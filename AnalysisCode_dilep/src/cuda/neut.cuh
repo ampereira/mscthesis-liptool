@@ -55,7 +55,7 @@ namespace Dilep {
 									TLorentzVector* lep_a, TLorentzVector* lep_b, 
 									TLorentzVector* bl_a, TLorentzVector* bl_b, int *hasSol);
 
-		__host__ void dilep (vector<DilepInput> &vdi);
+		__host__ void dilep (vector<DilepInput> &vdi, int);
 
 		__host__ void dilep (DilepInput &di);
 
