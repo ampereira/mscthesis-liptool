@@ -297,6 +297,8 @@ namespace Dilep {
 			cudaMemcpy(nc, dev_nc, 16*vdi.size()*sizeof(double), cudaMemcpyDeviceToHost);
 			cudaMemcpy(count, dev_count, vdi.size()*sizeof(int), cudaMemcpyDeviceToHost);
 
+			cout << "Chegou 5" << endl;
+
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 			for (unsigned comb = 0; comb < vdi.size(); ++comb) {
@@ -318,6 +320,8 @@ namespace Dilep {
 				vdi[comb].setHasSol(hasSolution);
 				vdi[comb].setResult(&result);
 			}
+			cout << "Chegou 6" << endl;
+
 
 			// frees the memory allocated on GPU
 			cudaFree(dev_t_mass);
