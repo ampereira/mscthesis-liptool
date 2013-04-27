@@ -381,7 +381,6 @@ namespace Dilep {
 				vdi[comb].setHasSol(hasSolution);
 				vdi[comb].setResult(&result);
 			}
-			exit(0);
 
 
 			// frees the memory allocated on GPU
