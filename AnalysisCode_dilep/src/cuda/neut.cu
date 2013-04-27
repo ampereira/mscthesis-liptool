@@ -294,7 +294,7 @@ namespace Dilep {
 			cudaMemcpy(nc, dev_nc, 16*vdi.size()*sizeof(double), cudaMemcpyDeviceToHost);
 			cudaMemcpy(count, dev_count, vdi.size()*sizeof(int), cudaMemcpyDeviceToHost);
 
-			cout << "Chegou 5 - " << count[0] endl;
+			cout << "Chegou 5 - " << count[0] << endl;
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
