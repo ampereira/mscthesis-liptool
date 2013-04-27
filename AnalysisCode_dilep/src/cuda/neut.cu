@@ -238,7 +238,6 @@ namespace Dilep {
 				d[(i * 5) + 3] = vdi[i].getCbl().E();
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
-			cout << "Chegou 1" << endl;
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
@@ -270,7 +269,7 @@ namespace Dilep {
 			cudaMemcpy(dev_bl_a, &c, vdi.size()*sizeof(c), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_bl_b, &d, vdi.size()*sizeof(d), cudaMemcpyHostToDevice);
 
-			cout << "Chegou 2" << endl;
+
 			// define the dimensions of the grid and blocks
 			// i.e. the number of times dilep is executed
 			dim3 dimGrid(GRID_SIZE, 1);
@@ -281,11 +280,9 @@ namespace Dilep {
 			//		dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_in_mpz, 
 			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 		
-			cout << "Chegou 3" << endl;
 			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
 					a, b, c, d, nc, count);
 				
-			cout << "Chegou 4" << endl;
 			//	ofstream of ("lawl2.txt", fstream::app);
 			//	of << dev_count[0] << endl;
 			//	of.close();
@@ -297,7 +294,7 @@ namespace Dilep {
 			cudaMemcpy(nc, dev_nc, 16*vdi.size()*sizeof(double), cudaMemcpyDeviceToHost);
 			cudaMemcpy(count, dev_count, vdi.size()*sizeof(int), cudaMemcpyDeviceToHost);
 
-			cout << "Chegou 5 - " <<  endl;
+			cout << "Chegou 5 - " << count[0] endl;
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
@@ -320,7 +317,6 @@ namespace Dilep {
 				vdi[comb].setHasSol(hasSolution);
 				vdi[comb].setResult(&result);
 			}
-			cout << "Chegou 6" << endl;
 
 
 			// frees the memory allocated on GPU
