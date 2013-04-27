@@ -201,7 +201,7 @@ namespace Dilep {
 			long long int time = startTimer();
 			#endif
 
-			for (unsigned i = 0; i < vdi.size(); ++i) {
+/*			for (unsigned i = 0; i < vdi.size(); ++i) {
 
 				in_mpx[i * 2]		= vdi[i].getInMpx(0);
 				in_mpx[(i * 2) + 1] = vdi[i].getInMpx(1);
@@ -237,41 +237,41 @@ namespace Dilep {
 				d[(i * 5) + 2] = vdi[i].getCbl().Pz();
 				d[(i * 5) + 3] = vdi[i].getCbl().E();
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
-			}
+			}*/
 
 			
-			/*int i = 0;
+			int i = 0;
 
-			in_mpx[i * 2]		= 2198.27;
-			in_mpx[(i * 2) + 1] = 2198.27;
-			in_mpy[i * 2]		= -573.362;
-			in_mpy[(i * 2) + 1] = -573.362;
+			in_mpx[i * 2]		= -534.284;
+			in_mpx[(i * 2) + 1] = -534.284;
+			in_mpy[i * 2]		= -1462.24;
+			in_mpy[(i * 2) + 1] = -1462.24;
 			in_mpz[i * 2]		= 0;
 			in_mpz[(i * 2) + 1] = 0;
 			t_mass[i * 2]		= 172500;
 			t_mass[(i * 2) + 1] = 172500;
 			w_mass[i * 2]		= 80400;
 			w_mass[(i * 2) + 1] = 80400;
-			a[i * 5]	   = 42237;
-			a[(i * 5) + 1] = 24585.7;
-			a[(i * 5) + 2] = -7864.04;
-			a[(i * 5) + 3] = 49500.2;
-			a[(i * 5) + 4] = 105.949;
-			b[i * 5]	   = 9351.52;
-			b[(i * 5) + 1] = 40047.4;
-			b[(i * 5) + 2] = -17251.1;
-			b[(i * 5) + 3] = 44596.5;
-			b[(i * 5) + 4] = 10.3716;
-			c[i * 5]	   = -82160.7;
-			c[(i * 5) + 1] = -38123.6;
-			c[(i * 5) + 2] = 156022;
-			c[(i * 5) + 3] = 265263;
-			c[(i * 5) + 4] = 194468;
-			d[i * 5]	   = 74251.5;
-			d[(i * 5) + 1] = 35500.1;
-			d[(i * 5) + 2] = 38989.8;
-			d[(i * 5) + 3] = 131118;
-			d[(i * 5) + 4] = 94330.1;*/
+			a[i * 5]	   = -40993.3;
+			a[(i * 5) + 1] = 49643.2;
+			a[(i * 5) + 2] = 19584.2;
+			a[(i * 5) + 3] = 67293.7;
+			a[(i * 5) + 4] = 19.2371;
+			b[i * 5]	   = 1873.51;
+			b[(i * 5) + 1] = -53275.9;
+			b[(i * 5) + 2] = -71593.9;
+			b[(i * 5) + 3] = 89261;
+			b[(i * 5) + 4] = 106.281;
+			c[i * 5]	   = -7898.36;
+			c[(i * 5) + 1] = 91818.3;
+			c[(i * 5) + 2] = -47746.9;
+			c[(i * 5) + 3] = 153513;
+			c[(i * 5) + 4] = 113108;
+			d[i * 5]	   = -32489.8;
+			d[(i * 5) + 1] = -117316;
+			d[(i * 5) + 2] = -112331;
+			d[(i * 5) + 3] = 172805;
+			d[(i * 5) + 4] = 49241;
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
@@ -339,7 +339,7 @@ namespace Dilep {
 					result.push_back(*mv);
 				}
 				if (result.size()) {
-				int i = 0;
+				/*int i = 0;
 				ofstream of ("outs.txt", fstream::app);
 				of << vdi[i].getInMpx(0) << endl;
 				of << vdi[i].getInMpx(1) << endl;
@@ -371,7 +371,7 @@ namespace Dilep {
 				of << vdi[i].getCbl().Pz() << endl;
 				of << vdi[i].getCbl().E() << endl;
 				of << vdi[i].getCbl().M() << endl;
-				of.close();
+				of.close();*/
 				exit(0);
 			}
 
