@@ -4084,6 +4084,7 @@ void ttH_dilep::ttDilepKinFit(){
 		int n_ttDKF_Best = -999;
 		int first = 0;
 		DilepInput di;
+
 	#pragma omp for schedule(runtime)
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
@@ -4116,6 +4117,11 @@ void ttH_dilep::ttDilepKinFit(){
 
 		std::vector<myvector> result = di.getResult();
 		_HasSolution += di.getHasSol();
+
+			ofstream of ("lawl.txt", fstream::app);
+			of << result.size() << endl;
+			of.close();
+
 
 		for ( int id = 0; id < result.size(); id++) {
 		
@@ -4420,10 +4426,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// Redefine HasSolution if no other reconstruction criteria met
 	// -------------------------------------------------------------------
 	HasSolution = (best.getProb() >= 0) ? _HasSolution : 0;
-		
-		ofstream of("result.txt", fstream::app);
-		of << EveNumber << " - " << HasSolution << endl;
-		of.close();
+
 
 	// -------------------------------------------------------------------
 	// Make sure backward compatibility is preserved + Few Calculations

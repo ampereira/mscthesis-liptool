@@ -283,18 +283,12 @@ namespace Dilep {
 			//calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
 			//		a, b, c, d, nc, count);
 				
-			//	ofstream of ("lawl2.txt", fstream::app);
-			//	of << dev_count[0] << endl;
-			//	of.close();
-
 			// A TESTAR SE O SET A -1 RESULTA
 
 			// memory transfer of the results from the GPU
 			//FALTA VARIACOES
 			cudaMemcpy(nc, dev_nc, 16*NUM_THREADS*sizeof(double), cudaMemcpyDeviceToHost);
 			cudaMemcpy(count, dev_count, NUM_THREADS*sizeof(int), cudaMemcpyDeviceToHost);
-
-			cout << "Chegou 5 - " << count[0] << endl;
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
@@ -310,6 +304,10 @@ namespace Dilep {
 					
 					result.push_back(*mv);
 				}
+			ofstream of ("lawl2.txt", fstream::app);
+			of << result.size() << endl;
+			of.close();
+
 
 				if (result.size()) {
 					++hasSolution;  // increment solution counter
