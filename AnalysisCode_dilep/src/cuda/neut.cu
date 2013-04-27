@@ -291,8 +291,8 @@ namespace Dilep {
 
 			// memory transfer of the results from the GPU
 			//FALTA VARIACOES
-			cudaMemcpy(nc, dev_nc, 16*vdi.size()*sizeof(double), cudaMemcpyDeviceToHost);
-			cudaMemcpy(count, dev_count, vdi.size()*sizeof(int), cudaMemcpyDeviceToHost);
+			cudaMemcpy(nc, dev_nc, 16*NUM_THREADS*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(count, dev_count, NUM_THREADS*sizeof(int), cudaMemcpyDeviceToHost);
 
 			cout << "Chegou 5 - " << count[0] << endl;
 
