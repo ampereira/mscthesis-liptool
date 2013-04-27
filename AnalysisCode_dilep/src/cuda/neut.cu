@@ -239,7 +239,7 @@ namespace Dilep {
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
 
-/*			if (EveNumber == 26598) {
+			if (EveNumber == 26541) {
 				int i = 0;
 				ofstream of ("outs.txt", fstream::app);
 				of << vdi[i].getInMpx(0) << endl;
@@ -274,7 +274,7 @@ namespace Dilep {
 				of << vdi[i].getCbl().M() << endl;
 				of.close();
 				exit(0);
-			}*/
+			}
 			/*	int i = 0;
 
 			in_mpx[i * 2]		= 357.46;
