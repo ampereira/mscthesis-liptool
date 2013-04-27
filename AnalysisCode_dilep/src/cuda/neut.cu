@@ -321,8 +321,8 @@ namespace Dilep {
 
 			// memory transfer of the results from the GPU
 			//FALTA VARIACOES
-			cudaMemcpy(nc, dev_nc, 16*NUM_THREADS*sizeof(double), cudaMemcpyDeviceToHost);
-			cudaMemcpy(count, dev_count, NUM_THREADS*sizeof(int), cudaMemcpyDeviceToHost);
+			//cudaMemcpy(nc, dev_nc, 16*NUM_THREADS*sizeof(double), cudaMemcpyDeviceToHost);
+			//cudaMemcpy(count, dev_count, NUM_THREADS*sizeof(int), cudaMemcpyDeviceToHost);
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
