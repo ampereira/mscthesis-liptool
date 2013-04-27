@@ -297,14 +297,14 @@ namespace Dilep {
 			cudaMemcpy(nc, dev_nc, 16*vdi.size()*sizeof(double), cudaMemcpyDeviceToHost);
 			cudaMemcpy(count, dev_count, vdi.size()*sizeof(int), cudaMemcpyDeviceToHost);
 
-			cout << "Chegou 5" << endl;
+			cout << "Chegou 5 - " <<  endl;
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 			for (unsigned comb = 0; comb < vdi.size(); ++comb) {
 				vector<myvector> result;
 
-				for (int sol = 0 ; sol < dev_count[comb] && sol<4 ; sol++) {
+				for (int sol = 0 ; sol < count[comb] && sol<4 ; sol++) {
 					myvector *mv = new myvector( 
 						TO1D(nc,comb,sol,0),
 						TO1D(nc,comb,sol,1),
