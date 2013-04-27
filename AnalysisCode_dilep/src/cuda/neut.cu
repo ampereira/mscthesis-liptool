@@ -304,9 +304,6 @@ namespace Dilep {
 					
 					result.push_back(*mv);
 				}
-			ofstream of ("lawl2.txt", fstream::app);
-			of << result.size() << endl;
-			of.close();
 
 
 				if (result.size()) {

@@ -4098,6 +4098,10 @@ void ttH_dilep::ttDilepKinFit(){
 
 		std::vector<myvector> result = di.getResult();
 		HasSolution += di.getHasSol();
+
+			ofstream of ("lawl2.txt", fstream::app);
+			of << EveNumber << " - " << result.size() << endl;
+			of.close();
 /*
 		ofstream of("result.txt", fstream::app);
 		of << EveNumber << " - " << result.size() << endl;

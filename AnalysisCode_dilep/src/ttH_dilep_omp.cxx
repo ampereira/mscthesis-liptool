@@ -4119,7 +4119,7 @@ void ttH_dilep::ttDilepKinFit(){
 		_HasSolution += di.getHasSol();
 
 			ofstream of ("lawl.txt", fstream::app);
-			of << result.size() << endl;
+			of << EveNumber << " - " << result.size() << endl;
 			of.close();
 
 
