@@ -201,7 +201,7 @@ namespace Dilep {
 			long long int time = startTimer();
 			#endif
 
-	/*		for (unsigned i = 0; i < vdi.size(); ++i) {
+			for (unsigned i = 0; i < vdi.size(); ++i) {
 
 				in_mpx[i * 2]		= vdi[i].getInMpx(0);
 				in_mpx[(i * 2) + 1] = vdi[i].getInMpx(1);
@@ -239,43 +239,8 @@ namespace Dilep {
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
 
-			if (EveNumber == 26541) {
-				int i = 0;
-				ofstream of ("outs.txt", fstream::app);
-				of << vdi[i].getInMpx(0) << endl;
-				of << vdi[i].getInMpx(1) << endl;
-				of << vdi[i].getInMpy(0) << endl;
-				of << vdi[i].getInMpy(1) << endl;
-				of << vdi[i].getInMpz(0) << endl;
-				of << vdi[i].getInMpz(1) << endl;
-				of << vdi[i].getTmass(0) << endl;
-				of << vdi[i].getTmass(1) << endl;
-				of << vdi[i].getWmass(0) << endl;
-				of << vdi[i].getWmass(1) << endl;
-				of << vdi[i].getZlep().Px() << endl;
-				of << vdi[i].getZlep().Py() << endl;
-				of << vdi[i].getZlep().Pz() << endl;
-				of << vdi[i].getZlep().E() << endl;
-				of << vdi[i].getZlep().M() << endl;
-				of << vdi[i].getClep().Px() << endl;
-				of << vdi[i].getClep().Py() << endl;
-				of << vdi[i].getClep().Pz() << endl;
-				of << vdi[i].getClep().E() << endl;
-				of << vdi[i].getClep().M() << endl;
-				of << vdi[i].getZbl().Px() << endl;
-				of << vdi[i].getZbl().Py() << endl;
-				of << vdi[i].getZbl().Pz() << endl;
-				of << vdi[i].getZbl().E() << endl;
-				of << vdi[i].getZbl().M() << endl;
-				of << vdi[i].getCbl().Px() << endl;
-				of << vdi[i].getCbl().Py() << endl;
-				of << vdi[i].getCbl().Pz() << endl;
-				of << vdi[i].getCbl().E() << endl;
-				of << vdi[i].getCbl().M() << endl;
-				of.close();
-				exit(0);
-			}*/
-			int i = 0;
+			
+			/*int i = 0;
 
 			in_mpx[i * 2]		= 2198.27;
 			in_mpx[(i * 2) + 1] = 2198.27;
@@ -306,7 +271,7 @@ namespace Dilep {
 			d[(i * 5) + 1] = 35500.1;
 			d[(i * 5) + 2] = 38989.8;
 			d[(i * 5) + 3] = 131118;
-			d[(i * 5) + 4] = 94330.1;
+			d[(i * 5) + 4] = 94330.1;*/
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
@@ -373,9 +338,42 @@ namespace Dilep {
 					
 					result.push_back(*mv);
 				}
-				ofstream of("result.txt", fstream::app);
-				of << result.size() << endl;
+				if (result.size()) {
+				int i = 0;
+				ofstream of ("outs.txt", fstream::app);
+				of << vdi[i].getInMpx(0) << endl;
+				of << vdi[i].getInMpx(1) << endl;
+				of << vdi[i].getInMpy(0) << endl;
+				of << vdi[i].getInMpy(1) << endl;
+				of << vdi[i].getInMpz(0) << endl;
+				of << vdi[i].getInMpz(1) << endl;
+				of << vdi[i].getTmass(0) << endl;
+				of << vdi[i].getTmass(1) << endl;
+				of << vdi[i].getWmass(0) << endl;
+				of << vdi[i].getWmass(1) << endl;
+				of << vdi[i].getZlep().Px() << endl;
+				of << vdi[i].getZlep().Py() << endl;
+				of << vdi[i].getZlep().Pz() << endl;
+				of << vdi[i].getZlep().E() << endl;
+				of << vdi[i].getZlep().M() << endl;
+				of << vdi[i].getClep().Px() << endl;
+				of << vdi[i].getClep().Py() << endl;
+				of << vdi[i].getClep().Pz() << endl;
+				of << vdi[i].getClep().E() << endl;
+				of << vdi[i].getClep().M() << endl;
+				of << vdi[i].getZbl().Px() << endl;
+				of << vdi[i].getZbl().Py() << endl;
+				of << vdi[i].getZbl().Pz() << endl;
+				of << vdi[i].getZbl().E() << endl;
+				of << vdi[i].getZbl().M() << endl;
+				of << vdi[i].getCbl().Px() << endl;
+				of << vdi[i].getCbl().Py() << endl;
+				of << vdi[i].getCbl().Pz() << endl;
+				of << vdi[i].getCbl().E() << endl;
+				of << vdi[i].getCbl().M() << endl;
 				of.close();
+				exit(0);
+			}
 
 				if (result.size()) {
 					++hasSolution;  // increment solution counter
