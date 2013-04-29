@@ -310,19 +310,19 @@ namespace Dilep {
 			dim3 dimBlock(BLOCK_SIZE, 1);
 
 			// dilep kernel call
-			calc_dilep<<<dimGrid,dimBlock>>>(
-					dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_in_mpz, 
-					dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
+			//calc_dilep<<<dimGrid,dimBlock>>>(
+			//		dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_in_mpz, 
+			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 		
-			//calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
-			//			a, b, c, d, nc, count);
+			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
+						a, b, c, d, nc, count);
 				
 			// A TESTAR SE O SET A -1 RESULTA
 
 			// memory transfer of the results from the GPU
 			//FALTA VARIACOES
-			cudaMemcpy(nc, dev_nc, 16*NUM_THREADS*sizeof(double), cudaMemcpyDeviceToHost);
-			cudaMemcpy(count, dev_count, NUM_THREADS*sizeof(int), cudaMemcpyDeviceToHost);
+			//cudaMemcpy(nc, dev_nc, 16*NUM_THREADS*sizeof(double), cudaMemcpyDeviceToHost);
+			//cudaMemcpy(count, dev_count, NUM_THREADS*sizeof(int), cudaMemcpyDeviceToHost);
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
