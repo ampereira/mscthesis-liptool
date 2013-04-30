@@ -338,7 +338,7 @@ namespace Dilep {
 					
 					result.push_back(*mv);
 				}
-				if (result.size()) {
+			/*	if (result.size()) {
 				/*int i = 0;
 				ofstream of ("outs.txt", fstream::app);
 				of << vdi[i].getInMpx(0) << endl;
@@ -371,9 +371,9 @@ namespace Dilep {
 				of << vdi[i].getCbl().Pz() << endl;
 				of << vdi[i].getCbl().E() << endl;
 				of << vdi[i].getCbl().M() << endl;
-				of.close();*/
+				of.close();
 				exit(0);
-			}
+			}*/
 
 				if (result.size()) {
 					++hasSolution;  // increment solution counter
