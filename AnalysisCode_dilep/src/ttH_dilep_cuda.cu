@@ -4085,7 +4085,7 @@ void ttH_dilep::ttDilepKinFit(){
 		Dilep::CPU::dilep(di);
 #elif CUDA
 		//Dilep::CPU::dilep(di);
-		Dilep::GPU::dilep(vdi, EveNumber);
+		Dilep::GPU::dilep(vdi, EveNumber * counter);
 #elif PAPI
 		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
