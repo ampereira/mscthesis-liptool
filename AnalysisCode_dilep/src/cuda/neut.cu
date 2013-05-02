@@ -15,7 +15,7 @@ using namespace std;
 namespace Dilep {
 	namespace GPU {
 		//__device__
-		double gaus_kernel (double mean, double sigma, curandStateMtgp32 *state) {
+		/*double gaus_kernel (double mean, double sigma, curandStateMtgp32 *state) {
 			// Samples a random number from the standard Normal (Gaussian) Distribution 
 			// with the given mean and sigma.                                                 
 			// Uses the Acceptance-complement ratio from W. Hoermann and G. Derflinger 
@@ -62,7 +62,7 @@ namespace Dilep {
 			double rn,x,y,z;
 
 
-			/*do{
+			do{
 		         y = cuRand(&state[blockIdx.x]);
 
 		         if (y>kHm1) {
@@ -108,10 +108,10 @@ namespace Dilep {
 		                 if (rn*rn<4*(kB-log(x))) {
 		                     result = rn; break; }
 		         }
-   } while(0);*/
+   } while(0);
 
 			return mean + sigma * result;
-		}
+		}*/
 
 		//__host__ 
 		void gpu_init (int blocks, int threads) {
@@ -416,7 +416,7 @@ namespace Dilep {
 			
 		}
 
-		__device__
+		//__device__
 		void applyVariance () {
 
 		}
