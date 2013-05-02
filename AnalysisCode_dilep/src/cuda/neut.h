@@ -1,3 +1,6 @@
+#ifndef NEUT
+#define NEUT
+
 #include <TH1.h>
 #include <TH2.h>
 #include <TH3.h>
@@ -40,3 +43,5 @@ namespace Dilep {
 										TLorentzVector* bl_a, TLorentzVector* bl_b);
 	}
 }
+
+#endif
