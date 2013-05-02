@@ -240,6 +240,7 @@ namespace Dilep {
 			}
 
 			if (EveNumber == (26598 * 3)) {
+				int i = 0;
 				ofstream of ("Outputs.txt", fstream::app);
 				of << vdi[i].getInMpx(0) << endl;
 				of << vdi[i].getInMpx(1) << endl;
