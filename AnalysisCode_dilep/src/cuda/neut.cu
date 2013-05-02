@@ -1,8 +1,8 @@
 #include "neut.cuh"
 /* include MTGP host helper functions */
-#include <curand_mtgp32_host.h>
+//#include <curand_mtgp32_host.h>
 /* include MTGP pre-computed parameter sets */
-#include <curand_mtgp32dc_p_11213.h>
+//#include <curand_mtgp32dc_p_11213.h>
 
 using std::vector;
 using namespace std;
