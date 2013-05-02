@@ -362,6 +362,10 @@ namespace Dilep {
 		
 			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
 						a, b, c, d, nc, count);
+
+			ofstream of ("jasus.txt", fstream::app);
+			of << EveNumber << " - " << count[0] << endl;
+			of.close();
 				
 			// A TESTAR SE O SET A -1 RESULTA
 
