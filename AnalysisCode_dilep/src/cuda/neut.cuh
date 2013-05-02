@@ -37,7 +37,7 @@ namespace Dilep {
 	namespace GPU {
 
 		//__device__ 
-		double gaus_kernel (double mean, double sigma, curandStateMtgp32 *state);
+		//double gaus_kernel (double mean, double sigma, curandStateMtgp32 *state);
 		//__device__ 
 		void applyVariance ();
 		//__host__ 
