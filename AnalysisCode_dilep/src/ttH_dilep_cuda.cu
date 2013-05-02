@@ -4715,7 +4715,7 @@ Int_t main(Int_t argc, char *argv[]){
 
 	ttH::defineDilepIterations();
 	ttH::defineNumThreads();
-	Dilep::GPU::gpu_init(1,1);
+//	Dilep::GPU::gpu_init(1,1);
 
 	// Start measuring overall time
 	long long int init = ttH::startTimer();
