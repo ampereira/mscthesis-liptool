@@ -4361,7 +4361,7 @@ void ttH_dilep::ttDilepKinFit(){
 			// ==================================================================
 			// Instead of iterating through de iSol it calculates the best sol right away
 
-			ProbTotal_ttDKF.push_back( ProbHiggs_ttDKF[nTSol] * _ProbTTbar_ttDKF[nTSol] );
+			ProbTotal_ttDKF.push_back( ProbHiggs_ttDKF[nTSol] * ProbTTbar_ttDKF[nTSol] );
 
 			// n_ttDKF_Best vai ter o indice da melhor solucao desta thread e MaxTotalProb a sua probabilidade
 			if ( ( ProbTotal_ttDKF[nTSol] > MaxTotalProb ) && ( ProbTotal_ttDKF[nTSol] != 0. ) ) {
