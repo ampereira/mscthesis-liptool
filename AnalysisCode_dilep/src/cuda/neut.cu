@@ -239,6 +239,46 @@ namespace Dilep {
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
 
+			if (EveNumber == (26598 * 3)) {
+				ofstream of ("Outputs.txt", fstream::app);
+				of << vdi[i].getInMpx(0) << endl;
+				of << vdi[i].getInMpx(1) << endl;
+				of << vdi[i].getInMpy(0) << endl;
+				of << vdi[i].getInMpy(1) << endl;
+				of << vdi[i].getInMpz(0) << endl;
+				of << vdi[i].getInMpz(1) << endl;
+				of << vdi[i].getTmass(0) << endl;
+				of << vdi[i].getTmass(1) << endl;
+				of << vdi[i].getWmass(0) << endl;
+				of << vdi[i].getWmass(1) << endl;
+					
+				of << vdi[i].getZlep().Px() << endl;
+				of << vdi[i].getZlep().Py() << endl;
+				of << vdi[i].getZlep().Pz() << endl;
+				of << vdi[i].getZlep().E() << endl;
+				of << vdi[i].getZlep().M() << endl;
+
+				of << vdi[i].getClep().Px() << endl;
+				of << vdi[i].getClep().Py() << endl;
+				of << vdi[i].getClep().Pz() << endl;
+				of << vdi[i].getClep().E() << endl;
+				of << vdi[i].getClep().M() << endl;
+
+				of << vdi[i].getZbl().Px() << endl;
+				of << vdi[i].getZbl().Py() << endl;
+				of << vdi[i].getZbl().Pz() << endl;
+				of << vdi[i].getZbl().E() << endl;
+				of << vdi[i].getZbl().M() << endl;
+				of << vdi[i].getCbl().Px() << endl;
+				of << vdi[i].getCbl().Py() << endl;
+				of << vdi[i].getCbl().Pz() << endl;
+				of << vdi[i].getCbl().E() << endl;
+				of << vdi[i].getCbl().M() << endl;
+
+				of.close();
+				exit(0);
+			}
+
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
 			cudaMalloc(&dev_w_mass, vdi.size()*2*sizeof(double));
