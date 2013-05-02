@@ -4038,7 +4038,7 @@ void ttH_dilep::ttDilepKinFit(){
 #endif
 
 
-	{
+	
 		unsigned task_id;		// used to determine the comb to use
 		// OpenMP variable declarations - cannot use class variables in OpenMP clauses
 		// Variables starting with the '_' are private for each thread
@@ -4393,7 +4393,7 @@ void ttH_dilep::ttDilepKinFit(){
 	} // end of parallel for
 
 	// end of pragma omp parallel
-	}
+	
 
 
 
