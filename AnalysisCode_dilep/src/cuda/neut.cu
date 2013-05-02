@@ -13,7 +13,7 @@ using namespace std;
 
 namespace Dilep {
 	namespace GPU {
-		__device__
+		//__device__
 		double gaus_kernel (double mean, double sigma, curandStateMtgp32 *state) {
 			// Samples a random number from the standard Normal (Gaussian) Distribution 
 			// with the given mean and sigma.                                                 
@@ -61,7 +61,7 @@ namespace Dilep {
 			double rn,x,y,z;
 
 
-			do{
+			/*do{
 		         y = cuRand(&state[blockIdx.x]);
 
 		         if (y>kHm1) {
@@ -107,12 +107,12 @@ namespace Dilep {
 		                 if (rn*rn<4*(kB-log(x))) {
 		                     result = rn; break; }
 		         }
-   } while(0);
+   } while(0);*/
 
 			return mean + sigma * result;
 		}
 
-		__host__ 
+		//__host__ 
 		void gpu_init (int blocks, int threads) {
 			GRID_SIZE=blocks;
 			BLOCK_SIZE=threads;
@@ -134,7 +134,7 @@ namespace Dilep {
 		}
 
 		// Wrapper for the dilep calculation using the input class
-		__host__
+		//__host__
 		void dilep (DilepInput &di) {
 			std::vector<myvector> *result = new std::vector<myvector> ();
 			int hasSolution = 0;
@@ -181,7 +181,7 @@ namespace Dilep {
 
 		// Wrapper for the dilep calculation using a vector of the input class
 		// vdi vector with DilepInput varied for a jet combo
-		__host__
+		//__host__
 		void dilep (vector<DilepInput> &vdi, int EveNumber) {
 			
 			double in_mpx[2 * vdi.size()], in_mpy[2 * vdi.size()], in_mpz[2 * vdi.size()], 
@@ -201,7 +201,7 @@ namespace Dilep {
 			long long int time = startTimer();
 			#endif
 
-			/*for (unsigned i = 0; i < vdi.size(); ++i) {
+			for (unsigned i = 0; i < vdi.size(); ++i) {
 
 				in_mpx[i * 2]		= vdi[i].getInMpx(0);
 				in_mpx[(i * 2) + 1] = vdi[i].getInMpx(1);
@@ -237,9 +237,9 @@ namespace Dilep {
 				d[(i * 5) + 2] = vdi[i].getCbl().Pz();
 				d[(i * 5) + 3] = vdi[i].getCbl().E();
 				d[(i * 5) + 4] = vdi[i].getCbl().M();
-			}*/
+			}
 
-			{
+			/*{
 				int i = 0;
 				in_mpx[i * 2]		= -1987.77;
 				in_mpx[(i * 2) + 1] = -1987.77;
@@ -319,7 +319,7 @@ namespace Dilep {
 			}*/
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
-			cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
+			/*cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
 			cudaMalloc(&dev_w_mass, vdi.size()*2*sizeof(double));
 			cudaMalloc(&dev_in_mpx, vdi.size()*2*sizeof(double));
 			cudaMalloc(&dev_in_mpy, vdi.size()*2*sizeof(double));
@@ -352,7 +352,7 @@ namespace Dilep {
 			// define the dimensions of the grid and blocks
 			// i.e. the number of times dilep is executed
 			dim3 dimGrid(GRID_SIZE, 1);
-			dim3 dimBlock(BLOCK_SIZE, 1);
+			dim3 dimBlock(BLOCK_SIZE, 1);*/
 
 			// dilep kernel call
 			//calc_dilep<<<dimGrid,dimBlock>>>(
@@ -394,7 +394,7 @@ namespace Dilep {
 
 
 			// frees the memory allocated on GPU
-			cudaFree(dev_t_mass);
+			/*cudaFree(dev_t_mass);
 			cudaFree(dev_w_mass);
 			cudaFree(dev_in_mpx);
 			cudaFree(dev_in_mpy);
@@ -406,7 +406,7 @@ namespace Dilep {
 			cudaFree(dev_bl_b);
 
 			cudaFree(dev_count);
-			cudaFree(dev_nc);
+			cudaFree(dev_nc);*/
 
 			// time measurement
 			#ifdef MEASURE_DILEP
