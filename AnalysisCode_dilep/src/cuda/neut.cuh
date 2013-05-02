@@ -59,8 +59,8 @@ namespace Dilep {
 
 		__host__ void dilep (DilepInput &di);
 
-		//__host__ void calc_dilep(double t_mass[], double w_mass[], double in_mpx[], 
-		__global__ void calc_dilep(double t_mass[], double w_mass[], double in_mpx[], 
+		__host__ void calc_dilep(double t_mass[], double w_mass[], double in_mpx[], 
+		//__global__ void calc_dilep(double t_mass[], double w_mass[], double in_mpx[], 
 										double in_mpy[], double in_mpz[], double lep_a[], double lep_b[], 
 										double bl_a[], double bl_b[], double nc[], int a[]);
 	}
