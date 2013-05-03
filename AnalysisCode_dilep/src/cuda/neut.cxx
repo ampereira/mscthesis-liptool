@@ -116,17 +116,17 @@ namespace Dilep {
 			
 		}
 
-		#define size 1
+		#define SIZE 1
 		#define NUM_THREADS 1
 #define TO1D(nc,tid,sol,did)	nc[tid*16+sol*4+did]
 
 		void dilep (DilepInput &di, int EveNumber) {
 			
-			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], 
-				   t_mass[2 * size], w_mass[2 * size];
+			double in_mpx[2 * SIZE], in_mpy[2 * SIZE], in_mpz[2 * SIZE], 
+				   t_mass[2 * SIZE], w_mass[2 * SIZE];
 			
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy, *dev_in_mpz;
-			double a[5 * size], b[5 * size], c[5 * size], d[5 * size];
+			double a[5 * SIZE], b[5 * SIZE], c[5 * SIZE], d[5 * SIZE];
 		
 			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b;
 			double nc[16*NUM_THREADS];
@@ -139,7 +139,7 @@ namespace Dilep {
 			long long int time = startTimer();
 			#endif
 
-			for (unsigned i = 0; i < size; ++i) {
+			for (unsigned i = 0; i < SIZE; ++i) {
 
 				in_mpx[i * 2]		= di.getInMpx(0);
 				in_mpx[(i * 2) + 1] = di.getInMpx(1);
@@ -183,7 +183,7 @@ namespace Dilep {
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 
-			for (unsigned comb = 0; comb < size; ++comb) {
+			for (unsigned comb = 0; comb < SIZE; ++comb) {
 				vector<myvector> result;
 
 				for (int sol = 0 ; sol < count[comb] && sol<4 ; sol++) {
@@ -197,7 +197,7 @@ namespace Dilep {
 				}
 				if(result.size())
 					++hasSolution;
-				
+
 				di.setHasSol(hasSolution);
 				di.setResult(&result);
 			}
