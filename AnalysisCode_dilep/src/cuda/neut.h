@@ -21,7 +21,7 @@
 #include "../utilities.h"
 
 namespace Dilep {
-	namespace CPU {
+	namespace GPU {
 		void Csqrt(double _ar, double _ai, double _my[]);
 		void cubic(double a[], double rr[], double ri[]);
 		void toz(double k[], double l[], double g[]);

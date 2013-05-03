@@ -4,7 +4,7 @@ using std::vector;
 using namespace std;
 
 namespace Dilep {
-	namespace CPU {
+	namespace GPU {
 	
 		double calcMass (double x, double y, double z, double e) {
 			double mm, mass;
