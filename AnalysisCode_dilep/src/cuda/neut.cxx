@@ -195,10 +195,9 @@ namespace Dilep {
 					
 					result.push_back(*mv);
 				}
-			
-				if (result.size()) {
-					++hasSolution;  // increment solution counter
-				}
+				if(result.size())
+					++hasSolution;
+				
 				di.setHasSol(hasSolution);
 				di.setResult(&result);
 			}
