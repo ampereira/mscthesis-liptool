@@ -118,6 +118,7 @@ namespace Dilep {
 
 		#define size 1
 		#define NUM_THREADS 1
+#define TO1D(nc,tid,sol,did)	nc[tid*16+sol*4+did]
 
 		void dilep (DilepInput &di, int EveNumber) {
 			
