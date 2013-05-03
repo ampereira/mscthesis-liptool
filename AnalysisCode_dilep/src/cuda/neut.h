@@ -41,6 +41,11 @@ namespace Dilep {
 										double in_mpx[], double in_mpy[], double in_mpz[],
 										TLorentzVector* lep_a, TLorentzVector* lep_b, 
 										TLorentzVector* bl_a, TLorentzVector* bl_b);
+		
+		void calc_dilep(double t_mass[], double w_mass[], 
+						double in_mpx[], double in_mpy[], double in_mpz[], double lep_a[], 
+						double lep_b[], double bl_a[], double bl_b[], 
+						double nc[], int a[]);
 	}
 }
 
