@@ -4080,13 +4080,12 @@ void ttH_dilep::ttDilepKinFit(){
 #ifdef SEQ
 		Dilep::CPU::dilep(di);
 #elif OMP
+		//Dilep::CPU::dilep(di);
+#elif CUDA
 		vector<DilepInput> vdi;
 		vdi.push_back(di);
 		Dilep::GPU::dilep(vdi);
 		di = vdi[0];
-		//Dilep::CPU::dilep(di);
-#elif CUDA
-		Dilep::CPU::dilep(di);
 #elif PAPI
 		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
