@@ -244,36 +244,47 @@ namespace Dilep {
 			
 		}
 
+#define STRIDE2(a,i) a[tid * 2 + i]
+#define STRIDE5(a,i) a[tid * 5 + i]
+
 		__global__
 		void calc_dilep(double t_mass[], double w_mass[], 
-				double in_mpx[], double in_mpy[], double in_mpz[], double lep_a[], 
-				double lep_b[], double bl_a[], double bl_b[], 
+				double in_mpx[], double in_mpy[], double in_mpz[], double _lep_a[], 
+				double _lep_b[], double _bl_a[], double _bl_b[], 
 				double nc[], int a[])
 		{
 
 			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
 			double G_1, G_3;
-			double WMass_a, WMass_b, tMass_a, tMass_b;
+			double WMass_a, WMass_b, tMass_a, tMass_b, lep_a[5], lep_b[5], bl_a[5], bl_b[5];
 
 
-			WMass_a = w_mass[0];
-			tMass_a = t_mass[0];
-			WMass_b = w_mass[1];
-			tMass_b = t_mass[1];  
+			WMass_a = STRIDE2(w_mass, 0);
+			tMass_a = STRIDE2(t_mass, 0);
+			WMass_b = STRIDE2(w_mass, 1);
+			tMass_b = STRIDE2(t_mass, 1);
+
+			for (unsigned i = 0; i < 5; ++i) {
+				lep_b[i] = STRIDE5(_lep_b, i);
+				lep_b[i] = STRIDE5(_lep_b, i);
+
+				bl_a[i] = STRIDE5(_bl_a, i);
+				bl_a[i] = STRIDE5(_bl_a, i);
+			}
 			
-			G_1 = (WMass_a - lep_a[4]) * (WMass_a + lep_a[4]);
-			G_3 = (WMass_b - lep_b[4]) * (WMass_b + lep_b[4]);
+			G_1 = (WMass_a - STRIDE5(lep_a, 4)) * (WMass_a + STRIDE5(lep_a, 4));
+			G_3 = (WMass_b - STRIDE5(lep_b, 4)) * (WMass_b + STRIDE5(lep_b, 4));
 
 			double G_5,G_6,G_7,G_8,G_9,G_10,G_11,G_12;
-			G_5 = ( bl_a[0]/bl_a[3] - lep_a[0]/lep_a[3] );
-			G_6 = ( bl_a[1]/bl_a[3] - lep_a[1]/lep_a[3] );
-			G_7 = ( bl_a[2]/bl_a[3] - lep_a[2]/lep_a[3] );
-			G_8 = ( G_1/lep_a[3] - ((tMass_a - bl_a[4]) * (tMass_a + bl_a[4]))/bl_a[3] )/2.;
+			G_5 = ( STRIDE5(bl_a, 0)/STRIDE5(bl_a, 3) - STRIDE5(lep_a, 0)/STRIDE5(lep_a, 3));
+			G_6 = ( STRIDE5(bl_a, 1)/STRIDE5(bl_a, 3) - STRIDE5(lep_a, 1)/STRIDE5(lep_a, 3));
+			G_7 = ( STRIDE5(bl_a, 2)/STRIDE5(bl_a, 3) - STRIDE5(lep_a, 2)/STRIDE5(lep_a, 3));
+			G_8 = ( G_1/STRIDE5(lep_a, 3) - ((tMass_a - STRIDE5(bl_a, 4)) * (tMass_a + STRIDE5(bl_a, 4)))/STRIDE5(bl_a, 3))/2.;
 
-			G_9 =	( bl_b[0]/bl_b[3] - lep_b[0]/lep_b[3] );
-			G_10 =	( bl_b[1]/bl_b[3] - lep_b[1]/lep_b[3] );
-			G_11 =	( bl_b[2]/bl_b[3] - lep_b[2]/lep_b[3] );
-			G_12 =	( G_3/lep_b[3] - ((tMass_b - bl_b[4]) * (tMass_b + bl_b[4]))/bl_b[3] )/2.;
+			G_9 =	( STRIDE5(bl_b, 0)/STRIDE5(bl_b, 3) - STRIDE5(lep_b, 0)/STRIDE5(lep_b,3));
+			G_10 =	( STRIDE5(bl_b, 1)/STRIDE5(bl_b, 3) - STRIDE5(lep_b, 1)/STRIDE5(lep_b,3));
+			G_11 =	( STRIDE5(bl_b, 2)/STRIDE5(bl_b, 3) - STRIDE5(lep_b, 2)/STRIDE5(lep_b,3));
+			G_12 =	( G_3/STRIDE5(lep_b, 3) - ((tMass_b - STRIDE5(bl_b, 4)) * (tMass_b + STRIDE5(bl_b, 4)))/STRIDE5(bl_b, 3))/2.;
 
 			///////////////////////////////////////////////////////////////////
 			//// 	G_5 *x1 + G_6*y1 + G_7*z1 = G8;  		(6)
