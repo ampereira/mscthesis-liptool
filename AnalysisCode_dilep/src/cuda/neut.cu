@@ -125,7 +125,7 @@ namespace Dilep {
 			double in_mpx[2 * SIZE], in_mpy[2 * SIZE], in_mpz[2 * SIZE], 
 				   t_mass[2 * SIZE], w_mass[2 * SIZE];
 			
-			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy, *dev_in_mpz;
+			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
 			double a[5 * SIZE], b[5 * SIZE], c[5 * SIZE], d[5 * SIZE];
 		
 			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b;
@@ -145,8 +145,6 @@ namespace Dilep {
 				in_mpx[(i * 2) + 1] = di[i].getInMpx(1);
 				in_mpy[i * 2]		= di[i].getInMpy(0);
 				in_mpy[(i * 2) + 1] = di[i].getInMpy(1);
-				in_mpz[i * 2]		= di[i].getInMpz(0);
-				in_mpz[(i * 2) + 1] = di[i].getInMpz(1);
 				t_mass[i * 2]		= di[i].getTmass(0);
 				t_mass[(i * 2) + 1] = di[i].getTmass(1);
 				w_mass[i * 2]		= di[i].getWmass(0);
@@ -182,7 +180,6 @@ namespace Dilep {
 			cudaMalloc(&dev_w_mass, 2*sizeof(double));
 			cudaMalloc(&dev_in_mpx, 2*sizeof(double));
 			cudaMalloc(&dev_in_mpy, 2*sizeof(double));
-			cudaMalloc(&dev_in_mpz, 2*sizeof(double));
 
 			cudaMalloc(&dev_lep_a, sizeof(a));
 			cudaMalloc(&dev_lep_b, sizeof(b));
@@ -198,17 +195,16 @@ namespace Dilep {
 			cudaMemcpy(dev_w_mass, w_mass, 2*sizeof(double), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_in_mpx, in_mpx, 2*sizeof(double), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_in_mpy, in_mpy, 2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_in_mpz, in_mpz, 2*sizeof(double), cudaMemcpyHostToDevice);
 
-			cudaMemcpy(dev_lep_a, &a, sizeof(a), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_lep_b, &b, sizeof(b), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_a, &c, sizeof(c), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_a, &a, NUM_THREADS*sizeof(a), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_b, &b, NUM_THREADS*sizeof(b), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_a, &c, NUM_THREADS*sizeof(c), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_b, &d, NUM_THREADS*sizeof(d), cudaMemcpyHostToDevice);
 
 			//calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
 			//			a, b, c, d, nc, count);
 
-			calc_dilep <<< 1, 1 >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_in_mpz, 
+			calc_dilep <<< 1, NUM_THREADS >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
 					dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 
 			// memory transfer of the results from the GPU
@@ -249,7 +245,7 @@ namespace Dilep {
 
 		__global__
 		void calc_dilep(double t_mass[], double w_mass[], 
-				double in_mpx[], double in_mpy[], double in_mpz[], double _lep_a[], 
+				double in_mpx[], double in_mpy[], double _lep_a[], 
 				double _lep_b[], double _bl_a[], double _bl_b[], 
 				double nc[], int a[])
 		{
@@ -257,6 +253,7 @@ namespace Dilep {
 			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
 			double G_1, G_3;
 			double WMass_a, WMass_b, tMass_a, tMass_b, lep_a[5], lep_b[5], bl_a[5], bl_b[5];
+			double in_mpz[2] = {0.0, 0.0};
 
 
 			WMass_a = STRIDE2(w_mass, 0);
@@ -272,7 +269,7 @@ namespace Dilep {
 				bl_b[i] = STRIDE5(_bl_b, i);
 			}
 			
-			
+
 			G_1 = (WMass_a - lep_a[4]) * (WMass_a + lep_a[4]);
 			G_3 = (WMass_b - lep_b[4]) * (WMass_b + lep_b[4]);
 
