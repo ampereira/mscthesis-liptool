@@ -20,6 +20,8 @@
 #include "../dilep_input.h"
 #include "../utilities.h"
 
+#define TPI 3.14159265358979312
+
 namespace Dilep {
 	namespace GPU {
 		__device__ __host__ void Csqrt(double _ar, double _ai, double _my[]);

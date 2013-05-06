@@ -1021,7 +1021,7 @@ namespace Dilep {
 		{
 			int i;
 			double a0, a1, a2, a3;
-			double g, h, y1, sh, theta, pi, xy1, xy2, xy3;
+			double g, h, y1, sh, theta, xy1, xy2, xy3;
 			double y2, z1, z2, z3, z4;
 			//// initialize the results
 			for (i = 0; i < 3; i ++)
@@ -1043,9 +1043,8 @@ namespace Dilep {
 				sh = sqrt(-h);
 				theta = acos(g / (2.0 * h * sh)) / 3.0;
 				xy1 = 2.0 * sh * cos(theta);
-				pi = TMath::Pi();
-				xy2 = 2.0 * sh * cos(theta + (2.0 * pi / 3.0));
-				xy3 = 2.0 * sh * cos(theta + (4.0 * pi / 3.0));
+				xy2 = 2.0 * sh * cos(theta + (2.0 * TPI / 3.0));
+				xy3 = 2.0 * sh * cos(theta + (4.0 * TPI / 3.0));
 				rr[0] = (xy1 - a1) / a0;
 				rr[1] = (xy2 - a1) / a0;
 				rr[2] = (xy3 - a1) / a0;
