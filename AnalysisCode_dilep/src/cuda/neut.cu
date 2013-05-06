@@ -116,8 +116,8 @@ namespace Dilep {
 			
 		}
 
-#define SIZE 1
-#define NUM_THREADS 1
+#define SIZE 2
+#define NUM_THREADS 2
 #define TO1D(nc,tid,sol,did)	nc[tid*16+sol*4+did]
 
 		void dilep (vector<DilepInput> &di, int EveNumber) {
