@@ -265,11 +265,11 @@ namespace Dilep {
 			tMass_b = STRIDE2(t_mass, 1);
 
 			for (unsigned i = 0; i < 5; ++i) {
-				lep_b[i] = STRIDE5(_lep_b, i);
+				lep_a[i] = STRIDE5(_lep_a, i);
 				lep_b[i] = STRIDE5(_lep_b, i);
 
 				bl_a[i] = STRIDE5(_bl_a, i);
-				bl_a[i] = STRIDE5(_bl_a, i);
+				bl_b[i] = STRIDE5(_bl_b, i);
 			}
 			
 			G_1 = (WMass_a - STRIDE5(lep_a, 4)) * (WMass_a + STRIDE5(lep_a, 4));
