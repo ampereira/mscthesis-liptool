@@ -251,8 +251,7 @@ namespace Dilep {
 				double nc[], int a[])
 		{
 
-			//unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
-			unsigned tid = 0;
+			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
 			double G_1, G_3;
 			double WMass_a, WMass_b, tMass_a, tMass_b;
 
