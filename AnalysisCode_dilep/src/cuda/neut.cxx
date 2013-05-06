@@ -116,8 +116,8 @@ namespace Dilep {
 			
 		}
 
-		#define SIZE 1
-		#define NUM_THREADS 1
+#define SIZE 1
+#define NUM_THREADS 1
 #define TO1D(nc,tid,sol,did)	nc[tid*16+sol*4+did]
 
 		void dilep (DilepInput &di, int EveNumber) {
@@ -209,6 +209,7 @@ namespace Dilep {
 			
 		}
 
+		__global__
 		void calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double in_mpz[], double lep_a[], 
 				double lep_b[], double bl_a[], double bl_b[], 
