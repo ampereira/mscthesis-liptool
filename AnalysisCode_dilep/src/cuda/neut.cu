@@ -133,6 +133,10 @@ namespace Dilep {
 			double *dev_nc;
 			int count[NUM_THREADS], *dev_count;
 			int hasSolution = 0;
+		ofstream of ("hahhahah", fstream::app);
+		of << di.size() << endl;
+		of.close();
+		exit(0);
 
 			// time measurement
 			#ifdef MEASURE_DILEP
