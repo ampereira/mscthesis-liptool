@@ -27,8 +27,7 @@ using namespace std;
 #include "seq/neut.h"
 #include <omp.h>
 #elif CUDA
-#include "seq/neut.h"
-#include "cuda/neut.cuh"
+#include "cuda/neut.h"
 #elif SEQ
 #include "seq/neut.h"
 #elif SSE
@@ -4029,7 +4028,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
 
 	// Best solution merge
-		int _HasSolution = 0;
+	ttDKF_Best_Sol best_sols [num_threads];
 	ttDKF_Best_Sol best;
 
 
@@ -4037,11 +4036,11 @@ void ttH_dilep::ttDilepKinFit(){
 	long long int time = ttH::KinFit::startTimer();
 #endif
 
-		
+
+	
 		unsigned task_id;		// used to determine the comb to use
 		// OpenMP variable declarations - cannot use class variables in OpenMP clauses
-		// Variables starting with the '_' are private for each thread
-
+	
 		// ttbar variables
 		double myttbar_px;
 		double myttbar_py;
@@ -4063,6 +4062,7 @@ void ttH_dilep::ttDilepKinFit(){
 		int first = 0;
 		DilepInput di;
 
+
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task
@@ -4075,18 +4075,17 @@ void ttH_dilep::ttDilepKinFit(){
 		}
 		// Apply the variance (thread safe)
 		di.applyVariance(RESOLUTION);
-		
+
 		// Run the dileptonic reconstruction 
 #ifdef SEQ
 		Dilep::CPU::dilep(di);
 #elif OMP
 		Dilep::CPU::dilep(di);
 #elif CUDA
-		//Dilep::CPU::dilep(di);
-		vector<DilepInput> vdi;
-		vdi.push_back(di);
-		Dilep::GPU::dilep(vdi, EveNumber);
-		di = vdi[0];
+		//vector<DilepInput> vdi;
+		//vdi.push_back(di);
+		Dilep::GPU::dilep(di, 0);
+		//di = vdi[0];
 #elif PAPI
 		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
@@ -4099,10 +4098,10 @@ void ttH_dilep::ttDilepKinFit(){
 		std::vector<myvector> result = di.getResult();
 		HasSolution += di.getHasSol();
 
-
-		//ofstream of("coisas_gpu2.txt", fstream::app);
+		//ofstream of ("zazus.txt", fstream::app);
 		//of << EveNumber << " - " << result.size() << endl;
 		//of.close();
+
 
 		for ( int id = 0; id < result.size(); id++) {
 		
@@ -4366,7 +4365,7 @@ void ttH_dilep::ttDilepKinFit(){
 			// n_ttDKF_Best vai ter o indice da melhor solucao desta thread e MaxTotalProb a sua probabilidade
 			if ( ( ProbTotal_ttDKF[nTSol] > MaxTotalProb ) && ( ProbTotal_ttDKF[nTSol] != 0. ) ) {
 				MaxTotalProb = ProbTotal_ttDKF[nTSol];
-				n_ttDKF_Best = nTSol;
+				n_ttDKF_Best = nTSol; 
 			}
 			nTSol++;
 		}
@@ -4374,28 +4373,10 @@ void ttH_dilep::ttDilepKinFit(){
 		// %      Code to Evaluate Solutions     %
 		// %      Solutions Found Are Stored     %
 		// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	} // end of parallel for
 
-	// Create the class instance holding the best result, or empty if no suitable result is found
-	/*if (n_ttDKF_Best >= 0) {	
-		ttDKF_Best_Sol sol (MaxTotalProb, _mHiggsJet1_ttDKF[n_ttDKF_Best], _mHiggsJet2_ttDKF[n_ttDKF_Best],
-							_n1_ttDKF[n_ttDKF_Best], _n2_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best], _b1_ttDKF[n_ttDKF_Best],
-							_l1_ttDKF[n_ttDKF_Best], _l2_ttDKF[n_ttDKF_Best], _W1_ttDKF[n_ttDKF_Best], _W2_ttDKF[n_ttDKF_Best],
-							_t1_ttDKF[n_ttDKF_Best], _t2_ttDKF[n_ttDKF_Best], _ttbar_ttDKF[n_ttDKF_Best],
-							_b1_Higgs_ttDKF[n_ttDKF_Best], _b2_Higgs_ttDKF[n_ttDKF_Best],
-							_Higgs_ttDKF[n_ttDKF_Best]);
-
-		best_sols[omp_get_thread_num()] = sol;
-	} else {
-		// Creates an empty solution if no result is found. It will have a probability of -1.0
-		ttDKF_Best_Sol *sol = new ttDKF_Best_Sol ();
-		best_sols[omp_get_thread_num()] = *sol;
-	}
-	
-	// Performs a reduction to get the best solution
-	best = ttH::KinFit::reduce(best_sols);
 	// end of pragma omp parallel
-	*/
-	}
+	
 
 
 
@@ -4407,6 +4388,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// Redefine HasSolution if no other reconstruction criteria met
 	// -------------------------------------------------------------------
 	HasSolution = (n_ttDKF_Best >= 0) ? HasSolution : 0;
+
 
 	// -------------------------------------------------------------------
 	// Make sure backward compatibility is preserved + Few Calculations
@@ -4715,7 +4697,6 @@ Int_t main(Int_t argc, char *argv[]){
 
 	ttH::defineDilepIterations();
 	ttH::defineNumThreads();
-//	Dilep::GPU::gpu_init(1,1);
 
 	// Start measuring overall time
 	long long int init = ttH::startTimer();
