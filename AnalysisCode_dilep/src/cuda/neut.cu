@@ -120,7 +120,7 @@ namespace Dilep {
 #define NUM_THREADS 1
 #define TO1D(nc,tid,sol,did)	nc[tid*16+sol*4+did]
 
-		void dilep (DilepInput &di, int EveNumber) {
+		void dilep (vector<DilepInput> &di, int EveNumber) {
 			
 			double in_mpx[2 * SIZE], in_mpy[2 * SIZE], in_mpz[2 * SIZE], 
 				   t_mass[2 * SIZE], w_mass[2 * SIZE];
@@ -139,42 +139,42 @@ namespace Dilep {
 			long long int time = startTimer();
 			#endif
 
-			for (unsigned i = 0; i < SIZE; ++i) {
+			for (unsigned i = 0; i < di.size(); ++i) {
 
-				in_mpx[i * 2]		= di.getInMpx(0);
-				in_mpx[(i * 2) + 1] = di.getInMpx(1);
-				in_mpy[i * 2]		= di.getInMpy(0);
-				in_mpy[(i * 2) + 1] = di.getInMpy(1);
-				in_mpz[i * 2]		= di.getInMpz(0);
-				in_mpz[(i * 2) + 1] = di.getInMpz(1);
-				t_mass[i * 2]		= di.getTmass(0);
-				t_mass[(i * 2) + 1] = di.getTmass(1);
-				w_mass[i * 2]		= di.getWmass(0);
-				w_mass[(i * 2) + 1] = di.getWmass(1);
+				in_mpx[i * 2]		= di[i].getInMpx(0);
+				in_mpx[(i * 2) + 1] = di[i].getInMpx(1);
+				in_mpy[i * 2]		= di[i].getInMpy(0);
+				in_mpy[(i * 2) + 1] = di[i].getInMpy(1);
+				in_mpz[i * 2]		= di[i].getInMpz(0);
+				in_mpz[(i * 2) + 1] = di[i].getInMpz(1);
+				t_mass[i * 2]		= di[i].getTmass(0);
+				t_mass[(i * 2) + 1] = di[i].getTmass(1);
+				w_mass[i * 2]		= di[i].getWmass(0);
+				w_mass[(i * 2) + 1] = di[i].getWmass(1);
 					
-				a[i * 5]	   = di.getZlep().Px();
-				a[(i * 5) + 1] = di.getZlep().Py();
-				a[(i * 5) + 2] = di.getZlep().Pz();
-				a[(i * 5) + 3] = di.getZlep().E();
-				a[(i * 5) + 4] = di.getZlep().M();
+				a[i * 5]	   = di[i].getZlep().Px();
+				a[(i * 5) + 1] = di[i].getZlep().Py();
+				a[(i * 5) + 2] = di[i].getZlep().Pz();
+				a[(i * 5) + 3] = di[i].getZlep().E();
+				a[(i * 5) + 4] = di[i].getZlep().M();
 
-				b[i * 5]	   = di.getClep().Px();
-				b[(i * 5) + 1] = di.getClep().Py();
-				b[(i * 5) + 2] = di.getClep().Pz();
-				b[(i * 5) + 3] = di.getClep().E();
-				b[(i * 5) + 4] = di.getClep().M();
+				b[i * 5]	   = di[i].getClep().Px();
+				b[(i * 5) + 1] = di[i].getClep().Py();
+				b[(i * 5) + 2] = di[i].getClep().Pz();
+				b[(i * 5) + 3] = di[i].getClep().E();
+				b[(i * 5) + 4] = di[i].getClep().M();
 
-				c[i * 5]	   = di.getZbl().Px();
-				c[(i * 5) + 1] = di.getZbl().Py();
-				c[(i * 5) + 2] = di.getZbl().Pz();
-				c[(i * 5) + 3] = di.getZbl().E();
-				c[(i * 5) + 4] = di.getZbl().M();
+				c[i * 5]	   = di[i].getZbl().Px();
+				c[(i * 5) + 1] = di[i].getZbl().Py();
+				c[(i * 5) + 2] = di[i].getZbl().Pz();
+				c[(i * 5) + 3] = di[i].getZbl().E();
+				c[(i * 5) + 4] = di[i].getZbl().M();
 
-				d[i * 5]	   = di.getCbl().Px();
-				d[(i * 5) + 1] = di.getCbl().Py();
-				d[(i * 5) + 2] = di.getCbl().Pz();
-				d[(i * 5) + 3] = di.getCbl().E();
-				d[(i * 5) + 4] = di.getCbl().M();
+				d[i * 5]	   = di[i].getCbl().Px();
+				d[(i * 5) + 1] = di[i].getCbl().Py();
+				d[(i * 5) + 2] = di[i].getCbl().Pz();
+				d[(i * 5) + 3] = di[i].getCbl().E();
+				d[(i * 5) + 4] = di[i].getCbl().M();
 			}
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
@@ -233,8 +233,8 @@ namespace Dilep {
 				if(result.size())
 					++hasSolution;
 
-				di.setHasSol(hasSolution);
-				di.setResult(&result);
+				di[comb].setHasSol(hasSolution);
+				di[comb].setResult(&result);
 			}
 
 			// time measurement
