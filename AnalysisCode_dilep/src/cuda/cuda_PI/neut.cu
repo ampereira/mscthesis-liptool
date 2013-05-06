@@ -1,11 +1,126 @@
-#include "neut.h"
+#include "neut.cuh"
+/* include MTGP host helper functions */
+//#include <curand_mtgp32_host.h>
+/* include MTGP pre-computed parameter sets */
+//#include <curand_mtgp32dc_p_11213.h>
+
 
 using std::vector;
 using namespace std;
 
+		unsigned GRID_SIZE;
+		unsigned BLOCK_SIZE;
+		unsigned NUM_THREADS;
+
 namespace Dilep {
 	namespace GPU {
+		//__device__
+		/*double gaus_kernel (double mean, double sigma, curandStateMtgp32 *state) {
+			// Samples a random number from the standard Normal (Gaussian) Distribution 
+			// with the given mean and sigma.                                                 
+			// Uses the Acceptance-complement ratio from W. Hoermann and G. Derflinger 
+			// This is one of the fastest existing method for generating normal random variables. 
+			// It is a factor 2/3 faster than the polar (Box-Muller) methused in the previous 
+			// version of TRandom::Gaus. The speed is comparable to the Ziggurat method (from Marsaglia)
+			// implemented for example in GSL and available in the MathMore library. 
+			//                                                                           
+			// REFERENCE:  - W. Hoermann and G. Derflinger (1990):                       
+			//              The ACR Method for generating normal random variables,       
+			//              OR Spektrum 12 (1990), 181-185.                             
+			//                                                                           
+			// Implementation taken from 
+			// UNURAN (c) 2000  W. Hoermann & J. Leydold, Institut f. Statistik, WU Wien 
+			
+			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
+
+			const double kC1 = 1.448242853;
+			const double kC2 = 3.307147487;
+			const double kC3 = 1.46754004;
+			const double kD1 = 1.036467755;
+			const double kD2 = 5.295844968;
+			const double kD3 = 3.631288474;
+			const double kHm = 0.483941449;
+			const double kZm = 0.107981933;
+			const double kHp = 4.132731354;
+			const double kZp = 18.52161694;
+			const double kPhln = 0.4515827053;
+			const double kHm1 = 0.516058551;
+			const double kHp1 = 3.132731354;
+			const double kHzm = 0.375959516;
+			const double kHzmp = 0.591923442;
+
+			const double kAs = 0.8853395638;
+			const double kBs = 0.2452635696;
+			const double kCs = 0.2770276848;
+			const double kB  = 0.5029324303;
+			const double kX0 = 0.4571828819;
+			const double kYm = 0.187308492 ;
+			const double kS  = 0.7270572718 ;
+			const double kT  = 0.03895759111;
+
+			double result;
+			double rn,x,y,z;
+
+
+			do{
+		         y = cuRand(&state[blockIdx.x]);
+
+		         if (y>kHm1) {
+		             result = kHp*y-kHp1; break; }
+
+		         else if (y<kZm) {
+		             rn = kZp*y-1;
+		             result = (rn>0) ? (1+rn) : (-1+rn);
+		             break;
+		         }
+
+		         else if (y<kHm) {
+		             rn = cuRand(&state[blockIdx.x]);
+		             rn = rn-1+rn;
+		             z = (rn>0) ? 2-rn : -2-rn;
+		             if ((kC1-y)*(kC3+abs(z))<kC2) {
+		                 result = z; break; }
+		             else {
+		                 x = rn*rn;
+		                 if ((y+kD1)*(kD3+x)<kD2) {
+		                     result = rn; break; }
+		                 else if (kHzmp-y<exp(-(z*z+kPhln)/2)) {
+		                     result = z; break; }
+		                 else if (y+kHzm<exp(-(x+kPhln)/2)) {
+		                     result = rn; break; }
+		             }
+		         }
+
+		         while (1) {
+		             x = cuRand(&state[blockIdx.x]);
+		             y = kYm * cuRand(&state[blockIdx.x]);
+		             z = kX0 - kS*x - y;
+		             if (z>0)
+		                 rn = 2+y/x;
+		             else {
+		                 x = 1-x;
+		                 y = kYm-y;
+		                rn = -(2+y/x);
+		             }
+		             if ((y-kAs+x)*(kCs+x)+kBs<0) {
+		                 result = rn; break; }
+		             else if (y<x+kT)
+		                 if (rn*rn<4*(kB-log(x))) {
+		                     result = rn; break; }
+		         }
+   } while(0);
+
+			return mean + sigma * result;
+		}*/
+
+		//__host__ 
+		void gpu_init (int blocks, int threads) {
+			GRID_SIZE=blocks;
+			BLOCK_SIZE=threads;
+			NUM_THREADS=blocks*threads;
+		}
 	
+		//__device__
 		double calcMass (double x, double y, double z, double e) {
 			double mm, mass;
 
@@ -20,6 +135,7 @@ namespace Dilep {
 		}
 
 		// Wrapper for the dilep calculation using the input class
+		//__host__
 		void dilep (DilepInput &di) {
 			std::vector<myvector> *result = new std::vector<myvector> ();
 			int hasSolution = 0;
@@ -49,7 +165,7 @@ namespace Dilep {
 			bl_a = di.getZbl();
 			bl_b = di.getCbl();
 
-			result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, &lep_b, &bl_a, &bl_b);
+			//result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, &lep_b, &bl_a, &bl_b);
 
 			// Check if there is any solutions for this reconstruction
 			if (result->size())
@@ -66,67 +182,14 @@ namespace Dilep {
 
 		// Wrapper for the dilep calculation using a vector of the input class
 		// vdi vector with DilepInput varied for a jet combo
-		void dilep (vector<DilepInput> &vdi) {
+		//__host__
+		void dilep (vector<DilepInput> &vdi, int EveNumber) {
 			
-			// time measurement
-			#ifdef MEASURE_DILEP
-			long long int time = startTimer();
-			#endif
-
-			for (unsigned i = 0; i < vdi.size(); ++i) {
-				vector<myvector> *result;
-				//DilepInput di = vdi[i];
-				int hasSolution = 0;
-
-				double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
-				TLorentzVector lep_a, lep_b, bl_a, bl_b;
-
-				in_mpx[0] = vdi[i].getInMpx(0);
-				in_mpx[1] = vdi[i].getInMpx(1);
-				in_mpy[0] = vdi[i].getInMpy(0);
-				in_mpy[1] = vdi[i].getInMpy(1);
-				in_mpz[0] = vdi[i].getInMpz(0);
-				in_mpz[1] = vdi[i].getInMpz(1);
-				t_mass[0] = vdi[i].getTmass(0);
-				t_mass[1] = vdi[i].getTmass(1);
-				w_mass[0] = vdi[i].getWmass(0);
-				w_mass[1] = vdi[i].getWmass(1);
-
-				lep_a = vdi[i].getZlep();
-				lep_b = vdi[i].getClep();
-				bl_a = vdi[i].getZbl();
-				bl_b = vdi[i].getCbl();
-
-				result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, 
-											&lep_b, &bl_a, &bl_b);
-
-				// Check if there is any solutions for this reconstruction
-				if (result->size()) {
-					++hasSolution;  // increment solution counter
-				}
-
-				vdi[i].setHasSol(hasSolution);
-				vdi[i].setResult(result);
-			}
-
-			// time measurement
-			#ifdef MEASURE_DILEP
-			stopTimer(time);
-			#endif
-			
-		}
-
-#define SIZE 1
-#define NUM_THREADS 1
-#define TO1D(nc,tid,sol,did)	nc[tid*16+sol*4+did]
-
-		void dilep (DilepInput &di, int EveNumber) {
-			
-			double in_mpx[2 * SIZE], in_mpy[2 * SIZE], in_mpz[2 * SIZE], 
-				   t_mass[2 * SIZE], w_mass[2 * SIZE];
+			double in_mpx[2 * vdi.size()], in_mpy[2 * vdi.size()], in_mpz[2 * vdi.size()], 
+				   t_mass[2 * vdi.size()], w_mass[2 * vdi.size()];
 			
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy, *dev_in_mpz;
-			double a[5 * SIZE], b[5 * SIZE], c[5 * SIZE], d[5 * SIZE];
+			double a[5 * vdi.size()], b[5 * vdi.size()], c[5 * vdi.size()], d[5 * vdi.size()];
 		
 			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b;
 			double nc[16*NUM_THREADS];
@@ -139,51 +202,182 @@ namespace Dilep {
 			long long int time = startTimer();
 			#endif
 
-			for (unsigned i = 0; i < SIZE; ++i) {
+			for (unsigned i = 0; i < vdi.size(); ++i) {
 
-				in_mpx[i * 2]		= di.getInMpx(0);
-				in_mpx[(i * 2) + 1] = di.getInMpx(1);
-				in_mpy[i * 2]		= di.getInMpy(0);
-				in_mpy[(i * 2) + 1] = di.getInMpy(1);
-				in_mpz[i * 2]		= di.getInMpz(0);
-				in_mpz[(i * 2) + 1] = di.getInMpz(1);
-				t_mass[i * 2]		= di.getTmass(0);
-				t_mass[(i * 2) + 1] = di.getTmass(1);
-				w_mass[i * 2]		= di.getWmass(0);
-				w_mass[(i * 2) + 1] = di.getWmass(1);
+				in_mpx[i * 2]		= vdi[i].getInMpx(0);
+				in_mpx[(i * 2) + 1] = vdi[i].getInMpx(1);
+				in_mpy[i * 2]		= vdi[i].getInMpy(0);
+				in_mpy[(i * 2) + 1] = vdi[i].getInMpy(1);
+				in_mpz[i * 2]		= vdi[i].getInMpz(0);
+				in_mpz[(i * 2) + 1] = vdi[i].getInMpz(1);
+				t_mass[i * 2]		= vdi[i].getTmass(0);
+				t_mass[(i * 2) + 1] = vdi[i].getTmass(1);
+				w_mass[i * 2]		= vdi[i].getWmass(0);
+				w_mass[(i * 2) + 1] = vdi[i].getWmass(1);
 					
-				a[i * 5]	   = di.getZlep().Px();
-				a[(i * 5) + 1] = di.getZlep().Py();
-				a[(i * 5) + 2] = di.getZlep().Pz();
-				a[(i * 5) + 3] = di.getZlep().E();
-				a[(i * 5) + 4] = di.getZlep().M();
+				a[i * 5]	   = vdi[i].getZlep().Px();
+				a[(i * 5) + 1] = vdi[i].getZlep().Py();
+				a[(i * 5) + 2] = vdi[i].getZlep().Pz();
+				a[(i * 5) + 3] = vdi[i].getZlep().E();
+				a[(i * 5) + 4] = vdi[i].getZlep().M();
 
-				b[i * 5]	   = di.getClep().Px();
-				b[(i * 5) + 1] = di.getClep().Py();
-				b[(i * 5) + 2] = di.getClep().Pz();
-				b[(i * 5) + 3] = di.getClep().E();
-				b[(i * 5) + 4] = di.getClep().M();
+				b[i * 5]	   = vdi[i].getClep().Px();
+				b[(i * 5) + 1] = vdi[i].getClep().Py();
+				b[(i * 5) + 2] = vdi[i].getClep().Pz();
+				b[(i * 5) + 3] = vdi[i].getClep().E();
+				b[(i * 5) + 4] = vdi[i].getClep().M();
 
-				c[i * 5]	   = di.getZbl().Px();
-				c[(i * 5) + 1] = di.getZbl().Py();
-				c[(i * 5) + 2] = di.getZbl().Pz();
-				c[(i * 5) + 3] = di.getZbl().E();
-				c[(i * 5) + 4] = di.getZbl().M();
+				c[i * 5]	   = vdi[i].getZbl().Px();
+				c[(i * 5) + 1] = vdi[i].getZbl().Py();
+				c[(i * 5) + 2] = vdi[i].getZbl().Pz();
+				c[(i * 5) + 3] = vdi[i].getZbl().E();
+				c[(i * 5) + 4] = vdi[i].getZbl().M();
 
-				d[i * 5]	   = di.getCbl().Px();
-				d[(i * 5) + 1] = di.getCbl().Py();
-				d[(i * 5) + 2] = di.getCbl().Pz();
-				d[(i * 5) + 3] = di.getCbl().E();
-				d[(i * 5) + 4] = di.getCbl().M();
+				d[i * 5]	   = vdi[i].getCbl().Px();
+				d[(i * 5) + 1] = vdi[i].getCbl().Py();
+				d[(i * 5) + 2] = vdi[i].getCbl().Pz();
+				d[(i * 5) + 3] = vdi[i].getCbl().E();
+				d[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
 
+			/*{
+				int i = 0;
+				in_mpx[i * 2]		= -1987.77;
+				in_mpx[(i * 2) + 1] = -1987.77;
+				in_mpy[i * 2]		= -302.404;
+				in_mpy[(i * 2) + 1] = -302.404;
+				in_mpz[i * 2]		= 0;
+				in_mpz[(i * 2) + 1] = 0;
+				t_mass[i * 2]		= 172500;
+				t_mass[(i * 2) + 1] = 172500;
+				w_mass[i * 2]		= 80400;
+				w_mass[(i * 2) + 1] = 80400;
+					
+				a[i * 5]	   = -70115.6;
+				a[(i * 5) + 1] = -61115.5;
+				a[(i * 5) + 2] = 42473.9;
+				a[(i * 5) + 3] = 102251;
+				a[(i * 5) + 4] = 105.905;
+
+				b[i * 5]	   = 15715.2;
+				b[(i * 5) + 1] = 65388.9;
+				b[(i * 5) + 2] = -19608.6;
+				b[(i * 5) + 3] = 70051.2;
+				b[(i * 5) + 4] = 18.4565;
+
+				c[i * 5]	   = 30368.8;
+				c[(i * 5) + 1] = -97864.1;
+				c[(i * 5) + 2] = -36751.6;
+				c[(i * 5) + 3] = 235759;
+				c[(i * 5) + 4] = 209122;
+
+				d[i * 5]	   = -16496;
+				d[(i * 5) + 1] = 16501.1;
+				d[(i * 5) + 2] = -48388.5;
+				d[(i * 5) + 3] = 135969;
+				d[(i * 5) + 4] = 124907;
+			}
+
+			/*if (EveNumber == (26598 * 3)) {
+				int i = 0;
+				ofstream of ("Outputs.txt", fstream::app);
+				of << vdi[i].getInMpx(0) << endl;
+				of << vdi[i].getInMpx(1) << endl;
+				of << vdi[i].getInMpy(0) << endl;
+				of << vdi[i].getInMpy(1) << endl;
+				of << vdi[i].getInMpz(0) << endl;
+				of << vdi[i].getInMpz(1) << endl;
+				of << vdi[i].getTmass(0) << endl;
+				of << vdi[i].getTmass(1) << endl;
+				of << vdi[i].getWmass(0) << endl;
+				of << vdi[i].getWmass(1) << endl;
+					
+				of << vdi[i].getZlep().Px() << endl;
+				of << vdi[i].getZlep().Py() << endl;
+				of << vdi[i].getZlep().Pz() << endl;
+				of << vdi[i].getZlep().E() << endl;
+				of << vdi[i].getZlep().M() << endl;
+
+				of << vdi[i].getClep().Px() << endl;
+				of << vdi[i].getClep().Py() << endl;
+				of << vdi[i].getClep().Pz() << endl;
+				of << vdi[i].getClep().E() << endl;
+				of << vdi[i].getClep().M() << endl;
+
+				of << vdi[i].getZbl().Px() << endl;
+				of << vdi[i].getZbl().Py() << endl;
+				of << vdi[i].getZbl().Pz() << endl;
+				of << vdi[i].getZbl().E() << endl;
+				of << vdi[i].getZbl().M() << endl;
+				of << vdi[i].getCbl().Px() << endl;
+				of << vdi[i].getCbl().Py() << endl;
+				of << vdi[i].getCbl().Pz() << endl;
+				of << vdi[i].getCbl().E() << endl;
+				of << vdi[i].getCbl().M() << endl;
+
+				of.close();
+				exit(0);
+			}*/
+
+			// GPU memory allocation of the inputs and outputs of the dilep kernel
+			/*cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
+			cudaMalloc(&dev_w_mass, vdi.size()*2*sizeof(double));
+			cudaMalloc(&dev_in_mpx, vdi.size()*2*sizeof(double));
+			cudaMalloc(&dev_in_mpy, vdi.size()*2*sizeof(double));
+			cudaMalloc(&dev_in_mpz, vdi.size()*2*sizeof(double));
+
+			cudaMalloc(&dev_lep_a, vdi.size()*sizeof(a));
+			cudaMalloc(&dev_lep_b, vdi.size()*sizeof(b));
+			cudaMalloc(&dev_bl_a, vdi.size()*sizeof(c));
+			cudaMalloc(&dev_bl_b, vdi.size()*sizeof(d));
+			
+			// allocation of the results
+			//FALTA VARIACOES
+			cudaMalloc(&dev_nc, 16*vdi.size()*sizeof(double));
+			cudaMalloc(&dev_count, vdi.size()*sizeof(int));
+
+
+			// transfer the inputs to GPU memory
+			cudaMemcpy(dev_t_mass, t_mass, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_w_mass, w_mass, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpx, in_mpx, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpy, in_mpy, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpz, in_mpz, 2*sizeof(double), cudaMemcpyHostToDevice);
+
+			cudaMemcpy(dev_lep_a, &a, vdi.size()*sizeof(a), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_b, &b, vdi.size()*sizeof(b), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_a, &c, vdi.size()*sizeof(c), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_b, &d, vdi.size()*sizeof(d), cudaMemcpyHostToDevice);
+
+
+			// define the dimensions of the grid and blocks
+			// i.e. the number of times dilep is executed
+			dim3 dimGrid(GRID_SIZE, 1);
+			dim3 dimBlock(BLOCK_SIZE, 1);*/
+
+			// dilep kernel call
+			//calc_dilep<<<dimGrid,dimBlock>>>(
+			//		dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_in_mpz, 
+			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
+		
 			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
 						a, b, c, d, nc, count);
+
+			ofstream of ("jasus.txt", fstream::app);
+			of << EveNumber << " - " << count[0] << endl;
+			of.close();
+				
+			// A TESTAR SE O SET A -1 RESULTA
+
+			// memory transfer of the results from the GPU
+			//FALTA VARIACOES
+			//cudaMemcpy(nc, dev_nc, 16*NUM_THREADS*sizeof(double), cudaMemcpyDeviceToHost);
+			//cudaMemcpy(count, dev_count, NUM_THREADS*sizeof(int), cudaMemcpyDeviceToHost);
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 
-			for (unsigned comb = 0; comb < SIZE; ++comb) {
+			for (unsigned comb = 0; comb < vdi.size(); ++comb) {
 				vector<myvector> result;
 
 				for (int sol = 0 ; sol < count[comb] && sol<4 ; sol++) {
@@ -195,12 +389,29 @@ namespace Dilep {
 					
 					result.push_back(*mv);
 				}
-				if(result.size())
-					++hasSolution;
-
-				di.setHasSol(hasSolution);
-				di.setResult(&result);
+			
+				if (result.size()) {
+					++hasSolution;  // increment solution counter
+				}
+				vdi[comb].setHasSol(hasSolution);
+				vdi[comb].setResult(&result);
 			}
+
+
+			// frees the memory allocated on GPU
+			/*cudaFree(dev_t_mass);
+			cudaFree(dev_w_mass);
+			cudaFree(dev_in_mpx);
+			cudaFree(dev_in_mpy);
+			cudaFree(dev_in_mpz);
+
+			cudaFree(dev_lep_a);
+			cudaFree(dev_lep_b);
+			cudaFree(dev_bl_a);
+			cudaFree(dev_bl_b);
+
+			cudaFree(dev_count);
+			cudaFree(dev_nc);*/
 
 			// time measurement
 			#ifdef MEASURE_DILEP
@@ -209,7 +420,14 @@ namespace Dilep {
 			
 		}
 
+		//__device__
+		void applyVariance () {
 
+		}
+
+		// NEUTRINO SOLUTIONS
+		// TLorentzVector are now arrays
+		//__global__
 		void calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double in_mpz[], double lep_a[], 
 				double lep_b[], double bl_a[], double bl_b[], 
@@ -443,266 +661,8 @@ namespace Dilep {
 			a[tid] = ncand;
 		}
 
-		// NEUTRINO SOLUTIONS
-		vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 
-				double in_mpx[], double in_mpy[], double in_mpz[],
-				TLorentzVector* lep_a, TLorentzVector* lep_b, 
-				TLorentzVector* bl_a, TLorentzVector* bl_b)
-		{
-
-			double mpx, mpy, G_1, G_2, G_3, G_4, _d, _a, _f, _b, _e, _g;
-
-			/////////// input part
-
-			mpx = in_mpx[0];
-			mpy = in_mpy[0];
-
-			//  printf( " mpx, mpy are: %3.3f  %3.3f\n", mpx, mpy);
-			const double WMass_a = w_mass[0];
-			const double tMass_a = t_mass[0];
-			const double WMass_b = w_mass[1];
-			const double tMass_b = t_mass[1];  
-			/////   
-			G_1 = WMass_a*WMass_a - ( lep_a->M() )*( lep_a->M() );
-			G_3 = WMass_b*WMass_b - ( lep_b->M() )*( lep_b->M() );
-			G_2 = tMass_a*tMass_a - ( bl_a->M()  )*( bl_a->M()  ); 
-			G_4 = tMass_b*tMass_b - ( bl_b->M()  )*( bl_b->M()  );
-
-			double S=mpx;
-			double T=mpy;
-
-			///////////////////////////////////////////////////////////////////
-
-			double G_5 =	( bl_a->Px()/bl_a->E() - lep_a->Px()/lep_a->E() );
-			double G_6 =	( bl_a->Py()/bl_a->E() - lep_a->Py()/lep_a->E() );
-			double G_7 =	( bl_a->Pz()/bl_a->E() - lep_a->Pz()/lep_a->E() );
-			double G_8 =	( G_1/lep_a->E() - G_2/bl_a->E() )/2.;
-
-			double G_9 =	( bl_b->Px()/bl_b->E() - lep_b->Px()/lep_b->E() );
-			double G_10 =	( bl_b->Py()/bl_b->E() - lep_b->Py()/lep_b->E() );
-			double G_11 =	( bl_b->Pz()/bl_b->E() - lep_b->Pz()/lep_b->E() );
-			double G_12 =	( G_3/lep_b->E() - G_4/bl_b->E() )/2.;
-
-			///////////////////////////////////////////////////////////////////
-			//// 	G_5 *x1 + G_6*y1 + G_7*z1 = G8;  		(6)
-			////  	G_9 *x2 + G_10*y2 + G_11*z2 = G12; 		(7)
-			////  	2*El_1*sqrt() - 2*(ax1+by1+cz1) = G_1;  	(8)
-			////  	2*El_2*sqrt() - 2*(Ax2+By2+Cz2) = G_3;		(9)
-			////  	x1+x2 = S;					(10)
-			////  	y1+y2 = T;					(11)
-			////  	bring z1 and z2 (from 6/7) to 7 and 8
-			///////////////////////////////////////////////////////////////////
-
-			//// 1st top decay product /////
-			double in_a[5],on_a[3],out_a[6];
-			in_a[0] = G_8/G_7;
-			in_a[1] = -1.0*G_5/G_7;
-			in_a[2] = -1.0*G_6/G_7;
-			in_a[3] = lep_a->E();
-			in_a[4] = G_1;
-
-			on_a[0] = lep_a->Px();
-			on_a[1] = lep_a->Py();
-			on_a[2] = lep_a->Pz();
-			toz(in_a, on_a, out_a);
-
-			///////// 2nd ////////////////////
-			double in_c[5],on_c[3],out_c[6];
-			in_c[0] = G_12/G_11;
-			in_c[1] = -1*G_9/G_11;
-			in_c[2] = -1*G_10/G_11;
-			in_c[3] = lep_b->E();
-			in_c[4] = G_3;
-
-			on_c[0] = lep_b->Px();
-			on_c[1] = lep_b->Py();
-			on_c[2] = lep_b->Pz();
-			toz(in_c, on_c, out_c);
-
-			/////////////////////////////////////////////////////
-			//////change x2 y2 equation to x1 and y1 by using
-			////// 		x1+x2 = S = mpx
-			////// 		y1+y2 = T = mpy
-			/////////////////////////////////////////////////////
-			double out_e[6];
-			out_e[0] = out_c[0];
-			out_e[1] = out_c[1];
-			out_e[2] = -1*( out_c[0]*mpx + out_c[2] + out_c[4]*mpy);
-			out_e[3] = -1*( out_c[1]*mpy + out_c[3] + out_c[4]*mpx);
-			out_e[4] = out_c[4]; 
-			out_e[5] =( out_c[0]*mpx*mpx + out_c[1]*mpy*mpy + 2*out_c[2]*mpx + 2*out_c[3]*mpy + out_c[5] + 2*out_c[4]*mpx*mpy);
-
-			///////////////////////////////////////////////////
-			///  solve 
-			/// {ax2+by2+2dx+2ey+2fxy+g=0		(12)
-			/// {Ax2+By2+2Dx+2Ey+2Fxy+G=0		(13)
-			/// out_a[6]: 0   1    2    3    4     5
-			/// out_a[6]: a   b    d    e    f     g
-			/// out_e[6]: A   B    D    E    F     G
-			/// if a!=0, everything is OK.
-			///
-			/// if a==0, then we can get x2 = f(x,y) from (13)
-			/// (12) --> [x2 - f(x,y)] + by2 + ... = 0
-			///////////////////////////////////////////////////
-			double _A = out_e[0];
-			double _B = out_e[1];
-			double _D = out_e[2];
-			double _E = out_e[3];
-			double _F = out_e[4];
-			double _G = out_e[5];
-
-			if ( out_a[0]!=0  ){
-				_a = out_a[0];
-				_b = out_a[1];
-				_d = out_a[2];
-				_e = out_a[3];
-				_f = out_a[4];
-				_g = out_a[5];
-			} 
-			if (out_a[0]==0 && _A!=0 ) {
-				_a = 1.;
-				_b = out_a[1] + _B/_A;
-				_d = out_a[2] + _D/_A;
-				_e = out_a[3] + _E/_A;
-				_f = out_a[4] + _F/_A;
-				_g = out_a[5] + _G/_A;
-			}
-			if ( out_a[0]==0 && _A==0){
-				return NULL;
-			}
-
-			double fx_1 = 2.*(_A*_d - _a*_D);
-			double fx_2 = 2.*(_A*_f - _a*_F);
-			double fx_3 = _a*_B - _A*_b;
-			double fx_4 = 2.*(_E*_a - _A*_e);
-			double fx_5 = _a*_G - _g*_A;
-
-			double k_1 = ( _f*_f - _a*_b )/_a/_a;
-			double k_2 = ( 2.*_d*_f - 2.*_a*_e )/_a/_a;
-			double k_3 = ( _d*_d-_a*_g )/_a/_a;
-			double k_4 = -1.*_d/_a;
-			double k_5 = -1.*_f/_a;
-
-			/////
-			///// the part above is 
-			///// x = (fx3*y**2 + fx4*y + fx5)/(fx1 + fx2*y)
-			///// used to get x value once y is known
-			/////
-			//// if fx1 + fx2*y == 0, then x is 
-			//// x = +/-sqrt(k1*y**2 + k2*y + k3) + (k4 + k5*y)
-			////
-
-
-			double g_1 = 4.*_A*_A*k_5*k_5 + 4.*_F*_F + 8.*_A*_F*k_5;
-			double g_2 = 8.*_A*_A*k_4*k_5 + 8.*_A*_D*k_5 + 8.*_A*_F*k_4 + 8.*_D*_F;
-			double g_3 = 4.*_A*_A*k_4*k_4 + 4.*_D*_D + 8.*_A*_D*k_4;
-			double g_4 = _A*k_1 + _A*k_5*k_5;
-			double g_5 = _A*k_2 + 2.*_A*k_4*k_5 + 2.*_D*k_5;
-			double g_6 = _A*k_3 + _A*k_4*k_4 + 2.*_D*k_4 + _G;
-
-			double m_1 = g_1*k_1;
-			double m_2 = g_1*k_2 + g_2*k_1;
-			double m_3 = g_1*k_3 + g_2*k_2 + g_3*k_1;
-			double m_4 = g_2*k_3 + g_3*k_2;
-			double m_5 = g_3*k_3;
-
-			double m_6  = _B*_B + 4.*_F*_F*k_5*k_5 + 4.*_B*_F*k_5;
-			double m_7  = 4.*_B*_E + 8.*_F*_F*k_4*k_5 + 4.*_B*_F*k_4 + 8.*_E*_F*k_5;
-			double m_8  = 4.*_E*_E + 4.*_F*_F*k_4*k_4 + 8.*_E*_F*k_4;
-			double m_80 = pow(g_4,2);
-			double m_81 = 2*g_4*g_5;
-			double m_9  = pow(g_5,2) + 2.*g_4*g_6;
-			double m_10 = 2.*g_5*g_6;
-			double m_11 = g_6*g_6;
-
-			double m_12 = 	2.*_A*_B*k_1 + 2.*_A*_B*k_5*k_5 + 4.*_A*_F*k_1*k_5 + 4.*_A*_F*pow(k_5,3);
-			double m_13 = 	2.*_A*_B*k_2 + 4.*_A*_B*k_4*k_5 + 4.*_B*_D*k_5 + 
-				4.*_A*(_E*k_1 + _E*k_5*k_5 + _F*k_1*k_4 + _F*k_2*k_5) + 
-				12.*_A*_F*k_4*k_5*k_5 + 8.*_D*_F*k_5*k_5;
-			double m_14 = 	2.*_A*_B*k_3 + 2.*_A*_B*k_4*k_4 + 4.*_D*_B*k_4 + 2.*_B*_G + 4.*_A*_E*k_2 + 
-				8.*_A*_E*k_4*k_5 + 8.*_E*_D*k_5 + 4.*_A*_F*k_2*k_4 + 4.*_A*_F*k_3*k_5 + 
-				12.*_A*_F*k_4*k_4*k_5 + 16.*_D*_F*k_4*k_5 + 4.*_F*_G*k_5;
-			double m_15 = 	4.*_A*_E*(k_3 + k_4*k_4) + 8.*_E*_D*k_4 + 4.*_E*_G + 4.*_A*_F*(k_3*k_4 + pow(k_4,3)) + 
-				8.*_D*_F*k_4*k_4 + 4.*_F*_G*k_4;
-
-			double  re[5];
-			re[0] = m_1 - m_6 - m_12 - m_80;
-			re[1] = m_2 - m_7 - m_13 - m_81;
-			re[2] = m_3 - m_8 - m_9 - m_14;
-			re[3] = m_4 - m_10 - m_15;
-			re[4] = m_5 - m_11;  
-
-
-
-			/////////////////////////////////////////////////
-			double output[8];
-			my_qu(re,output);
-
-			double delta;
-			int ncand(0);
-
-			vector<myvector> *neutrinoContainer = new std::vector<myvector>; //// must use new
-
-			//////////////////////////////////////////////////
-			//// please replace your code starting from here 
-			//// ////////////////////////////////////////////
-
-
-			double rec_x1;
-			double rec_y1;
-			double rec_z1;
-			double rec_e1;
-			double rec_x2;
-			double rec_y2;
-			double rec_z2;
-			double rec_e2;
-
-			double m_delta_mass;
-
-			for (int j=0; j<8; j+=2){
-				delta = k_1*output[j]*output[j] + k_2*output[j] + k_3;
-				if ( output[j+1]==0 && delta>=0) {
-					if ( (fx_1 + fx_2*output[j])!=0 ) {
-						rec_x1 = (fx_3*pow(output[j],2) + fx_4*output[j] + fx_5)/(fx_1 + fx_2*output[j]);
-					} else {
-						rec_x1 = sqrt(delta)+k_4+k_5*output[j];
-					}  
-
-					rec_y1 = output[j];
-					rec_z1 = G_8/G_7 - G_5*rec_x1/G_7 - G_6*rec_y1/G_7;
-					rec_e1 = sqrt(rec_x1*rec_x1 + rec_y1*rec_y1 + rec_z1*rec_z1);
-					rec_x2 = S - rec_x1;
-					rec_y2 = T - rec_y1;
-					rec_z2 = G_12/G_11 - G_9*rec_x2/G_11 - G_10*rec_y2/G_11;
-					rec_e2 = sqrt(rec_x2*rec_x2 + rec_y2*rec_y2 + rec_z2*rec_z2);
-
-					// self-consistence check and control of the solutions
-					double m_w1 = calcMass(rec_x1+lep_a->Px(), rec_y1+lep_a->Py(), rec_z1+lep_a->Pz(), rec_e1+lep_a->E());
-					double m_w2 = calcMass(rec_x2+lep_b->Px(), rec_y2+lep_b->Py(), rec_z2+lep_b->Pz(), rec_e2+lep_b->E());
-					double m_t1 = calcMass(rec_x1+ bl_a->Px(), rec_y1+ bl_a->Py(), rec_z1+ bl_a->Pz(), rec_e1+ bl_a->E());
-					double m_t2 = calcMass(rec_x2+ bl_b->Px(), rec_y2+ bl_b->Py(), rec_z2+ bl_b->Pz(), rec_e2+ bl_b->E());
-
-					m_delta_mass = 1000.0; // allow mass variation range for reco W and tops..
-					bool m_good_eq1 = ( fabs(S -(rec_x1+rec_x2)) 	  <=0.01 )?true:false;
-					bool m_good_eq2 = ( fabs(T -(rec_y1+rec_y2)) 	  <=0.01 )?true:false;
-					bool m_good_eq3 = ( fabs(m_w1 - w_mass[0]) <= m_delta_mass )?true:false;
-					bool m_good_eq4 = ( fabs(m_w2 - w_mass[1]) <= m_delta_mass )?true:false;
-					bool m_good_eq5 = ( fabs(m_t1 - t_mass[0]) <= m_delta_mass )?true:false;
-					bool m_good_eq6 = ( fabs(m_t2 - t_mass[1]) <= m_delta_mass )?true:false;
-
-					if ( m_good_eq1 && m_good_eq2 && m_good_eq3 && m_good_eq4 && m_good_eq5 && m_good_eq6 ) {
-						neutrinoContainer->push_back( myvector(rec_x1, rec_y1, rec_z1, rec_z2) );
-						ncand++;
-					} /*else {
-						cout<<" One solution is found to be out of range: "<< m_w1<<" "<<m_w2<<" "<< m_t1 <<" "<< m_t2<<endl;
-						}*/  	  
-				}
-			}
-
-			return neutrinoContainer;
-		}
-
 		//////////////////////////////////////
+		//__device__
 		void toz(double k[], double l[], double g[]){
 			//// checked !!
 			///////////////////////////////////////////////////////////////////////////
@@ -738,6 +698,7 @@ namespace Dilep {
 
 
 		///////////////////////////////////////////
+		//__device__
 		void my_qu( double my_in[], double my_val[])
 		{
 
@@ -950,6 +911,7 @@ namespace Dilep {
 		////////////////////end of main
 		///////////////////////////////////////////////////////////////
 		////+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		//__device__
 		void Csqrt(double _ar, double _ai, double _my[])
 		{
 			///// complex sqrt
@@ -982,6 +944,7 @@ namespace Dilep {
 		//////////////////////////////////////////////////////////////////
 		/// cubic /// a[0]x^3+a[1]x^2+a[2]x+a[3]=0
 		//////////////////////////////////////////////////////////////////
+		//__device__
 		void cubic(double a[], double rr[], double ri[])
 		{
 			int i;
@@ -1007,10 +970,8 @@ namespace Dilep {
 			if (y1 < 0.0){
 				sh = sqrt(-h);
 				theta = acos(g / (2.0 * h * sh)) / 3.0;
-				xy1 = 2.0 * sh * cos(theta);
-				pi = TMath::Pi();
-				xy2 = 2.0 * sh * cos(theta + (2.0 * pi / 3.0));
-				xy3 = 2.0 * sh * cos(theta + (4.0 * pi / 3.0));
+				xy1 = 2.0 * sh * cos(theta);				xy2 = 2.0 * sh * cos(theta + (2.0 * PI / 3.0));
+				xy3 = 2.0 * sh * cos(theta + (4.0 * PI / 3.0));
 				rr[0] = (xy1 - a1) / a0;
 				rr[1] = (xy2 - a1) / a0;
 				rr[2] = (xy3 - a1) / a0;
