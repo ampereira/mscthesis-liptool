@@ -176,25 +176,25 @@ namespace Dilep {
 			}
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
-			cudaMalloc(&dev_t_mass, 2*sizeof(double));
-			cudaMalloc(&dev_w_mass, 2*sizeof(double));
-			cudaMalloc(&dev_in_mpx, 2*sizeof(double));
-			cudaMalloc(&dev_in_mpy, 2*sizeof(double));
+			cudaMalloc(&dev_t_mass, NUM_THREADS*2*sizeof(double));
+			cudaMalloc(&dev_w_mass, NUM_THREADS*2*sizeof(double));
+			cudaMalloc(&dev_in_mpx, NUM_THREADS*2*sizeof(double));
+			cudaMalloc(&dev_in_mpy, NUM_THREADS*2*sizeof(double));
 
-			cudaMalloc(&dev_lep_a, sizeof(a));
-			cudaMalloc(&dev_lep_b, sizeof(b));
-			cudaMalloc(&dev_bl_a, sizeof(c));
-			cudaMalloc(&dev_bl_b, sizeof(d));
+			cudaMalloc(&dev_lep_a, NUM_THREADS*sizeof(a));
+			cudaMalloc(&dev_lep_b, NUM_THREADS*sizeof(b));
+			cudaMalloc(&dev_bl_a, NUM_THREADS*sizeof(c));
+			cudaMalloc(&dev_bl_b, NUM_THREADS*sizeof(d));
 			// allocation of the results
 			cudaMalloc(&dev_nc, 16*sizeof(double));
 			cudaMalloc(&dev_count, sizeof(int));
 
 
 			// transfer the inputs to GPU memory
-			cudaMemcpy(dev_t_mass, t_mass, 2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_w_mass, w_mass, 2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_in_mpx, in_mpx, 2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_in_mpy, in_mpy, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_t_mass, t_mass, NUM_THREADS*2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_w_mass, w_mass, NUM_THREADS*2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpx, in_mpx, NUM_THREADS*2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpy, in_mpy, NUM_THREADS*2*sizeof(double), cudaMemcpyHostToDevice);
 
 			cudaMemcpy(dev_lep_a, &a, NUM_THREADS*sizeof(a), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_lep_b, &b, NUM_THREADS*sizeof(b), cudaMemcpyHostToDevice);
