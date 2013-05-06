@@ -177,8 +177,43 @@ namespace Dilep {
 				d[(i * 5) + 4] = di.getCbl().M();
 			}
 
-			calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
-						a, b, c, d, nc, count);
+			// GPU memory allocation of the inputs and outputs of the dilep kernel
+			cudaMalloc(&dev_t_mass, vdi.size()*2*sizeof(double));
+			cudaMalloc(&dev_w_mass, vdi.size()*2*sizeof(double));
+			cudaMalloc(&dev_in_mpx, vdi.size()*2*sizeof(double));
+			cudaMalloc(&dev_in_mpy, vdi.size()*2*sizeof(double));
+			cudaMalloc(&dev_in_mpz, vdi.size()*2*sizeof(double));
+
+			cudaMalloc(&dev_lep_a, vdi.size()*sizeof(a));
+			cudaMalloc(&dev_lep_b, vdi.size()*sizeof(b));
+			cudaMalloc(&dev_bl_a, vdi.size()*sizeof(c));
+			cudaMalloc(&dev_bl_b, vdi.size()*sizeof(d));
+			// allocation of the results
+			cudaMalloc(&dev_nc, 16*vdi.size()*sizeof(double));
+			cudaMalloc(&dev_count, vdi.size()*sizeof(int));
+
+
+			// transfer the inputs to GPU memory
+			cudaMemcpy(dev_t_mass, t_mass, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_w_mass, w_mass, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpx, in_mpx, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpy, in_mpy, 2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpz, in_mpz, 2*sizeof(double), cudaMemcpyHostToDevice);
+
+			cudaMemcpy(dev_lep_a, &a, vdi.size()*sizeof(a), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_b, &b, vdi.size()*sizeof(b), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_a, &c, vdi.size()*sizeof(c), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_b, &d, vdi.size()*sizeof(d), cudaMemcpyHostToDevice);
+
+			//calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
+			//			a, b, c, d, nc, count);
+
+			calc_dilep <<< 1, 1 >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_in_mpz, 
+					dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
+
+			// memory transfer of the results from the GPU
+			cudaMemcpy(nc, dev_nc, 16*NUM_THREADS*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(count, dev_count, NUM_THREADS*sizeof(int), cudaMemcpyDeviceToHost);
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
@@ -209,7 +244,7 @@ namespace Dilep {
 			
 		}
 
-		//__global__
+		__global__
 		void calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double in_mpz[], double lep_a[], 
 				double lep_b[], double bl_a[], double bl_b[], 
