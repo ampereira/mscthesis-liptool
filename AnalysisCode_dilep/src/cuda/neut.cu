@@ -272,19 +272,20 @@ namespace Dilep {
 				bl_b[i] = STRIDE5(_bl_b, i);
 			}
 			
-			G_1 = (WMass_a - STRIDE5(lep_a, 4)) * (WMass_a + STRIDE5(lep_a, 4));
-			G_3 = (WMass_b - STRIDE5(lep_b, 4)) * (WMass_b + STRIDE5(lep_b, 4));
+			
+			G_1 = (WMass_a - lep_a[4]) * (WMass_a + lep_a[4]);
+			G_3 = (WMass_b - lep_b[4]) * (WMass_b + lep_b[4]);
 
 			double G_5,G_6,G_7,G_8,G_9,G_10,G_11,G_12;
-			G_5 = ( STRIDE5(bl_a, 0)/STRIDE5(bl_a, 3) - STRIDE5(lep_a, 0)/STRIDE5(lep_a, 3));
-			G_6 = ( STRIDE5(bl_a, 1)/STRIDE5(bl_a, 3) - STRIDE5(lep_a, 1)/STRIDE5(lep_a, 3));
-			G_7 = ( STRIDE5(bl_a, 2)/STRIDE5(bl_a, 3) - STRIDE5(lep_a, 2)/STRIDE5(lep_a, 3));
-			G_8 = ( G_1/STRIDE5(lep_a, 3) - ((tMass_a - STRIDE5(bl_a, 4)) * (tMass_a + STRIDE5(bl_a, 4)))/STRIDE5(bl_a, 3))/2.;
+			G_5 = ( bl_a[0]/bl_a[3] - lep_a[0]/lep_a[3] );
+			G_6 = ( bl_a[1]/bl_a[3] - lep_a[1]/lep_a[3] );
+			G_7 = ( bl_a[2]/bl_a[3] - lep_a[2]/lep_a[3] );
+			G_8 = ( G_1/lep_a[3] - ((tMass_a - bl_a[4]) * (tMass_a + bl_a[4]))/bl_a[3] )/2.;
 
-			G_9 =	( STRIDE5(bl_b, 0)/STRIDE5(bl_b, 3) - STRIDE5(lep_b, 0)/STRIDE5(lep_b,3));
-			G_10 =	( STRIDE5(bl_b, 1)/STRIDE5(bl_b, 3) - STRIDE5(lep_b, 1)/STRIDE5(lep_b,3));
-			G_11 =	( STRIDE5(bl_b, 2)/STRIDE5(bl_b, 3) - STRIDE5(lep_b, 2)/STRIDE5(lep_b,3));
-			G_12 =	( G_3/STRIDE5(lep_b, 3) - ((tMass_b - STRIDE5(bl_b, 4)) * (tMass_b + STRIDE5(bl_b, 4)))/STRIDE5(bl_b, 3))/2.;
+			G_9 =	( bl_b[0]/bl_b[3] - lep_b[0]/lep_b[3] );
+			G_10 =	( bl_b[1]/bl_b[3] - lep_b[1]/lep_b[3] );
+			G_11 =	( bl_b[2]/bl_b[3] - lep_b[2]/lep_b[3] );
+			G_12 =	( G_3/lep_b[3] - ((tMass_b - bl_b[4]) * (tMass_b + bl_b[4]))/bl_b[3] )/2.;
 
 			///////////////////////////////////////////////////////////////////
 			//// 	G_5 *x1 + G_6*y1 + G_7*z1 = G8;  		(6)
