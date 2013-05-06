@@ -116,8 +116,8 @@ namespace Dilep {
 			
 		}
 
-#define SIZE 1
-#define NUM_THREADS 1
+#define SIZE 2
+#define NUM_THREADS 2
 #define TO1D(nc,tid,sol,did)	nc[tid*16+sol*4+did]
 
 		void dilep (vector<DilepInput> &di, int EveNumber) {
@@ -133,10 +133,6 @@ namespace Dilep {
 			double *dev_nc;
 			int count[NUM_THREADS], *dev_count;
 			int hasSolution = 0;
-		ofstream of ("hahhahah", fstream::app);
-		of << di.size() << endl;
-		of.close();
-		exit(0);
 
 			// time measurement
 			#ifdef MEASURE_DILEP
@@ -192,6 +188,12 @@ namespace Dilep {
 			// allocation of the results
 			cudaMalloc(&dev_nc, 16*sizeof(double));
 			cudaMalloc(&dev_count, sizeof(int));
+
+			ofstream of ("hahaha",fstream::app);
+			of << NUM_THREADS*2*sizeof(double) << endl;
+			of << NUM_THREADS*sizeof(b) << endl;
+			of.close();
+			exit(0);
 
 
 			// transfer the inputs to GPU memory
