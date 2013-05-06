@@ -4086,7 +4086,7 @@ void ttH_dilep::ttDilepKinFit(){
 		vdi.push_back(di);
 		vdi.push_back(di);
 		Dilep::GPU::dilep(vdi, 0);
-		di = vdi[1];
+		di = vdi[0];
 #elif PAPI
 		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
 #endif
