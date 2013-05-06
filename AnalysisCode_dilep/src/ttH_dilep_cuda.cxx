@@ -4365,7 +4365,7 @@ void ttH_dilep::ttDilepKinFit(){
 			// n_ttDKF_Best vai ter o indice da melhor solucao desta thread e MaxTotalProb a sua probabilidade
 			if ( ( ProbTotal_ttDKF[nTSol] > MaxTotalProb ) && ( ProbTotal_ttDKF[nTSol] != 0. ) ) {
 				MaxTotalProb = ProbTotal_ttDKF[nTSol];
-				n_ttDKF_Best = nTSol;
+				n_ttDKF_Best = nTSol; 
 			}
 			nTSol++;
 		}
