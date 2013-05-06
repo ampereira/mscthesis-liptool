@@ -4083,7 +4083,7 @@ void ttH_dilep::ttDilepKinFit(){
 		Dilep::CPU::dilep(di);
 #elif CUDA
 		vector<DilepInput> vdi;
-		vdi.push_back(di);
+		vdi.push_back(vdi);
 		Dilep::GPU::dilep(di, 0);
 		di = vdi[0];
 #elif PAPI
