@@ -200,10 +200,10 @@ namespace Dilep {
 			cudaMemcpy(dev_in_mpy, in_mpy, 2*sizeof(double), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_in_mpz, in_mpz, 2*sizeof(double), cudaMemcpyHostToDevice);
 
-			cudaMemcpy(dev_lep_a, &a, *sizeof(a), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_lep_b, &b, *sizeof(b), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_a, &c, *sizeof(c), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_b, &d, *sizeof(d), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_a, &a, sizeof(a), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_b, &b, sizeof(b), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_a, &c, sizeof(c), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);
 
 			//calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
 			//			a, b, c, d, nc, count);
