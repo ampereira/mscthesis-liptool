@@ -68,16 +68,16 @@ namespace Dilep {
 		void dilep (vector<DilepInput> &di) {
 
 			unsigned size = di.size();
-			double in_mpx[2 * size], in_mpy[2 * NUM_THREADS], in_mpz[2 * NUM_THREADS], 
-				   t_mass[2 * NUM_THREADS], w_mass[2 * NUM_THREADS];
+			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], 
+				   t_mass[2 * size], w_mass[2 * size];
 			
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
-			double a[5 * NUM_THREADS], b[5 * NUM_THREADS], c[5 * NUM_THREADS], d[5 * NUM_THREADS];
+			double a[5 * size], b[5 * size], c[5 * size], d[5 * size];
 		
 			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b;
-			double nc[16*NUM_THREADS];
+			double nc[16*size];
 			double *dev_nc;
-			int count[NUM_THREADS], *dev_count;
+			int count[size], *dev_count;
 			int hasSolution = 0;
 
 			// time measurement
@@ -123,18 +123,18 @@ namespace Dilep {
 
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
-			cudaMalloc(&dev_t_mass, NUM_THREADS*2*sizeof(double));
-			cudaMalloc(&dev_w_mass, NUM_THREADS*2*sizeof(double));
-			cudaMalloc(&dev_in_mpx, NUM_THREADS*2*sizeof(double));
-			cudaMalloc(&dev_in_mpy, NUM_THREADS*2*sizeof(double));
+			cudaMalloc(&dev_t_mass, size*2*sizeof(double));
+			cudaMalloc(&dev_w_mass, size*2*sizeof(double));
+			cudaMalloc(&dev_in_mpx, size*2*sizeof(double));
+			cudaMalloc(&dev_in_mpy, size*2*sizeof(double));
 
 			cudaMalloc(&dev_lep_a, sizeof(a));
 			cudaMalloc(&dev_lep_b, sizeof(b));
 			cudaMalloc(&dev_bl_a, sizeof(c));
 			cudaMalloc(&dev_bl_b, sizeof(d));
 			// allocation of the results
-			cudaMalloc(&dev_nc, NUM_THREADS*16*sizeof(double));
-			cudaMalloc(&dev_count, NUM_THREADS*sizeof(int));
+			cudaMalloc(&dev_nc, size*16*sizeof(double));
+			cudaMalloc(&dev_count, size*sizeof(int));
 
 			/*ofstream of ("hahaha",fstream::app);
 			of << NUM_THREADS*2*sizeof(double) << endl;
@@ -144,10 +144,10 @@ namespace Dilep {
 
 
 			// transfer the inputs to GPU memory
-			cudaMemcpy(dev_t_mass, t_mass, NUM_THREADS*2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_w_mass, w_mass, NUM_THREADS*2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_in_mpx, in_mpx, NUM_THREADS*2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_in_mpy, in_mpy, NUM_THREADS*2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_t_mass, t_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_w_mass, w_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpx, in_mpx, size*2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpy, in_mpy, size*2*sizeof(double), cudaMemcpyHostToDevice);
 
 			cudaMemcpy(dev_lep_a, &a, sizeof(a), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_lep_b, &b, sizeof(b), cudaMemcpyHostToDevice);
@@ -157,17 +157,17 @@ namespace Dilep {
 			//calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
 			//			a, b, c, d, nc, count);
 
-			calc_dilep <<< 1, NUM_THREADS >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
+			calc_dilep <<< 1, size >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
 					dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 
 			// memory transfer of the results from the GPU
-			cudaMemcpy(nc, dev_nc, 16*NUM_THREADS*sizeof(double), cudaMemcpyDeviceToHost);
-			cudaMemcpy(count, dev_count, NUM_THREADS*sizeof(int), cudaMemcpyDeviceToHost);
+			cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 
-			for (unsigned comb = 0; comb < di.size(); ++comb) {
+			for (unsigned comb = 0; comb < size; ++comb) {
 				vector<myvector> result;
 
 				for (int sol = 0 ; sol < count[comb] && sol<4 ; sol++) {
