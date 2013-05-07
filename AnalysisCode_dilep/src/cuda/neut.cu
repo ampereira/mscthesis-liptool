@@ -220,7 +220,7 @@ namespace Dilep {
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 
-			for (unsigned comb = 0; comb < SIZE; ++comb) {
+			for (unsigned comb = 0; comb < di.size(); ++comb) {
 				vector<myvector> result;
 
 				for (int sol = 0 ; sol < count[comb] && sol<4 ; sol++) {
@@ -257,7 +257,7 @@ namespace Dilep {
 		{
 
 			//unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
-			unsigned tid = 0;
+			unsigned tid = 1;
 			double G_1, G_3;
 			double WMass_a, WMass_b, tMass_a, tMass_b, lep_a[5], lep_b[5], bl_a[5], bl_b[5];
 			double in_mpz[2] = {0.0, 0.0};
