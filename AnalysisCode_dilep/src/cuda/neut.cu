@@ -210,7 +210,7 @@ namespace Dilep {
 			//calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
 			//			a, b, c, d, nc, count);
 
-			calc_dilep <<< 1, NUM_THREADS >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
+			calc_dilep <<< 1, 1 >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
 					dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 
 			// memory transfer of the results from the GPU
