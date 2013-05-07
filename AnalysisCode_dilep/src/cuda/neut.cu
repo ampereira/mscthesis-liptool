@@ -139,7 +139,7 @@ namespace Dilep {
 			long long int time = startTimer();
 			#endif
 
-			/*for (unsigned i = 0; i < di.size(); ++i) {
+			for (unsigned i = 0; i < di.size(); ++i) {
 
 				in_mpx[i * 2]		= di[i].getInMpx(0);
 				in_mpx[(i * 2) + 1] = di[i].getInMpx(1);
@@ -173,9 +173,9 @@ namespace Dilep {
 				d[(i * 5) + 2] = di[i].getCbl().Pz();
 				d[(i * 5) + 3] = di[i].getCbl().E();
 				d[(i * 5) + 4] = di[i].getCbl().M();
-			}*/
+			}
 
-			for (unsigned i = 0; i < NUM_THREADS; ++i) {
+			/*for (unsigned i = 0; i < NUM_THREADS; ++i) {
 				in_mpx[i * 2]		= -1987.77;
 				in_mpx[(i * 2) + 1] = -1987.77;
 				in_mpy[i * 2]		= -302.404;
@@ -208,7 +208,7 @@ namespace Dilep {
 				d[(i * 5) + 2] = -48388.5;
 				d[(i * 5) + 3] = 135969;
 				d[(i * 5) + 4] = 124907;
-			}
+			}*/
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, NUM_THREADS*2*sizeof(double));
