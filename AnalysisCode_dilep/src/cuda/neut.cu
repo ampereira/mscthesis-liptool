@@ -181,19 +181,19 @@ namespace Dilep {
 			cudaMalloc(&dev_in_mpx, NUM_THREADS*2*sizeof(double));
 			cudaMalloc(&dev_in_mpy, NUM_THREADS*2*sizeof(double));
 
-			cudaMalloc(&dev_lep_a, NUM_THREADS*sizeof(a));
-			cudaMalloc(&dev_lep_b, NUM_THREADS*sizeof(b));
-			cudaMalloc(&dev_bl_a, NUM_THREADS*sizeof(c));
-			cudaMalloc(&dev_bl_b, NUM_THREADS*sizeof(d));
+			cudaMalloc(&dev_lep_a, sizeof(a));
+			cudaMalloc(&dev_lep_b, sizeof(b));
+			cudaMalloc(&dev_bl_a, sizeof(c));
+			cudaMalloc(&dev_bl_b, sizeof(d));
 			// allocation of the results
 			cudaMalloc(&dev_nc, 16*sizeof(double));
 			cudaMalloc(&dev_count, sizeof(int));
 
-			ofstream of ("hahaha",fstream::app);
+			/*ofstream of ("hahaha",fstream::app);
 			of << NUM_THREADS*2*sizeof(double) << endl;
 			of << NUM_THREADS*sizeof(b) << endl;
 			of.close();
-			exit(0);
+			exit(0);*/
 
 
 			// transfer the inputs to GPU memory
@@ -202,10 +202,10 @@ namespace Dilep {
 			cudaMemcpy(dev_in_mpx, in_mpx, NUM_THREADS*2*sizeof(double), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_in_mpy, in_mpy, NUM_THREADS*2*sizeof(double), cudaMemcpyHostToDevice);
 
-			cudaMemcpy(dev_lep_a, &a, NUM_THREADS*sizeof(a), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_lep_b, &b, NUM_THREADS*sizeof(b), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_a, &c, NUM_THREADS*sizeof(c), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_b, &d, NUM_THREADS*sizeof(d), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_a, &a, sizeof(a), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_b, &b, sizeof(b), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_a, &c, sizeof(c), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);
 
 			//calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, 
 			//			a, b, c, d, nc, count);
