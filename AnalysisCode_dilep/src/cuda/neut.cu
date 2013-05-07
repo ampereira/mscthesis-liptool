@@ -189,11 +189,11 @@ namespace Dilep {
 			cudaMalloc(&dev_nc, 16*sizeof(double));
 			cudaMalloc(&dev_count, sizeof(int));
 
-			/*ofstream of ("hahaha",fstream::app);
+			ofstream of ("hahaha",fstream::app);
 			of << NUM_THREADS*2*sizeof(double) << endl;
-			of << NUM_THREADS*sizeof(b) << endl;
+			of << sizeof(b) << endl;
 			of.close();
-			exit(0);*/
+			exit(0);
 
 
 			// transfer the inputs to GPU memory
