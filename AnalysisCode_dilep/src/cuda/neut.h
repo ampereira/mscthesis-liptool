@@ -21,6 +21,10 @@
 #include "../utilities.h"
 
 #define TPI 3.14159265358979312
+#define NUM_THREADS 2
+#define TO1D(nc,tid,sol,did) nc[tid*16+sol*4+did]
+#define STRIDE2(a,i) a[tid * 2 + i]
+#define STRIDE5(a,i) a[tid * 5 + i]
 
 namespace Dilep {
 	namespace GPU {
@@ -38,7 +42,7 @@ namespace Dilep {
 		void dilep (vector<DilepInput> &vdi);
 
 		void dilep (DilepInput &di);
-		void dilep (vector<DilepInput> &di, int EveNumber);
+		void dilep (vector<DilepInput> &di);
 
 		std::vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 
 										double in_mpx[], double in_mpy[], double in_mpz[],

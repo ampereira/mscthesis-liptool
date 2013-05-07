@@ -116,17 +116,14 @@ namespace Dilep {
 			
 		}
 
-#define SIZE 2
-#define NUM_THREADS 2
-#define TO1D(nc,tid,sol,did)	nc[tid*16+sol*4+did]
+		void dilep (vector<DilepInput> &di) {
 
-		void dilep (vector<DilepInput> &di, int EveNumber) {
 			
-			double in_mpx[2 * SIZE], in_mpy[2 * SIZE], in_mpz[2 * SIZE], 
-				   t_mass[2 * SIZE], w_mass[2 * SIZE];
+			double in_mpx[2 * NUM_THREADS], in_mpy[2 * NUM_THREADS], in_mpz[2 * NUM_THREADS], 
+				   t_mass[2 * NUM_THREADS], w_mass[2 * NUM_THREADS];
 			
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
-			double a[5 * SIZE], b[5 * SIZE], c[5 * SIZE], d[5 * SIZE];
+			double a[5 * NUM_THREADS], b[5 * NUM_THREADS], c[5 * NUM_THREADS], d[5 * NUM_THREADS];
 		
 			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b;
 			double nc[16*NUM_THREADS];
@@ -175,40 +172,6 @@ namespace Dilep {
 				d[(i * 5) + 4] = di[i].getCbl().M();
 			}
 
-			/*for (unsigned i = 0; i < NUM_THREADS; ++i) {
-				in_mpx[i * 2]		= -1987.77;
-				in_mpx[(i * 2) + 1] = -1987.77;
-				in_mpy[i * 2]		= -302.404;
-				in_mpy[(i * 2) + 1] = -302.404;
-				t_mass[i * 2]		= 172500;
-				t_mass[(i * 2) + 1] = 172500;
-				w_mass[i * 2]		= 80400;
-				w_mass[(i * 2) + 1] = 80400;
-					
-				a[i * 5]	   = -70115.6;
-				a[(i * 5) + 1] = -61115.5;
-				a[(i * 5) + 2] = 42473.9;
-				a[(i * 5) + 3] = 102251;
-				a[(i * 5) + 4] = 105.905;
-
-				b[i * 5]	   = 15715.2;
-				b[(i * 5) + 1] = 65388.9;
-				b[(i * 5) + 2] = -19608.6;
-				b[(i * 5) + 3] = 70051.2;
-				b[(i * 5) + 4] = 18.4565;
-
-				c[i * 5]	   = 30368.8;
-				c[(i * 5) + 1] = -97864.1;
-				c[(i * 5) + 2] = -36751.6;
-				c[(i * 5) + 3] = 235759;
-				c[(i * 5) + 4] = 209122;
-
-				d[i * 5]	   = -16496;
-				d[(i * 5) + 1] = 16501.1;
-				d[(i * 5) + 2] = -48388.5;
-				d[(i * 5) + 3] = 135969;
-				d[(i * 5) + 4] = 124907;
-			}*/
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, NUM_THREADS*2*sizeof(double));
@@ -280,9 +243,6 @@ namespace Dilep {
 			#endif
 			
 		}
-
-#define STRIDE2(a,i) a[tid * 2 + i]
-#define STRIDE5(a,i) a[tid * 5 + i]
 
 		__global__
 		void calc_dilep(double t_mass[], double w_mass[], 
