@@ -39,8 +39,6 @@ namespace Dilep {
 									TLorentzVector* lep_a, TLorentzVector* lep_b, 
 									TLorentzVector* bl_a, TLorentzVector* bl_b, int *hasSol);
 
-		void dilep (vector<DilepInput> &vdi);
-
 		void dilep (DilepInput &di);
 		void dilep (vector<DilepInput> &di);
 
