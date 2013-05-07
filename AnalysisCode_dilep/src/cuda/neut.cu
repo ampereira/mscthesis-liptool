@@ -221,8 +221,8 @@ namespace Dilep {
 			cudaMalloc(&dev_bl_a, sizeof(c));
 			cudaMalloc(&dev_bl_b, sizeof(d));
 			// allocation of the results
-			cudaMalloc(&dev_nc, 16*sizeof(double));
-			cudaMalloc(&dev_count, sizeof(int));
+			cudaMalloc(&dev_nc, NUM_THREADS*16*sizeof(double));
+			cudaMalloc(&dev_count, NUM_THREADS*sizeof(int));
 
 			/*ofstream of ("hahaha",fstream::app);
 			of << NUM_THREADS*2*sizeof(double) << endl;
