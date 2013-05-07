@@ -67,8 +67,8 @@ namespace Dilep {
 
 		void dilep (vector<DilepInput> &di) {
 
-			
-			double in_mpx[2 * NUM_THREADS], in_mpy[2 * NUM_THREADS], in_mpz[2 * NUM_THREADS], 
+			unsigned size = di.size();
+			double in_mpx[2 * size], in_mpy[2 * NUM_THREADS], in_mpz[2 * NUM_THREADS], 
 				   t_mass[2 * NUM_THREADS], w_mass[2 * NUM_THREADS];
 			
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
