@@ -67,7 +67,8 @@ namespace Dilep {
 
 		void dilep (vector<DilepInput> &di) {
 
-			const unsigned size = di.size();
+			//const unsigned size = di.size();
+			const unsigned size = 1;
 
 			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], 
 				   t_mass[2 * size], w_mass[2 * size];
@@ -123,35 +124,6 @@ namespace Dilep {
 			}
 
 
-			// GPU memory allocation of the inputs and outputs of the dilep kernel
-			/*cudaMalloc(&dev_t_mass, size*2*sizeof(double));
-			cudaMalloc(&dev_w_mass, size*2*sizeof(double));
-			cudaMalloc(&dev_in_mpx, size*2*sizeof(double));
-			cudaMalloc(&dev_in_mpy, size*2*sizeof(double));
-
-			cudaMalloc(&dev_lep_a, sizeof(a));
-			cudaMalloc(&dev_lep_b, sizeof(b));
-			cudaMalloc(&dev_bl_a, sizeof(c));
-			cudaMalloc(&dev_bl_b, sizeof(d));
-			// allocation of the results
-			cudaMalloc(&dev_nc, size*16*sizeof(double));
-			cudaMalloc(&dev_count, size*sizeof(int));
-
-			ofstream of ("hahaha",fstream::app);
-			of << di.size() << " - " << size << endl;
-			of.close();
-
-			// transfer the inputs to GPU memory
-			cudaMemcpy(dev_t_mass, t_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_w_mass, w_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_in_mpx, in_mpx, size*2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_in_mpy, in_mpy, size*2*sizeof(double), cudaMemcpyHostToDevice);
-
-			cudaMemcpy(dev_lep_a, &a, sizeof(a), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_lep_b, &b, sizeof(b), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_a, &c, sizeof(c), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);*/
-
 			{
 				int i = 0;
 				in_mpx[i * 2]		= -1987.77;
@@ -189,24 +161,49 @@ namespace Dilep {
 				d[(i * 5) + 3] = 135969;
 				d[(i * 5) + 4] = 124907;
 			}
+			// GPU memory allocation of the inputs and outputs of the dilep kernel
+			cudaMalloc(&dev_t_mass, size*2*sizeof(double));
+			cudaMalloc(&dev_w_mass, size*2*sizeof(double));
+			cudaMalloc(&dev_in_mpx, size*2*sizeof(double));
+			cudaMalloc(&dev_in_mpy, size*2*sizeof(double));
 
-			for (unsigned tid = 0; tid < 1; ++tid) {
-				calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
-							a, b, c, d, nc, count, tid);
+			cudaMalloc(&dev_lep_a, sizeof(a));
+			cudaMalloc(&dev_lep_b, sizeof(b));
+			cudaMalloc(&dev_bl_a, sizeof(c));
+			cudaMalloc(&dev_bl_b, sizeof(d));
+			// allocation of the results
+			cudaMalloc(&dev_nc, size*16*sizeof(double));
+			cudaMalloc(&dev_count, size*sizeof(int));
 
-				ofstream of ("hahaha",fstream::app);
-				of << count[tid] << endl;
-				of.close();
-			}
-			exit(0);
+			// transfer the inputs to GPU memory
+			cudaMemcpy(dev_t_mass, t_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_w_mass, w_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpx, in_mpx, size*2*sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpy, in_mpy, size*2*sizeof(double), cudaMemcpyHostToDevice);
 
-			//calc_dilep <<< 1, size >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
-			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
+			cudaMemcpy(dev_lep_a, &a, sizeof(a), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_b, &b, sizeof(b), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_a, &c, sizeof(c), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);
+
+
+			//for (unsigned tid = 0; tid < size; ++tid) {
+			//	calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
+			//				a, b, c, d, nc, count, tid);
+			//}
+
+			calc_dilep <<< 1, size >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
+					dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 
 			// memory transfer of the results from the GPU
-			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
-			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
+			cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 
+
+			ofstream of ("hahaha",fstream::app);
+			of << count[tid] << endl;
+			of.close();
+			exit(0);
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 
