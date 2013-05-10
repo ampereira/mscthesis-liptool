@@ -1,0 +1,14 @@
+\pdfbookmark{Implementation and Performance Analysis}{implementation and performance analysis}
+\chapter{Implementation and Performance Analysis}
+\label{Implementation}
+
+In this chapter the implementation process, based on the models on section \ref{Parallelization:Sequential} of the different approaches will be presented and discussed. After explaining all the details of the implementation for a given platform an analysis from the computational point of view will be presented, along side with the performance comparison of the said implementations. Finally, a comparative analysis of all the implementation will be presented.
+
+\pdfbookmark{Shared Memory Implementation}{shared memory implementation}
+\section{Shared Memory Implementation}
+\label{Implementation:SharedMem}
+
+The implementation of the shared memory parallelization follows the workflow presented in section \ref{Parallelization:SharedMem}. The first goal was to have a working na\"{i}ve implementation that could be used as a starting point so that it could be profiled and the bottlenecks identified.
+
+The first step was to divide the \ttDilepKinFit main loop that iterates through all the combinations of leptons/jets of an event, and then the respective variations, exemplified in the workflow of section \ref{Parallelization:Sequential}
+One of the challenges with the implementation was that the portion of the code to parallelize was reading and writing in a set of 34 global variables, most of them being vectors of ROOT classes.

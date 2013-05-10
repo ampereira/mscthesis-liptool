@@ -59,7 +59,7 @@ The quality of a solution is dependent on two factors. The first is the accuracy
 \begin{figure}[!htp]
 	\begin{center}
 		\includegraphics[scale=0.5]{../../common/img/numa_qpi.png}
-		\caption{Schematic representation of a NUMA system with QPI interface.}
+		\caption{Callgraph of the \ttDilepKinFit routine.}
 		\label{fig:CallgraphKinFit}
 	\end{center}
 \end{figure}
@@ -86,7 +86,7 @@ TRandom uses the Acceptance-Complement Ratio algorithm \ref{AcceptanceRandom} fo
 
 The kinematical reconstruction is performed in the \dilep routine. The \ttbar system obeys a set of properties of an theoretical expected model. To reconstruct both of the Top Quarks it is needed to know the characteristics of all resultant particles from their decay. However, since the neutrinos do not react with the detector, and their characteristics are not recorded, it is needed to infer them, using the properties of momentum and energy conservation of the system. Once the neutrinos characteristics are determined, it is possible to reconstruct the Top Quarks.
 
-\dilep analitically solves a system of 6 equations to infer the neutrinos characteristics and then reconstruct the Top Quarks. The routine is dependent on only one class from ROOT, TLorentzVector, making it easy to port to GPU. Executions of \dilep on different inputs are completely independent, since this function does not alter the global state of the \tth analysis.
+\dilep analitically solves a system of 6 equations to infer the neutrinos characteristics and then reconstruct the Top Quarks. The routine is dependent on only one class from ROOT, TLorentzVector, making it easy to port to GPU, aside from the process of marshaling and unmarshaling the data, namely the TLorentzVector classes from ROOT, into a format that is usable in \cuda. Executions of \dilep on different inputs are completely independent, since this function does not alter the global state of the \tth analysis.
 
 \pdfbookmark{ttDilepKinFit Routine Computational Analysis}{ttDilepKinFit routine computational analysis}
 \subsection{\ttDilepKinFit Routine Computational Analysis}
