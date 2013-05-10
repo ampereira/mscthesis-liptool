@@ -124,7 +124,7 @@ namespace Dilep {
 
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
-			cudaMalloc(&dev_t_mass, size*2*sizeof(double));
+			/*cudaMalloc(&dev_t_mass, size*2*sizeof(double));
 			cudaMalloc(&dev_w_mass, size*2*sizeof(double));
 			cudaMalloc(&dev_in_mpx, size*2*sizeof(double));
 			cudaMalloc(&dev_in_mpy, size*2*sizeof(double));
@@ -150,7 +150,7 @@ namespace Dilep {
 			cudaMemcpy(dev_lep_a, &a, sizeof(a), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_lep_b, &b, sizeof(b), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_bl_a, &c, sizeof(c), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);*/
 
 			for (unsigned tid = 0; tid < size; ++tid)
 				calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
