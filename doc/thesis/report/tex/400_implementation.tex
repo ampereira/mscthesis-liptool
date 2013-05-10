@@ -12,3 +12,5 @@ The implementation of the shared memory parallelization follows the workflow pre
 
 The first step was to divide the \ttDilepKinFit main loop that iterates through all the combinations of leptons/jets of an event, and then the respective variations, exemplified in the workflow of section \ref{Parallelization:Sequential}
 One of the challenges with the implementation was that the portion of the code to parallelize was reading and writing in a set of 34 global variables, most of them being vectors of ROOT classes.
+
+\todo{seccao para a estrutura de dados e calcular o seu tamanho etc)
