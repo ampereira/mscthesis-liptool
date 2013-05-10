@@ -152,7 +152,7 @@ namespace Dilep {
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 			ofstream of ("hahaha",fstream::app);
-			of << count[0] << endl;
+			of << count << endl;
 			of.close();
 			exit(0);
 
