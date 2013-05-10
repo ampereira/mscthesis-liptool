@@ -152,8 +152,45 @@ namespace Dilep {
 			cudaMemcpy(dev_bl_a, &c, sizeof(c), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);*/
 
+			{
+				int i = 0;
+				in_mpx[i * 2]		= -1987.77;
+				in_mpx[(i * 2) + 1] = -1987.77;
+				in_mpy[i * 2]		= -302.404;
+				in_mpy[(i * 2) + 1] = -302.404;
+				in_mpz[i * 2]		= 0;
+				in_mpz[(i * 2) + 1] = 0;
+				t_mass[i * 2]		= 172500;
+				t_mass[(i * 2) + 1] = 172500;
+				w_mass[i * 2]		= 80400;
+				w_mass[(i * 2) + 1] = 80400;
+					
+				a[i * 5]	   = -70115.6;
+				a[(i * 5) + 1] = -61115.5;
+				a[(i * 5) + 2] = 42473.9;
+				a[(i * 5) + 3] = 102251;
+				a[(i * 5) + 4] = 105.905;
 
-			for (unsigned tid = 0; tid < size; ++tid) {
+				b[i * 5]	   = 15715.2;
+				b[(i * 5) + 1] = 65388.9;
+				b[(i * 5) + 2] = -19608.6;
+				b[(i * 5) + 3] = 70051.2;
+				b[(i * 5) + 4] = 18.4565;
+
+				c[i * 5]	   = 30368.8;
+				c[(i * 5) + 1] = -97864.1;
+				c[(i * 5) + 2] = -36751.6;
+				c[(i * 5) + 3] = 235759;
+				c[(i * 5) + 4] = 209122;
+
+				d[i * 5]	   = -16496;
+				d[(i * 5) + 1] = 16501.1;
+				d[(i * 5) + 2] = -48388.5;
+				d[(i * 5) + 3] = 135969;
+				d[(i * 5) + 4] = 124907;
+			}
+
+			for (unsigned tid = 0; tid < 0; ++tid) {
 				calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
 							a, b, c, d, nc, count, tid);
 
@@ -161,6 +198,7 @@ namespace Dilep {
 				of << count[tid] << endl;
 				of.close();
 			}
+			exit(0);
 
 			//calc_dilep <<< 1, size >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
 			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
