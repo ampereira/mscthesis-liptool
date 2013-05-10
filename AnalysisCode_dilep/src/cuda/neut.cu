@@ -201,7 +201,7 @@ namespace Dilep {
 
 
 			ofstream of ("hahaha",fstream::app);
-			of << count[tid] << endl;
+			of << count[0] << endl;
 			of.close();
 			exit(0);
 			// reconstruction of the normal output of dilep
