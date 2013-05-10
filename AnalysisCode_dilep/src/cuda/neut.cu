@@ -180,8 +180,7 @@ namespace Dilep {
 
 		void dilep (vector<DilepInput> &di) {
 
-			//const unsigned size = di.size();
-			const unsigned size = 1;
+			const unsigned size = di.size();
 
 			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], 
 				   t_mass[2 * size], w_mass[2 * size];
@@ -237,7 +236,7 @@ namespace Dilep {
 			}
 
 
-			{
+			/*{
 				int i = 0;
 				in_mpx[i * 2]		= -1987.77;
 				in_mpx[(i * 2) + 1] = -1987.77;
@@ -273,7 +272,7 @@ namespace Dilep {
 				d[(i * 5) + 2] = -48388.5;
 				d[(i * 5) + 3] = 135969;
 				d[(i * 5) + 4] = 124907;
-			}
+			}*/
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, size*2*sizeof(double));
 			cudaMalloc(&dev_w_mass, size*2*sizeof(double));
@@ -313,10 +312,10 @@ namespace Dilep {
 			cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 
 
-			ofstream of ("hahaha",fstream::app);
-			of << count[0] << endl;
-			of.close();
-			exit(0);
+			//ofstream of ("hahaha",fstream::app);
+			//of << count[0] << endl;
+			//of.close();
+			//exit(0);
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 

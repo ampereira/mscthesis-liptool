@@ -4068,8 +4068,9 @@ void ttH_dilep::ttDilepKinFit(){
 
 
 	for (unsigned counter = 0; counter < outs.size(); ++counter) {
-		
-		Dilep::GPU::dilep(outs[counter]);
+		vector<DilepInput> v;
+		v.push_back(outs[counter]);
+		Dilep::GPU::dilep(v);
 	}
 
 	for (unsigned counter = 0; counter < outs.size(); ++counter) {
