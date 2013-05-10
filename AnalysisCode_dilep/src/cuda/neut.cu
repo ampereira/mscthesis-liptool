@@ -152,6 +152,47 @@ namespace Dilep {
 			cudaMemcpy(dev_bl_a, &c, sizeof(c), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);*/
 
+			for (unsigned i = 0; i < size; ++i) {
+				if (!(
+				in_mpx[i * 2]		== di[i].getInMpx(0) &&
+				in_mpx[(i * 2) + 1] == di[i].getInMpx(1) &&
+				in_mpy[i * 2]		== di[i].getInMpy(0) &&
+				in_mpy[(i * 2) + 1] == di[i].getInMpy(1) &&
+				t_mass[i * 2]		== di[i].getTmass(0) &&
+				t_mass[(i * 2) + 1] == di[i].getTmass(1) &&
+				w_mass[i * 2]		== di[i].getWmass(0) &&
+				w_mass[(i * 2) + 1] == di[i].getWmass(1) &&
+					
+				a[i * 5]	   == di[i].getZlep().Px() &&
+				a[(i * 5) + 1] == di[i].getZlep().Py() &&
+				a[(i * 5) + 2] == di[i].getZlep().Pz() &&
+				a[(i * 5) + 3] == di[i].getZlep().E() &&
+				a[(i * 5) + 4] == di[i].getZlep().M() &&
+
+				b[i * 5]	   == di[i].getClep().Px() &&
+				b[(i * 5) + 1] == di[i].getClep().Py() &&
+				b[(i * 5) + 2] == di[i].getClep().Pz() &&
+				b[(i * 5) + 3] == di[i].getClep().E() &&
+				b[(i * 5) + 4] == di[i].getClep().M() &&
+
+				c[i * 5]	   == di[i].getZbl().Px() &&
+				c[(i * 5) + 1] == di[i].getZbl().Py() &&
+				c[(i * 5) + 2] == di[i].getZbl().Pz() &&
+				c[(i * 5) + 3] == di[i].getZbl().E() &&
+				c[(i * 5) + 4] == di[i].getZbl().M() &&
+
+				d[i * 5]	   == di[i].getCbl().Px() &&
+				d[(i * 5) + 1] == di[i].getCbl().Py() &&
+				d[(i * 5) + 2] == di[i].getCbl().Pz() &&
+				d[(i * 5) + 3] == di[i].getCbl().E() &&
+				d[(i * 5) + 4] == di[i].getCbl().M()
+				)) {
+					ofstream of ("hahaha",fstream::app);
+					of << "gay" << endl;
+					of.close();
+				}
+			}
+
 			for (unsigned tid = 0; tid < size; ++tid)
 				calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
 							a, b, c, d, nc, count, tid);
