@@ -156,10 +156,10 @@ namespace Dilep {
 
 			for (int sol = 0 ; sol < count && sol<4 ; sol++) {
 				myvector *mv = new myvector( 
-					TO1D(nc,comb,sol,0),
-					TO1D(nc,comb,sol,1),
-					TO1D(nc,comb,sol,2),
-					TO1D(nc,comb,sol,3) );
+					TO1D(nc,0,sol,0),
+					TO1D(nc,0,sol,1),
+					TO1D(nc,0,sol,2),
+					TO1D(nc,0,sol,3) );
 				
 				result.push_back(*mv);
 			}
