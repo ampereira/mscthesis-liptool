@@ -67,7 +67,7 @@ namespace Dilep {
 
 		void dilep (vector<DilepInput> &di) {
 
-			static const unsigned size = di.size();
+			unsigned size = di.size();
 
 			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], 
 				   t_mass[2 * size], w_mass[2 * size];
@@ -137,9 +137,9 @@ namespace Dilep {
 			cudaMalloc(&dev_nc, size*16*sizeof(double));
 			cudaMalloc(&dev_count, size*sizeof(int));
 
-			ofstream of ("hahaha",fstream::app);
-			of << di.size() << " - " << size << endl;
-			of.close();
+			//ofstream of ("hahaha",fstream::app);
+			//of << di.size() << " - " << size << endl;
+			//of.close();
 
 			// transfer the inputs to GPU memory
 			cudaMemcpy(dev_t_mass, t_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
