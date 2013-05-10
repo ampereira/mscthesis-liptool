@@ -67,7 +67,8 @@ namespace Dilep {
 
 		void dilep (vector<DilepInput> &di) {
 
-			unsigned size = di.size();
+			static const unsigned size = di.size();
+			
 			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], 
 				   t_mass[2 * size], w_mass[2 * size];
 			
@@ -85,7 +86,7 @@ namespace Dilep {
 			long long int time = startTimer();
 			#endif
 
-			for (unsigned i = 0; i < di.size(); ++i) {
+			for (unsigned i = 0; i < size; ++i) {
 
 				in_mpx[i * 2]		= di[i].getInMpx(0);
 				in_mpx[(i * 2) + 1] = di[i].getInMpx(1);
@@ -154,16 +155,17 @@ namespace Dilep {
 			cudaMemcpy(dev_bl_a, &c, sizeof(c), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);
 
-			//calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
-			//			a, b, c, d, nc, count);
+			for (unsigned tid = 0; tid < size; ++tid)
+				calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
+							a, b, c, d, nc, count, tid);
 
 			
-			calc_dilep <<< 1, size >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
-					dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
+			//calc_dilep <<< 1, size >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
+			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 
 			// memory transfer of the results from the GPU
-			cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
-			cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
+			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
