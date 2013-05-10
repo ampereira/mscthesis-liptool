@@ -39,7 +39,7 @@ namespace Dilep {
 			long long int time = startTimer();
 			#endif
 
-			/*in_mpx[0] = di.getInMpx(0);
+			in_mpx[0] = di.getInMpx(0);
 			in_mpx[1] = di.getInMpx(1);
 			in_mpy[0] = di.getInMpy(0);
 			in_mpy[1] = di.getInMpy(1);
@@ -70,10 +70,10 @@ namespace Dilep {
 			d[1] = di.getCbl().Py();
 			d[2] = di.getCbl().Pz();
 			d[3] = di.getCbl().E();
-			d[4] = di.getCbl().M(); */
+			d[4] = di.getCbl().M(); 
 
 
-				{
+			/*	{
 				int i = 0;
 				in_mpx[i * 2]		= -1987.77;
 				in_mpx[(i * 2) + 1] = -1987.77;
@@ -109,7 +109,7 @@ namespace Dilep {
 				d[(i * 5) + 2] = -48388.5;
 				d[(i * 5) + 3] = 135969;
 				d[(i * 5) + 4] = 124907;
-			}
+			}*/
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, 2*sizeof(double));
@@ -151,10 +151,10 @@ namespace Dilep {
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
-			ofstream of ("hahaha",fstream::app);
-			of << count << endl;
-			of.close();
-			exit(0);
+			//ofstream of ("hahaha",fstream::app);
+			//of << count << endl;
+			//of.close();
+			//exit(0);
 
 			vector<myvector> result;
 
