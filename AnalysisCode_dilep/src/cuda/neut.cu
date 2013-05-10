@@ -190,7 +190,7 @@ namespace Dilep {
 				d[(i * 5) + 4] = 124907;
 			}
 
-			for (unsigned tid = 0; tid < 0; ++tid) {
+			for (unsigned tid = 0; tid < 1; ++tid) {
 				calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
 							a, b, c, d, nc, count, tid);
 
