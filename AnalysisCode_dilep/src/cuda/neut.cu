@@ -39,38 +39,38 @@ namespace Dilep {
 			long long int time = startTimer();
 			#endif
 
-			in_mpx[0] = di[i].getInMpx(0);
-			in_mpx[1] = di[i].getInMpx(1);
-			in_mpy[0] = di[i].getInMpy(0);
-			in_mpy[1] = di[i].getInMpy(1);
-			t_mass[0] = di[i].getTmass(0);
-			t_mass[1] = di[i].getTmass(1);
-			w_mass[0] = di[i].getWmass(0);
-			w_mass[1] = di[i].getWmass(1);
+			in_mpx[0] = di.getInMpx(0);
+			in_mpx[1] = di.getInMpx(1);
+			in_mpy[0] = di.getInMpy(0);
+			in_mpy[1] = di.getInMpy(1);
+			t_mass[0] = di.getTmass(0);
+			t_mass[1] = di.getTmass(1);
+			w_mass[0] = di.getWmass(0);
+			w_mass[1] = di.getWmass(1);
 				
-			a[0] = di[i].getZlep().Px();
-			a[1] = di[i].getZlep().Py();
-			a[2] = di[i].getZlep().Pz();
-			a[3] = di[i].getZlep().E();
-			a[4] = di[i].getZlep().M();
+			a[0] = di.getZlep().Px();
+			a[1] = di.getZlep().Py();
+			a[2] = di.getZlep().Pz();
+			a[3] = di.getZlep().E();
+			a[4] = di.getZlep().M();
 
-			b[0] = di[i].getClep().Px();
-			b[1] = di[i].getClep().Py();
-			b[2] = di[i].getClep().Pz();
-			b[3] = di[i].getClep().E();
-			b[4] = di[i].getClep().M();
+			b[0] = di.getClep().Px();
+			b[1] = di.getClep().Py();
+			b[2] = di.getClep().Pz();
+			b[3] = di.getClep().E();
+			b[4] = di.getClep().M();
 
-			c[0] = di[i].getZbl().Px();
-			c[1] = di[i].getZbl().Py();
-			c[2] = di[i].getZbl().Pz();
-			c[3] = di[i].getZbl().E();
-			c[4] = di[i].getZbl().M();
+			c[0] = di.getZbl().Px();
+			c[1] = di.getZbl().Py();
+			c[2] = di.getZbl().Pz();
+			c[3] = di.getZbl().E();
+			c[4] = di.getZbl().M();
 
-			d[0] = di[i].getCbl().Px();
-			d[1] = di[i].getCbl().Py();
-			d[2] = di[i].getCbl().Pz();
-			d[3] = di[i].getCbl().E();
-			d[4] = di[i].getCbl().M();
+			d[0] = di.getCbl().Px();
+			d[1] = di.getCbl().Py();
+			d[2] = di.getCbl().Pz();
+			d[3] = di.getCbl().E();
+			d[4] = di.getCbl().M();
 
 
 			/*{
@@ -147,7 +147,7 @@ namespace Dilep {
 
 			// memory transfer of the results from the GPU
 			cudaMemcpy(nc, dev_nc, 16*sizeof(double), cudaMemcpyDeviceToHost);
-			cudaMemcpy(count, dev_count, sizeof(int), cudaMemcpyDeviceToHost);
+			cudaMemcpy(&count, dev_count, sizeof(int), cudaMemcpyDeviceToHost);
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
