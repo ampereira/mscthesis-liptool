@@ -4027,42 +4027,32 @@ void ttH_dilep::ttDilepKinFit(){
 	// WARNING: numa primeira fase apenas para num combos <= num parallel tasks
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
 
-	// Best solution merge
-	ttDKF_Best_Sol best_sols [num_threads];
-	ttDKF_Best_Sol best;
-
-
 #ifdef MEASURE_KINFIT
 	long long int time = ttH::KinFit::startTimer();
 #endif
 
-
+	// ttbar variables
+	double myttbar_px;
+	double myttbar_py;
+	double myttbar_pz;
+	double myttbar_E;
+	// ttH->lnublnubbbar Probability Factors
+	double MaxTotalProb = -10e+15;
+	double MaxHiggsProb = -10e+15;
+	// Higgs helpfull variables
+	double theta_jet1_HiggsFromTTbar;
+	double theta_jet2_HiggsFromTTbar;
+	double fac_j1j2H_ttbar;
+	double mass_j1H_ttbar;
+	double mass_j2H_ttbar;
 	
-		unsigned task_id;		// used to determine the comb to use
-		// OpenMP variable declarations - cannot use class variables in OpenMP clauses
-	
-		// ttbar variables
-		double myttbar_px;
-		double myttbar_py;
-		double myttbar_pz;
-		double myttbar_E;
-		// ttH->lnublnubbbar Probability Factors
-		double MaxTotalProb = -10e+15;
-		double MaxHiggsProb = -10e+15;
-		// Higgs helpfull variables
-		double theta_jet1_HiggsFromTTbar;
-		double theta_jet2_HiggsFromTTbar;
-		double fac_j1j2H_ttbar;
-		double mass_j1H_ttbar;
-		double mass_j2H_ttbar;
-		
 
-		int nTSol = 0;
-		int n_ttDKF_Best = -999;
-		int first = 0;
-		DilepInput di;
+	int nTSol = 0;
+	int n_ttDKF_Best = -999;
+	int first = 0;
+	DilepInput di;
 
-		vector<DilepInput> outs (inputs.size() * dilep_iterations);
+	vector<DilepInput> outs (inputs.size() * dilep_iterations);
 
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
 		
@@ -4076,20 +4066,13 @@ void ttH_dilep::ttDilepKinFit(){
 		}
 	}
 
-		// Run the dileptonic reconstruction 
-#ifdef SEQ
-		Dilep::CPU::dilep(di);
-#elif OMP
-		Dilep::CPU::dilep(di);
-#elif CUDA
-		Dilep::GPU::dilep(outs);
-#elif PAPI
-		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-#endif
 
 	for (unsigned counter = 0; counter < outs.size(); ++counter) {
 
 		DilepInput di = outs[counter];
+		
+		Dilep::GPU::dilep(di);
+
 		// ---------------------------------------
 		// Get info from all possible solutions
 		// ---------------------------------------
