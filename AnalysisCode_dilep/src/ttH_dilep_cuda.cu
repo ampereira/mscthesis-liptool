@@ -4069,7 +4069,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 	for (unsigned counter = 0; counter < outs.size(); ++counter) {
 		
-		Dilep::GPU::dilep(&outs[counter]);
+		Dilep::GPU::dilep(outs[counter]);
 	}
 
 	for (unsigned counter = 0; counter < outs.size(); ++counter) {
