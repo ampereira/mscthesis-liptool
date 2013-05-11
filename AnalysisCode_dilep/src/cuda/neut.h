@@ -41,7 +41,7 @@ namespace Dilep {
 
 		//void dilep (DilepInput &di);
 		void dilep (vector<DilepInput> &di);
-		void dilep (vector<DilepInput> *vdi, int x);
+		void dilep (vector<DilepInput> &vdi, int x);
 
 
 		std::vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 

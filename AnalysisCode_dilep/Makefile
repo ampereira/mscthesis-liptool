@@ -88,8 +88,8 @@ build/ttDKF_Best_Sol.o: src/ttDKF_Best_Sol.cxx src/ttDKF_Best_Sol.h
 ttH_dilep_omp: src/ttH_dilep_omp.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o build/ttDKF_Best_Sol.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
 	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_omp $(INCLUDES) src/ttH_dilep_omp.cxx build/neut_seq.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRS)
 
-ttH_dilep_cuda: src/ttH_dilep_cuda.cu src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o build/neut_cuda.o build/ttDKF_Best_Sol.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
-	$(NVCC) $(NVCCFLAGS) -o bin/ttH_dilep_cuda $(INCLUDES) src/ttH_dilep_cuda.cu build/neut_seq.o build/neut_cuda.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRSCUDA)
+ttH_dilep_cuda: src/ttH_dilep_cuda.cu src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_cuda.o build/ttDKF_Best_Sol.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
+	$(NVCC) $(NVCCFLAGS) -o bin/ttH_dilep_cuda $(INCLUDES) src/ttH_dilep_cuda.cu build/neut_cuda.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRSCUDA)
 
 clean:
 	rm -f build/* bin/ttH_dilep*
