@@ -39,8 +39,10 @@ namespace Dilep {
 									TLorentzVector* lep_a, TLorentzVector* lep_b, 
 									TLorentzVector* bl_a, TLorentzVector* bl_b, int *hasSol);
 
-		void dilep (DilepInput &di);
+		//void dilep (DilepInput &di);
 		void dilep (vector<DilepInput> &di);
+		void dilep (vector<DilepInput> &vdi, int x);
+
 
 		std::vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 
 										double in_mpx[], double in_mpy[], double in_mpz[],
