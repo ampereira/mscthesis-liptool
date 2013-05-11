@@ -20,11 +20,11 @@ namespace Dilep {
 		}
 
 		// Wrapper for the dilep calculation using the input class
-		void dilep (vector<DilepInput> &vdi, int x) {
+		void dilep (vector<DilepInput> *vdi, int x) {
 
 			for (unsigned counter = 0; counter < vdi.size(); ++counter) {
 
-				DilepInput di = vdi[counter];
+				DilepInput di = vdi->at(counter);
 				double in_mpx[2], in_mpy[2], in_mpz[2], 
 					   t_mass[2], w_mass[2];
 				
@@ -175,8 +175,6 @@ namespace Dilep {
 
 				di.setHasSol(hasSolution);
 				di.setResult(&result);
-				
-				vdi[counter] = di;
 
 				// time measurement
 				#ifdef MEASURE_DILEP
