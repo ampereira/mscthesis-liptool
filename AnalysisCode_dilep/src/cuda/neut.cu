@@ -173,8 +173,8 @@ namespace Dilep {
 				if(result.size())
 					++hasSolution;
 
-				di.setHasSol(hasSolution);
-				di.setResult(&result);
+				vdi[counter].setHasSol(hasSolution);
+				vdi[counter].setResult(&result);
 
 				// time measurement
 				#ifdef MEASURE_DILEP
