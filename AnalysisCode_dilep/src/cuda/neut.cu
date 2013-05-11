@@ -24,7 +24,6 @@ namespace Dilep {
 
 			for (unsigned counter = 0; counter < vdi.size(); ++counter) {
 
-				DilepInput di = vdi[counter];
 				double in_mpx[2], in_mpy[2], in_mpz[2], 
 					   t_mass[2], w_mass[2];
 				
@@ -42,77 +41,38 @@ namespace Dilep {
 				long long int time = startTimer();
 				#endif
 
-				in_mpx[0] = di.getInMpx(0);
-				in_mpx[1] = di.getInMpx(1);
-				in_mpy[0] = di.getInMpy(0);
-				in_mpy[1] = di.getInMpy(1);
-				t_mass[0] = di.getTmass(0);
-				t_mass[1] = di.getTmass(1);
-				w_mass[0] = di.getWmass(0);
-				w_mass[1] = di.getWmass(1);
+				in_mpx[0] = vdi[counter].getInMpx(0);
+				in_mpx[1] = vdi[counter].getInMpx(1);
+				in_mpy[0] = vdi[counter].getInMpy(0);
+				in_mpy[1] = vdi[counter].getInMpy(1);
+				t_mass[0] = vdi[counter].getTmass(0);
+				t_mass[1] = vdi[counter].getTmass(1);
+				w_mass[0] = vdi[counter].getWmass(0);
+				w_mass[1] = vdi[counter].getWmass(1);
 					
-				a[0] = di.getZlep().Px();
-				a[1] = di.getZlep().Py();
-				a[2] = di.getZlep().Pz();
-				a[3] = di.getZlep().E();
-				a[4] = di.getZlep().M();
+				a[0] = vdi[counter].getZlep().Px();
+				a[1] = vdi[counter].getZlep().Py();
+				a[2] = vdi[counter].getZlep().Pz();
+				a[3] = vdi[counter].getZlep().E();
+				a[4] = vdi[counter].getZlep().M();
 
-				b[0] = di.getClep().Px();
-				b[1] = di.getClep().Py();
-				b[2] = di.getClep().Pz();
-				b[3] = di.getClep().E();
-				b[4] = di.getClep().M();
+				b[0] = vdi[counter].getClep().Px();
+				b[1] = vdi[counter].getClep().Py();
+				b[2] = vdi[counter].getClep().Pz();
+				b[3] = vdi[counter].getClep().E();
+				b[4] = vdi[counter].getClep().M();
 
-				c[0] = di.getZbl().Px();
-				c[1] = di.getZbl().Py();
-				c[2] = di.getZbl().Pz();
-				c[3] = di.getZbl().E();
-				c[4] = di.getZbl().M();
+				c[0] = vdi[counter].getZbl().Px();
+				c[1] = vdi[counter].getZbl().Py();
+				c[2] = vdi[counter].getZbl().Pz();
+				c[3] = vdi[counter].getZbl().E();
+				c[4] = vdi[counter].getZbl().M();
 
-				d[0] = di.getCbl().Px();
-				d[1] = di.getCbl().Py();
-				d[2] = di.getCbl().Pz();
-				d[3] = di.getCbl().E();
-				d[4] = di.getCbl().M(); 
-
-
-				/*	{
-					int i = 0;
-					in_mpx[i * 2]		= -1987.77;
-					in_mpx[(i * 2) + 1] = -1987.77;
-					in_mpy[i * 2]		= -302.404;
-					in_mpy[(i * 2) + 1] = -302.404;
-					in_mpz[i * 2]		= 0;
-					in_mpz[(i * 2) + 1] = 0;
-					t_mass[i * 2]		= 172500;
-					t_mass[(i * 2) + 1] = 172500;
-					w_mass[i * 2]		= 80400;
-					w_mass[(i * 2) + 1] = 80400;
-						
-					a[i * 5]	   = -70115.6;
-					a[(i * 5) + 1] = -61115.5;
-					a[(i * 5) + 2] = 42473.9;
-					a[(i * 5) + 3] = 102251;
-					a[(i * 5) + 4] = 105.905;
-
-					b[i * 5]	   = 15715.2;
-					b[(i * 5) + 1] = 65388.9;
-					b[(i * 5) + 2] = -19608.6;
-					b[(i * 5) + 3] = 70051.2;
-					b[(i * 5) + 4] = 18.4565;
-
-					c[i * 5]	   = 30368.8;
-					c[(i * 5) + 1] = -97864.1;
-					c[(i * 5) + 2] = -36751.6;
-					c[(i * 5) + 3] = 235759;
-					c[(i * 5) + 4] = 209122;
-
-					d[i * 5]	   = -16496;
-					d[(i * 5) + 1] = 16501.1;
-					d[(i * 5) + 2] = -48388.5;
-					d[(i * 5) + 3] = 135969;
-					d[(i * 5) + 4] = 124907;
-				}*/
+				d[0] = vdi[counter].getCbl().Px();
+				d[1] = vdi[counter].getCbl().Py();
+				d[2] = vdi[counter].getCbl().Pz();
+				d[3] = vdi[counter].getCbl().E();
+				d[4] = vdi[counter].getCbl().M(); 
 
 				// GPU memory allocation of the inputs and outputs of the dilep kernel
 				cudaMalloc(&dev_t_mass, 2*sizeof(double));
