@@ -35,7 +35,6 @@ namespace Dilep {
 			double *dev_nc;
 			int *count, *dev_count;
 			DilepInput *di;
-				int hasSolution = 0;
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, size_combs * 2*sizeof(double));
@@ -127,6 +126,7 @@ namespace Dilep {
 
 			for (unsigned counter = 0; counter < size_combs; ++counter) {
 				vector<myvector> *result;
+				int hasSolution = 0;
 
 				for (int sol = 0 ; sol < count[counter] && sol<4 ; sol++) {
 					myvector *mv = new myvector( 
