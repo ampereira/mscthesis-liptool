@@ -141,7 +141,7 @@ namespace Dilep {
 					++hasSolution;
 
 				vdi[counter].setHasSol(hasSolution);
-				vdi[counter].setResult(result);
+				vdi[counter].setResult(&result);
 
 
 				// time measurement
