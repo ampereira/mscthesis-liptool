@@ -125,7 +125,7 @@ namespace Dilep {
 				//exit(0);
 
 			for (unsigned counter = 0; counter < size_combs; ++counter) {
-				vector<myvector> *result;
+				vector<myvector> result;
 				int hasSolution = 0;
 
 				for (int sol = 0 ; sol < count[counter] && sol<4 ; sol++) {
@@ -135,13 +135,13 @@ namespace Dilep {
 						TO1D(nc,counter,sol,2),
 						TO1D(nc,counter,sol,3) );
 					
-					result->push_back(*mv);
+					result.push_back(*mv);
 				}
-				if(result->size())
+				if(result.size())
 					++hasSolution;
 
-				di->setHasSol(hasSolution);
-				di->setResult(result);
+				vdi[counter].setHasSol(hasSolution);
+				vdi[counter].setResult(result);
 
 
 				// time measurement
