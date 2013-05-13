@@ -22,7 +22,7 @@ namespace Dilep {
 		// Wrapper for the dilep calculation using the input class
 		void dilep (vector<DilepInput> &vdi, int x) {
 
-			const unsigned size_combs = vdi.size();
+			unsigned size_combs = vdi.size();
 
 			double in_mpx[2], in_mpy[2], in_mpz[2], 
 				   t_mass[2], w_mass[2];
