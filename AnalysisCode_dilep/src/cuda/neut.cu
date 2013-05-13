@@ -137,7 +137,7 @@ namespace Dilep {
 					
 					result->push_back(*mv);
 				}
-				if(result.size())
+				if(result->size())
 					++hasSolution;
 
 				di->setHasSol(hasSolution);
