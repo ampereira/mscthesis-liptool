@@ -22,7 +22,6 @@ namespace Dilep {
 		// Wrapper for the dilep calculation using the input class
 		void dilep (vector<DilepInput> &vdi, int x) {
 
-			for (unsigned counter = 0; counter < vdi.size(); ++counter) {
 
 				double in_mpx[2], in_mpy[2], in_mpz[2], 
 					   t_mass[2], w_mass[2];
@@ -34,8 +33,25 @@ namespace Dilep {
 				double nc[16];
 				double *dev_nc;
 				int count, *dev_count;
-				int hasSolution = 0;
 
+				// GPU memory allocation of the inputs and outputs of the dilep kernel
+				cudaMalloc(&dev_t_mass, 2*sizeof(double));
+				cudaMalloc(&dev_w_mass, 2*sizeof(double));
+				cudaMalloc(&dev_in_mpx, 2*sizeof(double));
+				cudaMalloc(&dev_in_mpy, 2*sizeof(double));
+
+				cudaMalloc(&dev_lep_a, sizeof(a));
+				cudaMalloc(&dev_lep_b, sizeof(b));
+				cudaMalloc(&dev_bl_a, sizeof(c));
+				cudaMalloc(&dev_bl_b, sizeof(d));
+				// allocation of the results
+				cudaMalloc(&dev_nc, 16*sizeof(double));
+				cudaMalloc(&dev_count, sizeof(int));
+
+
+			for (unsigned counter = 0; counter < vdi.size(); ++counter) {
+
+				int hasSolution = 0;
 				// time measurement
 				#ifdef MEASURE_DILEP
 				long long int time = startTimer();
@@ -73,20 +89,6 @@ namespace Dilep {
 				d[2] = vdi[counter].getCbl().Pz();
 				d[3] = vdi[counter].getCbl().E();
 				d[4] = vdi[counter].getCbl().M(); 
-
-				// GPU memory allocation of the inputs and outputs of the dilep kernel
-				cudaMalloc(&dev_t_mass, 2*sizeof(double));
-				cudaMalloc(&dev_w_mass, 2*sizeof(double));
-				cudaMalloc(&dev_in_mpx, 2*sizeof(double));
-				cudaMalloc(&dev_in_mpy, 2*sizeof(double));
-
-				cudaMalloc(&dev_lep_a, sizeof(a));
-				cudaMalloc(&dev_lep_b, sizeof(b));
-				cudaMalloc(&dev_bl_a, sizeof(c));
-				cudaMalloc(&dev_bl_b, sizeof(d));
-				// allocation of the results
-				cudaMalloc(&dev_nc, 16*sizeof(double));
-				cudaMalloc(&dev_count, sizeof(int));
 
 				// transfer the inputs to GPU memory
 				cudaMemcpy(dev_t_mass, t_mass, 2*sizeof(double), cudaMemcpyHostToDevice);
@@ -141,6 +143,20 @@ namespace Dilep {
 				stopTimer(time);
 				#endif
 			}
+			
+			cudaFree(dev_t_mass);
+			cudaFree(dev_w_mass);
+			cudaFree(dev_in_mpx);
+			cudaFree(dev_in_mpy);
+			cudaFree(dev_in_mpz);
+
+			cudaFree(dev_lep_a);
+			cudaFree(dev_lep_b);
+			cudaFree(dev_bl_a);
+			cudaFree(dev_bl_b);
+
+			cudaFree(dev_count);
+			cudaFree(dev_nc);
 			
 		}
 
