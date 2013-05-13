@@ -140,6 +140,8 @@ namespace Dilep {
 				di.setHasSol(hasSolution);
 				di.setResult(&result);
 
+				vdi[counter] = di;
+
 				// time measurement
 				#ifdef MEASURE_DILEP
 				stopTimer(time);
