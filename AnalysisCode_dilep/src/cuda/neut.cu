@@ -143,12 +143,11 @@ namespace Dilep {
 				stopTimer(time);
 				#endif
 			}
-			
+
 			cudaFree(dev_t_mass);
 			cudaFree(dev_w_mass);
 			cudaFree(dev_in_mpx);
 			cudaFree(dev_in_mpy);
-			cudaFree(dev_in_mpz);
 
 			cudaFree(dev_lep_a);
 			cudaFree(dev_lep_b);
