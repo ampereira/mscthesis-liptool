@@ -35,6 +35,7 @@ namespace Dilep {
 			double *dev_nc;
 			int *count, *dev_count;
 			DilepInput *di;
+				int hasSolution = 0;
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, size_combs * 2*sizeof(double));
@@ -55,7 +56,6 @@ namespace Dilep {
 
 				di = &vdi[counter];
 
-				int hasSolution = 0;
 				// time measurement
 				#ifdef MEASURE_DILEP
 				long long int time = startTimer();
@@ -128,12 +128,12 @@ namespace Dilep {
 			for (unsigned counter = 0; counter < size_combs; ++counter) {
 				vector<myvector> *result;
 
-				for (int sol = 0 ; sol < count && sol<4 ; sol++) {
+				for (int sol = 0 ; sol < count[counter] && sol<4 ; sol++) {
 					myvector *mv = new myvector( 
-						TO1D(nc,0,sol,0),
-						TO1D(nc,0,sol,1),
-						TO1D(nc,0,sol,2),
-						TO1D(nc,0,sol,3) );
+						TO1D(nc,counter,sol,0),
+						TO1D(nc,counter,sol,1),
+						TO1D(nc,counter,sol,2),
+						TO1D(nc,counter,sol,3) );
 					
 					result->push_back(*mv);
 				}
