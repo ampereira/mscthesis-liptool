@@ -51,44 +51,46 @@ namespace Dilep {
 
 			for (unsigned counter = 0; counter < vdi.size(); ++counter) {
 
+				DilepInput di = vdi[counter];
+
 				int hasSolution = 0;
 				// time measurement
 				#ifdef MEASURE_DILEP
 				long long int time = startTimer();
 				#endif
 
-				in_mpx[0] = vdi[counter].getInMpx(0);
-				in_mpx[1] = vdi[counter].getInMpx(1);
-				in_mpy[0] = vdi[counter].getInMpy(0);
-				in_mpy[1] = vdi[counter].getInMpy(1);
-				t_mass[0] = vdi[counter].getTmass(0);
-				t_mass[1] = vdi[counter].getTmass(1);
-				w_mass[0] = vdi[counter].getWmass(0);
-				w_mass[1] = vdi[counter].getWmass(1);
+				in_mpx[0] = di.getInMpx(0);
+				in_mpx[1] = di.getInMpx(1);
+				in_mpy[0] = di.getInMpy(0);
+				in_mpy[1] = di.getInMpy(1);
+				t_mass[0] = di.getTmass(0);
+				t_mass[1] = di.getTmass(1);
+				w_mass[0] = di.getWmass(0);
+				w_mass[1] = di.getWmass(1);
 					
-				a[0] = vdi[counter].getZlep().Px();
-				a[1] = vdi[counter].getZlep().Py();
-				a[2] = vdi[counter].getZlep().Pz();
-				a[3] = vdi[counter].getZlep().E();
-				a[4] = vdi[counter].getZlep().M();
+				a[0] = di.getZlep().Px();
+				a[1] = di.getZlep().Py();
+				a[2] = di.getZlep().Pz();
+				a[3] = di.getZlep().E();
+				a[4] = di.getZlep().M();
 
-				b[0] = vdi[counter].getClep().Px();
-				b[1] = vdi[counter].getClep().Py();
-				b[2] = vdi[counter].getClep().Pz();
-				b[3] = vdi[counter].getClep().E();
-				b[4] = vdi[counter].getClep().M();
+				b[0] = di.getClep().Px();
+				b[1] = di.getClep().Py();
+				b[2] = di.getClep().Pz();
+				b[3] = di.getClep().E();
+				b[4] = di.getClep().M();
 
-				c[0] = vdi[counter].getZbl().Px();
-				c[1] = vdi[counter].getZbl().Py();
-				c[2] = vdi[counter].getZbl().Pz();
-				c[3] = vdi[counter].getZbl().E();
-				c[4] = vdi[counter].getZbl().M();
+				c[0] = di.getZbl().Px();
+				c[1] = di.getZbl().Py();
+				c[2] = di.getZbl().Pz();
+				c[3] = di.getZbl().E();
+				c[4] = di.getZbl().M();
 
-				d[0] = vdi[counter].getCbl().Px();
-				d[1] = vdi[counter].getCbl().Py();
-				d[2] = vdi[counter].getCbl().Pz();
-				d[3] = vdi[counter].getCbl().E();
-				d[4] = vdi[counter].getCbl().M(); 
+				d[0] = di.getCbl().Px();
+				d[1] = di.getCbl().Py();
+				d[2] = di.getCbl().Pz();
+				d[3] = di.getCbl().E();
+				d[4] = di.getCbl().M(); 
 
 				// transfer the inputs to GPU memory
 				cudaMemcpy(dev_t_mass, t_mass, 2*sizeof(double), cudaMemcpyHostToDevice);
@@ -135,8 +137,8 @@ namespace Dilep {
 				if(result.size())
 					++hasSolution;
 
-				vdi[counter].setHasSol(hasSolution);
-				vdi[counter].setResult(&result);
+				di.setHasSol(hasSolution);
+				di.setResult(&result);
 
 				// time measurement
 				#ifdef MEASURE_DILEP
