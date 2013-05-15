@@ -105,8 +105,11 @@ namespace Dilep {
 				//cudaMemcpy(dev_bl_b, &d, size_combs * sizeof(d), cudaMemcpyHostToDevice);
 
 
+			for (unsigned counter = 0; counter < size_combs; ++counter) {
+
 				calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
 							a, b, c, d, nc, count, counter);
+			}
 
 
 				//calc_dilep <<< 1, size_combs >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
