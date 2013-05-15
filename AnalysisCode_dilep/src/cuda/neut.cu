@@ -106,7 +106,7 @@ namespace Dilep {
 
 
 				calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
-							a, b, c, d, nc, count, tid);
+							a, b, c, d, nc, count, counter);
 
 
 				//calc_dilep <<< 1, size_combs >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
