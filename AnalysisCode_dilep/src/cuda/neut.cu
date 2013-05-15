@@ -127,7 +127,7 @@ namespace Dilep {
 			//exit(0);
 
 			for (unsigned counter = 0; counter < size_combs; ++counter) {
-				vector<myvector> result ();
+				vector<myvector> result;
 				int hasSolution = 0;
 
 				for (int sol = 0 ; sol < count[counter] && sol<4 ; sol++) {
