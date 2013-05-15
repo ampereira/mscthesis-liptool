@@ -181,7 +181,7 @@ namespace Dilep {
 
 			// Host vars
 			double a[5 * size], b[5 * size], c[5 * size], d[5 * size], nc[16*size];
-			double in_mpx[2 * size], in_mpy[2 * size], [2 * size], w_mass[2 * size], t_mass[2 * size];
+			double in_mpx[2 * size], in_mpy[2 * size], w_mass[2 * size], t_mass[2 * size];
 			int count[size], hasSolution = 0;
 
 			// time measurement
