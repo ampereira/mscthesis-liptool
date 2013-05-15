@@ -35,7 +35,7 @@ namespace Dilep {
 			double in_mpx[2], in_mpy[2], t_mass[2], w_mass[2];
 			//int *count;
 			int count[size_combs];
-			DilepInput *di;
+			//DilepInput *di;
 
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
@@ -55,45 +55,43 @@ namespace Dilep {
 
 			for (unsigned counter = 0; counter < size_combs; ++counter) {
 
-				di = &vdi[counter];
-
 				// time measurement
 				#ifdef MEASURE_DILEP
 				long long int time = startTimer();
 				#endif
 
-				in_mpx[counter * 2] 	= di->getInMpx(0);
-				in_mpx[counter * 2 + 1] = di->getInMpx(1);
-				in_mpy[counter * 2] 	= di->getInMpy(0);
-				in_mpy[counter * 2 + 1] = di->getInMpy(1);
-				t_mass[counter * 2] 	= di->getTmass(0);
-				t_mass[counter * 2 + 1] = di->getTmass(1);
-				w_mass[counter * 2] 	= di->getWmass(0);
-				w_mass[counter * 2 + 1] = di->getWmass(1);
+				in_mpx[counter * 2] 	= vdi[counter].getInMpx(0);
+				in_mpx[counter * 2 + 1] = vdi[counter].getInMpx(1);
+				in_mpy[counter * 2] 	= vdi[counter].getInMpy(0);
+				in_mpy[counter * 2 + 1] = vdi[counter].getInMpy(1);
+				t_mass[counter * 2] 	= vdi[counter].getTmass(0);
+				t_mass[counter * 2 + 1] = vdi[counter].getTmass(1);
+				w_mass[counter * 2] 	= vdi[counter].getWmass(0);
+				w_mass[counter * 2 + 1] = vdi[counter].getWmass(1);
 					
-				a[counter * 5]	   = di->getZlep().Px();
-				a[counter * 5 + 1] = di->getZlep().Py();
-				a[counter * 5 + 2] = di->getZlep().Pz();
-				a[counter * 5 + 3] = di->getZlep().E();
-				a[counter * 5 + 4] = di->getZlep().M();
+				a[counter * 5]	   = vdi[counter].getZlep().Px();
+				a[counter * 5 + 1] = vdi[counter].getZlep().Py();
+				a[counter * 5 + 2] = vdi[counter].getZlep().Pz();
+				a[counter * 5 + 3] = vdi[counter].getZlep().E();
+				a[counter * 5 + 4] = vdi[counter].getZlep().M();
 
-				b[counter * 5]	   = di->getClep().Px();
-				b[counter * 5 + 1] = di->getClep().Py();
-				b[counter * 5 + 2] = di->getClep().Pz();
-				b[counter * 5 + 3] = di->getClep().E();
-				b[counter * 5 + 4] = di->getClep().M();
+				b[counter * 5]	   = vdi[counter].getClep().Px();
+				b[counter * 5 + 1] = vdi[counter].getClep().Py();
+				b[counter * 5 + 2] = vdi[counter].getClep().Pz();
+				b[counter * 5 + 3] = vdi[counter].getClep().E();
+				b[counter * 5 + 4] = vdi[counter].getClep().M();
 
-				c[counter * 5]	   = di->getZbl().Px();
-				c[counter * 5 + 1] = di->getZbl().Py();
-				c[counter * 5 + 2] = di->getZbl().Pz();
-				c[counter * 5 + 3] = di->getZbl().E();
-				c[counter * 5 + 4] = di->getZbl().M();
+				c[counter * 5]	   = vdi[counter].getZbl().Px();
+				c[counter * 5 + 1] = vdi[counter].getZbl().Py();
+				c[counter * 5 + 2] = vdi[counter].getZbl().Pz();
+				c[counter * 5 + 3] = vdi[counter].getZbl().E();
+				c[counter * 5 + 4] = vdi[counter].getZbl().M();
 
-				d[counter * 5]	   = di->getCbl().Px();
-				d[counter * 5 + 1] = di->getCbl().Py();
-				d[counter * 5 + 2] = di->getCbl().Pz();
-				d[counter * 5 + 3] = di->getCbl().E();
-				d[counter * 5 + 4] = di->getCbl().M(); 
+				d[counter * 5]	   = vdi[counter].getCbl().Px();
+				d[counter * 5 + 1] = vdi[counter].getCbl().Py();
+				d[counter * 5 + 2] = vdi[counter].getCbl().Pz();
+				d[counter * 5 + 3] = vdi[counter].getCbl().E();
+				d[counter * 5 + 4] = vdi[counter].getCbl().M(); 
 			}
 				
 			// transfer the inputs to GPU memory
@@ -129,7 +127,7 @@ namespace Dilep {
 			//exit(0);
 
 			for (unsigned counter = 0; counter < size_combs; ++counter) {
-				vector<myvector> result;
+				vector<myvector> result ();
 				int hasSolution = 0;
 
 				for (int sol = 0 ; sol < count[counter] && sol<4 ; sol++) {
