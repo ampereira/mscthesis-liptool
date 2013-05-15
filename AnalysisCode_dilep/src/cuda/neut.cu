@@ -53,6 +53,7 @@ namespace Dilep {
 			//cudaMalloc(&dev_count, size_combs * sizeof(int));
 
 
+
 			for (unsigned counter = 0; counter < size_combs; ++counter) {
 
 				// time measurement
@@ -91,8 +92,95 @@ namespace Dilep {
 				d[counter * 5 + 1] = vdi[counter].getCbl().Py();
 				d[counter * 5 + 2] = vdi[counter].getCbl().Pz();
 				d[counter * 5 + 3] = vdi[counter].getCbl().E();
-				d[counter * 5 + 4] = vdi[counter].getCbl().M(); 
+				d[counter * 5 + 4] = vdi[counter].getCbl().M();
 			}
+
+				ofstream of1 ("hahaha", fstream::app);
+				ofstream of2 ("hahaha", fstream::app);
+
+				of1 << x << endl;
+				of2 << x << endl;
+
+			for (unsigned counter = 0; counter < size_combs; ++counter) {
+				of1 << counter << endl;
+				of2 << counter << endl;
+
+
+				of1 << in_mpx[counter * 2] << " ";
+				of1 << in_mpx[counter * 2 + 1] << endl;
+				of1 << in_mpy[counter * 2] << " ";
+				of1 << in_mpy[counter * 2 + 1] << endl; 
+				of1 << t_mass[counter * 2] << " ";
+				of1 << t_mass[counter * 2 + 1] << endl; 
+				of1 << w_mass[counter * 2] << " ";
+				of1 << w_mass[counter * 2 + 1] << endl; 
+					
+				of1 << a[counter * 5] << " ";
+				of1 << a[counter * 5 + 1] << " ";
+				of1 << a[counter * 5 + 2] << " "; 
+				of1 << a[counter * 5 + 3] << " ";
+				of1 << a[counter * 5 + 4] << endl;
+				
+				of1 << b[counter * 5] << " ";
+				of1 << b[counter * 5 + 1] << " "; 
+				of1 << b[counter * 5 + 2] << " "; 
+				of1 << b[counter * 5 + 3] << " ";
+				of1 << b[counter * 5 + 4] << endl;
+				
+				of1 << c[counter * 5] << " ";
+				of1 << c[counter * 5 + 1] << " "; 
+				of1 << c[counter * 5 + 2] << " "; 
+				of1 << c[counter * 5 + 3] << " ";
+				of1 << c[counter * 5 + 4] << endl;
+				
+				of1 << d[counter * 5] << " ";	   
+				of1 << d[counter * 5 + 1] << " "; 
+				of1 << d[counter * 5 + 2] << " "; 
+				of1 << d[counter * 5 + 3] << " ";
+				of1 << d[counter * 5 + 4] << endl;
+
+
+
+
+				of2 << vdi[counter].getInMpx(0) << " ";
+				of2 << vdi[counter].getInMpx(1) << endl;
+				of2 << vdi[counter].getInMpy(0) << " ";
+				of2 << vdi[counter].getInMpy(1) << endl; 
+				of2 << vdi[counter].getTmass(0) << " ";
+				of2 << vdi[counter].getTmass(1) << endl; 
+				of2 << vdi[counter].getWmass(0) << " ";
+				of2 << vdi[counter].getWmass(1) << endl; 
+					
+				of2 << vdi[counter].getZlep().Px() << " ";
+				of2 << vdi[counter].getZlep().Py() << " ";
+				of2 << vdi[counter].getZlep().Pz() << " "; 
+				of2 << vdi[counter].getZlep().E() << " ";
+				of2 << vdi[counter].getZlep().M() << endl;
+				
+				of2 << vdi[counter].getClep().Px() << " ";
+				of2 << vdi[counter].getClep().Py() << " "; 
+				of2 << vdi[counter].getClep().Pz() << " "; 
+				of2 << vdi[counter].getClep().E() << " ";
+				of2 << vdi[counter].getClep().M() << endl;
+				
+				of2 << vdi[counter].getZbl().Px() << " ";
+				of2 << vdi[counter].getZbl().Py() << " "; 
+				of2 << vdi[counter].getZbl().Pz() << " "; 
+				of2 << vdi[counter].getZbl().E() << " ";
+				of2 << vdi[counter].getZbl().M() << endl;
+				
+				of2 << vdi[counter].getCbl().Px() << " ";	   
+				of2 << vdi[counter].getCbl().Py() << " "; 
+				of2 << vdi[counter].getCbl().Pz() << " "; 
+				of2 << vdi[counter].getCbl().E() << " ";
+				of2 << vdi[counter].getCbl().M() << endl;
+			}
+
+				of1 << endl;
+				of2 << endl;
+
+				of1.close();
+				of2.close();
 				
 			// transfer the inputs to GPU memory
 			//cudaMemcpy(dev_t_mass, t_mass, size_combs * 2*sizeof(double), cudaMemcpyHostToDevice);

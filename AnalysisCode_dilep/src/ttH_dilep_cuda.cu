@@ -4050,7 +4050,7 @@ void ttH_dilep::ttDilepKinFit(){
 	int nTSol = 0;
 	int n_ttDKF_Best = -999;
 	int first = 0;
-	DilepInput di;
+	DilepInput *ddi;
 
 	vector<DilepInput> outs (inputs.size() * dilep_iterations);
 
@@ -4058,11 +4058,11 @@ void ttH_dilep::ttDilepKinFit(){
 		
 		for (unsigned i = 0; i < dilep_iterations; ++i) {
 			// Always pick the original combo
-			di = inputs[counter];
+			ddi = &inputs[counter];
 
 			// Apply the variance (thread safe)
-			di.applyVariance(RESOLUTION);
-			outs.push_back(di);
+			ddi->applyVariance(RESOLUTION);
+			outs.push_back(*ddi);
 		}
 	}
 
