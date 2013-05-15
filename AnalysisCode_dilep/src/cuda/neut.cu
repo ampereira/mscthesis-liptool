@@ -22,19 +22,21 @@ namespace Dilep {
 		// Wrapper for the dilep calculation using the input class
 		void dilep (vector<DilepInput> &vdi, int x) {
 
+			// Total number of combinations/variations to reconstruct
 			unsigned size_combs = vdi.size();
-
-			double in_mpx[2], in_mpy[2], in_mpz[2], 
-				   t_mass[2], w_mass[2];
 			
+			// Device variables
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
-			double a[5], b[5], c[5], d[5];
-		
-			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b;
-			double nc[16];
-			double *dev_nc;
-			int *count, *dev_count;
+			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b, *dev_nc;
+			int *dev_count;
+
+			// Host variables
+			double a[5], b[5], c[5], d[5], nc[16];
+			double in_mpx[2], in_mpy[2], t_mass[2], w_mass[2];
+			//int *count;
+			int count[size];
 			DilepInput *di;
+
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			//cudaMalloc(&dev_t_mass, size_combs * 2*sizeof(double));
@@ -60,71 +62,71 @@ namespace Dilep {
 				long long int time = startTimer();
 				#endif
 
-				in_mpx[0] = di->getInMpx(0);
-				in_mpx[1] = di->getInMpx(1);
-				in_mpy[0] = di->getInMpy(0);
-				in_mpy[1] = di->getInMpy(1);
-				t_mass[0] = di->getTmass(0);
-				t_mass[1] = di->getTmass(1);
-				w_mass[0] = di->getWmass(0);
-				w_mass[1] = di->getWmass(1);
+				in_mpx[counter * 2] 	= di->getInMpx(0);
+				in_mpx[counter * 2 + 1] = di->getInMpx(1);
+				in_mpy[counter * 2] 	= di->getInMpy(0);
+				in_mpy[counter * 2 + 1] = di->getInMpy(1);
+				t_mass[counter * 2] 	= di->getTmass(0);
+				t_mass[counter * 2 + 1] = di->getTmass(1);
+				w_mass[counter * 2] 	= di->getWmass(0);
+				w_mass[counter * 2 + 1] = di->getWmass(1);
 					
-				a[0] = di->getZlep().Px();
-				a[1] = di->getZlep().Py();
-				a[2] = di->getZlep().Pz();
-				a[3] = di->getZlep().E();
-				a[4] = di->getZlep().M();
+				a[counter * 5]	   = di->getZlep().Px();
+				a[counter * 5 + 1] = di->getZlep().Py();
+				a[counter * 5 + 2] = di->getZlep().Pz();
+				a[counter * 5 + 3] = di->getZlep().E();
+				a[counter * 5 + 4] = di->getZlep().M();
 
-				b[0] = di->getClep().Px();
-				b[1] = di->getClep().Py();
-				b[2] = di->getClep().Pz();
-				b[3] = di->getClep().E();
-				b[4] = di->getClep().M();
+				b[counter * 5]	   = di->getClep().Px();
+				b[counter * 5 + 1] = di->getClep().Py();
+				b[counter * 5 + 2] = di->getClep().Pz();
+				b[counter * 5 + 3] = di->getClep().E();
+				b[counter * 5 + 4] = di->getClep().M();
 
-				c[0] = di->getZbl().Px();
-				c[1] = di->getZbl().Py();
-				c[2] = di->getZbl().Pz();
-				c[3] = di->getZbl().E();
-				c[4] = di->getZbl().M();
+				c[counter * 5]	   = di->getZbl().Px();
+				c[counter * 5 + 1] = di->getZbl().Py();
+				c[counter * 5 + 2] = di->getZbl().Pz();
+				c[counter * 5 + 3] = di->getZbl().E();
+				c[counter * 5 + 4] = di->getZbl().M();
 
-				d[0] = di->getCbl().Px();
-				d[1] = di->getCbl().Py();
-				d[2] = di->getCbl().Pz();
-				d[3] = di->getCbl().E();
-				d[4] = di->getCbl().M(); 
+				d[counter * 5]	   = di->getCbl().Px();
+				d[counter * 5 + 1] = di->getCbl().Py();
+				d[counter * 5 + 2] = di->getCbl().Pz();
+				d[counter * 5 + 3] = di->getCbl().E();
+				d[counter * 5 + 4] = di->getCbl().M(); 
 			}
-				// transfer the inputs to GPU memory
-				//cudaMemcpy(dev_t_mass, t_mass, size_combs * 2*sizeof(double), cudaMemcpyHostToDevice);
-				//cudaMemcpy(dev_w_mass, w_mass, size_combs * 2*sizeof(double), cudaMemcpyHostToDevice);
-				//cudaMemcpy(dev_in_mpx, in_mpx, size_combs * 2*sizeof(double), cudaMemcpyHostToDevice);
-				//cudaMemcpy(dev_in_mpy, in_mpy, size_combs * 2*sizeof(double), cudaMemcpyHostToDevice);
+				
+			// transfer the inputs to GPU memory
+			//cudaMemcpy(dev_t_mass, t_mass, size_combs * 2*sizeof(double), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_w_mass, w_mass, size_combs * 2*sizeof(double), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_in_mpx, in_mpx, size_combs * 2*sizeof(double), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_in_mpy, in_mpy, size_combs * 2*sizeof(double), cudaMemcpyHostToDevice);
 
-				//cudaMemcpy(dev_lep_a, &a, size_combs * sizeof(a), cudaMemcpyHostToDevice);
-				//cudaMemcpy(dev_lep_b, &b, size_combs * sizeof(b), cudaMemcpyHostToDevice);
-				//cudaMemcpy(dev_bl_a, &c, size_combs * sizeof(c), cudaMemcpyHostToDevice);
-				//cudaMemcpy(dev_bl_b, &d, size_combs * sizeof(d), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_lep_a, &a, size_combs * sizeof(a), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_lep_b, &b, size_combs * sizeof(b), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_bl_a, &c, size_combs * sizeof(c), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_bl_b, &d, size_combs * sizeof(d), cudaMemcpyHostToDevice);
 
 
 			for (unsigned counter = 0; counter < size_combs; ++counter) {
-
 				calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
 							a, b, c, d, nc, count, counter);
 			}
 
 
-				//calc_dilep <<< 1, size_combs >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
-				//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
+			//calc_dilep <<< 1, size_combs >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
+			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 
-				// memory transfer of the results from the GPU
-				//cudaMemcpy(nc, dev_nc, size_combs * 16*sizeof(double), cudaMemcpyDeviceToHost);
-				//cudaMemcpy(count, dev_count, size_combs * sizeof(int), cudaMemcpyDeviceToHost);
+			// memory transfer of the results from the GPU
+			//cudaMemcpy(nc, dev_nc, size_combs * 16*sizeof(double), cudaMemcpyDeviceToHost);
+			//cudaMemcpy(count, dev_count, size_combs * sizeof(int), cudaMemcpyDeviceToHost);
 
-				// reconstruction of the normal output of dilep
-				// o num de combs*vars e o num de threads
-				//ofstream of ("hahaha",fstream::app);
-				//of << count << endl;
-				//of.close();
-				//exit(0);
+			// reconstruction of the normal output of dilep
+			// o num de combs*vars e o num de threads
+			//ofstream of ("hahaha",fstream::app);
+			//of << count << endl;
+			//of.close();
+			//exit(0);
 
 			for (unsigned counter = 0; counter < size_combs; ++counter) {
 				vector<myvector> result;
@@ -152,37 +154,35 @@ namespace Dilep {
 				#endif
 			}
 
-			cudaFree(dev_t_mass);
-			cudaFree(dev_w_mass);
-			cudaFree(dev_in_mpx);
-			cudaFree(dev_in_mpy);
+			//cudaFree(dev_t_mass);
+			//cudaFree(dev_w_mass);
+			//cudaFree(dev_in_mpx);
+			//cudaFree(dev_in_mpy);
 
-			cudaFree(dev_lep_a);
-			cudaFree(dev_lep_b);
-			cudaFree(dev_bl_a);
-			cudaFree(dev_bl_b);
+			//cudaFree(dev_lep_a);
+			//cudaFree(dev_lep_b);
+			//cudaFree(dev_bl_a);
+			//cudaFree(dev_bl_b);
 
-			cudaFree(dev_count);
-			cudaFree(dev_nc);
+			//cudaFree(dev_count);
+			//cudaFree(dev_nc);
 			
 		}
 
 
 		void dilep (vector<DilepInput> &di) {
 
-			const unsigned size = di.size();
+			const unsigned size_combs = di.size();
 
-			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], 
-				   t_mass[2 * size], w_mass[2 * size];
-			
+			// GPU vars
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
-			double a[5 * size], b[5 * size], c[5 * size], d[5 * size];
-		
-			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b;
-			double nc[16*size];
-			double *dev_nc;
-			int count[size], *dev_count;
-			int hasSolution = 0;
+			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b, *dev_nc;
+			int  *dev_count;
+
+			// Host vars
+			double a[5 * size], b[5 * size], c[5 * size], d[5 * size], nc[16*size];
+			double in_mpx[2 * size], in_mpy[2 * size], [2 * size], w_mass[2 * size];
+			int count[size], hasSolution = 0;
 
 			// time measurement
 			#ifdef MEASURE_DILEP
