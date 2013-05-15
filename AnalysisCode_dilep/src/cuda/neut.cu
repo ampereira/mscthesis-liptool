@@ -34,7 +34,7 @@ namespace Dilep {
 			double a[5], b[5], c[5], d[5], nc[16];
 			double in_mpx[2], in_mpy[2], t_mass[2], w_mass[2];
 			//int *count;
-			int count[size];
+			int count[size_combs];
 			DilepInput *di;
 
 
@@ -172,7 +172,7 @@ namespace Dilep {
 
 		void dilep (vector<DilepInput> &di) {
 
-			const unsigned size_combs = di.size();
+			const unsigned size = di.size();
 
 			// GPU vars
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
@@ -181,7 +181,7 @@ namespace Dilep {
 
 			// Host vars
 			double a[5 * size], b[5 * size], c[5 * size], d[5 * size], nc[16*size];
-			double in_mpx[2 * size], in_mpy[2 * size], [2 * size], w_mass[2 * size];
+			double in_mpx[2 * size], in_mpy[2 * size], [2 * size], w_mass[2 * size], t_mass[2 * size];
 			int count[size], hasSolution = 0;
 
 			// time measurement
