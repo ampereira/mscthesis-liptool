@@ -95,11 +95,12 @@ namespace Dilep {
 				d[counter * 5 + 4] = vdi[counter].getCbl().M();
 			}
 
-				ofstream of1 ("hahaha", fstream::app);
-				ofstream of2 ("hahaha", fstream::app);
 
-				of1 << x << endl;
-				of2 << x << endl;
+			ofstream of1 ("hahaha_marshall", fstream::app);
+			ofstream of2 ("hahaha_unmarshall", fstream::app);
+
+			of1 << x << endl;
+			of2 << x << endl;
 
 			for (unsigned counter = 0; counter < size_combs; ++counter) {
 				of1 << counter << endl;
@@ -176,11 +177,11 @@ namespace Dilep {
 				of2 << vdi[counter].getCbl().M() << endl;
 			}
 
-				of1 << endl;
-				of2 << endl;
+			of1 << endl;
+			of2 << endl;
 
-				of1.close();
-				of2.close();
+			of1.close();
+			of2.close();
 				
 			// transfer the inputs to GPU memory
 			//cudaMemcpy(dev_t_mass, t_mass, size_combs * 2*sizeof(double), cudaMemcpyHostToDevice);
