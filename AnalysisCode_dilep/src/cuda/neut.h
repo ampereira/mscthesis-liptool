@@ -28,11 +28,11 @@
 
 namespace Dilep {
 	namespace GPU {
-		__device__ __host__ void Csqrt(double _ar, double _ai, double _my[]);
-		__device__ __host__ void cubic(double a[], double rr[], double ri[]);
-		__device__ __host__ void toz(double k[], double l[], double g[]);
-		__device__ __host__ void my_qu( double my_in[], double my_val[]);
-		__device__ __host__ double calcMass(double x, double y, double z, double e);
+		/*__device__ __host__*/ void Csqrt(double _ar, double _ai, double _my[]);
+		/*__device__ __host__*/ void cubic(double a[], double rr[], double ri[]);
+		/*__device__ __host__*/ void toz(double k[], double l[], double g[]);
+		/*__device__ __host__*/ void my_qu( double my_in[], double my_val[]);
+		/*__device__ __host__*/ double calcMass(double x, double y, double z, double e);
 
 		std::vector<myvector>* dilep(unsigned iterations, double t_mass[], double w_mass[], 
 									double in_mpx[], double in_mpy[], double in_mpz[],
@@ -49,12 +49,12 @@ namespace Dilep {
 										TLorentzVector* lep_a, TLorentzVector* lep_b, 
 										TLorentzVector* bl_a, TLorentzVector* bl_b);
 
-		__global__ void calc_dilep(double t_mass[], double w_mass[], 
+		/*__global__*/ void calc_dilep(double t_mass[], double w_mass[], 
 						double in_mpx[], double in_mpy[], double _lep_a[], 
 						double _lep_b[], double _bl_a[], double _bl_b[], 
 						double nc[], int a[]);
 
-		__host__ void calc_dilep(double t_mass[], double w_mass[], 
+		/*__host__*/ void calc_dilep(double t_mass[], double w_mass[], 
 						double in_mpx[], double in_mpy[], double _lep_a[], 
 						double _lep_b[], double _bl_a[], double _bl_b[], 
 						double nc[], int a[], unsigned _tid);
