@@ -72,9 +72,9 @@ build/utilities.o: src/utilities.cxx src/utilities.h
 build/neut_seq.o: src/seq/neut.cxx src/myvector.h src/seq/neut.h
 	$(CXX) -Wall -Wextra $(CXXFLAGS) $(INCLUDES) -c src/seq/neut.cxx -o build/neut_seq.o
 
-build/neut_cuda.o: src/cuda/neut.cu src/myvector.h src/cuda/neut.cuh
+build/neut_cuda.o: src/cuda/neut.cxx src/myvector.h src/cuda/neut.cuh
 #	$(NVCC) $(NVCCFLAGS) $(INCLUDES) -c src/cuda/neut.cu -o build/neut_cuda.o
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/cuda/neut.cu -o build/neut_cuda.o
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/cuda/neut.cxx -o build/neut_cuda.o
 
 ttH_dilep_seq: src/ttH_dilep_old.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
 	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_seq $(INCLUDES) src/ttH_dilep_old.cxx build/neut_seq.o build/dilep_input.o build/utilities.o $(LIBDIRS)
