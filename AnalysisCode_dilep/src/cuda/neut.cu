@@ -351,29 +351,29 @@ namespace Dilep {
 				d[(i * 5) + 4] = 124907;
 			}*/
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
-			cudaMalloc(&dev_t_mass, size*2*sizeof(double));
-			cudaMalloc(&dev_w_mass, size*2*sizeof(double));
-			cudaMalloc(&dev_in_mpx, size*2*sizeof(double));
-			cudaMalloc(&dev_in_mpy, size*2*sizeof(double));
+			//cudaMalloc(&dev_t_mass, size*2*sizeof(double));
+			//cudaMalloc(&dev_w_mass, size*2*sizeof(double));
+			//cudaMalloc(&dev_in_mpx, size*2*sizeof(double));
+			//cudaMalloc(&dev_in_mpy, size*2*sizeof(double));
 
-			cudaMalloc(&dev_lep_a, sizeof(a));
-			cudaMalloc(&dev_lep_b, sizeof(b));
-			cudaMalloc(&dev_bl_a, sizeof(c));
-			cudaMalloc(&dev_bl_b, sizeof(d));
-			// allocation of the results
-			cudaMalloc(&dev_nc, size*16*sizeof(double));
-			cudaMalloc(&dev_count, size*sizeof(int));
+			//cudaMalloc(&dev_lep_a, sizeof(a));
+			//cudaMalloc(&dev_lep_b, sizeof(b));
+			//cudaMalloc(&dev_bl_a, sizeof(c));
+			//cudaMalloc(&dev_bl_b, sizeof(d));
+			//// allocation of the results
+			//cudaMalloc(&dev_nc, size*16*sizeof(double));
+			//cudaMalloc(&dev_count, size*sizeof(int));
 
 			// transfer the inputs to GPU memory
-			cudaMemcpy(dev_t_mass, t_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_w_mass, w_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_in_mpx, in_mpx, size*2*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_in_mpy, in_mpy, size*2*sizeof(double), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_t_mass, t_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_w_mass, w_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_in_mpx, in_mpx, size*2*sizeof(double), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_in_mpy, in_mpy, size*2*sizeof(double), cudaMemcpyHostToDevice);
 
-			cudaMemcpy(dev_lep_a, &a, sizeof(a), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_lep_b, &b, sizeof(b), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_a, &c, sizeof(c), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_lep_a, &a, sizeof(a), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_lep_b, &b, sizeof(b), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_bl_a, &c, sizeof(c), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);
 
 
 			//for (unsigned tid = 0; tid < size; ++tid) {
@@ -381,12 +381,12 @@ namespace Dilep {
 			//				a, b, c, d, nc, count, tid);
 			//}
 
-			calc_dilep <<< 1, size >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
-					dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
-
-			// memory transfer of the results from the GPU
-			cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
-			cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
+			//calc_dilep <<< 1, size >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
+			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
+//
+//			//// memory transfer of the results from the GPU
+//			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 
 
 			//ofstream of ("hahaha",fstream::app);
@@ -422,15 +422,15 @@ namespace Dilep {
 			
 		}
 
-		__global__
+		//__global__
 		void calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double _lep_a[], 
 				double _lep_b[], double _bl_a[], double _bl_b[], 
 				double nc[], int a[])
 		{
 
-			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
-			//unsigned tid = 1;
+			//unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
+			unsigned tid = 1;
 			double G_1, G_3;
 			double WMass_a, WMass_b, tMass_a, tMass_b, lep_a[5], lep_b[5], bl_a[5], bl_b[5];
 			double in_mpz[2] = {0.0, 0.0};
@@ -666,7 +666,7 @@ namespace Dilep {
 			a[tid] = ncand;
 		}
 
-		__host__
+		//__host__
 		void calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double _lep_a[], 
 				double _lep_b[], double _bl_a[], double _bl_b[], 
