@@ -96,7 +96,7 @@ namespace Dilep {
 			}
 
 
-			ofstream of1 ("hahaha_marshall", fstream::app);
+			/*ofstream of1 ("hahaha_marshall", fstream::app);
 			ofstream of2 ("hahaha_unmarshall", fstream::app);
 
 			of1 << x << endl;
@@ -181,7 +181,7 @@ namespace Dilep {
 			of2 << endl;
 
 			of1.close();
-			of2.close();
+			of2.close();*/
 				
 			// transfer the inputs to GPU memory
 			//cudaMemcpy(dev_t_mass, t_mass, size_combs * 2*sizeof(double), cudaMemcpyHostToDevice);
