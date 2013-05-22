@@ -4063,7 +4063,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 		//vector<DilepInput> outs (inputs.size() * dilep_iterations);
 
-	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
+/*	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
 		
 		for (unsigned i = 0; i < dilep_iterations; ++i) {
 			// Always pick the original combo
@@ -4072,7 +4072,7 @@ void ttH_dilep::ttDilepKinFit(){
 			inputs[counter].applyVariance(RESOLUTION);
 		}
 	}
-
+*/
 
 	Dilep::GPU::dilep(inputs);
 

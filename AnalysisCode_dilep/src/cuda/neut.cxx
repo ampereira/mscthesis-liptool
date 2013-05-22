@@ -87,6 +87,7 @@ namespace Dilep {
 			#endif
 
 			for (unsigned i = 0; i < size; ++i) {
+				di[i].applyVariance(0.02);
 
 				in_mpx[i * 2]		= di[i].getInMpx(0);
 				in_mpx[(i * 2) + 1] = di[i].getInMpx(1);
@@ -136,13 +137,6 @@ namespace Dilep {
 			// allocation of the results
 			//cudaMalloc(&dev_nc, size*16*sizeof(double));
 			//cudaMalloc(&dev_count, size*sizeof(int));
-
-			/*ofstream of ("hahaha",fstream::app);
-			of << NUM_THREADS*2*sizeof(double) << endl;
-			of << sizeof(b) << endl;
-			of.close();
-			exit(0);*/
-
 
 			// transfer the inputs to GPU memory
 			//cudaMemcpy(dev_t_mass, t_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
