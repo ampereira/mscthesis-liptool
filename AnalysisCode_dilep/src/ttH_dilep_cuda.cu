@@ -4027,62 +4027,64 @@ void ttH_dilep::ttDilepKinFit(){
 	// WARNING: numa primeira fase apenas para num combos <= num parallel tasks
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
 
+	// Best solution merge
+	ttDKF_Best_Sol best_sols [num_threads];
+	ttDKF_Best_Sol best;
+
+
 #ifdef MEASURE_KINFIT
 	long long int time = ttH::KinFit::startTimer();
 #endif
 
-	// ttbar variables
-	double myttbar_px;
-	double myttbar_py;
-	double myttbar_pz;
-	double myttbar_E;
-	// ttH->lnublnubbbar Probability Factors
-	double MaxTotalProb = -10e+15;
-	double MaxHiggsProb = -10e+15;
-	// Higgs helpfull variables
-	double theta_jet1_HiggsFromTTbar;
-	double theta_jet2_HiggsFromTTbar;
-	double fac_j1j2H_ttbar;
-	double mass_j1H_ttbar;
-	double mass_j2H_ttbar;
+
 	
+		unsigned task_id;		// used to determine the comb to use
+		// OpenMP variable declarations - cannot use class variables in OpenMP clauses
+	
+		// ttbar variables
+		double myttbar_px;
+		double myttbar_py;
+		double myttbar_pz;
+		double myttbar_E;
+		// ttH->lnublnubbbar Probability Factors
+		double MaxTotalProb = -10e+15;
+		double MaxHiggsProb = -10e+15;
+		// Higgs helpfull variables
+		double theta_jet1_HiggsFromTTbar;
+		double theta_jet2_HiggsFromTTbar;
+		double fac_j1j2H_ttbar;
+		double mass_j1H_ttbar;
+		double mass_j2H_ttbar;
+		
 
-	int nTSol = 0;
-	int n_ttDKF_Best = -999;
-	int first = 0;
-	DilepInput *ddi;
+		int nTSol = 0;
+		int n_ttDKF_Best = -999;
+		int first = 0;
 
-	vector<DilepInput> outs (inputs.size() * dilep_iterations);
+		//vector<DilepInput> outs (inputs.size() * dilep_iterations);
 
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
 		
 		for (unsigned i = 0; i < dilep_iterations; ++i) {
 			// Always pick the original combo
-			ddi = &inputs[counter];
 
 			// Apply the variance (thread safe)
-			ddi->applyVariance(RESOLUTION);
-			outs.push_back(*ddi);
+			inputs[counter].applyVariance(RESOLUTION);
 		}
 	}
 
 
-	/*for (unsigned counter = 0; counter < outs.size(); ++counter) {
-		//vector<DilepInput> v;
-		//v.push_back(outs[counter]);
-		//Dilep::GPU::dilep(v);
-		Dilep::GPU::dilep(outs[counter]);
-	}*/
-	Dilep::GPU::dilep(outs, EveNumber);
+	Dilep::GPU::dilep(inputs);
 
-	for (unsigned counter = 0; counter < outs.size(); ++counter) {
 
-		DilepInput di = outs[counter];
+	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
+
+		DilepInput di = inputs[counter];
 		// ---------------------------------------
 		// Get info from all possible solutions
 		// ---------------------------------------
 		// result on local variable since it will be accessed plenty of times
-
+	
 		std::vector<myvector> result = di.getResult();
 		HasSolution += di.getHasSol();
 

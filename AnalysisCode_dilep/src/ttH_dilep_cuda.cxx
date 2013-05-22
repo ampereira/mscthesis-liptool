@@ -4060,41 +4060,31 @@ void ttH_dilep::ttDilepKinFit(){
 		int nTSol = 0;
 		int n_ttDKF_Best = -999;
 		int first = 0;
-		DilepInput di;
 
+		//vector<DilepInput> outs (inputs.size() * dilep_iterations);
 
-	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
+	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
 		
-		// Calculates the new id of the task
-		task_id = (float) counter / (float) dilep_iterations;	
+		for (unsigned i = 0; i < dilep_iterations; ++i) {
+			// Always pick the original combo
 
-		// Always pick the original combo
-		if (task_id == (int) task_id || !first) {
-			di = inputs[task_id];
-			++first;
+			// Apply the variance (thread safe)
+			inputs[counter].applyVariance(RESOLUTION);
 		}
-		// Apply the variance (thread safe)
-		di.applyVariance(RESOLUTION);
+	}
 
-		// Run the dileptonic reconstruction 
-#ifdef SEQ
-		Dilep::CPU::dilep(di);
-#elif OMP
-		Dilep::CPU::dilep(di);
-#elif CUDA
-		//vector<DilepInput> vdi;
-		//vdi.push_back(di);
-		Dilep::GPU::dilep(di, 0);
-		//di = vdi[0];
-#elif PAPI
-		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-#endif
 
+	Dilep::GPU::dilep(inputs);
+
+
+	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
+
+		DilepInput di = inputs[counter];
 		// ---------------------------------------
 		// Get info from all possible solutions
 		// ---------------------------------------
 		// result on local variable since it will be accessed plenty of times
-
+	
 		std::vector<myvector> result = di.getResult();
 		HasSolution += di.getHasSol();
 
