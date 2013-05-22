@@ -53,13 +53,13 @@ namespace Dilep {
 			//cudaMalloc(&dev_count, size_combs * sizeof(int));
 
 
-
-			for (unsigned counter = 0; counter < size_combs; ++counter) {
-
 				// time measurement
 				#ifdef MEASURE_DILEP
 				long long int time = startTimer();
 				#endif
+
+			for (unsigned counter = 0; counter < size_combs; ++counter) {
+
 
 				in_mpx[counter * 2] 	= vdi[counter].getInMpx(0);
 				in_mpx[counter * 2 + 1] = vdi[counter].getInMpx(1);
@@ -96,7 +96,7 @@ namespace Dilep {
 			}
 
 
-			ofstream of1 ("hahaha_marshall", fstream::app);
+			/*ofstream of1 ("hahaha_marshall", fstream::app);
 			ofstream of2 ("hahaha_unmarshall", fstream::app);
 
 			of1 << x << endl;
@@ -181,7 +181,7 @@ namespace Dilep {
 			of2 << endl;
 
 			of1.close();
-			of2.close();
+			of2.close();*/
 				
 			// transfer the inputs to GPU memory
 			//cudaMemcpy(dev_t_mass, t_mass, size_combs * 2*sizeof(double), cudaMemcpyHostToDevice);

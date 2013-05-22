@@ -10,7 +10,25 @@ In this chapter the implementation process, based on the models on section \ref{
 
 The implementation of the shared memory parallelization follows the workflow presented in section \ref{Parallelization:SharedMem}. The first goal was to have a working na\"{i}ve implementation that could be used as a starting point so that it could be profiled and the bottlenecks identified.
 
-The first step was to divide the \ttDilepKinFit main loop that iterates through all the combinations of leptons/jets of an event, and then the respective variations, exemplified in the workflow of section \ref{Parallelization:Sequential}
-One of the challenges with the implementation was that the portion of the code to parallelize was reading and writing in a set of 34 global variables, most of them being vectors of ROOT classes.
+The first step was to divide the \ttDilepKinFit main loop that iterates through all the combinations of leptons/jets of an event, and then the respective variations, exemplified in the workflow of section \ref{Parallelization:Sequential}. The first problem with this approach is that the portion of the code to parallelize reads and writes in a set of 34 global variables, most of them being vectors of ROOT classes. The access to these variables could be controlled in such a way that only one thread would be writing on the said variables. However, they would have to do it in order to ensure that the state of the reconstruction of one variation would not mix with others. A much simpler way is to create a copy of the said variables for each thread to work on. This avoids serial access to the variables which would cause contention and degrade the performance.
+
+The second problem is that the various combinations, and respective variations, must be scattered among the threads so that each has a data set to work on. Each combination, and respective variations, are also stored in global variables, but these cannot be simply made private to each thread. The portion of \ttDilepKinFit that build the combinations cannot be parallelized because the computation of a given combination is dependent on the jets and leptons used in the previous to avoid duplicates. The total amount of combinations, which depends on the amount of jets and leptons, $n$, (regardless of the order, i.e., $(j_1, j_2) = (j_2, j_1)$), pairing two jets with two leptons in the same combination, with $k = 4$, is, according to the mathematical formula for combinations \ref{eq:Combination}:
+
+\begin{center}
+	\begin{equation}
+		\binom{n}{k} = \frac{n!}{k!(n - k)!} \mbox{, with k = 4 then } \binom{n}{4} = \frac{n!}{8(n - 4)!}
+		\label{eq:Combination}
+	\end{equation}
+\end{center}
+
+On average, the number of combinations for each event that reachs the cut 20 with the given input is \todo{QUANTO E?}.
+
+For the combinations to be scattered among the threads it is needed to store them in a data structure, instead of using global variables as it is currently implemented, and then each thread picks a combination and processes it. The implementation and other specific details of the data structure is presented in subsection \ref{Implementation:SharedMem:DataStructs}.
+
+Furthermore, only the best reconstruction is used so there is no need to store all the reconstructions
 
 \todo{seccao para a estrutura de dados e calcular o seu tamanho etc)
+
+\pdfbookmark{Data Structure Characterization}{data structure characterization}
+\subsection{Data Structure Characterization}
+\label{Implementation:SharedMem:DataStructs}
