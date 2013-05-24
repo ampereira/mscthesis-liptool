@@ -70,6 +70,10 @@ public:
 	TLorentzVectorWFlags getClepW (void) const;
 	TLorentzVectorWFlags getZbjW (void) const;
 	TLorentzVectorWFlags getCbjW (void) const;
+	int getZlepWisb (void) const;
+	int getClepWisb (void) const;
+	int getZbjWisb (void) const;
+	int getCbjWisb (void) const;
 	TLorentzVectorWFlags getJet1HiggsW (void) const;
 	TLorentzVectorWFlags getJet2HiggsW (void) const;
 	double getMissPx (void) const;

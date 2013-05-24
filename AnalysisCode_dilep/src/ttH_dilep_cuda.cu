@@ -4011,9 +4011,9 @@ void ttH_dilep::ttDilepKinFit(){
 									// Define number of experiments for resolution
 									// loop over several resolution experiments
 
-									TRandom3 *_t_rnd = new TRandom3 (SEED);
+									//TRandom3 *_t_rnd = new TRandom3 (SEED);
 									//DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
-									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m, *_t_rnd);
+									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 									inputs.push_back(di);
 								}
 							}
@@ -4038,41 +4038,28 @@ void ttH_dilep::ttDilepKinFit(){
 
 
 	
-		unsigned task_id;		// used to determine the comb to use
-		// OpenMP variable declarations - cannot use class variables in OpenMP clauses
+	unsigned task_id;		// used to determine the comb to use
+	// OpenMP variable declarations - cannot use class variables in OpenMP clauses
+
+	// ttbar variables
+	double myttbar_px;
+	double myttbar_py;
+	double myttbar_pz;
+	double myttbar_E;
+	// ttH->lnublnubbbar Probability Factors
+	double MaxTotalProb = -10e+15;
+	double MaxHiggsProb = -10e+15;
+	// Higgs helpfull variables
+	double theta_jet1_HiggsFromTTbar;
+	double theta_jet2_HiggsFromTTbar;
+	double fac_j1j2H_ttbar;
+	double mass_j1H_ttbar;
+	double mass_j2H_ttbar;
 	
-		// ttbar variables
-		double myttbar_px;
-		double myttbar_py;
-		double myttbar_pz;
-		double myttbar_E;
-		// ttH->lnublnubbbar Probability Factors
-		double MaxTotalProb = -10e+15;
-		double MaxHiggsProb = -10e+15;
-		// Higgs helpfull variables
-		double theta_jet1_HiggsFromTTbar;
-		double theta_jet2_HiggsFromTTbar;
-		double fac_j1j2H_ttbar;
-		double mass_j1H_ttbar;
-		double mass_j2H_ttbar;
-		
 
-		int nTSol = 0;
-		int n_ttDKF_Best = -999;
-		int first = 0;
-
-		//vector<DilepInput> outs (inputs.size() * dilep_iterations);
-
-/*	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
-		
-		for (unsigned i = 0; i < dilep_iterations; ++i) {
-			// Always pick the original combo
-
-			// Apply the variance (thread safe)
-			inputs[counter].applyVariance(RESOLUTION);
-		}
-	}
-*/
+	int nTSol = 0;
+	int n_ttDKF_Best = -999;
+	int first = 0;
 
 	Dilep::GPU::dilep(inputs);
 

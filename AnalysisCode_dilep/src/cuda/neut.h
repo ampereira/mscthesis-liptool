@@ -20,12 +20,14 @@
 #include "../myvector.h"
 #include "../dilep_input.h"
 #include "../utilities.h"
+#include "../../../LipMiniAnalysis/TLorentzVectorWFlags.h"
 
 #define TPI 3.14159265358979312
 #define NUM_THREADS 2
 #define TO1D(nc,tid,sol,did) nc[tid*16+sol*4+did]
 #define STRIDE2(a,i) a[tid * 2 + i]
 #define STRIDE5(a,i) a[tid * 5 + i]
+#define RESOLUTION 0.02
 
 
 
@@ -49,9 +51,13 @@ namespace Dilep {
 		void dilep (vector<DilepInput> &di);
 		void dilep (vector<DilepInput> &vdi, int x);
 
+		/*__global__*/ void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
+			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
+			double _MissPx, double _MissPy, double _t_mass[], double _w_mass[], double nc[], int a[]);
+
 		void applyVariance (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double _z_bl[], double _c_bl[], double MissPx, double MissPy, float res, unsigned _tid);
+			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy);
 
 
 		std::vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 
@@ -59,7 +65,7 @@ namespace Dilep {
 										TLorentzVector* lep_a, TLorentzVector* lep_b, 
 										TLorentzVector* bl_a, TLorentzVector* bl_b);
 
-		/*__global__*/ void calc_dilep(double t_mass[], double w_mass[], 
+		/*__device__*/ void calc_dilep(double t_mass[], double w_mass[], 
 						double in_mpx[], double in_mpy[], double _lep_a[], 
 						double _lep_b[], double _bl_a[], double _bl_b[], 
 						double nc[], int a[]);

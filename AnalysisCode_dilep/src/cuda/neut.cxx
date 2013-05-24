@@ -5,6 +5,8 @@ using namespace std;
 
 namespace Dilep {
 	namespace GPU {
+
+		unsigned _tid = 0, size;
 	
 		double calcMass (double x, double y, double z, double e) {
 			double mm, mass;
@@ -82,9 +84,10 @@ namespace Dilep {
 
 		void applyVariance (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double _z_bl[], double _c_bl[], double MissPx, double MissPy, float res, unsigned _tid) {
+			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy) {
 
 			unsigned tid = _tid;
+			//unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;;
 
 			// Using pointers for better code readbility - does it affect the performance in the kernel?
 			double *in_mpx		= &STRIDE2(_in_mpx, 0);
@@ -111,13 +114,13 @@ namespace Dilep {
 			// _______z_lep___________________
 			// _______________________________
 			if (  abs(  z_lepWFlags[3]  )  ==  11  ){ //___electrons____
-				n_Px = z_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., res ) );
-				n_Py = z_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., res ) );
-				n_Pz = z_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+				n_Px = z_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+				n_Py = z_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+				n_Pz = z_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
 			} else if (  abs(z_lepWFlags[3]) == 13 ){ //_____muons______
-				n_Px = z_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., res ) );
-				n_Py = z_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., res ) );
-				n_Pz = z_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+				n_Px = z_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+				n_Py = z_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+				n_Pz = z_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
 			}
 			// Recalculate z_lep
 			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_lepWFlags[4]*z_lepWFlags[4] );
@@ -128,20 +131,20 @@ namespace Dilep {
 			// Propagate to MissPx and MissPy
 			delPx = z_lepWFlags[0] - n_Px; 
 			delPy = z_lepWFlags[1] - n_Py;			
-			in_mpx[0] = MissPx + delPx; in_mpx[1] = MissPx + delPx; // initialize miss(Px,Py) neutrino 1
-			in_mpy[0] = MissPy + delPy; in_mpy[1] = MissPy + delPy; // initialize miss(Px,Py) neutrino 2
+			in_mpx[0] = _MissPx + delPx; in_mpx[1] = _MissPx + delPx; // initialize miss(Px,Py) neutrino 1
+			in_mpy[0] = _MissPy + delPy; in_mpy[1] = _MissPy + delPy; // initialize miss(Px,Py) neutrino 2
 
 			// _______________________________
 			// _______c_lep___________________
 			// _______________________________
 			if (  abs(  c_lepWFlags[3]  )  ==  11  ){ //___electrons____
-				n_Px = c_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., res ) );
-				n_Py = c_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., res ) );
-				n_Pz = c_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+				n_Px = c_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+				n_Py = c_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+				n_Pz = c_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
 			} else if (  abs(c_lepWFlags[3]) == 13 ){ //_____muons______
-				n_Px = c_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., res ) );
-				n_Py = c_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., res ) );
-				n_Pz = c_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+				n_Px = c_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+				n_Py = c_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+				n_Pz = c_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
 			}
 			// Recalculate c_lep
 			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_lepWFlags[4]*c_lepWFlags[4] );
@@ -158,9 +161,9 @@ namespace Dilep {
 			// _______________________________
 			// _______z_bj____________________
 			// _______________________________
-			n_Px = z_bjWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., res ) );
-			n_Py = z_bjWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., res ) );
-			n_Pz = z_bjWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+			n_Px = z_bjWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+			n_Py = z_bjWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+			n_Pz = z_bjWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
 			// Recalculate z_bj
 			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_bjWFlags[4]*z_bjWFlags[4] );
 			z_bj[0] = n_Px;	// Change Px 				
@@ -177,9 +180,9 @@ namespace Dilep {
 			// _______________________________
 			// _______c_bj____________________
 			// _______________________________
-			n_Px = c_bjWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., res ) );
-			n_Py = c_bjWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., res ) );
-			n_Pz = c_bjWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+			n_Px = c_bjWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+			n_Py = c_bjWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+			n_Pz = c_bjWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
 		//	n_Pt = c_bjWFlags.Pt() * ( 1. + _t_rnd_.Gaus( 0., St_j ) );
 		//	n_E  = c_bjWFlags.E()  * ( 1. + _t_rnd_.Gaus( 0., Se_j ) );
 			// Recalculate c_bj
@@ -215,9 +218,35 @@ namespace Dilep {
 			calcMass(c_bl);
 		}
 
+		//__global__
+		void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
+			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
+			double _MissPx, double _MissPy, double _t_mass[], double _w_mass[], double nc[], int a[]) {
+
+			// CPU version
+			double _z_bl[5 * size], _c_bl[5 * size];
+
+			for (_tid = 0; _tid < size; ++_tid)
+				applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
+					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, _MissPx, _MissPy);
+			
+			for (unsigned tid = 0; tid < size; ++tid)
+				calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
+							_z_lep, _c_lep, _z_bl, _c_bl, nc, a, tid);
+
+			// GPU version
+			//double _z_bl[5], _c_bl[5];
+
+			//applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
+			//		_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, _MissPx, _MissPy);
+
+			//calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
+			//				_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
+		}
+
 		void dilep (vector<DilepInput> &di) {
 
-			unsigned size = di.size();
+			size = di.size();
 			
 			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], 
 				   t_mass[2 * size], w_mass[2 * size];
@@ -226,11 +255,14 @@ namespace Dilep {
 			double a[5 * size], b[5 * size], c[5 * size], d[5 * size], e[5 * size], f[5 * size];	// e and f are the z/c_bl
 			double aFlags[5 * size], bFlags[5 * size], cFlags[5 * size], dFlags[5 * size];
 		
-			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b;
+			double *dev_lep_a, *dev_lep_b, *dev_bj_a, *dev_bj_b;
+			double *dev_lep_aFlags, *dev_lep_bFlags, *dev_bj_aFlags, *dev_bj_bFlags;
 			double nc[16*size];
-			double *dev_nc;
+			double *dev_nc, *dev_MissPx, *dev_MissPy;
 			int count[size], *dev_count;
 			int hasSolution = 0;
+
+			double _misspx = di[0].getMissPx(), _misspy = di[0].getMissPy();
 
 			// time measurement
 			#ifdef MEASURE_DILEP
@@ -238,7 +270,6 @@ namespace Dilep {
 			#endif
 
 			for (unsigned i = 0; i < size; ++i) {
-				di[i].applyVariance(0.02);
 
 				in_mpx[i * 2]		= di[i].getInMpx(0);
 				in_mpx[(i * 2) + 1] = di[i].getInMpx(1);
@@ -271,11 +302,11 @@ namespace Dilep {
 				b[(i * 5) + 4] = di[i].getClep().M();
 
 				// c_lepWFlags
-				bFlags[i * 5]	    = di[i].getClep().Px();
-				bFlags[(i * 5) + 1] = di[i].getClep().Py();
-				bFlags[(i * 5) + 2] = di[i].getClep().Pz();
-				bFlags[(i * 5) + 3] = di[i].getClep().isb;
-				bFlags[(i * 5) + 4] = di[i].getClep().M();
+				bFlags[i * 5]	    = di[i].getClepW().Px();
+				bFlags[(i * 5) + 1] = di[i].getClepW().Py();
+				bFlags[(i * 5) + 2] = di[i].getClepW().Pz();
+				bFlags[(i * 5) + 3] = di[i].getClepW().isb;
+				bFlags[(i * 5) + 4] = di[i].getClepW().M();
 
 				// z_bj
 				c[i * 5]	   = di[i].getZbj().Px();
@@ -285,11 +316,11 @@ namespace Dilep {
 				c[(i * 5) + 4] = di[i].getZbj().M();
 
 				// z_bjWFlags
-				cFlags[i * 5]	    = di[i].getZbj().Px();
-				cFlags[(i * 5) + 1] = di[i].getZbj().Py();
-				cFlags[(i * 5) + 2] = di[i].getZbj().Pz();
-				cFlags[(i * 5) + 3] = di[i].getZbj().isb;
-				cFlags[(i * 5) + 4] = di[i].getZbj().M();
+				cFlags[i * 5]	    = di[i].getZbjW().Px();
+				cFlags[(i * 5) + 1] = di[i].getZbjW().Py();
+				cFlags[(i * 5) + 2] = di[i].getZbjW().Pz();
+				cFlags[(i * 5) + 3] = di[i].getZbjW().isb;
+				cFlags[(i * 5) + 4] = di[i].getZbjW().M();
 
 				// c_bj
 				d[i * 5]	   = di[i].getCbj().Px();
@@ -299,16 +330,12 @@ namespace Dilep {
 				d[(i * 5) + 4] = di[i].getCbj().M();
 
 				// c_bjWFlags
-				dFlags[i * 5]	    = di[i].getCbj().Px();
-				dFlags[(i * 5) + 1] = di[i].getCbj().Py();
-				dFlags[(i * 5) + 2] = di[i].getCbj().Pz();
-				dFlags[(i * 5) + 3] = di[i].getCbj().isb;
-				dFlags[(i * 5) + 4] = di[i].getCbj().M();
+				dFlags[i * 5]	    = di[i].getCbjW().Px();
+				dFlags[(i * 5) + 1] = di[i].getCbjW().Py();
+				dFlags[(i * 5) + 2] = di[i].getCbjW().Pz();
+				dFlags[(i * 5) + 3] = di[i].getCbjW().isb;
+				dFlags[(i * 5) + 4] = di[i].getCbjW().M();
 			}
-
-			for (unsigned tid = 0; tid < size; ++tid)
-				applyVariance(in_mpx, in_mpy, aFlags, bFlags, cFlags, dFlags,
-					a, b, c, d, e, f, _MissPx, _MissPy)
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			//cudaMalloc(&dev_t_mass, size*2*sizeof(double));
@@ -318,31 +345,49 @@ namespace Dilep {
 
 			//cudaMalloc(&dev_lep_a, sizeof(a));
 			//cudaMalloc(&dev_lep_b, sizeof(b));
-			//cudaMalloc(&dev_bl_a, sizeof(c));
-			//cudaMalloc(&dev_bl_b, sizeof(d));
+			//cudaMalloc(&dev_bj_a, sizeof(c));
+			//cudaMalloc(&dev_bj_b, sizeof(d));
+
+			//cudaMalloc(&dev_lep_aFlags, sizeof(aFlags));
+			//cudaMalloc(&dev_lep_bFlags, sizeof(bFlags));
+			//cudaMalloc(&dev_bj_aFlags, sizeof(cFlags));
+			//cudaMalloc(&dev_bj_bFlags, sizeof(dFlags));
+
+			//cudaMalloc(&dev_MissPx, sizeof(double));
+			//cudaMalloc(&dev_MissPy, sizeof(double));
+
 			// allocation of the results
 			//cudaMalloc(&dev_nc, size*16*sizeof(double));
 			//cudaMalloc(&dev_count, size*sizeof(int));
 
 			// transfer the inputs to GPU memory
-			//cudaMemcpy(dev_t_mass, t_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_w_mass, w_mass, size*2*sizeof(double), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_in_mpx, in_mpx, size*2*sizeof(double), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_in_mpy, in_mpy, size*2*sizeof(double), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_t_mass, t_mass, sizeof(t_mass), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_w_mass, w_mass, sizeof(w_mass), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_in_mpx, in_mpx, sizeof(in_mpx), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_in_mpy, in_mpy, sizeof(in_mpy), cudaMemcpyHostToDevice);
 
-			//cudaMemcpy(dev_lep_a, &a, sizeof(a), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_lep_b, &b, sizeof(b), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_bl_a, &c, sizeof(c), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_bl_b, &d, sizeof(d), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_lep_a, a, sizeof(a), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_lep_b, b, sizeof(b), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_bj_a, c, sizeof(c), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_bj_b, d, sizeof(d), cudaMemcpyHostToDevice);
 
-			for (unsigned tid = 0; tid < size; ++tid)
-				calc_dilep(t_mass, w_mass, in_mpx, in_mpy, 
-							a, b, c, d, nc, count, tid);
+			//cudaMemcpy(dev_lep_aFlags, aFlags, sizeof(aFlags), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_lep_bFlags, bFlags, sizeof(bFlags), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_bj_aFlags, cFlags, sizeof(cFlags), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_bj_bFlags, dFlags, sizeof(dFlags), cudaMemcpyHostToDevice);
 
+			//cudaMemcpy(dev_MissPx, _misspx, sizeof(double), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_MissPy, _misspy, sizeof(double), cudaMemcpyHostToDevice);
 			
-			//calc_dilep <<< 1, size >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, 
-			//		dev_lep_a, dev_lep_b, dev_bl_a, dev_bl_b, dev_nc, dev_count);
 
+			dilep_kernel(in_mpx, in_mpy, aFlags, bFlags, cFlags, dFlags,
+					a, b, c, d, _misspx, _misspy, t_mass, w_mass, nc, count);
+
+
+			//dilep_kernel <<< 1, size >>> (dev_in_mpx, dev_in_mpy, dev_lep_aFlags, dev_lep_bFlags, dev_bj_aFlags, dev_bj_bFlags,
+			//		dev_lep_a, dev_lep_b, dev_bj_a, dev_bj_b, dev_MissPx, dev_MissPy, dev_t_mass, dev_w_mass, dev_nc, dev_count);
+			
+			
 			// memory transfer of the results from the GPU
 			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
 			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);

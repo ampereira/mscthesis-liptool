@@ -5,7 +5,9 @@ DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVe
 						TLorentzVectorWFlags _c_lepWFlags, TLorentzVectorWFlags _jet1_HiggsWFlags, TLorentzVectorWFlags _jet2_HiggsWFlags,
 						double _in_mpx[], double _in_mpy[], double _in_mpz[], double _MissPx,
 						double _MissPy, double _t_mass[], double _w_mass[], TRandom3 &_t_rand) {
+	#ifndef CUDA
 	t_rnd = _t_rand;
+	#endif
 
 	z_lep = _z_lep;
 	c_lep = _c_lep;
@@ -44,7 +46,9 @@ DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVe
 						TLorentzVectorWFlags _c_lepWFlags, TLorentzVectorWFlags _jet1_HiggsWFlags, TLorentzVectorWFlags _jet2_HiggsWFlags,
 						double _in_mpx[], double _in_mpy[], double _in_mpz[], double _MissPx,
 						double _MissPy, double _t_mass[], double _w_mass[]) {
+	#ifndef CUDA
 	t_rnd.SetSeed(SEED);
+	#endif
 
 	z_lep = _z_lep;
 	c_lep = _c_lep;
@@ -79,7 +83,9 @@ DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVe
 
 // Constructor
 DilepInput::DilepInput (const DilepInput &other) {
+	#ifndef CUDA
 	t_rnd.SetSeed(SEED);
+	#endif
 
 	in_mpx[0] = other.getInMpx(0);
 	in_mpx[1] = other.getInMpx(1);
@@ -193,6 +199,7 @@ void applyVariance (vector<DilepInput> &vdi, float res, int amount) {
 // following a Gaussian distribution
 // Use given seed
 void DilepInput::applyVariance (float res, int seed) {
+	#ifndef CUDA
 	// Resolution values
 	double Sx_e = res, Sy_e = res, Sz_e = res, St_e = res, Se_e = res;  // electrons
 	double Sx_m = res, Sy_m = res, Sz_m = res, St_m = res, Se_m = res;  // muons
@@ -314,13 +321,14 @@ void DilepInput::applyVariance (float res, int seed) {
 	z_bl = z_bj + z_lep;
 	c_bl = c_bj + c_lep;
 
-
+#endif
 }
 
 // Apply variance to the inputs of the dilep function, given a resolution and a seed,
 // following a Gaussian distribution
 // Use default seed
 void DilepInput::applyVariance (float res) {
+	#ifndef CUDA
 	// Resolution values
 	double Sx_e = res, Sy_e = res, Sz_e = res, St_e = res, Se_e = res;  // electrons
 	double Sx_m = res, Sy_m = res, Sz_m = res, St_m = res, Se_m = res;  // muons
@@ -445,6 +453,7 @@ void DilepInput::applyVariance (float res) {
 	cout << z_bl.E()  << " - " << z_bj.E()  << " - " << z_lep.E()  << endl;
 	cout << z_bl.M()  << " - " << z_bj.M()  << " - " << z_lep.M()  << endl;
 	exit(0);*/
+	#endif
 }
 
 // Getters
@@ -488,6 +497,23 @@ TLorentzVectorWFlags DilepInput::getZbjW (void) const {
 TLorentzVectorWFlags DilepInput::getCbjW (void) const {
 	return c_bjWFlags;
 }
+
+int DilepInput::getZlepWisb (void) const {
+	return z_lepWFlags.isb;
+}
+
+int DilepInput::getClepWisb (void) const {
+	return c_lepWFlags.isb;
+}
+
+int DilepInput::getZbjWisb (void) const {
+	return z_bjWFlags.isb;
+}
+
+int DilepInput::getCbjWisb (void) const {
+	return c_bjWFlags.isb;
+}
+
 
 TLorentzVectorWFlags DilepInput::getJet1HiggsW (void) const {
 	return jet1_HiggsWFlags;
