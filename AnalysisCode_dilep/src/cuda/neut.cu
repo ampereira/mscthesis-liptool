@@ -223,7 +223,7 @@ namespace Dilep {
 		__global__
 		void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double _MissPx, double _MissPy, double _t_mass[], double _w_mass[], double nc[], int a[]) {
+			double *_MissPx, double *_MissPy, double _t_mass[], double _w_mass[], double nc[], int a[]) {
 
 			// CPU version
 			//double _z_bl[5 * size], _c_bl[5 * size];
@@ -240,7 +240,7 @@ namespace Dilep {
 			double _z_bl[5], _c_bl[5];
 
 			applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
-					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, _MissPx, _MissPy);
+					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy);
 
 			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
 							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
@@ -378,8 +378,8 @@ namespace Dilep {
 			cudaMemcpy(dev_bj_aFlags, cFlags, sizeof(cFlags), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_bj_bFlags, dFlags, sizeof(dFlags), cudaMemcpyHostToDevice);
 
-			cudaMemcpy(dev_MissPx, _misspx, sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_MissPy, _misspy, sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_MissPx, &_misspx, sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_MissPy, &_misspy, sizeof(double), cudaMemcpyHostToDevice);
 			
 
 			//dilep_kernel(in_mpx, in_mpy, aFlags, bFlags, cFlags, dFlags,
