@@ -25,6 +25,8 @@ On average, the number of combinations for each event that reachs the cut 20 wit
 
 For the combinations to be scattered among the threads it is needed to store them in a data structure, instead of using global variables as it is currently implemented, and then each thread picks a combination and processes it. The implementation and other specific details of the data structure is presented in subsection \ref{Implementation:SharedMem:DataStructs}.
 
+One approach to the computation of the variations for each combination could take advantage of the previously mentioned data structure. After each combination is computed all the given variations could be calculated and added to the data structure, since there is no difference between a variation and a combination, besides the values of the variables stored in the data structure.
+
 Furthermore, only the best reconstruction is used so there is no need to store all the reconstructions
 
 \todo{seccao para a estrutura de dados e calcular o seu tamanho etc)

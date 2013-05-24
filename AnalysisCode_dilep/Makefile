@@ -74,8 +74,8 @@ build/neut_seq.o: src/seq/neut.cxx src/myvector.h src/seq/neut.h
 	$(CXX) -Wall -Wextra $(CXXFLAGS) $(INCLUDES) -c src/seq/neut.cxx -o build/neut_seq.o
 
 build/neut_cuda.o: src/cuda/neut.cxx src/myvector.h src/cuda/neut.cuh
-#	$(NVCC) $(NVCCFLAGS) $(INCLUDES) -c src/cuda/neut.cu -o build/neut_cuda.o
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/cuda/neut.cxx -o build/neut_cuda.o
+	$(NVCC) $(NVCCFLAGS) $(INCLUDES) -c src/cuda/neut.cu -o build/neut_cuda.o
+#	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/cuda/neut.cxx -o build/neut_cuda.o
 
 ttH_dilep_seq: src/ttH_dilep_old.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
 	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_seq $(INCLUDES) src/ttH_dilep_old.cxx build/neut_seq.o build/dilep_input.o build/utilities.o $(LIBDIRS)
@@ -91,8 +91,8 @@ ttH_dilep_omp: src/ttH_dilep_omp.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build
 	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_omp $(INCLUDES) src/ttH_dilep_omp.cxx build/neut_seq.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRS)
 
 ttH_dilep_cuda: src/ttH_dilep_cuda.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_cuda.o build/ttDKF_Best_Sol.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
-#	$(NVCC) $(NVCCFLAGS) -o bin/ttH_dilep_cuda $(INCLUDES) src/ttH_dilep_cuda.cu build/neut_cuda.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRSCUDA)
-	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_cuda $(INCLUDES) src/ttH_dilep_cuda.cxx build/neut_cuda.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRSCUDA)
+	$(NVCC) $(NVCCFLAGS) -o bin/ttH_dilep_cuda $(INCLUDES) src/ttH_dilep_cuda.cu build/neut_cuda.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRSCUDA)
+#	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_cuda $(INCLUDES) src/ttH_dilep_cuda.cxx build/neut_cuda.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRSCUDA)
 
 clean:
 	rm -rf build/* bin/ttH_dilep*

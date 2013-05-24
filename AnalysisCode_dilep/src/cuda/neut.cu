@@ -21,6 +21,7 @@ namespace Dilep {
 			return mass;
 		}
 
+		__device__
 		double calcMass (double array[]) {
 			double mm = array[3]*array[3] - (array[0]*array[0] + array[1]*array[1] + array[2]*array[2]);
 
@@ -82,12 +83,13 @@ namespace Dilep {
 		// [3] -> E/isb
 		// [4] -> M
 
+		__device__
 		void applyVariance (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
 			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy) {
 
-			unsigned tid = _tid;
-			//unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;;
+			//unsigned tid = _tid;
+			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;;
 
 			// Using pointers for better code readbility - does it affect the performance in the kernel?
 			double *in_mpx		= &STRIDE2(_in_mpx, 0);
@@ -218,30 +220,30 @@ namespace Dilep {
 			calcMass(c_bl);
 		}
 
-		//__global__
+		__global__
 		void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
 			double _MissPx, double _MissPy, double _t_mass[], double _w_mass[], double nc[], int a[]) {
 
 			// CPU version
-			double _z_bl[5 * size], _c_bl[5 * size];
+			//double _z_bl[5 * size], _c_bl[5 * size];
 
-			for (_tid = 0; _tid < size; ++_tid)
-				applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
-					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, _MissPx, _MissPy);
+			//for (_tid = 0; _tid < size; ++_tid)
+			//	applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
+			//		_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, _MissPx, _MissPy);
 			
-			for (unsigned tid = 0; tid < size; ++tid)
-				calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
-							_z_lep, _c_lep, _z_bl, _c_bl, nc, a, tid);
+			//for (unsigned tid = 0; tid < size; ++tid)
+			//	calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
+			//				_z_lep, _c_lep, _z_bl, _c_bl, nc, a, tid);
 
 			// GPU version
-			//double _z_bl[5], _c_bl[5];
+			double _z_bl[5], _c_bl[5];
 
-			//applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
-			//		_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, _MissPx, _MissPy);
+			applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
+					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, _MissPx, _MissPy);
 
-			//calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
-			//				_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
+			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
+							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
 		}
 
 		void dilep (vector<DilepInput> &di) {
@@ -338,59 +340,59 @@ namespace Dilep {
 			}
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
-			//cudaMalloc(&dev_t_mass, size*2*sizeof(double));
-			//cudaMalloc(&dev_w_mass, size*2*sizeof(double));
-			//cudaMalloc(&dev_in_mpx, size*2*sizeof(double));
-			//cudaMalloc(&dev_in_mpy, size*2*sizeof(double));
+			cudaMalloc(&dev_t_mass, size*2*sizeof(double));
+			cudaMalloc(&dev_w_mass, size*2*sizeof(double));
+			cudaMalloc(&dev_in_mpx, size*2*sizeof(double));
+			cudaMalloc(&dev_in_mpy, size*2*sizeof(double));
 
-			//cudaMalloc(&dev_lep_a, sizeof(a));
-			//cudaMalloc(&dev_lep_b, sizeof(b));
-			//cudaMalloc(&dev_bj_a, sizeof(c));
-			//cudaMalloc(&dev_bj_b, sizeof(d));
+			cudaMalloc(&dev_lep_a, sizeof(a));
+			cudaMalloc(&dev_lep_b, sizeof(b));
+			cudaMalloc(&dev_bj_a, sizeof(c));
+			cudaMalloc(&dev_bj_b, sizeof(d));
 
-			//cudaMalloc(&dev_lep_aFlags, sizeof(aFlags));
-			//cudaMalloc(&dev_lep_bFlags, sizeof(bFlags));
-			//cudaMalloc(&dev_bj_aFlags, sizeof(cFlags));
-			//cudaMalloc(&dev_bj_bFlags, sizeof(dFlags));
+			cudaMalloc(&dev_lep_aFlags, sizeof(aFlags));
+			cudaMalloc(&dev_lep_bFlags, sizeof(bFlags));
+			cudaMalloc(&dev_bj_aFlags, sizeof(cFlags));
+			cudaMalloc(&dev_bj_bFlags, sizeof(dFlags));
 
-			//cudaMalloc(&dev_MissPx, sizeof(double));
-			//cudaMalloc(&dev_MissPy, sizeof(double));
+			cudaMalloc(&dev_MissPx, sizeof(double));
+			cudaMalloc(&dev_MissPy, sizeof(double));
 
 			// allocation of the results
-			//cudaMalloc(&dev_nc, size*16*sizeof(double));
-			//cudaMalloc(&dev_count, size*sizeof(int));
+			cudaMalloc(&dev_nc, size*16*sizeof(double));
+			cudaMalloc(&dev_count, size*sizeof(int));
 
 			// transfer the inputs to GPU memory
-			//cudaMemcpy(dev_t_mass, t_mass, sizeof(t_mass), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_w_mass, w_mass, sizeof(w_mass), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_in_mpx, in_mpx, sizeof(in_mpx), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_in_mpy, in_mpy, sizeof(in_mpy), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_t_mass, t_mass, sizeof(t_mass), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_w_mass, w_mass, sizeof(w_mass), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpx, in_mpx, sizeof(in_mpx), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_in_mpy, in_mpy, sizeof(in_mpy), cudaMemcpyHostToDevice);
 
-			//cudaMemcpy(dev_lep_a, a, sizeof(a), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_lep_b, b, sizeof(b), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_bj_a, c, sizeof(c), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_bj_b, d, sizeof(d), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_a, a, sizeof(a), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_b, b, sizeof(b), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bj_a, c, sizeof(c), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bj_b, d, sizeof(d), cudaMemcpyHostToDevice);
 
-			//cudaMemcpy(dev_lep_aFlags, aFlags, sizeof(aFlags), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_lep_bFlags, bFlags, sizeof(bFlags), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_bj_aFlags, cFlags, sizeof(cFlags), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_bj_bFlags, dFlags, sizeof(dFlags), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_aFlags, aFlags, sizeof(aFlags), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_bFlags, bFlags, sizeof(bFlags), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bj_aFlags, cFlags, sizeof(cFlags), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bj_bFlags, dFlags, sizeof(dFlags), cudaMemcpyHostToDevice);
 
-			//cudaMemcpy(dev_MissPx, _misspx, sizeof(double), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_MissPy, _misspy, sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_MissPx, _misspx, sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_MissPy, _misspy, sizeof(double), cudaMemcpyHostToDevice);
 			
 
-			dilep_kernel(in_mpx, in_mpy, aFlags, bFlags, cFlags, dFlags,
-					a, b, c, d, _misspx, _misspy, t_mass, w_mass, nc, count);
+			//dilep_kernel(in_mpx, in_mpy, aFlags, bFlags, cFlags, dFlags,
+			//		a, b, c, d, _misspx, _misspy, t_mass, w_mass, nc, count);
 
 
-			//dilep_kernel <<< 1, size >>> (dev_in_mpx, dev_in_mpy, dev_lep_aFlags, dev_lep_bFlags, dev_bj_aFlags, dev_bj_bFlags,
-			//		dev_lep_a, dev_lep_b, dev_bj_a, dev_bj_b, dev_MissPx, dev_MissPy, dev_t_mass, dev_w_mass, dev_nc, dev_count);
+			dilep_kernel <<< 1, size >>> (dev_in_mpx, dev_in_mpy, dev_lep_aFlags, dev_lep_bFlags, dev_bj_aFlags, dev_bj_bFlags,
+					dev_lep_a, dev_lep_b, dev_bj_a, dev_bj_b, dev_MissPx, dev_MissPy, dev_t_mass, dev_w_mass, dev_nc, dev_count);
 			
 			
 			// memory transfer of the results from the GPU
-			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
-			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
+			cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
@@ -428,8 +430,8 @@ namespace Dilep {
 				double nc[], int a[])
 		{
 
-			//unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
-			unsigned tid = 1;
+			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
+			//unsigned tid = 1;
 			double G_1, G_3;
 			double WMass_a, WMass_b, tMass_a, tMass_b, lep_a[5], lep_b[5], bl_a[5], bl_b[5];
 			double in_mpz[2] = {0.0, 0.0};

@@ -35,12 +35,12 @@ namespace Dilep {
 	namespace GPU {
 		static TRandom3 _t_rnd_ (123456.0);
 
-		/*__device__ __host__*/ void Csqrt(double _ar, double _ai, double _my[]);
-		/*__device__ __host__*/ void cubic(double a[], double rr[], double ri[]);
-		/*__device__ __host__*/ void toz(double k[], double l[], double g[]);
-		/*__device__ __host__*/ void my_qu( double my_in[], double my_val[]);
-		/*__device__ __host__*/ double calcMass(double x, double y, double z, double e);
-		double calcMass (double *array);
+		__device__ __host__ void Csqrt(double _ar, double _ai, double _my[]);
+		__device__ __host__ void cubic(double a[], double rr[], double ri[]);
+		__device__ __host__ void toz(double k[], double l[], double g[]);
+		__device__ __host__ void my_qu( double my_in[], double my_val[]);
+		__device__ __host__ double calcMass(double x, double y, double z, double e);
+		__device__ double calcMass (double *array);
 
 		std::vector<myvector>* dilep(unsigned iterations, double t_mass[], double w_mass[], 
 									double in_mpx[], double in_mpy[], double in_mpz[],
@@ -51,7 +51,7 @@ namespace Dilep {
 		void dilep (vector<DilepInput> &di);
 		void dilep (vector<DilepInput> &vdi, int x);
 
-		/*__global__*/ void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
+		__global__ void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
 			double _MissPx, double _MissPy, double _t_mass[], double _w_mass[], double nc[], int a[]);
 
@@ -65,7 +65,7 @@ namespace Dilep {
 										TLorentzVector* lep_a, TLorentzVector* lep_b, 
 										TLorentzVector* bl_a, TLorentzVector* bl_b);
 
-		/*__device__*/ void calc_dilep(double t_mass[], double w_mass[], 
+		__device__ void calc_dilep(double t_mass[], double w_mass[], 
 						double in_mpx[], double in_mpy[], double _lep_a[], 
 						double _lep_b[], double _bl_a[], double _bl_b[], 
 						double nc[], int a[]);
