@@ -313,6 +313,8 @@ void DilepInput::applyVariance (float res, int seed) {
 	// ---------------------------------------
 	z_bl = z_bj + z_lep;
 	c_bl = c_bj + c_lep;
+
+
 }
 
 // Apply variance to the inputs of the dilep function, given a resolution and a seed,
@@ -436,6 +438,13 @@ void DilepInput::applyVariance (float res) {
 	// ---------------------------------------
 	z_bl = z_bj + z_lep;
 	c_bl = c_bj + c_lep;
+
+	/*cout << z_bl.Px() << " - " << z_bj.Px() << " - " << z_lep.Px() << endl;
+	cout << z_bl.Py() << " - " << z_bj.Py() << " - " << z_lep.Py() << endl;
+	cout << z_bl.Pz() << " - " << z_bj.Pz() << " - " << z_lep.Pz() << endl;
+	cout << z_bl.E()  << " - " << z_bj.E()  << " - " << z_lep.E()  << endl;
+	cout << z_bl.M()  << " - " << z_bj.M()  << " - " << z_lep.M()  << endl;
+	exit(0);*/
 }
 
 // Getters

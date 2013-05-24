@@ -4177,8 +4177,10 @@ void ttH_dilep::ttDilepKinFit(){
 			if ( di.getClepW().isb ==  13 ) { iPDGnu2 = -14; iPDGW2 = -24; iPDGt2 = -6; }
 			if ( di.getClepW().isb == -13 ) { iPDGnu2 = +14; iPDGW2 = +24; iPDGt2 = +6; }
 			// neutrino 2
-			apx = di.getMissPx()-px;
-			apy = di.getMissPy()-py;
+			//apx = di.getMissPx()-px;
+			//apy = di.getMissPy()-py;
+			apx = MissPx - px;
+			apy = MissPy - py;
 			apz = pp->aPz();
 			aE  = sqrt(apx*apx + apy*apy + apz*apz);
 			TLorentzVector n2;

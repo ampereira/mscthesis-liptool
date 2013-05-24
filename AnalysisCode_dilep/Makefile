@@ -16,7 +16,7 @@ ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
 NVCCFLAGS  = -arch=sm_20 -DCUDA 
-CXXFLAGS   = -O3 $(ROOTCFLAGS) -DCUDA
+CXXFLAGS   = -O3 $(ROOTCFLAGS)
 #CXXFLAGS   = -g -DCUDA $(ROOTCFLAGS)
 # specific time measurement
 #CXXFLAGS  += -DMEASURE_KINFIT #-DMEASURE_DILEP
@@ -47,6 +47,7 @@ omp: ttH_dilep_omp
 cuda: NVCCFLAGS += $(filter-out -pthread,$(CXXFLAGS))
 cuda: LIBDIRS2 = $(filter-out -pthread,$(LIBDIRS))
 cuda: LIBDIRSCUDA = $(filter-out -rdynamic,$(LIBDIRS2))
+cuda: CXXFLAGS += -DCUDA
 cuda: ttH_dilep_cuda
 
 papi: CXXFLAGS += -DPAPI
@@ -94,5 +95,5 @@ ttH_dilep_cuda: src/ttH_dilep_cuda.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) bui
 	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_cuda $(INCLUDES) src/ttH_dilep_cuda.cxx build/neut_cuda.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRSCUDA)
 
 clean:
-	rm -f build/* bin/ttH_dilep*
+	rm -rf build/* bin/ttH_dilep*
 

@@ -19,6 +19,15 @@ namespace Dilep {
 			return mass;
 		}
 
+		double calcMass (double array[]) {
+			double mm = array[3]*array[3] - (array[0]*array[0] + array[1]*array[1] + array[2]*array[2]);
+
+			if (mm < 0.0)
+				array[4] = -sqrt(-mm);
+			else
+				array[4] = sqrt(mm);
+		}
+
 		// Wrapper for the dilep calculation using the input class
 		void dilep (DilepInput &di) {
 			std::vector<myvector> *result = new std::vector<myvector> ();
@@ -64,6 +73,147 @@ namespace Dilep {
 			#endif
 		}
 
+		// TLorentzs/Flags
+		// [0] -> x
+		// [1] -> y
+		// [2] -> z
+		// [3] -> E/isb
+		// [4] -> M
+
+		void applyVariance (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
+			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
+			double _z_bl[], double _c_bl[], double MissPx, double MissPy, float res, unsigned _tid) {
+
+			unsigned tid = _tid;
+
+			// Using pointers for better code readbility - does it affect the performance in the kernel?
+			double *in_mpx		= &STRIDE2(_in_mpx, 0);
+			double *in_mpy		= &STRIDE2(_in_mpy, 0);
+			double *z_lepWFlags = &STRIDE5(_z_lepWFlags, 0);
+			double *c_lepWFlags = &STRIDE5(_c_lepWFlags, 0);
+			double *z_bjWFlags	= &STRIDE5(_z_bjWFlags, 0);
+			double *c_bjWFlags  = &STRIDE5(_c_bjWFlags, 0);
+			double *z_lep 		= &STRIDE5(_z_lep, 0);
+			double *c_lep 		= &STRIDE5(_c_lep, 0);
+			double *z_bj 		= &STRIDE5(_z_bj, 0);
+			double *c_bj 		= &STRIDE5(_c_bj, 0);
+			double *z_bl 		= &STRIDE5(_z_bl, 0);
+			double *c_bl 		= &STRIDE5(_c_bl, 0);
+
+
+			// new four-vectors	
+			double n_Px, n_Py, n_Pz, n_Pt, n_E;	
+			double delPx, delPy;
+
+			// Vary!
+
+			// _______________________________
+			// _______z_lep___________________
+			// _______________________________
+			if (  abs(  z_lepWFlags[3]  )  ==  11  ){ //___electrons____
+				n_Px = z_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+				n_Py = z_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+				n_Pz = z_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+			} else if (  abs(z_lepWFlags[3]) == 13 ){ //_____muons______
+				n_Px = z_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+				n_Py = z_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+				n_Pz = z_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+			}
+			// Recalculate z_lep
+			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_lepWFlags[4]*z_lepWFlags[4] );
+			z_lep[0] = n_Px;	// Change Px 				
+			z_lep[1] = n_Py; 	// Change Py 	
+			z_lep[2] = n_Pz; 	// Change Pz 
+			z_lep[3] =  n_E; 	// Change E 
+			// Propagate to MissPx and MissPy
+			delPx = z_lepWFlags[0] - n_Px; 
+			delPy = z_lepWFlags[1] - n_Py;			
+			in_mpx[0] = MissPx + delPx; in_mpx[1] = MissPx + delPx; // initialize miss(Px,Py) neutrino 1
+			in_mpy[0] = MissPy + delPy; in_mpy[1] = MissPy + delPy; // initialize miss(Px,Py) neutrino 2
+
+			// _______________________________
+			// _______c_lep___________________
+			// _______________________________
+			if (  abs(  c_lepWFlags[3]  )  ==  11  ){ //___electrons____
+				n_Px = c_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+				n_Py = c_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+				n_Pz = c_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+			} else if (  abs(c_lepWFlags[3]) == 13 ){ //_____muons______
+				n_Px = c_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+				n_Py = c_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+				n_Pz = c_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+			}
+			// Recalculate c_lep
+			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_lepWFlags[4]*c_lepWFlags[4] );
+			c_lep[0] = n_Px;	// Change Px 				
+			c_lep[1] = n_Py; 	// Change Py 	
+			c_lep[2] = n_Pz; 	// Change Pz 
+			c_lep[3] = n_E ; 	// Change E 
+			// Propagate to MissPx and MissPy
+			delPx = c_lepWFlags[0] - n_Px; 
+			delPy = c_lepWFlags[1] - n_Py;			
+			in_mpx[0] += delPx; in_mpx[1] += delPx; // correct miss(Px,Py) neutrino 1
+			in_mpy[0] += delPy; in_mpy[1] += delPy; // correct miss(Px,Py) neutrino 2
+
+			// _______________________________
+			// _______z_bj____________________
+			// _______________________________
+			n_Px = z_bjWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+			n_Py = z_bjWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+			n_Pz = z_bjWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+			// Recalculate z_bj
+			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_bjWFlags[4]*z_bjWFlags[4] );
+			z_bj[0] = n_Px;	// Change Px 				
+			z_bj[1] = n_Py; 	// Change Py 	
+			z_bj[2] = n_Pz; 	// Change Pz 
+			z_bj[3] = n_E ; 	// Change E 
+			// Propagate to MissPx and MissPy
+			delPx = z_bjWFlags[0] - n_Px; 
+			delPy = z_bjWFlags[1] - n_Py;			
+			in_mpx[0] += delPx; in_mpx[1] += delPx; // correct miss(Px,Py) neutrino 1
+			in_mpy[0] += delPy; in_mpy[1] += delPy; // correct miss(Px,Py) neutrino 2
+
+
+			// _______________________________
+			// _______c_bj____________________
+			// _______________________________
+			n_Px = c_bjWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+			n_Py = c_bjWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+			n_Pz = c_bjWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., res ) );
+		//	n_Pt = c_bjWFlags.Pt() * ( 1. + _t_rnd_.Gaus( 0., St_j ) );
+		//	n_E  = c_bjWFlags.E()  * ( 1. + _t_rnd_.Gaus( 0., Se_j ) );
+			// Recalculate c_bj
+			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_bjWFlags[4]*c_bjWFlags[4] );
+			c_bj[0] = n_Px;	// Change Px 				
+			c_bj[1] = n_Py; 	// Change Py 	
+			c_bj[2] = n_Pz; 	// Change Pz 
+			c_bj[3] = n_E ; 	// Change E 
+			// Propagate to MissPx and MissPy
+			delPx = c_bjWFlags[0] - n_Px; 
+			delPy = c_bjWFlags[1] - n_Py;			
+			in_mpx[0] += delPx; in_mpx[1] += delPx; // correct miss(Px,Py) neutrino 1
+			in_mpy[0] += delPy; in_mpy[1] += delPy; // correct miss(Px,Py) neutrino 2
+
+			// ---------------------------------------
+			// Define TLorentzVectors for (b,l) system
+			// ---------------------------------------
+			//z_bl = z_bj + z_lep;
+			//c_bl = c_bj + c_lep;
+
+			z_bl[0] = z_bj[0] + z_lep[0];
+			z_bl[1] = z_bj[1] + z_lep[1];
+			z_bl[2] = z_bj[2] + z_lep[2];
+			z_bl[3] = z_bj[3] + z_lep[3];
+
+			c_bl[0] = c_bj[0] + c_lep[0];
+			c_bl[1] = c_bj[1] + c_lep[1];
+			c_bl[2] = c_bj[2] + c_lep[2];
+			c_bl[3] = c_bj[3] + c_lep[3];
+
+			// Re-calculate the masses
+			calcMass(z_bl);
+			calcMass(c_bl);
+		}
 
 		void dilep (vector<DilepInput> &di) {
 
@@ -73,7 +223,8 @@ namespace Dilep {
 				   t_mass[2 * size], w_mass[2 * size];
 			
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
-			double a[5 * size], b[5 * size], c[5 * size], d[5 * size];
+			double a[5 * size], b[5 * size], c[5 * size], d[5 * size], e[5 * size], f[5 * size];	// e and f are the z/c_bl
+			double aFlags[5 * size], bFlags[5 * size], cFlags[5 * size], dFlags[5 * size];
 		
 			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b;
 			double nc[16*size];
@@ -97,32 +248,67 @@ namespace Dilep {
 				t_mass[(i * 2) + 1] = di[i].getTmass(1);
 				w_mass[i * 2]		= di[i].getWmass(0);
 				w_mass[(i * 2) + 1] = di[i].getWmass(1);
-					
+				
+				// z_lep
 				a[i * 5]	   = di[i].getZlep().Px();
 				a[(i * 5) + 1] = di[i].getZlep().Py();
 				a[(i * 5) + 2] = di[i].getZlep().Pz();
 				a[(i * 5) + 3] = di[i].getZlep().E();
 				a[(i * 5) + 4] = di[i].getZlep().M();
 
+				// z_lepWFlags
+				aFlags[i * 5]	    = di[i].getZlepW().Px();
+				aFlags[(i * 5) + 1] = di[i].getZlepW().Py();
+				aFlags[(i * 5) + 2] = di[i].getZlepW().Pz();
+				aFlags[(i * 5) + 3] = di[i].getZlepW().isb;
+				aFlags[(i * 5) + 4] = di[i].getZlepW().M();
+
+				// c_lep
 				b[i * 5]	   = di[i].getClep().Px();
 				b[(i * 5) + 1] = di[i].getClep().Py();
 				b[(i * 5) + 2] = di[i].getClep().Pz();
 				b[(i * 5) + 3] = di[i].getClep().E();
 				b[(i * 5) + 4] = di[i].getClep().M();
 
-				c[i * 5]	   = di[i].getZbl().Px();
-				c[(i * 5) + 1] = di[i].getZbl().Py();
-				c[(i * 5) + 2] = di[i].getZbl().Pz();
-				c[(i * 5) + 3] = di[i].getZbl().E();
-				c[(i * 5) + 4] = di[i].getZbl().M();
+				// c_lepWFlags
+				bFlags[i * 5]	    = di[i].getClep().Px();
+				bFlags[(i * 5) + 1] = di[i].getClep().Py();
+				bFlags[(i * 5) + 2] = di[i].getClep().Pz();
+				bFlags[(i * 5) + 3] = di[i].getClep().isb;
+				bFlags[(i * 5) + 4] = di[i].getClep().M();
 
-				d[i * 5]	   = di[i].getCbl().Px();
-				d[(i * 5) + 1] = di[i].getCbl().Py();
-				d[(i * 5) + 2] = di[i].getCbl().Pz();
-				d[(i * 5) + 3] = di[i].getCbl().E();
-				d[(i * 5) + 4] = di[i].getCbl().M();
+				// z_bj
+				c[i * 5]	   = di[i].getZbj().Px();
+				c[(i * 5) + 1] = di[i].getZbj().Py();
+				c[(i * 5) + 2] = di[i].getZbj().Pz();
+				c[(i * 5) + 3] = di[i].getZbj().E();
+				c[(i * 5) + 4] = di[i].getZbj().M();
+
+				// z_bjWFlags
+				cFlags[i * 5]	    = di[i].getZbj().Px();
+				cFlags[(i * 5) + 1] = di[i].getZbj().Py();
+				cFlags[(i * 5) + 2] = di[i].getZbj().Pz();
+				cFlags[(i * 5) + 3] = di[i].getZbj().isb;
+				cFlags[(i * 5) + 4] = di[i].getZbj().M();
+
+				// c_bj
+				d[i * 5]	   = di[i].getCbj().Px();
+				d[(i * 5) + 1] = di[i].getCbj().Py();
+				d[(i * 5) + 2] = di[i].getCbj().Pz();
+				d[(i * 5) + 3] = di[i].getCbj().E();
+				d[(i * 5) + 4] = di[i].getCbj().M();
+
+				// c_bjWFlags
+				dFlags[i * 5]	    = di[i].getCbj().Px();
+				dFlags[(i * 5) + 1] = di[i].getCbj().Py();
+				dFlags[(i * 5) + 2] = di[i].getCbj().Pz();
+				dFlags[(i * 5) + 3] = di[i].getCbj().isb;
+				dFlags[(i * 5) + 4] = di[i].getCbj().M();
 			}
 
+			for (unsigned tid = 0; tid < size; ++tid)
+				applyVariance(in_mpx, in_mpy, aFlags, bFlags, cFlags, dFlags,
+					a, b, c, d, e, f, _MissPx, _MissPy)
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			//cudaMalloc(&dev_t_mass, size*2*sizeof(double));
@@ -459,7 +645,6 @@ namespace Dilep {
 				bl_a[i] = STRIDE5(_bl_a, i);
 				bl_b[i] = STRIDE5(_bl_b, i);
 			}
-			
 
 			G_1 = (WMass_a - lep_a[4]) * (WMass_a + lep_a[4]);
 			G_3 = (WMass_b - lep_b[4]) * (WMass_b + lep_b[4]);
