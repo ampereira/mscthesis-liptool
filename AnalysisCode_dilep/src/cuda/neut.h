@@ -40,7 +40,7 @@ namespace Dilep {
 		__device__ __host__ void toz(double k[], double l[], double g[]);
 		__device__ __host__ void my_qu( double my_in[], double my_val[]);
 		__device__ __host__ double calcMass(double x, double y, double z, double e);
-		__device__ double calcMass (double *array);
+		__device__ void calcMass (double *array);
 
 		std::vector<myvector>* dilep(unsigned iterations, double t_mass[], double w_mass[], 
 									double in_mpx[], double in_mpy[], double in_mpz[],
@@ -55,6 +55,7 @@ namespace Dilep {
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
 			double *_MissPx, double *_MissPy, double _t_mass[], double _w_mass[], double nc[], int a[]);
 
+		__device__
 		void applyVariance (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
 			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy);
@@ -70,7 +71,7 @@ namespace Dilep {
 						double _lep_b[], double _bl_a[], double _bl_b[], 
 						double nc[], int a[]);
 
-		/*__host__*/ void calc_dilep(double t_mass[], double w_mass[], 
+		__host__ void calc_dilep(double t_mass[], double w_mass[], 
 						double in_mpx[], double in_mpy[], double _lep_a[], 
 						double _lep_b[], double _bl_a[], double _bl_b[], 
 						double nc[], int a[], unsigned _tid);

@@ -22,7 +22,7 @@ namespace Dilep {
 		}
 
 		__device__
-		double calcMass (double array[]) {
+		void calcMass (double array[]) {
 			double mm = array[3]*array[3] - (array[0]*array[0] + array[1]*array[1] + array[2]*array[2]);
 
 			if (mm < 0.0)
@@ -424,7 +424,7 @@ namespace Dilep {
 			
 		}
 
-		//__global__
+		__device__
 		void calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double _lep_a[], 
 				double _lep_b[], double _bl_a[], double _bl_b[], 
@@ -668,7 +668,7 @@ namespace Dilep {
 			a[tid] = ncand;
 		}
 
-		//__host__
+		__host__
 		void calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double _lep_a[], 
 				double _lep_b[], double _bl_a[], double _bl_b[], 
@@ -911,6 +911,7 @@ namespace Dilep {
 		}
 
 		// NEUTRINO SOLUTIONS
+		__host__
 		vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double in_mpz[],
 				TLorentzVector* lep_a, TLorentzVector* lep_b, 
@@ -1170,6 +1171,7 @@ namespace Dilep {
 		}
 
 		//////////////////////////////////////
+		__host__ __device__
 		void toz(double k[], double l[], double g[]){
 			//// checked !!
 			///////////////////////////////////////////////////////////////////////////
@@ -1205,6 +1207,7 @@ namespace Dilep {
 
 
 		///////////////////////////////////////////
+		__host__ __device__
 		void my_qu( double my_in[], double my_val[])
 		{
 
@@ -1417,6 +1420,7 @@ namespace Dilep {
 		////////////////////end of main
 		///////////////////////////////////////////////////////////////
 		////+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		__host__ __device__
 		void Csqrt(double _ar, double _ai, double _my[])
 		{
 			///// complex sqrt
@@ -1449,6 +1453,7 @@ namespace Dilep {
 		//////////////////////////////////////////////////////////////////
 		/// cubic /// a[0]x^3+a[1]x^2+a[2]x+a[3]=0
 		//////////////////////////////////////////////////////////////////
+		__host__ __device__
 		void cubic(double a[], double rr[], double ri[])
 		{
 			int i;
