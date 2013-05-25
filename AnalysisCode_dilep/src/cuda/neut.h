@@ -33,7 +33,7 @@
 
 namespace Dilep {
 	namespace GPU {
-		static TRandom3 _t_rnd_ (123456.0);
+		//static TRandom3 _t_rnd_ (123456.0);
 
 		__device__ __host__ void Csqrt(double _ar, double _ai, double _my[]);
 		__device__ __host__ void cubic(double a[], double rr[], double ri[]);

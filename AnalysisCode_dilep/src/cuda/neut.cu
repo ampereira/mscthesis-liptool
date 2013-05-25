@@ -105,7 +105,7 @@ namespace Dilep {
 			double *z_bl 		= &STRIDE5(_z_bl, 0);
 			double *c_bl 		= &STRIDE5(_c_bl, 0);
 
-
+			/*
 			// new four-vectors	
 			double n_Px, n_Py, n_Pz, n_Pt, n_E;	
 			double delPx, delPy;
@@ -204,6 +204,7 @@ namespace Dilep {
 			// ---------------------------------------
 			//z_bl = z_bj + z_lep;
 			//c_bl = c_bj + c_lep;
+			*/
 
 			z_bl[0] = z_bj[0] + z_lep[0];
 			z_bl[1] = z_bj[1] + z_lep[1];
