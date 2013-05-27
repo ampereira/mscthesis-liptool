@@ -43,6 +43,7 @@ namespace Dilep {
 		__device__ __host__ void my_qu( double my_in[], double my_val[]);
 		__device__ __host__ double calcMass(double x, double y, double z, double e);
 		__device__ void calcMass (double *array);
+		__device__ void gaus_kernel (double mean, double sigma, curandStateMtgp32 *state);
 
 		std::vector<myvector>* dilep(unsigned iterations, double t_mass[], double w_mass[], 
 									double in_mpx[], double in_mpy[], double in_mpz[],
@@ -55,12 +56,12 @@ namespace Dilep {
 
 		__global__ void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double *_MissPx, double *_MissPy, double _t_mass[], double _w_mass[], double nc[], int a[]);
+			double *_MissPx, double *_MissPy, double _t_mass[], double _w_mass[], double nc[], int a[], curandStateMtgp32 *state);
 
 		__device__
 		void applyVariance (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy);
+			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy, curandStateMtgp32 *state);
 
 
 		std::vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 

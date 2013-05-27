@@ -84,6 +84,106 @@ namespace Dilep {
 			#endif
 		}
 
+		__device__
+		double gaus_kernel (float mean, float sigma, curandStateMtgp32 *state) {
+			// Samples a random number from the standard Normal (Gaussian) Distribution
+			// with the given mean and sigma.
+			// Uses the Acceptance-complement ratio from W. Hoermann and G. Derflinger
+			// This is one of the fastest existing method for generating normal random variables.
+			// It is a factor 2/3 faster than the polar (Box-Muller) method used in the previous
+			// version of TRandom::Gaus. The speed is comparable to the Ziggurat method (from Marsaglia)
+			// implemented for example in GSL and available in the MathMore library.
+			//
+			// REFERENCE:  - W. Hoermann and G. Derflinger (1990):
+			//              The ACR Method for generating normal random variables,
+			//              OR Spektrum 12 (1990), 181-185.
+			//
+			// Implementation taken from
+			// UNURAN (c) 2000  W. Hoermann & J. Leydold, Institut f. Statistik, WU Wien
+
+			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
+
+			const double kC1 = 1.448242853;
+			const double kC2 = 3.307147487;
+			const double kC3 = 1.46754004;
+			const double kD1 = 1.036467755;
+			const double kD2 = 5.295844968;
+			const double kD3 = 3.631288474;
+			const double kHm = 0.483941449;
+			const double kZm = 0.107981933;
+			const double kHp = 4.132731354;
+			const double kZp = 18.52161694;
+			const double kPhln = 0.4515827053;
+			const double kHm1 = 0.516058551;
+			const double kHp1 = 3.132731354;
+			const double kHzm = 0.375959516;
+			const double kHzmp = 0.591923442;
+			//zhm 0.967882898
+
+			const double kAs = 0.8853395638;
+			const double kBs = 0.2452635696;
+			const double kCs = 0.2770276848;
+			const double kB  = 0.5029324303;
+			const double kX0 = 0.4571828819;
+			const double kYm = 0.187308492 ;
+			const double kS  = 0.7270572718 ;
+			const double kT  = 0.03895759111;
+
+			double result;
+			double rn,x,y,z;
+
+			 do{
+				y = (((double) curand(&state[blockIdx.x]))/((double) UINT_MAX));
+
+				if (y>kHm1) {
+					result = kHp*y-kHp1; break; }
+
+				else if (y<kZm) {
+					rn = kZp*y-1;
+					result = (rn>0) ? (1+rn) : (-1+rn);
+					break;
+				}
+
+				else if (y<kHm) {
+					rn = (((double) curand(&state[blockIdx.x]))/((double) UINT_MAX));
+					rn = rn-1+rn;
+					z = (rn>0) ? 2-rn : -2-rn;
+					if ((kC1-y)*(kC3+abs(z))<kC2) {
+						result = z; break; }
+					else {
+						x = rn*rn;
+						if ((y+kD1)*(kD3+x)<kD2) {
+							result = rn; break; }
+						else if (kHzmp-y<exp(-(z*z+kPhln)/2)) {
+							result = z; break; }
+						else if (y+kHzm<exp(-(x+kPhln)/2)) {
+							result = rn; break; }
+					}
+				}
+
+				while (1) {
+					x = (((double) curand(&state[blockIdx.x]))/((double) UINT_MAX));
+					y = kYm * (((double) curand(&state[blockIdx.x]))/((double) UINT_MAX));
+					z = kX0 - kS*x - y;
+					if (z>0)
+						rn = 2+y/x;
+					else {
+						x = 1-x;
+						y = kYm-y;
+						rn = -(2+y/x);
+					}
+					if ((y-kAs+x)*(kCs+x)+kBs<0) {
+						result = rn; break; }
+					else if (y<x+kT)
+						if (rn*rn<4*(kB-log(x))) {
+							result = rn; break; }
+				}
+			}while(0);
+
+			//results[tid] = (((double) curand(&state[blockIdx.x]))/((double) UINT_MAX));
+			return = mean + sigma * result;
+		}
+
 		// TLorentzs/Flags
 		// [0] -> x
 		// [1] -> y
@@ -94,10 +194,10 @@ namespace Dilep {
 		__device__
 		void applyVariance (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy) {
+			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy, curandStateMtgp32 *state) {
 
 			//unsigned tid = _tid;
-			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;;
+			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
 
 			// Using pointers for better code readbility - does it affect the performance in the kernel?
 			double *in_mpx		= &STRIDE2(_in_mpx, 0);
@@ -113,7 +213,7 @@ namespace Dilep {
 			double *z_bl 		= &STRIDE5(_z_bl, 0);
 			double *c_bl 		= &STRIDE5(_c_bl, 0);
 
-			/*
+			
 			// new four-vectors	
 			double n_Px, n_Py, n_Pz, n_Pt, n_E;	
 			double delPx, delPy;
@@ -124,13 +224,13 @@ namespace Dilep {
 			// _______z_lep___________________
 			// _______________________________
 			if (  abs(  z_lepWFlags[3]  )  ==  11  ){ //___electrons____
-				n_Px = z_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
-				n_Py = z_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
-				n_Pz = z_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+				n_Px = z_lepWFlags[0] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+				n_Py = z_lepWFlags[1] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+				n_Pz = z_lepWFlags[2] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
 			} else if (  abs(z_lepWFlags[3]) == 13 ){ //_____muons______
-				n_Px = z_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
-				n_Py = z_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
-				n_Pz = z_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+				n_Px = z_lepWFlags[0] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+				n_Py = z_lepWFlags[1] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+				n_Pz = z_lepWFlags[2] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
 			}
 			// Recalculate z_lep
 			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_lepWFlags[4]*z_lepWFlags[4] );
@@ -148,13 +248,13 @@ namespace Dilep {
 			// _______c_lep___________________
 			// _______________________________
 			if (  abs(  c_lepWFlags[3]  )  ==  11  ){ //___electrons____
-				n_Px = c_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
-				n_Py = c_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
-				n_Pz = c_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+				n_Px = c_lepWFlags[0] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+				n_Py = c_lepWFlags[1] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+				n_Pz = c_lepWFlags[2] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
 			} else if (  abs(c_lepWFlags[3]) == 13 ){ //_____muons______
-				n_Px = c_lepWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
-				n_Py = c_lepWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
-				n_Pz = c_lepWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+				n_Px = c_lepWFlags[0] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+				n_Py = c_lepWFlags[1] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+				n_Pz = c_lepWFlags[2] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
 			}
 			// Recalculate c_lep
 			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_lepWFlags[4]*c_lepWFlags[4] );
@@ -171,9 +271,9 @@ namespace Dilep {
 			// _______________________________
 			// _______z_bj____________________
 			// _______________________________
-			n_Px = z_bjWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
-			n_Py = z_bjWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
-			n_Pz = z_bjWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+			n_Px = z_bjWFlags[0] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+			n_Py = z_bjWFlags[1] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+			n_Pz = z_bjWFlags[2] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
 			// Recalculate z_bj
 			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_bjWFlags[4]*z_bjWFlags[4] );
 			z_bj[0] = n_Px;	// Change Px 				
@@ -190,9 +290,9 @@ namespace Dilep {
 			// _______________________________
 			// _______c_bj____________________
 			// _______________________________
-			n_Px = c_bjWFlags[0] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
-			n_Py = c_bjWFlags[1] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
-			n_Pz = c_bjWFlags[2] * ( 1. + _t_rnd_.Gaus( 0., RESOLUTION ) );
+			n_Px = c_bjWFlags[0] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+			n_Py = c_bjWFlags[1] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+			n_Pz = c_bjWFlags[2] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
 		//	n_Pt = c_bjWFlags.Pt() * ( 1. + _t_rnd_.Gaus( 0., St_j ) );
 		//	n_E  = c_bjWFlags.E()  * ( 1. + _t_rnd_.Gaus( 0., Se_j ) );
 			// Recalculate c_bj
@@ -212,7 +312,7 @@ namespace Dilep {
 			// ---------------------------------------
 			//z_bl = z_bj + z_lep;
 			//c_bl = c_bj + c_lep;
-			*/
+			
 
 			z_bl[0] = z_bj[0] + z_lep[0];
 			z_bl[1] = z_bj[1] + z_lep[1];
@@ -232,7 +332,7 @@ namespace Dilep {
 		__global__
 		void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double *_MissPx, double *_MissPy, double _t_mass[], double _w_mass[], double nc[], int a[]) {
+			double *_MissPx, double *_MissPy, double _t_mass[], double _w_mass[], double nc[], int a[], curandStateMtgp32 *state) {
 
 			// CPU version
 			//double _z_bl[5 * size], _c_bl[5 * size];
@@ -249,7 +349,7 @@ namespace Dilep {
 			double _z_bl[5], _c_bl[5];
 
 			applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
-					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy);
+					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy, state);
 
 			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
 							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
