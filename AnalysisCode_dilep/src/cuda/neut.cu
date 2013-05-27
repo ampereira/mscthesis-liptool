@@ -537,10 +537,11 @@ namespace Dilep {
 			
 			
 			// memory transfer of the results from the GPU
-			CUDA_CALL(cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost));
-			CUDA_CALL(cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost));
+			cudaError_t err1 = cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaError_t err2 = cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 
 			cout << "HA " << size << " - " << nc[0] << " - " << count[0] << endl;
+			cout << "Erros " << cudaGetErrorString(err1) << " - " << cudaGetErrorString(err2) << endl;
 			exit(0);
 			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
 			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
