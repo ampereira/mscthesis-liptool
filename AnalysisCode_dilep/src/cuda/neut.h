@@ -44,7 +44,7 @@ namespace Dilep {
 		__device__ __host__ void my_qu( double my_in[], double my_val[]);
 		__device__ __host__ double calcMass(double x, double y, double z, double e);
 		__device__ void calcMass (double *array);
-		__device__ void gaus_kernel (double mean, double sigma, double *return_value, curandStateMtgp32 *state);
+		//__device__ void gaus_kernel (double mean, double sigma, double *return_value, curandStateMtgp32 *state);
 
 		std::vector<myvector>* dilep(unsigned iterations, double t_mass[], double w_mass[], 
 									double in_mpx[], double in_mpy[], double in_mpz[],
