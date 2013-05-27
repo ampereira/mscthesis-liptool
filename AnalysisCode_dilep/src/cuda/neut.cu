@@ -540,9 +540,9 @@ namespace Dilep {
 			cudaError_t err1 = cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
 			cudaError_t err2 = cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 
-			cout << "HA " << size << " - " << nc[0] << " - " << count[0] << endl;
-			cout << "Erros " << cudaGetErrorString(err1) << " - " << cudaGetErrorString(err2) << endl;
-			exit(0);
+			//cout << "HA " << size << " - " << nc[0] << " - " << count[0] << endl;
+			//cout << "Erros " << cudaGetErrorString(err1) << " - " << cudaGetErrorString(err2) << endl;
+			//exit(0);
 			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
 			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 			// reconstruction of the normal output of dilep
