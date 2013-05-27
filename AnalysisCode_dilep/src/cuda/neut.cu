@@ -505,6 +505,7 @@ namespace Dilep {
 			curandMakeMTGP32KernelState(devMTGPStates,
 						mtgp32dc_params_fast_11213, devKernelParams, 3, 1234);
 cout << "passou" << endl;
+
 			// transfer the inputs to GPU memory
 			CUDA_CALL(cudaMemcpy((void **) &dev_t_mass, t_mass, sizeof(t_mass), cudaMemcpyHostToDevice));
 			CUDA_CALL(cudaMemcpy((void **) &dev_w_mass, w_mass, sizeof(w_mass), cudaMemcpyHostToDevice));
