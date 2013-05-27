@@ -370,7 +370,7 @@ namespace Dilep {
 			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
 							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
 
-			nc[0] = 10;
+			a[0] = 10;
 		}
 
 
@@ -540,7 +540,7 @@ namespace Dilep {
 			CUDA_CALL(cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost));
 			CUDA_CALL(cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost));
 
-			cout << "HA " << nc[0] << endl;
+			cout << "HA " << size << " - " << nc[0] << " - " << count[0] << endl;
 			exit(0);
 			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
 			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
