@@ -506,23 +506,23 @@ namespace Dilep {
 						mtgp32dc_params_fast_11213, devKernelParams, 3, 1234);
 
 			// transfer the inputs to GPU memory
-			CUDA_CALL(cudaMemcpy(dev_t_mass, t_mass, sizeof(t_mass), cudaMemcpyHostToDevice));
-			CUDA_CALL(cudaMemcpy(dev_w_mass, w_mass, sizeof(w_mass), cudaMemcpyHostToDevice));
-			CUDA_CALL(cudaMemcpy(dev_in_mpx, in_mpx, sizeof(in_mpx), cudaMemcpyHostToDevice));
-			CUDA_CALL(cudaMemcpy(dev_in_mpy, in_mpy, sizeof(in_mpy), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_t_mass, t_mass, sizeof(t_mass), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_w_mass, w_mass, sizeof(w_mass), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_in_mpx, in_mpx, sizeof(in_mpx), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_in_mpy, in_mpy, sizeof(in_mpy), cudaMemcpyHostToDevice));
 
-			CUDA_CALL(cudaMemcpy(dev_lep_a, a, sizeof(a), cudaMemcpyHostToDevice));
-			CUDA_CALL(cudaMemcpy(dev_lep_b, b, sizeof(b), cudaMemcpyHostToDevice));
-			CUDA_CALL(cudaMemcpy(dev_bj_a, c, sizeof(c), cudaMemcpyHostToDevice));
-			CUDA_CALL(cudaMemcpy(dev_bj_b, d, sizeof(d), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_lep_a, a, sizeof(a), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_lep_b, b, sizeof(b), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_bj_a, c, sizeof(c), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_bj_b, d, sizeof(d), cudaMemcpyHostToDevice));
 
-			CUDA_CALL(cudaMemcpy(dev_lep_aFlags, aFlags, sizeof(aFlags), cudaMemcpyHostToDevice));
-			CUDA_CALL(cudaMemcpy(dev_lep_bFlags, bFlags, sizeof(bFlags), cudaMemcpyHostToDevice));
-			CUDA_CALL(cudaMemcpy(dev_bj_aFlags, cFlags, sizeof(cFlags), cudaMemcpyHostToDevice));
-			CUDA_CALL(cudaMemcpy(dev_bj_bFlags, dFlags, sizeof(dFlags), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_lep_aFlags, aFlags, sizeof(aFlags), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_lep_bFlags, bFlags, sizeof(bFlags), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_bj_aFlags, cFlags, sizeof(cFlags), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_bj_bFlags, dFlags, sizeof(dFlags), cudaMemcpyHostToDevice));
 
-			CUDA_CALL(cudaMemcpy(dev_MissPx, &_misspx, sizeof(double), cudaMemcpyHostToDevice));
-			CUDA_CALL(cudaMemcpy(dev_MissPy, &_misspy, sizeof(double), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_MissPx, &_misspx, sizeof(double), cudaMemcpyHostToDevice));
+			CUDA_CALL(cudaMemcpy((void **) &dev_MissPy, &_misspy, sizeof(double), cudaMemcpyHostToDevice));
 			
 
 			//dilep_kernel(in_mpx, in_mpy, aFlags, bFlags, cFlags, dFlags,
@@ -534,8 +534,8 @@ namespace Dilep {
 			
 			
 			// memory transfer of the results from the GPU
-			CUDA_CALL(cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost));
-			CUDA_CALL(cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost));
+			CUDA_CALL(cudaMemcpy((void **) &nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost));
+			CUDA_CALL(cudaMemcpy((void **) &count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost));
 
 			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
 			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
