@@ -534,9 +534,11 @@ namespace Dilep {
 			
 			
 			// memory transfer of the results from the GPU
-			CUDA_CALL(cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost));
-			CUDA_CALL(cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost));
+			//CUDA_CALL(cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost));
+			//CUDA_CALL(cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost));
 
+			cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 
@@ -549,8 +551,8 @@ namespace Dilep {
 						TO1D(nc,comb,sol,1),
 						TO1D(nc,comb,sol,2),
 						TO1D(nc,comb,sol,3) );
-					
 					result.push_back(*mv);
+					cout << "TAU" << endl;
 				}
 				if(result.size())
 					++hasSolution;
