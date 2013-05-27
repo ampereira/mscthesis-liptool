@@ -84,7 +84,7 @@ namespace Dilep {
 		}
 
 		__device__
-		double gaus_kernel (float mean, float sigma, curandStateMtgp32 *state) {
+		double gaus_kernel (float mean, float sigma, double *result, curandStateMtgp32 *state) {
 			// Samples a random number from the standard Normal (Gaussian) Distribution
 			// with the given mean and sigma.
 			// Uses the Acceptance-complement ratio from W. Hoermann and G. Derflinger
@@ -180,7 +180,7 @@ namespace Dilep {
 			}while(0);
 
 			//results[tid] = (((double) curand(&state[blockIdx.x]))/((double) UINT_MAX));
-			return = mean + sigma * result;
+			*result = mean + sigma * result;
 		}
 
 		// TLorentzs/Flags
@@ -217,19 +217,24 @@ namespace Dilep {
 			double n_Px, n_Py, n_Pz, n_Pt, n_E;	
 			double delPx, delPy;
 
+			double prng_nums[3];
+			gaus_kernel( 0., RESOLUTION, &prng_nums[0], state );
+			gaus_kernel( 0., RESOLUTION, &prng_nums[1], state );
+			gaus_kernel( 0., RESOLUTION, &prng_nums[2], state );
+
 			// Vary!
 
 			// _______________________________
 			// _______z_lep___________________
 			// _______________________________
 			if (  abs(  z_lepWFlags[3]  )  ==  11  ){ //___electrons____
-				n_Px = z_lepWFlags[0] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
-				n_Py = z_lepWFlags[1] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
-				n_Pz = z_lepWFlags[2] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+				n_Px = z_lepWFlags[0] * ( 1. + prng_nums[0] );
+				n_Py = z_lepWFlags[1] * ( 1. + prng_nums[1] );
+				n_Pz = z_lepWFlags[2] * ( 1. + prng_nums[2] );
 			} else if (  abs(z_lepWFlags[3]) == 13 ){ //_____muons______
-				n_Px = z_lepWFlags[0] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
-				n_Py = z_lepWFlags[1] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
-				n_Pz = z_lepWFlags[2] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+				n_Px = z_lepWFlags[0] * ( 1. + prng_nums[0] );
+				n_Py = z_lepWFlags[1] * ( 1. + prng_nums[1] );
+				n_Pz = z_lepWFlags[2] * ( 1. + prng_nums[2] );
 			}
 			// Recalculate z_lep
 			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_lepWFlags[4]*z_lepWFlags[4] );
@@ -246,14 +251,18 @@ namespace Dilep {
 			// _______________________________
 			// _______c_lep___________________
 			// _______________________________
+			gaus_kernel( 0., RESOLUTION, &prng_nums[0], state );
+			gaus_kernel( 0., RESOLUTION, &prng_nums[1], state );
+			gaus_kernel( 0., RESOLUTION, &prng_nums[2], state );
+
 			if (  abs(  c_lepWFlags[3]  )  ==  11  ){ //___electrons____
-				n_Px = c_lepWFlags[0] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
-				n_Py = c_lepWFlags[1] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
-				n_Pz = c_lepWFlags[2] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+				n_Px = c_lepWFlags[0] * ( 1. + prng_nums[0] );
+				n_Py = c_lepWFlags[1] * ( 1. + prng_nums[1] );
+				n_Pz = c_lepWFlags[2] * ( 1. + prng_nums[2] );
 			} else if (  abs(c_lepWFlags[3]) == 13 ){ //_____muons______
-				n_Px = c_lepWFlags[0] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
-				n_Py = c_lepWFlags[1] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
-				n_Pz = c_lepWFlags[2] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+				n_Px = c_lepWFlags[0] * ( 1. + prng_nums[0] );
+				n_Py = c_lepWFlags[1] * ( 1. + prng_nums[1] );
+				n_Pz = c_lepWFlags[2] * ( 1. + prng_nums[2] );
 			}
 			// Recalculate c_lep
 			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_lepWFlags[4]*c_lepWFlags[4] );
@@ -270,9 +279,13 @@ namespace Dilep {
 			// _______________________________
 			// _______z_bj____________________
 			// _______________________________
-			n_Px = z_bjWFlags[0] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
-			n_Py = z_bjWFlags[1] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
-			n_Pz = z_bjWFlags[2] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+			gaus_kernel( 0., RESOLUTION, &prng_nums[0], state );
+			gaus_kernel( 0., RESOLUTION, &prng_nums[1], state );
+			gaus_kernel( 0., RESOLUTION, &prng_nums[2], state );
+
+			n_Px = z_bjWFlags[0] * ( 1. + prng_nums[0] );
+			n_Py = z_bjWFlags[1] * ( 1. + prng_nums[1] );
+			n_Pz = z_bjWFlags[2] * ( 1. + prng_nums[2] );
 			// Recalculate z_bj
 			n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_bjWFlags[4]*z_bjWFlags[4] );
 			z_bj[0] = n_Px;	// Change Px 				
@@ -289,9 +302,13 @@ namespace Dilep {
 			// _______________________________
 			// _______c_bj____________________
 			// _______________________________
-			n_Px = c_bjWFlags[0] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
-			n_Py = c_bjWFlags[1] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
-			n_Pz = c_bjWFlags[2] * ( 1. + gaus_kernel( 0., RESOLUTION, state ) );
+			gaus_kernel( 0., RESOLUTION, &prng_nums[0], state );
+			gaus_kernel( 0., RESOLUTION, &prng_nums[1], state );
+			gaus_kernel( 0., RESOLUTION, &prng_nums[2], state );
+
+			n_Px = c_bjWFlags[0] * ( 1. + prng_nums[0] );
+			n_Py = c_bjWFlags[1] * ( 1. + prng_nums[1] );
+			n_Pz = c_bjWFlags[2] * ( 1. + prng_nums[2] );
 		//	n_Pt = c_bjWFlags.Pt() * ( 1. + _t_rnd_.Gaus( 0., St_j ) );
 		//	n_E  = c_bjWFlags.E()  * ( 1. + _t_rnd_.Gaus( 0., Se_j ) );
 			// Recalculate c_bj
