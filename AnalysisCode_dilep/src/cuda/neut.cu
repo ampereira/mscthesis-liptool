@@ -370,17 +370,17 @@ namespace Dilep {
 			cudaMalloc(&dev_count, size*sizeof(int));
 
 			// PRNG stuff
-			cudaMalloc((void **)&devMTGPStates, 3*sizeof(curandStateMtgp32))
+			cudaMalloc((void **)&devMTGPStates, 3*sizeof(curandStateMtgp32));
 			/* Allocate space for MTGP kernel parameters */
-			CUDA_CALL(cudaMalloc((void**)&devKernelParams, sizeof(mtgp32_kernel_params)));
+			cudaMalloc((void**)&devKernelParams, sizeof(mtgp32_kernel_params));
 
 			/* Reformat from predefined parameter sets to kernel format, */
 			/* and copy kernel parameters to device memory               */
-			CURAND_CALL(curandMakeMTGP32Constants(mtgp32dc_params_fast_11213, devKernelParams));
+			curandMakeMTGP32Constants(mtgp32dc_params_fast_11213, devKernelParams);
 
 			/* Initialize one state per thread block */
-			CURAND_CALL(curandMakeMTGP32KernelState(devMTGPStates,
-						mtgp32dc_params_fast_11213, devKernelParams, 3, 1234));
+			curandMakeMTGP32KernelState(devMTGPStates,
+						mtgp32dc_params_fast_11213, devKernelParams, 3, 1234);
 
 			// transfer the inputs to GPU memory
 			cudaMemcpy(dev_t_mass, t_mass, sizeof(t_mass), cudaMemcpyHostToDevice);
