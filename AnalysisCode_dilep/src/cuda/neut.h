@@ -21,6 +21,7 @@
 #include "../dilep_input.h"
 #include "../utilities.h"
 #include "../../../LipMiniAnalysis/TLorentzVectorWFlags.h"
+#include <curand_kernel.h>
 
 
 #define TPI 3.14159265358979312
