@@ -68,7 +68,7 @@ namespace Dilep {
 		__device__
 		void applyVariance (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy, curandStateMtgp32 *state);
+			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy, curandStateMtgp32 *state, double *nc);
 
 
 		std::vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 
