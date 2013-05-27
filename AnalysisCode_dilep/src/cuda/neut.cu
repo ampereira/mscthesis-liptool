@@ -8,6 +8,7 @@ namespace Dilep {
 
 		unsigned _tid = 0, size;
 	
+		__device__
 		double calcMass (double x, double y, double z, double e) {
 			double mm, mass;
 
@@ -32,6 +33,7 @@ namespace Dilep {
 		}
 
 		// Wrapper for the dilep calculation using the input class
+		__host__
 		void dilep (DilepInput &di) {
 			std::vector<myvector> *result = new std::vector<myvector> ();
 			int hasSolution = 0;
@@ -247,6 +249,7 @@ namespace Dilep {
 							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
 		}
 
+		__host__
 		void dilep (vector<DilepInput> &di) {
 
 			size = di.size();
@@ -264,6 +267,9 @@ namespace Dilep {
 			double *dev_nc, *dev_MissPx, *dev_MissPy;
 			int count[size], *dev_count;
 			int hasSolution = 0;
+
+			curandStateMtgp32 *devMTGPStates;
+			mtgp32_kernel_params *devKernelParams;
 
 			double _misspx = di[0].getMissPx(), _misspy = di[0].getMissPy();
 
@@ -362,6 +368,19 @@ namespace Dilep {
 			// allocation of the results
 			cudaMalloc(&dev_nc, size*16*sizeof(double));
 			cudaMalloc(&dev_count, size*sizeof(int));
+
+			// PRNG stuff
+			cudaMalloc((void **)&devMTGPStates, 3*sizeof(curandStateMtgp32))
+			/* Allocate space for MTGP kernel parameters */
+			CUDA_CALL(cudaMalloc((void**)&devKernelParams, sizeof(mtgp32_kernel_params)));
+
+			/* Reformat from predefined parameter sets to kernel format, */
+			/* and copy kernel parameters to device memory               */
+			CURAND_CALL(curandMakeMTGP32Constants(mtgp32dc_params_fast_11213, devKernelParams));
+
+			/* Initialize one state per thread block */
+			CURAND_CALL(curandMakeMTGP32KernelState(devMTGPStates,
+						mtgp32dc_params_fast_11213, devKernelParams, 3, 1234));
 
 			// transfer the inputs to GPU memory
 			cudaMemcpy(dev_t_mass, t_mass, sizeof(t_mass), cudaMemcpyHostToDevice);

@@ -22,6 +22,12 @@
 #include "../utilities.h"
 #include "../../../LipMiniAnalysis/TLorentzVectorWFlags.h"
 
+#include <curand_kernel.h>
+/* include MTGP host helper functions */
+#include <curand_mtgp32_host.h>
+/* include MTGP pre-computed parameter sets */
+#include <curand_mtgp32dc_p_11213.h>
+
 #define TPI 3.14159265358979312
 #define NUM_THREADS 2
 #define TO1D(nc,tid,sol,did) nc[tid*16+sol*4+did]
