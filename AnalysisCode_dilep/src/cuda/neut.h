@@ -30,6 +30,9 @@
 #define STRIDE5(a,i) a[tid * 5 + i]
 #define RESOLUTION 0.02
 #define cuRand(x) (((double) curand(x))/((double) UINT_MAX))
+#define CUDA_CALL(x) if((x) != cudaSuccess) { \
+	printf("Error at %s:%d\n",__FILE__,__LINE__); \
+	exit (EXIT_FAILURE);}
 
 #define GRID_SIZE 1
 
