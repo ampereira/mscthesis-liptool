@@ -15,7 +15,7 @@ ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 #ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lHtml -lEG -lPhysics -lTreePlayer
 ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
-NVCCFLAGS  = -arch=sm_20 -DCUDA -lcurand
+NVCCFLAGS  = -arch=sm_20 -DCUDA
 CXXFLAGS   = -O3 $(ROOTCFLAGS)
 #CXXFLAGS   = -g -DCUDA $(ROOTCFLAGS)
 # specific time measurement
@@ -74,7 +74,7 @@ build/neut_seq.o: src/seq/neut.cxx src/myvector.h src/seq/neut.h
 	$(CXX) -Wall -Wextra $(CXXFLAGS) $(INCLUDES) -c src/seq/neut.cxx -o build/neut_seq.o
 
 build/neut_cuda.o: src/cuda/neut.cxx src/myvector.h src/cuda/neut.cuh
-	$(NVCC) $(NVCCFLAGS) $(INCLUDES) -c src/cuda/neut.cu -o build/neut_cuda.o
+	$(NVCC) $(NVCCFLAGS) $(INCLUDES) -c src/cuda/neut.cu -o build/neut_cuda.o -lcurand
 #	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/cuda/neut.cxx -o build/neut_cuda.o
 
 ttH_dilep_seq: src/ttH_dilep_old.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
