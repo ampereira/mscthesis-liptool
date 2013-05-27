@@ -84,7 +84,7 @@ namespace Dilep {
 		}
 
 		__device__
-		double gaus_kernel (float mean, float sigma, double *result, curandStateMtgp32 *state) {
+		void gaus_kernel (float mean, float sigma, double *return_value, curandStateMtgp32 *state) {
 			// Samples a random number from the standard Normal (Gaussian) Distribution
 			// with the given mean and sigma.
 			// Uses the Acceptance-complement ratio from W. Hoermann and G. Derflinger
@@ -180,7 +180,7 @@ namespace Dilep {
 			}while(0);
 
 			//results[tid] = (((double) curand(&state[blockIdx.x]))/((double) UINT_MAX));
-			*result = mean + sigma * result;
+			*return_value = mean + sigma * result;
 		}
 
 		// TLorentzs/Flags
