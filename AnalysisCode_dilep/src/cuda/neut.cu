@@ -193,7 +193,7 @@ namespace Dilep {
 		__device__
 		void applyVariance (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy, curandStateMtgp32 *state, double *nc) {
+			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy, curandStateMtgp32 *state) {
 
 			//unsigned tid = _tid;
 			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
@@ -340,8 +340,6 @@ namespace Dilep {
 			c_bl[2] = c_bj[2] + c_lep[2];
 			c_bl[3] = c_bj[3] + c_lep[3];
 
-			gaus_kernel( 0., RESOLUTION, &nc[0], state );
-
 			// Re-calculate the masses
 			calcMass(z_bl);
 			calcMass(c_bl);
@@ -367,10 +365,12 @@ namespace Dilep {
 			double _z_bl[5], _c_bl[5];
 
 			applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
-					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy, state, nc);
+					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy, state);
 
-			//calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
-			//				_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
+			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
+							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
+
+			gaus_kernel(0.0, 0.02, &nc[0], state);
 		}
 
 
