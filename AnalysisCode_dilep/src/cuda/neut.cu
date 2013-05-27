@@ -370,7 +370,7 @@ namespace Dilep {
 			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
 							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
 
-			nc[0] = ((double) curand(&state[blockIdx.x]))/((double) UINT_MAX);
+			nc[0] = UINT_MAX;
 		}
 
 
