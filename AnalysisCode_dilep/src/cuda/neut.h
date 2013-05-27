@@ -31,9 +31,10 @@
 #define RESOLUTION 0.02
 #define cuRand(x) (((double) curand(x))/((double) UINT_MAX))
 
-#define CUDA_CALL(x) if((x) != cudaSuccess) { \
-	printf("Error at %s:%d - %d\n",__FILE__,__LINE__,x); \
-	exit (EXIT_FAILURE);}
+//#define CUDA_CALL(x) if((x) != cudaSuccess) { \
+//	printf("Error at %s:%d - %d\n",__FILE__,__LINE__,x); \
+//	exit (EXIT_FAILURE);}
+#define CUDA_CALL(x) x
 
 #define GRID_SIZE 1
 
