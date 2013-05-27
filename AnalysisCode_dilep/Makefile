@@ -60,6 +60,7 @@ dilep_time: CXXFLAGS += -DMEASURE_DILEP
 dilep_time: seq
 
 
+
 default: seq
 all: seq omp cuda sse
 
