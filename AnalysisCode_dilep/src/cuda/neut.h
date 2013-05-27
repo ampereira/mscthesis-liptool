@@ -24,13 +24,13 @@
 
 
 #define TPI 3.14159265358979312
-#define NUM_THREADS 2
 #define TO1D(nc,tid,sol,did) nc[tid*16+sol*4+did]
 #define STRIDE2(a,i) a[tid * 2 + i]
 #define STRIDE5(a,i) a[tid * 5 + i]
 #define RESOLUTION 0.02
 #define cuRand(x) (((double) curand(x))/((double) UINT_MAX))
 
+#define GRID_SIZE 1
 
 
 namespace Dilep {

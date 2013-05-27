@@ -376,7 +376,8 @@ namespace Dilep {
 			cudaMalloc(&dev_count, size*sizeof(int));
 
 			// PRNG stuff
-			cudaMalloc((void **)&devMTGPStates, 3*sizeof(curandStateMtgp32));
+			/* One state per block */
+			cudaMalloc((void **)&devMTGPStates, GRID_SIZE*sizeof(curandStateMtgp32));
 			/* Allocate space for MTGP kernel parameters */
 			cudaMalloc((void**)&devKernelParams, sizeof(mtgp32_kernel_params));
 
@@ -412,7 +413,7 @@ namespace Dilep {
 			//		a, b, c, d, _misspx, _misspy, t_mass, w_mass, nc, count);
 
 
-			dilep_kernel <<< 1, size >>> (dev_in_mpx, dev_in_mpy, dev_lep_aFlags, dev_lep_bFlags, dev_bj_aFlags, dev_bj_bFlags,
+			dilep_kernel <<< GRID_SIZE, size >>> (dev_in_mpx, dev_in_mpy, dev_lep_aFlags, dev_lep_bFlags, dev_bj_aFlags, dev_bj_bFlags,
 					dev_lep_a, dev_lep_b, dev_bj_a, dev_bj_b, dev_MissPx, dev_MissPy, dev_t_mass, dev_w_mass, dev_nc, dev_count);
 			
 			
