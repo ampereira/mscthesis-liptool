@@ -34,6 +34,7 @@
 #define STRIDE2(a,i) a[tid * 2 + i]
 #define STRIDE5(a,i) a[tid * 5 + i]
 #define RESOLUTION 0.02
+#define cuRand(x) (((double) curand(x))/((double) UINT_MAX))
 
 
 
