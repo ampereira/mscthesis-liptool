@@ -472,8 +472,8 @@ namespace Dilep {
 			}
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
-			CUDA_CALL(cudaMalloc(&dev_t_mass, size*2*sizeof(double)));
-			CUDA_CALL(cudaMalloc(&dev_w_mass, size*2*sizeof(double)));
+			cudaError_t err1 = cudaMalloc(&dev_t_mass, size*2*sizeof(double));
+			cudaError_t err2 = cudaMalloc(&dev_w_mass, size*2*sizeof(double));
 			CUDA_CALL(cudaMalloc(&dev_in_mpx, size*2*sizeof(double)));
 			CUDA_CALL(cudaMalloc(&dev_in_mpy, size*2*sizeof(double)));
 
@@ -537,8 +537,8 @@ namespace Dilep {
 			
 			
 			// memory transfer of the results from the GPU
-			cudaError_t err1 = cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
-			cudaError_t err2 = cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
+			cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 
 			cout << "HA " << size << " - " << nc[0] << " - " << count[0] << endl;
 			cout << "Erros " << cudaGetErrorString(err1) << " - " << cudaGetErrorString(err2) << endl;
