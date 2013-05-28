@@ -48,6 +48,7 @@ extern int num_threads;
 //extern TRandom3 t_rnd;
 #define RESOLUTION 0.02				// error resolution of de detector
 
+unsigned max_iteracoes = 0;
 
 // #############################################################################
 ttH_dilep::ttH_dilep():LipMiniAnalysis(){
@@ -3963,6 +3964,7 @@ void ttH_dilep::ttDilepKinFit(){
 	//			     2 jets for ttbar
 	//			     2 jet for H->bbbar
 	// ---------------------------------------
+	unsigned contador = 0;
 
 	std::vector<DilepInput> inputs;
 
@@ -4010,6 +4012,7 @@ void ttH_dilep::ttDilepKinFit(){
 									// ###################################################################
 									// Define number of experiments for resolution
 									// loop over several resolution experiments
+									++contador;
 
 									//TRandom3 *_t_rnd = new TRandom3 (SEED);
 									//DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
@@ -4024,12 +4027,15 @@ void ttH_dilep::ttDilepKinFit(){
 		}
 	}
 
+	if (contador > max_iteracoes)
+		max_iteracoes = contador;
+
 	// WARNING: numa primeira fase apenas para num combos <= num parallel tasks
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
 
 	// Best solution merge
-	ttDKF_Best_Sol best_sols [num_threads];
-	ttDKF_Best_Sol best;
+	//ttDKF_Best_Sol best_sols [num_threads];
+	//ttDKF_Best_Sol best;
 
 
 #ifdef MEASURE_KINFIT
@@ -4684,6 +4690,7 @@ Int_t main(Int_t argc, char *argv[]){
 	ttH_dilep *t = new ttH_dilep();
 	t->Start(argc, argv);
 
+	cout << "Facil: " << max_iteracoes << endl;
 	// Stop measuring overall time
 	ttH::stopTimer(init);
 
