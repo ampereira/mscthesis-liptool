@@ -379,19 +379,17 @@ namespace Dilep {
 
 			size = di.size();
 			
-			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], 
-				   t_mass[2 * size], w_mass[2 * size];
-			
-			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
+			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], t_mass[2 * size], w_mass[2 * size];
 			double a[5 * size], b[5 * size], c[5 * size], d[5 * size], e[5 * size], f[5 * size];	// e and f are the z/c_bl
 			double aFlags[5 * size], bFlags[5 * size], cFlags[5 * size], dFlags[5 * size];
+			double nc[16*size];
+			int hasSolution = 0, count[size];
 		
+			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
 			double *dev_lep_a, *dev_lep_b, *dev_bj_a, *dev_bj_b;
 			double *dev_lep_aFlags, *dev_lep_bFlags, *dev_bj_aFlags, *dev_bj_bFlags;
-			double nc[16*size];
 			double *dev_nc, *dev_MissPx, *dev_MissPy;
-			int count[size], *dev_count;
-			int hasSolution = 0;
+			int *dev_count;
 
 			curandStateMtgp32 *devMTGPStates;
 			mtgp32_kernel_params *devKernelParams;
@@ -542,7 +540,7 @@ namespace Dilep {
 
 			cout << "HA " << size << " - " << nc[0] << " - " << count[0] << endl;
 			cout << "Erros " << cudaGetErrorString(err1) << " - " << cudaGetErrorString(err2) << endl;
-			exit(0);
+			//exit(0);
 			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
 			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 			// reconstruction of the normal output of dilep
@@ -565,6 +563,25 @@ namespace Dilep {
 				di[comb].setHasSol(hasSolution);
 				di[comb].setResult(&result);
 			}
+
+			cudaFree(dev_t_mass);
+			cudaFree(dev_w_mass);
+			cudaFree(dev_in_mpx);
+			cudaFree(dev_in_mpy);
+			cudaFree(dev_lep_a);
+			cudaFree(dev_lep_b);
+			cudaFree(dev_bj_a);
+			cudaFree(dev_bj_b);
+			cudaFree(dev_lep_aFlags);
+			cudaFree(dev_lep_bFlags);
+			cudaFree(dev_bj_aFlags);
+			cudaFree(dev_bj_bFlags);
+			cudaFree(dev_MissPx);
+			cudaFree(dev_MissPy);
+			cudaFree(dev_nc);
+			cudaFree(dev_count);
+			cudaFree(devMTGPStates);
+			cudaFree(devKernelParams);
 
 			// time measurement
 			#ifdef MEASURE_DILEP
