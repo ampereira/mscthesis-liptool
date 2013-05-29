@@ -467,6 +467,15 @@ namespace Dilep {
 				dFlags[(i * 5) + 4] = di[i].getCbjW().M();
 			}
 
+			unsigned tamG, tamB;
+			if (size * dilep_iterations > 256) {
+				tamG = (size * dilep_iterations) / 256;
+				tamB = 256;
+			} else {
+				tamG = 1;
+				tamB = size * dilep_iterations;
+			}
+
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, size*2*sizeof(double));
 			cudaMalloc(&dev_w_mass, size*2*sizeof(double));
@@ -494,7 +503,7 @@ namespace Dilep {
 
 			// PRNG stuff
 			/* One state per block */
-			cudaMalloc((void **) &devMTGPStates, GRID_SIZE*sizeof(curandStateMtgp32));
+			cudaMalloc((void **) &devMTGPStates, tamG*sizeof(curandStateMtgp32));
 			/* Allocate space for MTGP kernel parameters */
 			cudaMalloc((void**) &devKernelParams, sizeof(mtgp32_kernel_params));
 
@@ -527,14 +536,6 @@ namespace Dilep {
 			
 			cudaMemcpy(dev_size, &size, sizeof(unsigned), cudaMemcpyHostToDevice);
 
-			unsigned tamG, tamB;
-			if (size * dilep_iterations > 256) {
-				tamG = (size * dilep_iterations) / 256;
-				tamB = 256;
-			} else {
-				tamG = 1;
-				tamB = size * dilep_iterations;
-			}
 
 			dim3 grid_size1D (tamG);
 			dim3 block_size1D (tamB);
