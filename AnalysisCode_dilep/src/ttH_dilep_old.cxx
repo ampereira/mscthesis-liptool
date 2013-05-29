@@ -2585,7 +2585,7 @@ void ttH_dilep::DoCuts(){
         ttDilepKinFit();
 
 #ifdef MEASURE_KINFIT
-    long long int time = ttH::KinFit::stopTimer(time);
+    ttH::KinFit::stopTimer(time);
 #endif
 
         //=============================================
