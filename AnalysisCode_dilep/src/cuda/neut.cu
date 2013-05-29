@@ -527,8 +527,19 @@ namespace Dilep {
 			
 			cudaMemcpy(dev_size, &size, sizeof(unsigned), cudaMemcpyHostToDevice);
 
+			unsigned tamG, tamB;
+			if (size * dilep_iterations > 256) {
+				tamG = (size * dilep_iterations) / 256;
+				tamB = 256;
+			} else {
+				tamG = 1;
+				tamB = size * dilep_iterations;
+			}
 
-			dilep_kernel <<< GRID_SIZE, size >>> (dev_in_mpx, dev_in_mpy, dev_lep_aFlags, dev_lep_bFlags, dev_bj_aFlags, dev_bj_bFlags,
+			dim3 grid_size1D (tamG);
+			dim3 block_size1D (tamB);
+
+			dilep_kernel <<< grid_size1D, block_size1D >>> (dev_in_mpx, dev_in_mpy, dev_lep_aFlags, dev_lep_bFlags, dev_bj_aFlags, dev_bj_bFlags,
 					dev_lep_a, dev_lep_b, dev_bj_a, dev_bj_b, dev_MissPx, dev_MissPy, dev_size, dev_t_mass, dev_w_mass, dev_nc, dev_count, devMTGPStates);
 			
 			

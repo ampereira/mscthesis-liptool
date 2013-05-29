@@ -4075,10 +4075,6 @@ void ttH_dilep::ttDilepKinFit(){
 		std::vector<myvector> result = di.getResult();
 		HasSolution += di.getHasSol();
 
-		//ofstream of ("zazus.txt", fstream::app);
-		//of << EveNumber << " - " << result.size() << endl;
-		//of.close();
-
 
 		for ( int id = 0; id < result.size(); id++) {
 		
