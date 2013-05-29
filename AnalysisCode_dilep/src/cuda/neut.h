@@ -64,12 +64,12 @@ namespace Dilep {
 
 		__global__ void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double *_MissPx, double *_MissPy, double _t_mass[], double _w_mass[], double nc[], int a[], curandStateMtgp32 *state);
+			double *_MissPx, double *_MissPy, unsigned *size, double _t_mass[], double _w_mass[], double nc[], int a[], curandStateMtgp32 *state);
 
 		__device__
 		void applyVariance (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy, curandStateMtgp32 *state);
+			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy, unsigned size, curandStateMtgp32 *state);
 
 
 		std::vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 
