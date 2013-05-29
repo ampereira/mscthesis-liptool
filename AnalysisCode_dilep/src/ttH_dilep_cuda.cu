@@ -4024,9 +4024,6 @@ void ttH_dilep::ttDilepKinFit(){
 		}
 	}
 
-	if (contador > max_iteracoes)
-		max_iteracoes = contador;
-
 	// WARNING: numa primeira fase apenas para num combos <= num parallel tasks
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
 
