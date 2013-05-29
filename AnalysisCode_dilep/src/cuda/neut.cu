@@ -214,7 +214,7 @@ namespace Dilep {
 
 			
 			// new four-vectors	
-			double n_Px, n_Py, n_Pz, n_Pt, n_E;	
+			/*double n_Px, n_Py, n_Pz, n_Pt, n_E;	
 			double delPx, delPy;
 
 			double prng_nums[3];
@@ -328,7 +328,7 @@ namespace Dilep {
 			// ---------------------------------------
 			//z_bl = z_bj + z_lep;
 			//c_bl = c_bj + c_lep;
-			
+			*/
 
 			z_bl[0] = z_bj[0] + z_lep[0];
 			z_bl[1] = z_bj[1] + z_lep[1];
