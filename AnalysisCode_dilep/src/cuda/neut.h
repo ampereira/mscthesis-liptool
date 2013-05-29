@@ -28,6 +28,8 @@
 #define TO1D(nc,tid,sol,did) nc[tid*16+sol*4+did]
 #define STRIDE2(a,i) a[tid * 2 + i]
 #define STRIDE5(a,i) a[tid * 5 + i]
+#define CUDA_THREAD_STRIDE2(a,i) a[(tid / size) * 2 + i]
+#define CUDA_THREAD_STRIDE5(a,i) a[(tid / size) * 5 + i]
 #define RESOLUTION 0.02
 #define cuRand(x) (((double) curand(x))/((double) UINT_MAX))
 

@@ -199,18 +199,18 @@ namespace Dilep {
 			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
 
 			// Using pointers for better code readbility - does it affect the performance in the kernel?
-			double *in_mpx		= &STRIDE2(_in_mpx, 0);
-			double *in_mpy		= &STRIDE2(_in_mpy, 0);
-			double *z_lepWFlags = &STRIDE5(_z_lepWFlags, 0);
-			double *c_lepWFlags = &STRIDE5(_c_lepWFlags, 0);
-			double *z_bjWFlags	= &STRIDE5(_z_bjWFlags, 0);
-			double *c_bjWFlags  = &STRIDE5(_c_bjWFlags, 0);
-			double *z_lep 		= &STRIDE5(_z_lep, 0);
-			double *c_lep 		= &STRIDE5(_c_lep, 0);
-			double *z_bj 		= &STRIDE5(_z_bj, 0);
-			double *c_bj 		= &STRIDE5(_c_bj, 0);
-			double *z_bl 		= &STRIDE5(_z_bl, 0);
-			double *c_bl 		= &STRIDE5(_c_bl, 0);
+			double *in_mpx		= &CUDA_THREAD_STRIDE2(_in_mpx, 0);
+			double *in_mpy		= &CUDA_THREAD_STRIDE2(_in_mpy, 0);
+			double *z_lepWFlags = &CUDA_THREAD_STRIDE5(_z_lepWFlags, 0);
+			double *c_lepWFlags = &CUDA_THREAD_STRIDE5(_c_lepWFlags, 0);
+			double *z_bjWFlags	= &CUDA_THREAD_STRIDE5(_z_bjWFlags, 0);
+			double *c_bjWFlags  = &CUDA_THREAD_STRIDE5(_c_bjWFlags, 0);
+			double *z_lep 		= &CUDA_THREAD_STRIDE5(_z_lep, 0);
+			double *c_lep 		= &CUDA_THREAD_STRIDE5(_c_lep, 0);
+			double *z_bj 		= &CUDA_THREAD_STRIDE5(_z_bj, 0);
+			double *c_bj 		= &CUDA_THREAD_STRIDE5(_c_bj, 0);
+			double *z_bl 		= &CUDA_THREAD_STRIDE5(_z_bl, 0);
+			double *c_bl 		= &CUDA_THREAD_STRIDE5(_c_bl, 0);
 
 			
 			// new four-vectors	
@@ -369,8 +369,6 @@ namespace Dilep {
 
 			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
 							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
-
-			a[0] = 10;
 		}
 
 
