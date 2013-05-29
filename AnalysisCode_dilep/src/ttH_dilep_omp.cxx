@@ -2601,9 +2601,13 @@ void ttH_dilep::DoCuts(){
 	//=============================================
 	//====   Do tt System Reconstruction   ========
 	//=============================================
-
+#ifdef MEASURE_KINFIT
+	long long int time = ttH::KinFit::startTimer();
+#endif
 	ttDilepKinFit();
-
+#ifdef MEASURE_KINFIT
+	ttH::KinFit::stopTimer(time);
+#endif
 	//=============================================
 	//=============================================
 	// C12) Check if there is a solution   ========
@@ -4033,9 +4037,9 @@ void ttH_dilep::ttDilepKinFit(){
 	ttDKF_Best_Sol best;
 
 
-#ifdef MEASURE_KINFIT
-	long long int time = ttH::KinFit::startTimer();
-#endif
+//#ifdef MEASURE_KINFIT
+//	long long int time = ttH::KinFit::startTimer();
+//#endif
 
 	
 	omp_set_num_threads(num_threads);
@@ -4416,9 +4420,9 @@ void ttH_dilep::ttDilepKinFit(){
 
 
 
-	#ifdef MEASURE_KINFIT
-		ttH::KinFit::stopTimer(time);
-	#endif
+	//#ifdef MEASURE_KINFIT
+	//	ttH::KinFit::stopTimer(time);
+	//#endif
 
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met
