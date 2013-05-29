@@ -498,8 +498,8 @@ namespace Dilep {
 			cudaMalloc(&dev_size, sizeof(unsigned));
 
 			// allocation of the results
-			cudaMalloc(&dev_nc, size*16*sizeof(double));
-			cudaMalloc(&dev_count, size*sizeof(int));
+			cudaMalloc(&dev_nc, dilep_iterations*size*16*sizeof(double));
+			cudaMalloc(&dev_count, dilep_iterations*size*sizeof(int));
 
 			// PRNG stuff
 			/* One state per block */
@@ -545,15 +545,15 @@ namespace Dilep {
 			
 			
 			// memory transfer of the results from the GPU
-			cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
-			cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
+			cudaMemcpy(nc, dev_nc, dilep_iterations*16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(count, dev_count, dilep_iterations*size*sizeof(int), cudaMemcpyDeviceToHost);
 
 			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
 			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 
-			for (unsigned comb = 0; comb < size; ++comb) {
+			for (unsigned comb = 0; comb < dilep_iterations*size; ++comb) {
 				vector<myvector> result;
 
 				for (int sol = 0 ; sol < count[comb] && sol<4 ; sol++) {
