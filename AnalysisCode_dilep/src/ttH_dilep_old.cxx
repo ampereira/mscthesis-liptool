@@ -2577,7 +2577,16 @@ void ttH_dilep::DoCuts(){
         //=============================================
         //====   Do tt System Reconstruction   ========
         //=============================================
+
+#ifdef MEASURE_KINFIT
+    long long int time = ttH::KinFit::startTimer();
+#endif
+
         ttDilepKinFit();
+
+#ifdef MEASURE_KINFIT
+    long long int time = ttH::KinFit::stopTimer(time);
+#endif
 
         //=============================================
         //=============================================
@@ -4771,6 +4780,10 @@ Int_t main(Int_t argc, char *argv[]){
 
 		// Stop measuring overall time
 		ttH::stopTimer(init);
+
+#ifdef MEASURE_KINFIT
+    ttH::KinFit::printTimer();
+#endif
 
 	// exits
 	return(0);
