@@ -38,7 +38,7 @@
 //	exit (EXIT_FAILURE);}
 #define CUDA_CALL(x) x
 
-#define GRID_SIZE 1
+extern int dilep_iterations;
 
 
 namespace Dilep {
