@@ -8,6 +8,7 @@
 #include <sys/time.h>
 #include <cmath>
 #include <queue>
+#include <TRandom.h>
 
 #ifdef OMP
 	#include <omp.h>

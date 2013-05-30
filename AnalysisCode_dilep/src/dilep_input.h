@@ -6,17 +6,17 @@
 #include <fstream>
 #include <vector>
 #include "myvector.h"
+#include "utilities.h"
 #include "../../LipMiniAnalysis/LipMiniAnalysis.h"
 
 #define SEED 123456.0
 
 using namespace std;
 
-//static TRandom3 t_rnd;
 
 class DilepInput {
 	
-	TRandom3 t_rnd;
+	//TRandom3 t_rnd;
 
 	TLorentzVector z_lep, c_lep;
 	TLorentzVector z_bj, c_bj;

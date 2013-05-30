@@ -1,11 +1,13 @@
 // Utilities for time measurement and other stuffs
 #include "utilities.h"
+#define SEED 123456.0
 
 using namespace std;
 
 
 int dilep_iterations;
 int num_threads;
+static TRandom3 *t_rnd;
 static long long int totaltime = 0;
 static long long int num_measurements = 0;
 
@@ -40,6 +42,11 @@ namespace ttH {
 			cout << "Running analysis for the default value of ";
 			cout << num_threads << " threads\033[0m" << endl << endl;
 		}
+
+		t_rnd = new TRandom3 [num_threads];
+
+		for (int i = 0; i < num_threads; ++i)
+			t_rnd[i].SetSeed(SEED + i);
 	}
 
 	// Time measurement functions

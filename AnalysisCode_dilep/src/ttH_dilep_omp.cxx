@@ -42,7 +42,6 @@ using namespace std;
 #include "dilep_input.h"
 #include "utilities.h"
 #include "ttDKF_Best_Sol.h"
-extern TRandom3 t_rnd;
 extern int dilep_iterations;
 extern int num_threads;
 //extern TRandom3 t_rnd;
