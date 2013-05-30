@@ -208,6 +208,8 @@ void DilepInput::applyVariance (float res, int seed) {
 	// new four-vectors	
 	double n_Px, n_Py, n_Pz, n_Pt, n_E;	
 	double delPx, delPy;
+	
+	unsigned thread_id = omp_get_thread_num();
 
 	// Initialize the random number generator
 	t_rnd[thread_id].SetSeed (seed);
