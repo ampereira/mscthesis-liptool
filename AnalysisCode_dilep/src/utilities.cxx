@@ -7,7 +7,7 @@ using namespace std;
 
 int dilep_iterations;
 int num_threads;
-static TRandom3 *t_rnd;
+TRandom3 *t_rnd;
 static long long int totaltime = 0;
 static long long int num_measurements = 0;
 
