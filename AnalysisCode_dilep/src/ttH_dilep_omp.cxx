@@ -4089,7 +4089,7 @@ void ttH_dilep::ttDilepKinFit(){
 		int first = 0;
 		DilepInput di;
 
-	#pragma omp for schedule(dynamic) //nowait
+	#pragma omp for schedule(dynamic) nowait
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task
@@ -4104,15 +4104,8 @@ void ttH_dilep::ttDilepKinFit(){
 		di.applyVariance(RESOLUTION);
 
 		// Run the dileptonic reconstruction 
-#ifdef SEQ
 		Dilep::CPU::dilep(di);
-#elif OMP
-		Dilep::CPU::dilep(di);
-#elif CUDA
-		result = CUDA::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-#elif PAPI
-		result = PAPI::dilep(dilep_iterations, t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl, &partial_sol_count);
-#endif
+
 
 		// ---------------------------------------
 		// Get info from all possible solutions
