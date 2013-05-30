@@ -42,9 +42,7 @@ namespace ttH {
 			cout << "Running analysis for the default value of ";
 			cout << num_threads << " threads\033[0m" << endl << endl;
 		}
-
-		t_rnd = new TRandom3 [num_threads];
-
+		t_rnd = new TRandom3 [num_threads];
 		for (int i = 0; i < num_threads; ++i)
 			t_rnd[i].SetSeed(SEED + i);
 	}
