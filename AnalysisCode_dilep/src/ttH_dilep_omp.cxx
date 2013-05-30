@@ -4089,7 +4089,7 @@ void ttH_dilep::ttDilepKinFit(){
 		int first = 0;
 		DilepInput di;
 
-	#pragma omp for schedule(dynamic)
+	#pragma omp for schedule(dynamic) nowait
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task
