@@ -11,6 +11,8 @@
 
 #define SEED 123456.0
 
+extern static TRandom3 *t_rnd;
+
 using namespace std;
 
 
