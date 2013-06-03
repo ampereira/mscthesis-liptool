@@ -157,7 +157,7 @@ void DilepInput::print (char* filename) {
 	file << "jet2_HiggsWFlags " << jet2_HiggsWFlags.Px() << " " << jet2_HiggsWFlags.Py() << " " << jet2_HiggsWFlags.Pz() << " " << jet2_HiggsWFlags.E() << endl;
 
 	file.close();
-}*/
+}
 
 // Apply variance to the inputs of the dilep function a given number of times
 // resulting a vector of varied inputs
@@ -177,7 +177,7 @@ vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount
 	}
 
 	return inputs;
-}
+}*/
 
 // Apply variance to the inputs of the dilep function a given number of times
 // resulting a vector of varied inputs

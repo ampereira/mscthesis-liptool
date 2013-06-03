@@ -94,7 +94,7 @@ public:
 	void setZblCbl (void);
 };
 
-void applyVariance (vector<DilepInput> &vdi, float res, int amount);
+//void applyVariance (vector<DilepInput> &vdi, float res, int amount);
 vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount, int seed);
 
 #endif
