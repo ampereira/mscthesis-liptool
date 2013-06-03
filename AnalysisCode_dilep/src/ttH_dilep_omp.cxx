@@ -4016,7 +4016,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 									//TRandom3 *_t_rnd = new TRandom3 (SEED);
 									//DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
-									DilepInput di (z_lep, c_lep, MyChoiceJetVec[j1], MyChoiceJetVec[j2], MyChoiceJetVec[j1], MyChoiceJetVec[j2], z_lepWFlags, c_lepWFlags, MyChoiceJetVec[j3], MyChoiceJetVec[j4], in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
+									DilepInput di (&z_lep, &c_lep, &MyChoiceJetVec[j1], &MyChoiceJetVec[j2], &MyChoiceJetVec[j1], &MyChoiceJetVec[j2], &z_lepWFlags, &c_lepWFlags, &MyChoiceJetVec[j3], &MyChoiceJetVec[j4], in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 									inputs.push_back(di);
 								}
 							}
