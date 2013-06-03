@@ -4014,9 +4014,9 @@ void ttH_dilep::ttDilepKinFit(){
 									// Define number of experiments for resolution
 									// loop over several resolution experiments
 
-									TRandom3 *_t_rnd = new TRandom3 (SEED);
+									//TRandom3 *_t_rnd = new TRandom3 (SEED);
 									//DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
-									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m, *_t_rnd);
+									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 									inputs.push_back(di);
 								}
 							}
@@ -4584,7 +4584,10 @@ void ttH_dilep::ttDilepKinFit(){
 		RecCos_LepN_Bbar_BoostedtoWn =  -cos(  RecLepN_BoostedtoWn   .Angle (  RecBbar_BoostedtoWn.Vect()));
 
 	}
+	//for (unsigned pfff = 0; pfff < omp_get_num_threads(); ++pfff)
+	//	delete &best_sols[pfff];
 
+	//delete[] best_sols;
 }
 
 // #############################################################################

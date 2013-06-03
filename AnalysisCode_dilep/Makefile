@@ -15,8 +15,8 @@ ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 #ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lHtml -lEG -lPhysics -lTreePlayer
 ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
-NVCCFLAGS  = -arch=sm_20 -DCUDA
-CXXFLAGS   = -O3 $(ROOTCFLAGS)
+NVCCFLAGS  = -g -G -arch=sm_20 -DCUDA
+CXXFLAGS   = -mavx -O3 $(ROOTCFLAGS)
 #CXXFLAGS   = -g -DCUDA $(ROOTCFLAGS)
 # specific time measurement
 #CXXFLAGS  += -DMEASURE_KINFIT #-DMEASURE_DILEP
