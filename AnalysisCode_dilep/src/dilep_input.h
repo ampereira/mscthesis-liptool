@@ -76,8 +76,8 @@ public:
 	int getClepWisb (void) const;
 	int getZbjWisb (void) const;
 	int getCbjWisb (void) const;
-	TLorentzVectorWFlags getJet1HiggsW (void) const;
-	TLorentzVectorWFlags getJet2HiggsW (void) const;
+	TLorentzVectorWFlags* getJet1HiggsW (void) const;
+	TLorentzVectorWFlags* getJet2HiggsW (void) const;
 	double getMissPx (void) const;
 	double getMissPy (void) const;
 	double getInMpx (int) const;
