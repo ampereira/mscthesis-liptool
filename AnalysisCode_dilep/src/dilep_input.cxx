@@ -102,21 +102,21 @@ DilepInput::DilepInput (const DilepInput &other) {
 	MissPx = other.getMissPx();
 	MissPy = other.getMissPy();
 
-	*z_lep = other.getZlep();
-	*c_lep = other.getClep();
-	*z_bj = other.getZbj();
-	*c_bj = other.getCbj();
+	z_lep = other.getZlep();
+	c_lep = other.getClep();
+	z_bj = other.getZbj();
+	c_bj = other.getCbj();
 
-	*z_bjWFlags = other.getZbjW();
-	*c_bjWFlags = other.getCbjW();
-	*z_lepWFlags = other.getZlepW();
-	*c_lepWFlags = other.getClepW();
+	z_bjWFlags = other.getZbjW();
+	c_bjWFlags = other.getCbjW();
+	z_lepWFlags = other.getZlepW();
+	c_lepWFlags = other.getClepW();
 
-	*jet1_HiggsWFlags = other.getJet1HiggsW();
-	*jet2_HiggsWFlags = other.getJet2HiggsW();
+	jet1_HiggsWFlags = other.getJet1HiggsW();
+	jet2_HiggsWFlags = other.getJet2HiggsW();
 
-	*z_bl = other.getZbl();
-	*c_bl = other.getCbl();
+	z_bl = other.getZbl();
+	c_bl = other.getCbl();
 
 	hasSolution = other.getHasSol();
 
@@ -473,44 +473,44 @@ void DilepInput::applyVariance (float res) {
 
 // Getters
 
-TLorentzVector DilepInput::getZlep (void) const {
-	return *z_lep;
+TLorentzVector* DilepInput::getZlep (void) const {
+	return z_lep;
 }
 
-TLorentzVector DilepInput::getClep (void) const {
-	return *c_lep;
+TLorentzVector* DilepInput::getClep (void) const {
+	return c_lep;
 }
 
-TLorentzVector DilepInput::getZbj (void) const {
-	return *z_bj;
+TLorentzVector* DilepInput::getZbj (void) const {
+	return z_bj;
 }
 
-TLorentzVector DilepInput::getCbj (void) const {
-	return *c_bj;
+TLorentzVector* DilepInput::getCbj (void) const {
+	return c_bj;
 }
 
-TLorentzVector DilepInput::getZbl (void) const {
-	return *z_bl;
+TLorentzVector* DilepInput::getZbl (void) const {
+	return z_bl;
 }
 
-TLorentzVector DilepInput::getCbl (void) const {
-	return *c_bl;
+TLorentzVector* DilepInput::getCbl (void) const {
+	return c_bl;
 }
 
-TLorentzVectorWFlags DilepInput::getZlepW (void) const {
-	return *z_lepWFlags;
+TLorentzVectorWFlags* DilepInput::getZlepW (void) const {
+	return z_lepWFlags;
 }
 
-TLorentzVectorWFlags DilepInput::getClepW (void) const {
-	return *c_lepWFlags;
+TLorentzVectorWFlags* DilepInput::getClepW (void) const {
+	return c_lepWFlags;
 }
 
-TLorentzVectorWFlags DilepInput::getZbjW (void) const {
-	return *z_bjWFlags;
+TLorentzVectorWFlags* DilepInput::getZbjW (void) const {
+	return z_bjWFlags;
 }
 
-TLorentzVectorWFlags DilepInput::getCbjW (void) const {
-	return *c_bjWFlags;
+TLorentzVectorWFlags* DilepInput::getCbjW (void) const {
+	return c_bjWFlags;
 }
 
 int DilepInput::getZlepWisb (void) const {
@@ -530,12 +530,12 @@ int DilepInput::getCbjWisb (void) const {
 }
 
 
-TLorentzVectorWFlags DilepInput::getJet1HiggsW (void) const {
-	return *jet1_HiggsWFlags;
+TLorentzVectorWFlags* DilepInput::getJet1HiggsW (void) const {
+	return jet1_HiggsWFlags;
 }
 
-TLorentzVectorWFlags DilepInput::getJet2HiggsW (void) const {
-	return *jet2_HiggsWFlags;
+TLorentzVectorWFlags* DilepInput::getJet2HiggsW (void) const {
+	return jet2_HiggsWFlags;
 }
 
 double DilepInput::getMissPx (void) const {

@@ -62,16 +62,16 @@ public:
 	void applyVariance (float res, int seed);
 
 	// Getters
-	TLorentzVector getZlep (void) const;
-	TLorentzVector getClep (void) const;
-	TLorentzVector getZbj (void) const;
-	TLorentzVector getCbj (void) const;
-	TLorentzVector getZbl (void) const;
-	TLorentzVector getCbl (void) const;
-	TLorentzVectorWFlags getZlepW (void) const;
-	TLorentzVectorWFlags getClepW (void) const;
-	TLorentzVectorWFlags getZbjW (void) const;
-	TLorentzVectorWFlags getCbjW (void) const;
+	TLorentzVector* getZlep (void) const;
+	TLorentzVector* getClep (void) const;
+	TLorentzVector* getZbj (void) const;
+	TLorentzVector* getCbj (void) const;
+	TLorentzVector* getZbl (void) const;
+	TLorentzVector* getCbl (void) const;
+	TLorentzVectorWFlags* getZlepW (void) const;
+	TLorentzVectorWFlags* getClepW (void) const;
+	TLorentzVectorWFlags* getZbjW (void) const;
+	TLorentzVectorWFlags* getCbjW (void) const;
 	int getZlepWisb (void) const;
 	int getClepWisb (void) const;
 	int getZbjWisb (void) const;
