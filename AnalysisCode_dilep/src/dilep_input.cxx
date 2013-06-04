@@ -467,8 +467,8 @@ void DilepInput::applyVariance (float res) {
 
 	e = a + b;
 	f = c + d;
-	*z_bl = e;
-	*c_bl = f;
+	z_bl = &e;
+	c_bl = &f;
 
 	/*cout << z_bl.Px() << " - " << z_bj.Px() << " - " << z_lep.Px() << endl;
 	cout << z_bl.Py() << " - " << z_bj.Py() << " - " << z_lep.Py() << endl;
