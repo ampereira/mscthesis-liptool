@@ -459,16 +459,12 @@ void DilepInput::applyVariance (float res) {
 	// ---------------------------------------
 	// Define TLorentzVectors for (b,l) system
 	// ---------------------------------------
-	TLorentzVector a = *z_bj;
-	TLorentzVector b = *z_lep;
-	TLorentzVector c = *c_bj;
-	TLorentzVector d = *c_lep;
-	TLorentzVector e,f;
 
-	e = a + b;
-	f = c + d;
-	z_bl = &e;
-	c_bl = &f;
+
+	z_bl->SetPxPyPzE(z_bj->Px() + z_lep->Px(), z_bj->Py() + z_lep->Py(), z_bj->Pz() + z_lep->Pz(), z_bj->E() + z_lep->E());
+	c_bl->SetPxPyPzE(c_bj->Px() + c_lep->Px(), c_bj->Py() + c_lep->Py(), c_bj->Pz() + c_lep->Pz(), c_bj->E() + c_lep->E());
+
+	
 
 	/*cout << z_bl.Px() << " - " << z_bj.Px() << " - " << z_lep.Px() << endl;
 	cout << z_bl.Py() << " - " << z_bj.Py() << " - " << z_lep.Py() << endl;
