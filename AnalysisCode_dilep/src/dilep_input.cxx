@@ -125,7 +125,18 @@ DilepInput::DilepInput (const DilepInput &other) {
 
 // Constructor
 DilepInput::DilepInput (void) {
-	//t_rnd.SetSeed(SEED);
+	//t_rnd.SetSeed(SEED);z_lep = _z_lep;
+	c_lep =  new TLorentzVector();
+	z_bj = new TLorentzVector();
+	c_bj = new TLorentzVector();
+
+	z_bjWFlags = new TLorentzVectorWFlags();
+	c_bjWFlags = new TLorentzVectorWFlags();
+	z_lepWFlags = new TLorentzVectorWFlags();
+	c_lepWFlags = new TLorentzVectorWFlags();
+	jet1_HiggsWFlags = new TLorentzVectorWFlags();
+	jet2_HiggsWFlags = new TLorentzVectorWFlags();
+
 	hasSolution = 0;
 }
 /*
