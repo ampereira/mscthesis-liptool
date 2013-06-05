@@ -855,6 +855,15 @@ void LipMiniAnalysis::Start(int i_argc, char *const *i_argv) {
     long int freespace;
     Int_t error;
 
+
+
+#ifdef MEASURE_READFILE
+
+#endif
+
+
+
+
     // open original file and check its size
     std::ifstream infile(Input.Name(f).c_str(), std::ios_base::binary|std::ios::ate);
     insize = (long int) infile.tellg();
@@ -2085,12 +2094,23 @@ void LipMiniAnalysis::PostLoopCalculations(){
 void LipMiniAnalysis::Loop() {
 // #############################################################################
 
+#ifdef MEASURE_READFILE
+  long long totaltime = 0;
+#endif
 
   if (nTuple->fChain == 0) return;
   Int_t nentries = Int_t(nTuple->fChain->GetEntriesFast());
 
   // start loop over all events
   for (Long64_t i_event = 0; nentries; ++i_event) {
+
+#ifdef MEASURE_READFILE
+    long long int time;
+    timeval t;
+
+    gettimeofday(&t, NULL);
+    time = t.tv_sec * 1000000.0 + t.tv_usec;
+#endif
 
     // standard stuff to get the event in memory
     Int_t ientry = nTuple->LoadTree(i_event);
@@ -2115,6 +2135,17 @@ void LipMiniAnalysis::Loop() {
         exit(0);
       }
 
+#ifdef MEASURE_READFILE
+      timeval t;
+    long long int end;
+
+    gettimeofday(&t, NULL);
+
+    end = t.tv_sec * 1000000.0 + t.tv_usec;
+    end -= init;
+
+    totaltime += end;
+#endif
       // Normalize weight to luminosity
       if(isData==0 || isQCDantie==1 || isQCDmmm==1) Weight=Weight*Luminosity/MonteCarlo[mc_process].lum();
       //else Weight=1;
@@ -2180,6 +2211,10 @@ void LipMiniAnalysis::Loop() {
 
   // end loop over events
   }
+
+  #ifdef MEASURE_READFILE
+  cout << "BADALHOQUICES " << totaltime << endl;
+  #endif
 
 }
 

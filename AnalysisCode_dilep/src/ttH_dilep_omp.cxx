@@ -4016,7 +4016,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 									//TRandom3 *_t_rnd = new TRandom3 (SEED);
 									//DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
-									DilepInput di (&z_lep, &c_lep, &MyChoiceJetVec[j1], &MyChoiceJetVec[j2], &MyChoiceJetVec[j1], &MyChoiceJetVec[j2], &z_lepWFlags, &c_lepWFlags, &MyChoiceJetVec[j3], &MyChoiceJetVec[j4], in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
+									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 									inputs.push_back(di);
 								}
 							}
@@ -4128,13 +4128,13 @@ void ttH_dilep::ttDilepKinFit(){
 			//  1st top quark Reconstruction
 			// -------------------------------
 			// b-quark 1
-			_b1_ttDKF.push_back(*di.getZbjW());
+			_b1_ttDKF.push_back(di.getZbjW());
 			// lepton 1
-			_l1_ttDKF.push_back(*di.getZlepW());			
-			if ( di.getZlepW()->isb ==  11 ) { iPDGnu1 = -12; iPDGW1 = -24; iPDGt1 = -6; }
-			if ( di.getZlepW()->isb == -11 ) { iPDGnu1 = +12; iPDGW1 = +24; iPDGt1 = +6; }
-			if ( di.getZlepW()->isb ==  13 ) { iPDGnu1 = -14; iPDGW1 = -24; iPDGt1 = -6; }
-			if ( di.getZlepW()->isb == -13 ) { iPDGnu1 = +14; iPDGW1 = +24; iPDGt1 = +6; }
+			_l1_ttDKF.push_back(di.getZlepW());			
+			if ( di.getZlepW().isb ==  11 ) { iPDGnu1 = -12; iPDGW1 = -24; iPDGt1 = -6; }
+			if ( di.getZlepW().isb == -11 ) { iPDGnu1 = +12; iPDGW1 = +24; iPDGt1 = +6; }
+			if ( di.getZlepW().isb ==  13 ) { iPDGnu1 = -14; iPDGW1 = -24; iPDGt1 = -6; }
+			if ( di.getZlepW().isb == -13 ) { iPDGnu1 = +14; iPDGW1 = +24; iPDGt1 = +6; }
 			// neutrino 1
 			px = pp->Px();
 			py = pp->Py();
@@ -4146,18 +4146,18 @@ void ttH_dilep::ttDilepKinFit(){
 			_n1_ttDKF.push_back(nu1);
 			// W boson 1
 			TLorentzVector w1;
-			w1.SetPxPyPzE(	px + di.getZlepW()->Px(), 
-					py + di.getZlepW()->Py(), 
-					pz + di.getZlepW()->Pz(), 
-					E  + di.getZlepW()->E()   );
+			w1.SetPxPyPzE(	px + di.getZlepW().Px(), 
+					py + di.getZlepW().Py(), 
+					pz + di.getZlepW().Pz(), 
+					E  + di.getZlepW().E()   );
 			TLorentzVectorWFlags ww1(w1,0,iPDGW1,999.,-1,-1);
 			_W1_ttDKF.push_back(ww1);
 			// top quark 1
 			TLorentzVector t1;
-			t1.SetPxPyPzE(	px + di.getZlepW()->Px() + di.getZbjW()->Px(), 
-					py + di.getZlepW()->Py() + di.getZbjW()->Py(), 
-					pz + di.getZlepW()->Pz() + di.getZbjW()->Pz(), 
-					E  + di.getZlepW()->E()  + di.getZbjW()->E() );
+			t1.SetPxPyPzE(	px + di.getZlepW().Px() + di.getZbjW().Px(), 
+					py + di.getZlepW().Py() + di.getZbjW().Py(), 
+					pz + di.getZlepW().Pz() + di.getZbjW().Pz(), 
+					E  + di.getZlepW().E()  + di.getZbjW().E() );
 			TLorentzVectorWFlags tt1(t1,0,iPDGt1,999.,-1,-1);
 			_t1_ttDKF.push_back(tt1);
 
@@ -4165,13 +4165,13 @@ void ttH_dilep::ttDilepKinFit(){
 			//  2nd top quark reconstruction
 			// -------------------------------
 			// b-quark 2
-			_b2_ttDKF.push_back(*di.getCbjW());
+			_b2_ttDKF.push_back(di.getCbjW());
 			// lepton 2
-			_l2_ttDKF.push_back(*di.getClepW());
-			if ( di.getClepW()->isb ==  11 ) { iPDGnu2 = -12; iPDGW2 = -24; iPDGt2 = -6; }
-			if ( di.getClepW()->isb == -11 ) { iPDGnu2 = +12; iPDGW2 = +24; iPDGt2 = +6; }
-			if ( di.getClepW()->isb ==  13 ) { iPDGnu2 = -14; iPDGW2 = -24; iPDGt2 = -6; }
-			if ( di.getClepW()->isb == -13 ) { iPDGnu2 = +14; iPDGW2 = +24; iPDGt2 = +6; }
+			_l2_ttDKF.push_back(di.getClepW());
+			if ( di.getClepW().isb ==  11 ) { iPDGnu2 = -12; iPDGW2 = -24; iPDGt2 = -6; }
+			if ( di.getClepW().isb == -11 ) { iPDGnu2 = +12; iPDGW2 = +24; iPDGt2 = +6; }
+			if ( di.getClepW().isb ==  13 ) { iPDGnu2 = -14; iPDGW2 = -24; iPDGt2 = -6; }
+			if ( di.getClepW().isb == -13 ) { iPDGnu2 = +14; iPDGW2 = +24; iPDGt2 = +6; }
 			// neutrino 2
 			//apx = di.getMissPx()-px;
 			//apy = di.getMissPy()-py;
@@ -4185,18 +4185,18 @@ void ttH_dilep::ttDilepKinFit(){
 			_n2_ttDKF.push_back(nu2);
 			// W boson 2
 			TLorentzVector w2;
-			w2.SetPxPyPzE(	apx + di.getClepW()->Px(), 
-					apy + di.getClepW()->Py(), 
-					apz + di.getClepW()->Pz(), 
-					aE  + di.getClepW()->E()   );
+			w2.SetPxPyPzE(	apx + di.getClepW().Px(), 
+					apy + di.getClepW().Py(), 
+					apz + di.getClepW().Pz(), 
+					aE  + di.getClepW().E()   );
 			TLorentzVectorWFlags ww2(w2,0,iPDGW2,999.,-1,-1);
 			_W2_ttDKF.push_back(ww2);
 			// top quark 2
 			TLorentzVector t2;
-			t2.SetPxPyPzE(	apx + di.getClepW()->Px() + di.getCbjW()->Px(), 
-					apy + di.getClepW()->Py() + di.getCbjW()->Py(), 
-					apz + di.getClepW()->Pz() + di.getCbjW()->Pz(), 
-					aE  + di.getClepW()->E()  + di.getCbjW()->E() );
+			t2.SetPxPyPzE(	apx + di.getClepW().Px() + di.getCbjW().Px(), 
+					apy + di.getClepW().Py() + di.getCbjW().Py(), 
+					apz + di.getClepW().Pz() + di.getCbjW().Pz(), 
+					aE  + di.getClepW().E()  + di.getCbjW().E() );
 			TLorentzVectorWFlags tt2(t2,0,iPDGt2,999.,-1,-1);
 			_t2_ttDKF.push_back(tt2);
 
@@ -4204,10 +4204,10 @@ void ttH_dilep::ttDilepKinFit(){
 			//  (t,tbar) system reconstruction
 			// -------------------------------
 			TLorentzVector ttbar;
-			myttbar_px = px + di.getZlepW()->Px() + di.getZbjW()->Px() + apx + di.getClepW()->Px() + di.getCbjW()->Px();
-			myttbar_py = py + di.getZlepW()->Py() + di.getZbjW()->Py() + apy + di.getClepW()->Py() + di.getCbjW()->Py(); 
-			myttbar_pz = pz + di.getZlepW()->Pz() + di.getZbjW()->Pz() + apz + di.getClepW()->Pz() + di.getCbjW()->Pz();
-			myttbar_E  = E  + di.getZlepW()->E()  + di.getZbjW()->E()  + aE  + di.getClepW()->E()  + di.getCbjW()->E(); 
+			myttbar_px = px + di.getZlepW().Px() + di.getZbjW().Px() + apx + di.getClepW().Px() + di.getCbjW().Px();
+			myttbar_py = py + di.getZlepW().Py() + di.getZbjW().Py() + apy + di.getClepW().Py() + di.getCbjW().Py(); 
+			myttbar_pz = pz + di.getZlepW().Pz() + di.getZbjW().Pz() + apz + di.getClepW().Pz() + di.getCbjW().Pz();
+			myttbar_E  = E  + di.getZlepW().E()  + di.getZbjW().E()  + aE  + di.getClepW().E()  + di.getCbjW().E(); 
 			ttbar.SetPxPyPzE( myttbar_px, myttbar_py, myttbar_pz, myttbar_E);
 			TLorentzVectorWFlags ttbar2(ttbar,0, 999,999.,-1,-1);
 			_ttbar_ttDKF.push_back(ttbar2);

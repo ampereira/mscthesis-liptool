@@ -1,5 +1,5 @@
 #include "dilep_input.h"
-/*
+
 DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVector _z_bj, TLorentzVector _c_bj,
 						TLorentzVectorWFlags _z_bjWFlags, TLorentzVectorWFlags _c_bjWFlags, TLorentzVectorWFlags _z_lepWFlags,
 						TLorentzVectorWFlags _c_lepWFlags, TLorentzVectorWFlags _jet1_HiggsWFlags, TLorentzVectorWFlags _jet2_HiggsWFlags,
@@ -38,14 +38,14 @@ DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVe
 
 	hasSolution = 0;
 
-}*/
+}
 
 // Constructor
-DilepInput::DilepInput (TLorentzVector *_z_lep, TLorentzVector *_c_lep, TLorentzVector *_z_bj, TLorentzVector *_c_bj, 
-				TLorentzVectorWFlags *_z_bjWFlags, TLorentzVectorWFlags *_c_bjWFlags, TLorentzVectorWFlags *_z_lepWFlags,
-				TLorentzVectorWFlags *_c_lepWFlags, TLorentzVectorWFlags *_jet1_HiggsWFlags, TLorentzVectorWFlags *_jet2_HiggsWFlags, 
-				double _in_mpx[], double _in_mpy[], double _in_mpz[], double _MissPx,
-				double _MissPy, double _t_mass[], double _w_mass[]) {
+DilepInput::DilepInput (TLorentzVector _z_lep, TLorentzVector _c_lep, TLorentzVector _z_bj, TLorentzVector _c_bj,
+						TLorentzVectorWFlags _z_bjWFlags, TLorentzVectorWFlags _c_bjWFlags, TLorentzVectorWFlags _z_lepWFlags,
+						TLorentzVectorWFlags _c_lepWFlags, TLorentzVectorWFlags _jet1_HiggsWFlags, TLorentzVectorWFlags _jet2_HiggsWFlags,
+						double _in_mpx[], double _in_mpy[], double _in_mpz[], double _MissPx,
+						double _MissPy, double _t_mass[], double _w_mass[]) {
 	#ifndef CUDA
 	//t_rnd.SetSeed(SEED);
 	#endif
@@ -125,21 +125,9 @@ DilepInput::DilepInput (const DilepInput &other) {
 
 // Constructor
 DilepInput::DilepInput (void) {
-	//t_rnd.SetSeed(SEED);z_lep = _z_lep;
-	c_lep =  new TLorentzVector();
-	z_bj = new TLorentzVector();
-	c_bj = new TLorentzVector();
-
-	z_bjWFlags = new TLorentzVectorWFlags();
-	c_bjWFlags = new TLorentzVectorWFlags();
-	z_lepWFlags = new TLorentzVectorWFlags();
-	c_lepWFlags = new TLorentzVectorWFlags();
-	jet1_HiggsWFlags = new TLorentzVectorWFlags();
-	jet2_HiggsWFlags = new TLorentzVectorWFlags();
-
+	//t_rnd.SetSeed(SEED);
 	hasSolution = 0;
 }
-/*
 // Print the private variables of the class for debug purposes
 void DilepInput::print (char* filename) {
 	ofstream file (filename, fstream::app);
@@ -188,7 +176,7 @@ vector<DilepInput> applyVariance (vector<DilepInput> &vdi, float res, int amount
 	}
 
 	return inputs;
-}*/
+}
 
 // Apply variance to the inputs of the dilep function a given number of times
 // resulting a vector of varied inputs
@@ -206,7 +194,7 @@ void applyVariance (vector<DilepInput> &vdi, float res, int amount) {
 		vdi[i].applyVariance(res);
 	}
 }
-/*
+
 // Apply variance to the inputs of the dilep function, given a resolution and a seed,
 // following a Gaussian distribution
 // Use given seed
@@ -231,28 +219,28 @@ void DilepInput::applyVariance (float res, int seed) {
 	// _______________________________
 	// _______z_lep___________________
 	// _______________________________
-	if (  abs(  z_lepWFlags->isb  )  ==  11  ){ //___electrons____
-		n_Px = z_lepWFlags->Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_e ) );
-		n_Py = z_lepWFlags->Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_e ) );
-		n_Pz = z_lepWFlags->Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_e ) );
+	if (  abs(  z_lepWFlags.isb  )  ==  11  ){ //___electrons____
+		n_Px = z_lepWFlags.Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_e ) );
+		n_Py = z_lepWFlags.Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_e ) );
+		n_Pz = z_lepWFlags.Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_e ) );
 		//n_Pt = z_lepWFlags.Pt() * ( 1. + t_rnd[thread_id].Gaus( 0., St_e ) );
 		//n_E  = z_lepWFlags.E()  * ( 1. + t_rnd[thread_id].Gaus( 0., Se_e ) );
 	} else if (  abs(z_lepWFlags.isb) == 13 ){ //_____muons______
-		n_Px = z_lepWFlags->Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_m ) );
-		n_Py = z_lepWFlags->Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_m ) );
-		n_Pz = z_lepWFlags->Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_m ) );
+		n_Px = z_lepWFlags.Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_m ) );
+		n_Py = z_lepWFlags.Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_m ) );
+		n_Pz = z_lepWFlags.Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_m ) );
 		//n_Pt = z_lepWFlags.Pt() * ( 1. + t_rnd[thread_id].Gaus( 0., St_m ) );
 		//n_E  = z_lepWFlags.E()  * ( 1. + t_rnd[thread_id].Gaus( 0., Se_m ) );
 	}
 	// Recalculate z_lep
 	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_lepWFlags.M()*z_lepWFlags.M() );
-	z_lep->SetPx( n_Px );	// Change Px 				
-	z_lep->SetPy( n_Py ); 	// Change Py 	
-	z_lep->SetPz( n_Pz ); 	// Change Pz 
-	z_lep->SetE(  n_E  ); 	// Change E 
+	z_lep.SetPx( n_Px );	// Change Px 				
+	z_lep.SetPy( n_Py ); 	// Change Py 	
+	z_lep.SetPz( n_Pz ); 	// Change Pz 
+	z_lep.SetE(  n_E  ); 	// Change E 
 	// Propagate to MissPx and MissPy
-	delPx = z_lepWFlags->Px() - n_Px; 
-	delPy = z_lepWFlags->Py() - n_Py;			
+	delPx = z_lepWFlags.Px() - n_Px; 
+	delPy = z_lepWFlags.Py() - n_Py;			
 	in_mpx[0] = MissPx + delPx; in_mpx[1] = MissPx + delPx; // initialize miss(Px,Py) neutrino 1
 	in_mpy[0] = MissPy + delPy; in_mpy[1] = MissPy + delPy; // initialize miss(Px,Py) neutrino 2
 	in_mpz[0] = 0.            ; in_mpz[1] = 0.;		// initialize neutrinos Pz to zero
@@ -260,28 +248,28 @@ void DilepInput::applyVariance (float res, int seed) {
 	// _______________________________
 	// _______c_lep___________________
 	// _______________________________
-	if (  abs(  c_lepWFlags->isb  )  ==  11  ){ //___electrons____
-		n_Px = c_lepWFlags->Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_e ) );
-		n_Py = c_lepWFlags->Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_e ) );
-		n_Pz = c_lepWFlags->Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_e ) );
+	if (  abs(  c_lepWFlags.isb  )  ==  11  ){ //___electrons____
+		n_Px = c_lepWFlags.Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_e ) );
+		n_Py = c_lepWFlags.Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_e ) );
+		n_Pz = c_lepWFlags.Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_e ) );
 		//n_Pt = c_lepWFlags.Pt() * ( 1. + t_rnd[thread_id].Gaus( 0., St_e ) );
 		//n_E  = c_lepWFlags.E()  * ( 1. + t_rnd[thread_id].Gaus( 0., Se_e ) );
-	} else if (  abs(c_lepWFlags->isb) == 13 ){ //_____muons______
-		n_Px = c_lepWFlags->Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_m ) );
-		n_Py = c_lepWFlags->Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_m ) );
-		n_Pz = c_lepWFlags->Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_m ) );
+	} else if (  abs(c_lepWFlags.isb) == 13 ){ //_____muons______
+		n_Px = c_lepWFlags.Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_m ) );
+		n_Py = c_lepWFlags.Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_m ) );
+		n_Pz = c_lepWFlags.Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_m ) );
 		//n_Pt = c_lepWFlags.Pt() * ( 1. + t_rnd[thread_id].Gaus( 0., St_m ) );
 		//n_E  = c_lepWFlags.E()  * ( 1. + t_rnd[thread_id].Gaus( 0., Se_m ) );
 	}
 	// Recalculate c_lep
 	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_lepWFlags.M()*c_lepWFlags.M() );
-	c_lep->SetPx( n_Px );	// Change Px 				
-	c_lep->SetPy( n_Py ); 	// Change Py 	
-	c_lep->SetPz( n_Pz ); 	// Change Pz 
-	c_lep->SetE(  n_E  ); 	// Change E 
+	c_lep.SetPx( n_Px );	// Change Px 				
+	c_lep.SetPy( n_Py ); 	// Change Py 	
+	c_lep.SetPz( n_Pz ); 	// Change Pz 
+	c_lep.SetE(  n_E  ); 	// Change E 
 	// Propagate to MissPx and MissPy
-	delPx = c_lepWFlags->Px() - n_Px; 
-	delPy = c_lepWFlags->Py() - n_Py;			
+	delPx = c_lepWFlags.Px() - n_Px; 
+	delPy = c_lepWFlags.Py() - n_Py;			
 	in_mpx[0] += delPx; in_mpx[1] += delPx; // correct miss(Px,Py) neutrino 1
 	in_mpy[0] += delPy; in_mpy[1] += delPy; // correct miss(Px,Py) neutrino 2
 	in_mpz[0] += 0.   ; in_mpz[1] += 0.;	// initialize neutrinos Pz to zero
@@ -289,20 +277,20 @@ void DilepInput::applyVariance (float res, int seed) {
 	// _______________________________
 	// _______z_bj____________________
 	// _______________________________
-	n_Px = z_bjWFlags->Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_j ) );
-	n_Py = z_bjWFlags->Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_j ) );
-	n_Pz = z_bjWFlags->Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_j ) );
+	n_Px = z_bjWFlags.Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_j ) );
+	n_Py = z_bjWFlags.Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_j ) );
+	n_Pz = z_bjWFlags.Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_j ) );
 //	n_Pt = z_bjWFlags.Pt() * ( 1. + t_rnd[thread_id].Gaus( 0., St_j ) );
 //	n_E  = z_bjWFlags.E()  * ( 1. + t_rnd[thread_id].Gaus( 0., Se_j ) );
 	// Recalculate z_bj
 	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_bjWFlags.M()*z_bjWFlags.M() );
-	z_bj->SetPx( n_Px );	// Change Px 				
-	z_bj->SetPy( n_Py ); 	// Change Py 	
-	z_bj->SetPz( n_Pz ); 	// Change Pz 
-	z_bj->SetE(  n_E  ); 	// Change E 
+	z_bj.SetPx( n_Px );	// Change Px 				
+	z_bj.SetPy( n_Py ); 	// Change Py 	
+	z_bj.SetPz( n_Pz ); 	// Change Pz 
+	z_bj.SetE(  n_E  ); 	// Change E 
 	// Propagate to MissPx and MissPy
-	delPx = z_bjWFlags->Px() - n_Px; 
-	delPy = z_bjWFlags->Py() - n_Py;			
+	delPx = z_bjWFlags.Px() - n_Px; 
+	delPy = z_bjWFlags.Py() - n_Py;			
 	in_mpx[0] += delPx; in_mpx[1] += delPx; // correct miss(Px,Py) neutrino 1
 	in_mpy[0] += delPy; in_mpy[1] += delPy; // correct miss(Px,Py) neutrino 2
 	in_mpz[0] += 0.   ; in_mpz[1] += 0.;	// initialize neutrinos Pz to zero
@@ -311,20 +299,20 @@ void DilepInput::applyVariance (float res, int seed) {
 	// _______________________________
 	// _______c_bj____________________
 	// _______________________________
-	n_Px = c_bjWFlags->Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_j ) );
-	n_Py = c_bjWFlags->Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_j ) );
-	n_Pz = c_bjWFlags->Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_j ) );
+	n_Px = c_bjWFlags.Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_j ) );
+	n_Py = c_bjWFlags.Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_j ) );
+	n_Pz = c_bjWFlags.Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_j ) );
 //	n_Pt = c_bjWFlags.Pt() * ( 1. + t_rnd[thread_id].Gaus( 0., St_j ) );
 //	n_E  = c_bjWFlags.E()  * ( 1. + t_rnd[thread_id].Gaus( 0., Se_j ) );
 	// Recalculate c_bj
 	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_bjWFlags.M()*c_bjWFlags.M() );
-	c_bj->SetPx( n_Px );	// Change Px 				
-	c_bj->SetPy( n_Py ); 	// Change Py 	
-	c_bj->SetPz( n_Pz ); 	// Change Pz 
-	c_bj->SetE(  n_E  ); 	// Change E 
+	c_bj.SetPx( n_Px );	// Change Px 				
+	c_bj.SetPy( n_Py ); 	// Change Py 	
+	c_bj.SetPz( n_Pz ); 	// Change Pz 
+	c_bj.SetE(  n_E  ); 	// Change E 
 	// Propagate to MissPx and MissPy
-	delPx = c_bjWFlags->Px() - n_Px; 
-	delPy = c_bjWFlags->Py() - n_Py;			
+	delPx = c_bjWFlags.Px() - n_Px; 
+	delPy = c_bjWFlags.Py() - n_Py;			
 	in_mpx[0] += delPx; in_mpx[1] += delPx; // correct miss(Px,Py) neutrino 1
 	in_mpy[0] += delPy; in_mpy[1] += delPy; // correct miss(Px,Py) neutrino 2
 	in_mpz[0] += 0.   ; in_mpz[1] += 0.;	// initialize neutrinos Pz to zero
@@ -332,12 +320,12 @@ void DilepInput::applyVariance (float res, int seed) {
 	// ---------------------------------------
 	// Define TLorentzVectors for (b,l) system
 	// ---------------------------------------
-	*z_bl = *z_bj + *z_lep;
-	*c_bl = *c_bj + *c_lep;
+	z_bl = z_bj + z_lep;
+	c_bl = c_bj + c_lep;
 
 #endif
 }
-*/
+
 // Apply variance to the inputs of the dilep function, given a resolution and a seed,
 // following a Gaussian distribution
 // Use default seed
@@ -358,28 +346,28 @@ void DilepInput::applyVariance (float res) {
 	// _______________________________
 	// _______z_lep___________________
 	// _______________________________
-	if (  abs(  z_lepWFlags->isb  )  ==  11  ){ //___electrons____
-		n_Px = z_lepWFlags->Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_e ) );
-		n_Py = z_lepWFlags->Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_e ) );
-		n_Pz = z_lepWFlags->Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_e ) );
+	if (  abs(  z_lepWFlags.isb  )  ==  11  ){ //___electrons____
+		n_Px = z_lepWFlags.Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_e ) );
+		n_Py = z_lepWFlags.Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_e ) );
+		n_Pz = z_lepWFlags.Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_e ) );
 		//n_Pt = z_lepWFlags.Pt() * ( 1. + t_rnd[thread_id].Gaus( 0., St_e ) );
 		//n_E  = z_lepWFlags.E()  * ( 1. + t_rnd[thread_id].Gaus( 0., Se_e ) );
-	} else if (  abs(z_lepWFlags->isb) == 13 ){ //_____muons______
-		n_Px = z_lepWFlags->Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_m ) );
-		n_Py = z_lepWFlags->Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_m ) );
-		n_Pz = z_lepWFlags->Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_m ) );
+	} else if (  abs(z_lepWFlags.isb) == 13 ){ //_____muons______
+		n_Px = z_lepWFlags.Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_m ) );
+		n_Py = z_lepWFlags.Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_m ) );
+		n_Pz = z_lepWFlags.Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_m ) );
 		//n_Pt = z_lepWFlags.Pt() * ( 1. + t_rnd[thread_id].Gaus( 0., St_m ) );
 		//n_E  = z_lepWFlags.E()  * ( 1. + t_rnd[thread_id].Gaus( 0., Se_m ) );
 	}
 	// Recalculate z_lep
-	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_lepWFlags->M()*z_lepWFlags->M() );
-	z_lep->SetPx( n_Px );	// Change Px 				
-	z_lep->SetPy( n_Py ); 	// Change Py 	
-	z_lep->SetPz( n_Pz ); 	// Change Pz 
-	z_lep->SetE(  n_E  ); 	// Change E 
+	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_lepWFlags.M()*z_lepWFlags.M() );
+	z_lep.SetPx( n_Px );	// Change Px 				
+	z_lep.SetPy( n_Py ); 	// Change Py 	
+	z_lep.SetPz( n_Pz ); 	// Change Pz 
+	z_lep.SetE(  n_E  ); 	// Change E 
 	// Propagate to MissPx and MissPy
-	delPx = z_lepWFlags->Px() - n_Px; 
-	delPy = z_lepWFlags->Py() - n_Py;			
+	delPx = z_lepWFlags.Px() - n_Px; 
+	delPy = z_lepWFlags.Py() - n_Py;			
 	in_mpx[0] = MissPx + delPx; in_mpx[1] = MissPx + delPx; // initialize miss(Px,Py) neutrino 1
 	in_mpy[0] = MissPy + delPy; in_mpy[1] = MissPy + delPy; // initialize miss(Px,Py) neutrino 2
 	in_mpz[0] = 0.            ; in_mpz[1] = 0.;		// initialize neutrinos Pz to zero
@@ -387,28 +375,28 @@ void DilepInput::applyVariance (float res) {
 	// _______________________________
 	// _______c_lep___________________
 	// _______________________________
-	if (  abs(  c_lepWFlags->isb  )  ==  11  ){ //___electrons____
-		n_Px = c_lepWFlags->Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_e ) );
-		n_Py = c_lepWFlags->Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_e ) );
-		n_Pz = c_lepWFlags->Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_e ) );
+	if (  abs(  c_lepWFlags.isb  )  ==  11  ){ //___electrons____
+		n_Px = c_lepWFlags.Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_e ) );
+		n_Py = c_lepWFlags.Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_e ) );
+		n_Pz = c_lepWFlags.Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_e ) );
 		//n_Pt = c_lepWFlags.Pt() * ( 1. + t_rnd[thread_id].Gaus( 0., St_e ) );
 		//n_E  = c_lepWFlags.E()  * ( 1. + t_rnd[thread_id].Gaus( 0., Se_e ) );
-	} else if (  abs(c_lepWFlags->isb) == 13 ){ //_____muons______
-		n_Px = c_lepWFlags->Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_m ) );
-		n_Py = c_lepWFlags->Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_m ) );
-		n_Pz = c_lepWFlags->Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_m ) );
+	} else if (  abs(c_lepWFlags.isb) == 13 ){ //_____muons______
+		n_Px = c_lepWFlags.Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_m ) );
+		n_Py = c_lepWFlags.Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_m ) );
+		n_Pz = c_lepWFlags.Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_m ) );
 		//n_Pt = c_lepWFlags.Pt() * ( 1. + t_rnd[thread_id].Gaus( 0., St_m ) );
 		//n_E  = c_lepWFlags.E()  * ( 1. + t_rnd[thread_id].Gaus( 0., Se_m ) );
 	}
 	// Recalculate c_lep
-	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_lepWFlags->M()*c_lepWFlags->M() );
-	c_lep->SetPx( n_Px );	// Change Px 				
-	c_lep->SetPy( n_Py ); 	// Change Py 	
-	c_lep->SetPz( n_Pz ); 	// Change Pz 
-	c_lep->SetE(  n_E  ); 	// Change E 
+	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_lepWFlags.M()*c_lepWFlags.M() );
+	c_lep.SetPx( n_Px );	// Change Px 				
+	c_lep.SetPy( n_Py ); 	// Change Py 	
+	c_lep.SetPz( n_Pz ); 	// Change Pz 
+	c_lep.SetE(  n_E  ); 	// Change E 
 	// Propagate to MissPx and MissPy
-	delPx = c_lepWFlags->Px() - n_Px; 
-	delPy = c_lepWFlags->Py() - n_Py;			
+	delPx = c_lepWFlags.Px() - n_Px; 
+	delPy = c_lepWFlags.Py() - n_Py;			
 	in_mpx[0] += delPx; in_mpx[1] += delPx; // correct miss(Px,Py) neutrino 1
 	in_mpy[0] += delPy; in_mpy[1] += delPy; // correct miss(Px,Py) neutrino 2
 	in_mpz[0] += 0.   ; in_mpz[1] += 0.;	// initialize neutrinos Pz to zero
@@ -416,20 +404,20 @@ void DilepInput::applyVariance (float res) {
 	// _______________________________
 	// _______z_bj____________________
 	// _______________________________
-	n_Px = z_bjWFlags->Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_j ) );
-	n_Py = z_bjWFlags->Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_j ) );
-	n_Pz = z_bjWFlags->Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_j ) );
+	n_Px = z_bjWFlags.Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_j ) );
+	n_Py = z_bjWFlags.Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_j ) );
+	n_Pz = z_bjWFlags.Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_j ) );
 	//n_Pt = z_bjWFlags.Pt() * ( 1. + t_rnd[thread_id].Gaus( 0., St_j ) );
 	//n_E  = z_bjWFlags.E()  * ( 1. + t_rnd[thread_id].Gaus( 0., Se_j ) );
 	// Recalculate z_bj
-	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_bjWFlags->M()*z_bjWFlags->M() );
-	z_bj->SetPx( n_Px );	// Change Px 				
-	z_bj->SetPy( n_Py ); 	// Change Py 	
-	z_bj->SetPz( n_Pz ); 	// Change Pz 
-	z_bj->SetE(  n_E  ); 	// Change E 
+	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + z_bjWFlags.M()*z_bjWFlags.M() );
+	z_bj.SetPx( n_Px );	// Change Px 				
+	z_bj.SetPy( n_Py ); 	// Change Py 	
+	z_bj.SetPz( n_Pz ); 	// Change Pz 
+	z_bj.SetE(  n_E  ); 	// Change E 
 	// Propagate to MissPx and MissPy
-	delPx = z_bjWFlags->Px() - n_Px; 
-	delPy = z_bjWFlags->Py() - n_Py;			
+	delPx = z_bjWFlags.Px() - n_Px; 
+	delPy = z_bjWFlags.Py() - n_Py;			
 	in_mpx[0] += delPx; in_mpx[1] += delPx; // correct miss(Px,Py) neutrino 1
 	in_mpy[0] += delPy; in_mpy[1] += delPy; // correct miss(Px,Py) neutrino 2
 	in_mpz[0] += 0.   ; in_mpz[1] += 0.;	// initialize neutrinos Pz to zero
@@ -438,20 +426,20 @@ void DilepInput::applyVariance (float res) {
 	// _______________________________
 	// _______c_bj____________________
 	// _______________________________
-	n_Px = c_bjWFlags->Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_j ) );
-	n_Py = c_bjWFlags->Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_j ) );
-	n_Pz = c_bjWFlags->Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_j ) );
+	n_Px = c_bjWFlags.Px() * ( 1. + t_rnd[thread_id].Gaus( 0., Sx_j ) );
+	n_Py = c_bjWFlags.Py() * ( 1. + t_rnd[thread_id].Gaus( 0., Sy_j ) );
+	n_Pz = c_bjWFlags.Pz() * ( 1. + t_rnd[thread_id].Gaus( 0., Sz_j ) );
 	//n_Pt = c_bjWFlags.Pt() * ( 1. + t_rnd[thread_id].Gaus( 0., St_j ) );
 	//n_E  = c_bjWFlags.E()  * ( 1. + t_rnd[thread_id].Gaus( 0., Se_j ) );
 	// Recalculate c_bj
-	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_bjWFlags->M()*c_bjWFlags->M() );
-	c_bj->SetPx( n_Px );	// Change Px 				
-	c_bj->SetPy( n_Py ); 	// Change Py 	
-	c_bj->SetPz( n_Pz ); 	// Change Pz 
-	c_bj->SetE(  n_E  ); 	// Change E 
+	n_E = sqrt ( n_Px*n_Px + n_Py*n_Py + n_Pz*n_Pz + c_bjWFlags.M()*c_bjWFlags.M() );
+	c_bj.SetPx( n_Px );	// Change Px 				
+	c_bj.SetPy( n_Py ); 	// Change Py 	
+	c_bj.SetPz( n_Pz ); 	// Change Pz 
+	c_bj.SetE(  n_E  ); 	// Change E 
 	// Propagate to MissPx and MissPy
-	delPx = c_bjWFlags->Px() - n_Px; 
-	delPy = c_bjWFlags->Py() - n_Py;			
+	delPx = c_bjWFlags.Px() - n_Px; 
+	delPy = c_bjWFlags.Py() - n_Py;			
 	in_mpx[0] += delPx; in_mpx[1] += delPx; // correct miss(Px,Py) neutrino 1
 	in_mpy[0] += delPy; in_mpy[1] += delPy; // correct miss(Px,Py) neutrino 2
 	in_mpz[0] += 0.   ; in_mpz[1] += 0.;	// initialize neutrinos Pz to zero
@@ -459,12 +447,8 @@ void DilepInput::applyVariance (float res) {
 	// ---------------------------------------
 	// Define TLorentzVectors for (b,l) system
 	// ---------------------------------------
-
-
-	z_bl = new TLorentzVector(z_bj->Px() + z_lep->Px(), z_bj->Py() + z_lep->Py(), z_bj->Pz() + z_lep->Pz(), z_bj->E() + z_lep->E());
-	c_bl = new TLorentzVector(c_bj->Px() + c_lep->Px(), c_bj->Py() + c_lep->Py(), c_bj->Pz() + c_lep->Pz(), c_bj->E() + c_lep->E());
-
-	
+	z_bl = z_bj + z_lep;
+	c_bl = c_bj + c_lep;
 
 	/*cout << z_bl.Px() << " - " << z_bj.Px() << " - " << z_lep.Px() << endl;
 	cout << z_bl.Py() << " - " << z_bj.Py() << " - " << z_lep.Py() << endl;
@@ -477,68 +461,68 @@ void DilepInput::applyVariance (float res) {
 
 // Getters
 
-TLorentzVector* DilepInput::getZlep (void) const {
+TLorentzVector DilepInput::getZlep (void) const {
 	return z_lep;
 }
 
-TLorentzVector* DilepInput::getClep (void) const {
+TLorentzVector DilepInput::getClep (void) const {
 	return c_lep;
 }
 
-TLorentzVector* DilepInput::getZbj (void) const {
+TLorentzVector DilepInput::getZbj (void) const {
 	return z_bj;
 }
 
-TLorentzVector* DilepInput::getCbj (void) const {
+TLorentzVector DilepInput::getCbj (void) const {
 	return c_bj;
 }
 
-TLorentzVector* DilepInput::getZbl (void) const {
+TLorentzVector DilepInput::getZbl (void) const {
 	return z_bl;
 }
 
-TLorentzVector* DilepInput::getCbl (void) const {
+TLorentzVector DilepInput::getCbl (void) const {
 	return c_bl;
 }
 
-TLorentzVectorWFlags* DilepInput::getZlepW (void) const {
+TLorentzVectorWFlags DilepInput::getZlepW (void) const {
 	return z_lepWFlags;
 }
 
-TLorentzVectorWFlags* DilepInput::getClepW (void) const {
+TLorentzVectorWFlags DilepInput::getClepW (void) const {
 	return c_lepWFlags;
 }
 
-TLorentzVectorWFlags* DilepInput::getZbjW (void) const {
+TLorentzVectorWFlags DilepInput::getZbjW (void) const {
 	return z_bjWFlags;
 }
 
-TLorentzVectorWFlags* DilepInput::getCbjW (void) const {
+TLorentzVectorWFlags DilepInput::getCbjW (void) const {
 	return c_bjWFlags;
 }
 
 int DilepInput::getZlepWisb (void) const {
-	return z_lepWFlags->isb;
+	return z_lepWFlags.isb;
 }
 
 int DilepInput::getClepWisb (void) const {
-	return c_lepWFlags->isb;
+	return c_lepWFlags.isb;
 }
 
 int DilepInput::getZbjWisb (void) const {
-	return z_bjWFlags->isb;
+	return z_bjWFlags.isb;
 }
 
 int DilepInput::getCbjWisb (void) const {
-	return c_bjWFlags->isb;
+	return c_bjWFlags.isb;
 }
 
 
-TLorentzVectorWFlags* DilepInput::getJet1HiggsW (void) const {
+TLorentzVectorWFlags DilepInput::getJet1HiggsW (void) const {
 	return jet1_HiggsWFlags;
 }
 
-TLorentzVectorWFlags* DilepInput::getJet2HiggsW (void) const {
+TLorentzVectorWFlags DilepInput::getJet2HiggsW (void) const {
 	return jet2_HiggsWFlags;
 }
 
@@ -592,6 +576,6 @@ void DilepInput::setZblCbl (void) {
 	// ---------------------------------------
 	// Define TLorentzVectors for (b,l) system
 	// ---------------------------------------
-	*z_bl = *z_bj + *z_lep;
-	*c_bl = *c_bj + *c_lep;
+	z_bl = z_bj + z_lep;
+	c_bl = c_bj + c_lep;
 }
