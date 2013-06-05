@@ -37,7 +37,7 @@ MiniTTHReader.o: Ntu.o MiniTTHReader.cxx MiniTTHReader.h
 	$(CXX) $(CXXFLAGS) -I$(INCLUDES) -c MiniTTHReader.cxx
 
 LipMiniAnalysis.o: LipMiniAnalysis.cxx LipMiniAnalysis.h TLorentzVectorWFlags.o Ntu.o MiniTTHReader.o
-	$(CXX) $(CXXFLAGS) -I$(INCLUDES) -c LipMiniAnalysis.cxx
+	$(CXX) $(CXXFLAGS) -DMEASURE_READFILE -I$(INCLUDES) -c LipMiniAnalysis.cxx
 
 libLipMiniAnalysis.a: LipMiniAnalysis.o
 	ar -r libLipMiniAnalysis.a \
