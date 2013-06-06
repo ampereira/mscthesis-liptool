@@ -60,6 +60,7 @@
 #include <fstream>
 
 #include <cmath>
+#include <sys/time.h>
 
 #include <TChain.h>
 #include <TFile.h>
@@ -2142,7 +2143,7 @@ void LipMiniAnalysis::Loop() {
     gettimeofday(&t, NULL);
 
     end = t.tv_sec * 1000000.0 + t.tv_usec;
-    end -= init;
+    end -= time;
 
     totaltime += end;
 #endif
