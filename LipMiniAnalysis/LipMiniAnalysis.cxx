@@ -2213,7 +2213,9 @@ void LipMiniAnalysis::Loop() {
   }
 
   #ifdef MEASURE_READFILE
-  cout << "BADALHOQUICES " << totaltime << endl;
+  ofstream of ("read_times.txt", fstream::app);
+  of << "BADALHOQUICES " << totaltime << endl;
+  of.close();
   #endif
 
 }
