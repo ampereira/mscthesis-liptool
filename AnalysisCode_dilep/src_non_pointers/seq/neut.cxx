@@ -52,7 +52,7 @@ namespace Dilep {
 			result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, lep_b, bl_a, bl_b);
 
 			// Check if there is any solutions for this reconstruction
-			if (result->size())
+			if (result.size())
 				++hasSolution;  // increment solution counter
 
 			di.setHasSol(hasSolution);
@@ -79,7 +79,7 @@ namespace Dilep {
 				int hasSolution = 0;
 
 				double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
-				TLorentzVector *lep_a, *lep_b, *bl_a, *bl_b;
+				TLorentzVector lep_a, lep_b, bl_a, bl_b;
 
 				in_mpx[0] = vdi[i].getInMpx(0);
 				in_mpx[1] = vdi[i].getInMpx(1);
@@ -92,16 +92,16 @@ namespace Dilep {
 				w_mass[0] = vdi[i].getWmass(0);
 				w_mass[1] = vdi[i].getWmass(1);
 
-				*lep_a = vdi[i].getZlep();
-				*lep_b = vdi[i].getClep();
-				*bl_a = vdi[i].getZbl();
-				*bl_b = vdi[i].getCbl();
+				lep_a = vdi[i].getZlep();
+				lep_b = vdi[i].getClep();
+				bl_a = vdi[i].getZbl();
+				bl_b = vdi[i].getCbl();
 
 				result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, 
 											lep_b, bl_a, bl_b);
 
 				// Check if there is any solutions for this reconstruction
-				if (result->size()) {
+				if (result.size()) {
 					++hasSolution;  // increment solution counter
 				}
 
@@ -119,8 +119,8 @@ namespace Dilep {
 		// NEUTRINO SOLUTIONS
 		vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double in_mpz[],
-				TLorentzVector* lep_a, TLorentzVector* lep_b, 
-				TLorentzVector* bl_a, TLorentzVector* bl_b)
+				TLorentzVector& lep_a, TLorentzVector& lep_b, 
+				TLorentzVector& bl_a, TLorentzVector& bl_b)
 		{
 
 			double mpx, mpy, G_1, G_2, G_3, G_4, _d, _a, _f, _b, _e, _g;
@@ -136,25 +136,25 @@ namespace Dilep {
 			const double WMass_b = w_mass[1];
 			const double tMass_b = t_mass[1];  
 			/////   
-			G_1 = WMass_a*WMass_a - ( lep_a->M() )*( lep_a->M() );
-			G_3 = WMass_b*WMass_b - ( lep_b->M() )*( lep_b->M() );
-			G_2 = tMass_a*tMass_a - ( bl_a->M()  )*( bl_a->M()  ); 
-			G_4 = tMass_b*tMass_b - ( bl_b->M()  )*( bl_b->M()  );
+			G_1 = WMass_a*WMass_a - ( lep_a.M() )*( lep_a.M() );
+			G_3 = WMass_b*WMass_b - ( lep_b.M() )*( lep_b.M() );
+			G_2 = tMass_a*tMass_a - ( bl_a.M()  )*( bl_a.M()  ); 
+			G_4 = tMass_b*tMass_b - ( bl_b.M()  )*( bl_b.M()  );
 
 			double S=mpx;
 			double T=mpy;
 
 			///////////////////////////////////////////////////////////////////
 
-			double G_5 =	( bl_a->Px()/bl_a->E() - lep_a->Px()/lep_a->E() );
-			double G_6 =	( bl_a->Py()/bl_a->E() - lep_a->Py()/lep_a->E() );
-			double G_7 =	( bl_a->Pz()/bl_a->E() - lep_a->Pz()/lep_a->E() );
-			double G_8 =	( G_1/lep_a->E() - G_2/bl_a->E() )/2.;
+			double G_5 =	( bl_a.Px()/bl_a.E() - lep_a.Px()/lep_a.E() );
+			double G_6 =	( bl_a.Py()/bl_a.E() - lep_a.Py()/lep_a.E() );
+			double G_7 =	( bl_a.Pz()/bl_a.E() - lep_a.Pz()/lep_a.E() );
+			double G_8 =	( G_1/lep_a.E() - G_2/bl_a.E() )/2.;
 
-			double G_9 =	( bl_b->Px()/bl_b->E() - lep_b->Px()/lep_b->E() );
-			double G_10 =	( bl_b->Py()/bl_b->E() - lep_b->Py()/lep_b->E() );
-			double G_11 =	( bl_b->Pz()/bl_b->E() - lep_b->Pz()/lep_b->E() );
-			double G_12 =	( G_3/lep_b->E() - G_4/bl_b->E() )/2.;
+			double G_9 =	( bl_b.Px()/bl_b.E() - lep_b.Px()/lep_b.E() );
+			double G_10 =	( bl_b.Py()/bl_b.E() - lep_b.Py()/lep_b.E() );
+			double G_11 =	( bl_b.Pz()/bl_b.E() - lep_b.Pz()/lep_b.E() );
+			double G_12 =	( G_3/lep_b.E() - G_4/bl_b.E() )/2.;
 
 			///////////////////////////////////////////////////////////////////
 			//// 	G_5 *x1 + G_6*y1 + G_7*z1 = G8;  		(6)
@@ -171,12 +171,12 @@ namespace Dilep {
 			in_a[0] = G_8/G_7;
 			in_a[1] = -1.0*G_5/G_7;
 			in_a[2] = -1.0*G_6/G_7;
-			in_a[3] = lep_a->E();
+			in_a[3] = lep_a.E();
 			in_a[4] = G_1;
 
-			on_a[0] = lep_a->Px();
-			on_a[1] = lep_a->Py();
-			on_a[2] = lep_a->Pz();
+			on_a[0] = lep_a.Px();
+			on_a[1] = lep_a.Py();
+			on_a[2] = lep_a.Pz();
 			toz(in_a, on_a, out_a);
 
 			///////// 2nd ////////////////////
@@ -184,12 +184,12 @@ namespace Dilep {
 			in_c[0] = G_12/G_11;
 			in_c[1] = -1*G_9/G_11;
 			in_c[2] = -1*G_10/G_11;
-			in_c[3] = lep_b->E();
+			in_c[3] = lep_b.E();
 			in_c[4] = G_3;
 
-			on_c[0] = lep_b->Px();
-			on_c[1] = lep_b->Py();
-			on_c[2] = lep_b->Pz();
+			on_c[0] = lep_b.Px();
+			on_c[1] = lep_b.Py();
+			on_c[2] = lep_b.Pz();
 			toz(in_c, on_c, out_c);
 
 			/////////////////////////////////////////////////////
@@ -215,7 +215,7 @@ namespace Dilep {
 			/// if a!=0, everything is OK.
 			///
 			/// if a==0, then we can get x2 = f(x,y) from (13)
-			/// (12) --> [x2 - f(x,y)] + by2 + ... = 0
+			/// (12) -. [x2 - f(x,y)] + by2 + ... = 0
 			///////////////////////////////////////////////////
 			double _A = out_e[0];
 			double _B = out_e[1];
@@ -350,10 +350,10 @@ namespace Dilep {
 					rec_e2 = sqrt(rec_x2*rec_x2 + rec_y2*rec_y2 + rec_z2*rec_z2);
 
 					// self-consistence check and control of the solutions
-					double m_w1 = calcMass(rec_x1+lep_a->Px(), rec_y1+lep_a->Py(), rec_z1+lep_a->Pz(), rec_e1+lep_a->E());
-					double m_w2 = calcMass(rec_x2+lep_b->Px(), rec_y2+lep_b->Py(), rec_z2+lep_b->Pz(), rec_e2+lep_b->E());
-					double m_t1 = calcMass(rec_x1+ bl_a->Px(), rec_y1+ bl_a->Py(), rec_z1+ bl_a->Pz(), rec_e1+ bl_a->E());
-					double m_t2 = calcMass(rec_x2+ bl_b->Px(), rec_y2+ bl_b->Py(), rec_z2+ bl_b->Pz(), rec_e2+ bl_b->E());
+					double m_w1 = calcMass(rec_x1+lep_a.Px(), rec_y1+lep_a.Py(), rec_z1+lep_a.Pz(), rec_e1+lep_a.E());
+					double m_w2 = calcMass(rec_x2+lep_b.Px(), rec_y2+lep_b.Py(), rec_z2+lep_b.Pz(), rec_e2+lep_b.E());
+					double m_t1 = calcMass(rec_x1+ bl_a.Px(), rec_y1+ bl_a.Py(), rec_z1+ bl_a.Pz(), rec_e1+ bl_a.E());
+					double m_t2 = calcMass(rec_x2+ bl_b.Px(), rec_y2+ bl_b.Py(), rec_z2+ bl_b.Pz(), rec_e2+ bl_b.E());
 
 					m_delta_mass = 1000.0; // allow mass variation range for reco W and tops..
 					bool m_good_eq1 = ( fabs(S -(rec_x1+rec_x2)) 	  <=0.01 )?true:false;
@@ -364,7 +364,7 @@ namespace Dilep {
 					bool m_good_eq6 = ( fabs(m_t2 - t_mass[1]) <= m_delta_mass )?true:false;
 
 					if ( m_good_eq1 && m_good_eq2 && m_good_eq3 && m_good_eq4 && m_good_eq5 && m_good_eq6 ) {
-						neutrinoContainer->push_back( myvector(rec_x1, rec_y1, rec_z1, rec_z2) );
+						neutrinoContainer.push_back( myvector(rec_x1, rec_y1, rec_z1, rec_z2) );
 						ncand++;
 					} /*else {
 						cout<<" One solution is found to be out of range: "<< m_w1<<" "<<m_w2<<" "<< m_t1 <<" "<< m_t2<<endl;
