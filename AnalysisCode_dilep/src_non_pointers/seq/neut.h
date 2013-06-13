@@ -36,7 +36,7 @@ namespace Dilep {
 
 		std::vector<myvector>* calc_dilep(double t_mass[], double w_mass[], 
 										double in_mpx[], double in_mpy[], double in_mpz[],
-										TLorentzVector* lep_a, TLorentzVector* lep_b, 
-										TLorentzVector* bl_a, TLorentzVector* bl_b);
+										TLorentzVector& lep_a, TLorentzVector& lep_b, 
+										TLorentzVector& bl_a, TLorentzVector& bl_b);
 	}
 }
