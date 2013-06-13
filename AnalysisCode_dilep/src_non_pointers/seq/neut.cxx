@@ -314,7 +314,7 @@ namespace Dilep {
 			double delta;
 			int ncand(0);
 
-			vector<myvector> neutrinoContainer;// = new std::vector<myvector>; //// must use new
+			vector<myvector> *neutrinoContainer = new std::vector<myvector>; //// must use new
 
 			//////////////////////////////////////////////////
 			//// please replace your code starting from here 
@@ -364,7 +364,7 @@ namespace Dilep {
 					bool m_good_eq6 = ( fabs(m_t2 - t_mass[1]) <= m_delta_mass )?true:false;
 
 					if ( m_good_eq1 && m_good_eq2 && m_good_eq3 && m_good_eq4 && m_good_eq5 && m_good_eq6 ) {
-						neutrinoContainer.push_back( myvector(rec_x1, rec_y1, rec_z1, rec_z2) );
+						neutrinoContainer->push_back( myvector(rec_x1, rec_y1, rec_z1, rec_z2) );
 						ncand++;
 					} /*else {
 						cout<<" One solution is found to be out of range: "<< m_w1<<" "<<m_w2<<" "<< m_t1 <<" "<< m_t2<<endl;
@@ -372,7 +372,7 @@ namespace Dilep {
 				}
 			}
 
-			return &neutrinoContainer;
+			return neutrinoContainer;
 		}
 
 		//////////////////////////////////////
