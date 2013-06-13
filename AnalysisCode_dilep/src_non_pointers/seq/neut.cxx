@@ -52,7 +52,7 @@ namespace Dilep {
 			result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, lep_b, bl_a, bl_b);
 
 			// Check if there is any solutions for this reconstruction
-			if (result.size())
+			if (result->size())
 				++hasSolution;  // increment solution counter
 
 			di.setHasSol(hasSolution);
@@ -101,7 +101,7 @@ namespace Dilep {
 											lep_b, bl_a, bl_b);
 
 				// Check if there is any solutions for this reconstruction
-				if (result.size()) {
+				if (result->size()) {
 					++hasSolution;  // increment solution counter
 				}
 
