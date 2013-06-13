@@ -314,7 +314,7 @@ namespace Dilep {
 			double delta;
 			int ncand(0);
 
-			vector<myvector> *neutrinoContainer = new std::vector<myvector>; //// must use new
+			vector<myvector> neutrinoContainer;// = new std::vector<myvector>; //// must use new
 
 			//////////////////////////////////////////////////
 			//// please replace your code starting from here 
@@ -372,7 +372,7 @@ namespace Dilep {
 				}
 			}
 
-			return neutrinoContainer;
+			return &neutrinoContainer;
 		}
 
 		//////////////////////////////////////
