@@ -44,10 +44,10 @@ namespace Dilep {
 			w_mass[0] = di.getWmass(0);
 			w_mass[1] = di.getWmass(1);
 
-			lep_a = di.getZlep();
-			lep_b = di.getClep();
-			bl_a = di.getZbl();
-			bl_b = di.getCbl();
+			*lep_a = di.getZlep();
+			*lep_b = di.getClep();
+			*bl_a = di.getZbl();
+			*bl_b = di.getCbl();
 
 			result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, lep_b, bl_a, bl_b);
 
@@ -92,10 +92,10 @@ namespace Dilep {
 				w_mass[0] = vdi[i].getWmass(0);
 				w_mass[1] = vdi[i].getWmass(1);
 
-				lep_a = vdi[i].getZlep();
-				lep_b = vdi[i].getClep();
-				bl_a = vdi[i].getZbl();
-				bl_b = vdi[i].getCbl();
+				*lep_a = vdi[i].getZlep();
+				*lep_b = vdi[i].getClep();
+				*bl_a = vdi[i].getZbl();
+				*bl_b = vdi[i].getCbl();
 
 				result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, 
 											lep_b, bl_a, bl_b);
