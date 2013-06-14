@@ -168,8 +168,8 @@ namespace Dilep {
 			///////////////////////////////////////////////////////////////////
 
 			double G_5 =	( bl_a.[0]/bl_a[3] - lep_a.[0]/lep_a[3] );
-			double G_6 =	( bl_a[1]/bl_a[3] - lep_a[1]/lep_a[3]) );
-			double G_7 =	( bl_a[2]/bl_a[3] - lep_a[2]()/lep_a[3] );
+			double G_6 =	( bl_a[1]/bl_a[3] - lep_a[1]/lep_a[3] );
+			double G_7 =	( bl_a[2]/bl_a[3] - lep_a[2]/lep_a[3] );
 			double G_8 =	( G_1/lep_a[3] - G_2/bl_a[3] )/2.;
 
 			double G_9 =	( bl_b[0]/bl_b[3] - lep_b[0]/lep_b[3] );
@@ -371,10 +371,10 @@ namespace Dilep {
 					rec_e2 = sqrt(rec_x2*rec_x2 + rec_y2*rec_y2 + rec_z2*rec_z2);
 
 					// self-consistence check and control of the solutions
-					double m_w1 = calcMass(rec_x1+lep_a.Px(), rec_y1+lep_a.Py(), rec_z1+lep_a.Pz(), rec_e1+lep_a.E());
-					double m_w2 = calcMass(rec_x2+lep_b.Px(), rec_y2+lep_b.Py(), rec_z2+lep_b.Pz(), rec_e2+lep_b.E());
-					double m_t1 = calcMass(rec_x1+ bl_a.Px(), rec_y1+ bl_a.Py(), rec_z1+ bl_a.Pz(), rec_e1+ bl_a.E());
-					double m_t2 = calcMass(rec_x2+ bl_b.Px(), rec_y2+ bl_b.Py(), rec_z2+ bl_b.Pz(), rec_e2+ bl_b.E());
+					double m_w1 = calcMass(rec_x1+lep_a[0], rec_y1+lep_a[1], rec_z1+lep_a[2], rec_e1+lep_a[3]);
+					double m_w2 = calcMass(rec_x2+lep_b[0], rec_y2+lep_b[1], rec_z2+lep_b[2], rec_e2+lep_b[3]);
+					double m_t1 = calcMass(rec_x1+ bl_a[0], rec_y1+ bl_a[1], rec_z1+ bl_a[2], rec_e1+ bl_a[3]);
+					double m_t2 = calcMass(rec_x2+ bl_b[0], rec_y2+ bl_b[1], rec_z2+ bl_b[2], rec_e2+ bl_b[3]);
 
 					m_delta_mass = 1000.0; // allow mass variation range for reco W and tops..
 					bool m_good_eq1 = ( fabs(S -(rec_x1+rec_x2)) 	  <=0.01 )?true:false;
