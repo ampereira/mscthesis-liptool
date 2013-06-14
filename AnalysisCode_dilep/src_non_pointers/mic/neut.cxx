@@ -6,7 +6,7 @@ using namespace std;
 namespace Dilep {
 	namespace MIC {
 	
-		double calcMass (double x, double y, double z, double e) {
+		double __attribute__((target(mic))) calcMass (double x, double y, double z, double e) {
 			double mm, mass;
 
 			mm = e*e - (x*x + y*y + z*z);
@@ -683,7 +683,7 @@ namespace Dilep {
 				sh = sqrt(-h);
 				theta = acos(g / (2.0 * h * sh)) / 3.0;
 				xy1 = 2.0 * sh * cos(theta);
-				pi = TMath::Pi();
+				pi = 3.14159265358979312;
 				xy2 = 2.0 * sh * cos(theta + (2.0 * pi / 3.0));
 				xy3 = 2.0 * sh * cos(theta + (4.0 * pi / 3.0));
 				rr[0] = (xy1 - a1) / a0;
