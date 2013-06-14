@@ -209,11 +209,8 @@ void DilepInput::applyVariance (float res, int seed) {
 	double n_Px, n_Py, n_Pz, n_Pt, n_E;	
 	double delPx, delPy;
 	
-	#ifdef OMP
 	unsigned thread_id = omp_get_thread_num();
-	#else
-	unsigned thread_id = 0;
-	#endif
+
 	// Initialize the random number generator
 	t_rnd[thread_id].SetSeed (seed);
 
@@ -343,11 +340,7 @@ void DilepInput::applyVariance (float res) {
 	double n_Px, n_Py, n_Pz, n_Pt, n_E;	
 	double delPx, delPy;
 
-	#ifdef OMP
 	unsigned thread_id = omp_get_thread_num();
-	#else
-	unsigned thread_id = 0;
-	#endif
 	// Vary!
 
 	// _______________________________

@@ -19,7 +19,7 @@ ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
 NVCCFLAGS  = -g -G -arch=sm_20 -DCUDA
 CXXFLAGS   = -O3 $(ROOTCFLAGS)
-ICXXFLAGS  = -O3 -mmic $(ROOTCFLAGS)
+ICXXFLAGS  = -O3 -openmp -DOMP $(ROOTCFLAGS)
 #CXXFLAGS   = -g -DCUDA $(ROOTCFLAGS)
 # specific time measurement
 #CXXFLAGS  += -DMEASURE_KINFIT #-DMEASURE_DILEP
@@ -62,6 +62,7 @@ sse: ttH_dilep_sse
 dilep_time: CXXFLAGS += -DMEASURE_DILEP
 dilep_time: seq
 
+mic: ttH_dilep_mic
 
 
 default: seq
@@ -93,8 +94,8 @@ build/neut_cuda.o: src/cuda/neut.cu src/myvector.h src/cuda/neut.h
 ttH_dilep_seq: src/ttH_dilep_old.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
 	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_seq $(INCLUDES) src/ttH_dilep_old.cxx build/neut_seq.o build/dilep_input.o build/utilities.o $(LIBDIRS)
 
-ttH_dilep_mic: src/ttH_dilep_mic.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input_mic.o build/utilities_mic.o build/neut_mic.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
-	$(ICXX) $(ICXXFLAGS) -o bin/ttH_dilep_mic $(INCLUDES) src/ttH_dilep_mic.cxx build/neut_mic.o build/dilep_input_mic.o build/utilities_mic.o $(LIBDIRS)
+ttH_dilep_mic: src/ttH_dilep_mic.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input_mic.o build/utilities_mic.o build/neut_mic.o build/ttDKF_Best_Sol_mic.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
+	$(ICXX) $(ICXXFLAGS) -o bin/ttH_dilep_mic $(INCLUDES) src/ttH_dilep_mic.cxx build/neut_mic.o build/dilep_input_mic.o build/utilities_mic.o build/ttDKF_Best_Sol_mic.o $(LIBDIRS)
 
 # OpenMP application
 #build/neut_omp.o: src/omp/neut.cxx src/myvector.h src/omp/neut.h
@@ -102,6 +103,10 @@ ttH_dilep_mic: src/ttH_dilep_mic.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build
 
 build/ttDKF_Best_Sol.o: src/ttDKF_Best_Sol.cxx src/ttDKF_Best_Sol.h
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/ttDKF_Best_Sol.cxx -o build/ttDKF_Best_Sol.o
+
+build/ttDKF_Best_Sol_mic.o: src/ttDKF_Best_Sol.cxx src/ttDKF_Best_Sol.h
+	$(ICXX) $(ICXXFLAGS) $(INCLUDES) -c src/ttDKF_Best_Sol.cxx -o build/ttDKF_Best_Sol_mic.o
+
 
 ttH_dilep_omp: src/ttH_dilep_omp.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o build/ttDKF_Best_Sol.o $(LipMiniAnalysis)/libLipMiniAnalysis.a
 	$(CXX) $(CXXFLAGS) -o bin/ttH_dilep_omp $(INCLUDES) src/ttH_dilep_omp.cxx build/neut_seq.o build/dilep_input.o build/utilities.o build/ttDKF_Best_Sol.o $(LIBDIRS)

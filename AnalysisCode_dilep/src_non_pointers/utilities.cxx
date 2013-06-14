@@ -1,6 +1,7 @@
 // Utilities for time measurement and other stuffs
 #include "utilities.h"
 #define SEED 123456.0
+#include <TRandom3.h>
 
 using namespace std;
 

@@ -30,7 +30,7 @@ namespace Dilep {
 			#endif
 
 			double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
-			TLorentzVector *lep_a, *lep_b, *bl_a, *bl_b;
+			TLorentzVector lep_a, lep_b, bl_a, bl_b;
 
 			// Transferring the inputs to local variables
 			in_mpx[0] = di.getInMpx(0);
@@ -49,7 +49,7 @@ namespace Dilep {
 			bl_a = di.getZbl();
 			bl_b = di.getCbl();
 
-			result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, lep_b, bl_a, bl_b);
+			result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, &lep_b, &bl_a, &bl_b);
 
 			// Check if there is any solutions for this reconstruction
 			if (result->size())
@@ -79,7 +79,7 @@ namespace Dilep {
 				int hasSolution = 0;
 
 				double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
-				TLorentzVector *lep_a, *lep_b, *bl_a, *bl_b;
+				TLorentzVector lep_a, lep_b, bl_a, bl_b;
 
 				in_mpx[0] = vdi[i].getInMpx(0);
 				in_mpx[1] = vdi[i].getInMpx(1);
@@ -97,8 +97,8 @@ namespace Dilep {
 				bl_a = vdi[i].getZbl();
 				bl_b = vdi[i].getCbl();
 
-				result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, 
-											lep_b, bl_a, bl_b);
+				result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, &lep_a, 
+											&lep_b, &bl_a, &bl_b);
 
 				// Check if there is any solutions for this reconstruction
 				if (result->size()) {

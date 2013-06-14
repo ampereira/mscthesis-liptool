@@ -3,6 +3,9 @@ case $1 in
 	"omp")
 		currfile=ttH_dilep_omp
 		;;
+	"mic")
+		currfile=ttH_dilep_mic
+		;;
 	"cuda")
 		currfile=ttH_dilep_cuda
 		;;
