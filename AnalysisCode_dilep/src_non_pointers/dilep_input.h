@@ -39,7 +39,7 @@ class DilepInput {
 
 	int hasSolution;
 
-	std::vector<myvector> result;
+	std::vector<myvector> result (4);
 
 public:
 

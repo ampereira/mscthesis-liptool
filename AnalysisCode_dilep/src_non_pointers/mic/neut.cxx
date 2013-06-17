@@ -73,61 +73,66 @@ namespace Dilep {
 			long long int time = startTimer();
 			#endif
 			unsigned size = vdi.size();
-			#pragma offload target(mic) inout(vdi:length(size))
-			#pragma omp parallel for nowait
-			for (unsigned i = 0; i < size; ++i) {
-				vector<myvector> *result;
-				//DilepInput di = vdi[i];
-				int hasSolution = 0;
+			DilepInput *vdi_pointer = &vdi[0];
 
-				double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
-				double lep_a[5], lep_b[5], bl_a[5], bl_b[5];
 
-				in_mpx[0] = vdi[i].getInMpx(0);
-				in_mpx[1] = vdi[i].getInMpx(1);
-				in_mpy[0] = vdi[i].getInMpy(0);
-				in_mpy[1] = vdi[i].getInMpy(1);
-				in_mpz[0] = vdi[i].getInMpz(0);
-				in_mpz[1] = vdi[i].getInMpz(1);
-				t_mass[0] = vdi[i].getTmass(0);
-				t_mass[1] = vdi[i].getTmass(1);
-				w_mass[0] = vdi[i].getWmass(0);
-				w_mass[1] = vdi[i].getWmass(1);
+			#pragma offload target(mic) in(vdi_pointer:length(size)) out(vdi_pointer:length(size))
+			{
+				#pragma omp parallel for nowait
+				for (unsigned i = 0; i < size; ++i) {
+					vector<myvector> *result;
+					//DilepInput di = vdi[i];
+					int hasSolution = 0;
 
-				lep_a[0] = vdi[i].getZlep().Px();
-				lep_a[1] = vdi[i].getZlep().Py();
-				lep_a[2] = vdi[i].getZlep().Pz();
-				lep_a[3] = vdi[i].getZlep().E(); 
-				lep_a[4] = vdi[i].getZlep().M());
+					double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
+					double lep_a[5], lep_b[5], bl_a[5], bl_b[5];
 
-				lep_b[0] = vdi[i].getClep().Px();
-				lep_b[1] = vdi[i].getClep().Py();
-				lep_b[2] = vdi[i].getClep().Pz();
-				lep_b[3] = vdi[i].getClep().E(); 
-				lep_b[4] = vdi[i].getClep().M());
+					in_mpx[0] = vdi[i].getInMpx(0);
+					in_mpx[1] = vdi[i].getInMpx(1);
+					in_mpy[0] = vdi[i].getInMpy(0);
+					in_mpy[1] = vdi[i].getInMpy(1);
+					in_mpz[0] = vdi[i].getInMpz(0);
+					in_mpz[1] = vdi[i].getInMpz(1);
+					t_mass[0] = vdi[i].getTmass(0);
+					t_mass[1] = vdi[i].getTmass(1);
+					w_mass[0] = vdi[i].getWmass(0);
+					w_mass[1] = vdi[i].getWmass(1);
 
-				bl_a[0] = vdi[i].getZbl().Px();
-				bl_a[1] = vdi[i].getZbl().Py();
-				bl_a[2] = vdi[i].getZbl().Pz();
-				bl_a[3] = vdi[i].getZbl().E(); 
-				bl_a[4] = vdi[i].getZbl().M());
+					lep_a[0] = vdi[i].getZlep().Px();
+					lep_a[1] = vdi[i].getZlep().Py();
+					lep_a[2] = vdi[i].getZlep().Pz();
+					lep_a[3] = vdi[i].getZlep().E(); 
+					lep_a[4] = vdi[i].getZlep().M());
 
-				bl_b[0] = vdi[i].getCbl().Px();
-				bl_b[1] = vdi[i].getCbl().Py();
-				bl_b[2] = vdi[i].getCbl().Pz();
-				bl_b[3] = vdi[i].getCbl().E(); 
-				bl_b[4] = vdi[i].getCbl().M());
+					lep_b[0] = vdi[i].getClep().Px();
+					lep_b[1] = vdi[i].getClep().Py();
+					lep_b[2] = vdi[i].getClep().Pz();
+					lep_b[3] = vdi[i].getClep().E(); 
+					lep_b[4] = vdi[i].getClep().M());
 
-				result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, 
-											lep_b, bl_a, bl_b);
+					bl_a[0] = vdi[i].getZbl().Px();
+					bl_a[1] = vdi[i].getZbl().Py();
+					bl_a[2] = vdi[i].getZbl().Pz();
+					bl_a[3] = vdi[i].getZbl().E(); 
+					bl_a[4] = vdi[i].getZbl().M());
 
-				// Check if there is any solutions for this reconstruction
-				if (result->size()) {
-					++hasSolution;  // increment solution counter
+					bl_b[0] = vdi[i].getCbl().Px();
+					bl_b[1] = vdi[i].getCbl().Py();
+					bl_b[2] = vdi[i].getCbl().Pz();
+					bl_b[3] = vdi[i].getCbl().E(); 
+					bl_b[4] = vdi[i].getCbl().M());
+
+					result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, 
+												lep_b, bl_a, bl_b);
+
+					// Check if there is any solutions for this reconstruction
+					if (result->size()) {
+						++hasSolution;  // increment solution counter
+					}
+
+					vdi[i].setHasSol(hasSolution);
+					vdi[i].setResult(result);
 				}
-
-				vdi[i].setHasSol(hasSolution);
-				vdi[i].setResult(result);
 			}
 
 			// time measurement
@@ -167,7 +172,7 @@ namespace Dilep {
 
 			///////////////////////////////////////////////////////////////////
 
-			double G_5 =	( bl_a.[0]/bl_a[3] - lep_a.[0]/lep_a[3] );
+			double G_5 =	( bl_a[0]/bl_a[3] - lep_a[0]/lep_a[3] );
 			double G_6 =	( bl_a[1]/bl_a[3] - lep_a[1]/lep_a[3] );
 			double G_7 =	( bl_a[2]/bl_a[3] - lep_a[2]/lep_a[3] );
 			double G_8 =	( G_1/lep_a[3] - G_2/bl_a[3] )/2.;
