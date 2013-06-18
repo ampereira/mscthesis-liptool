@@ -566,7 +566,7 @@ int DilepInput::getHasSol (void) const {
 }
 
 vector<myvector> DilepInput::getResult (void) const {
-	return this.result;
+	return result;
 }
 
 // Setters
