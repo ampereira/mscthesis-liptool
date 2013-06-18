@@ -151,11 +151,12 @@ namespace Dilep {
 		{
 
 			double mpx, mpy, G_1, G_2, G_3, G_4, _d, _a, _f, _b, _e, _g;
+			double WMass_a, WMass_b, tMass_a, tMass_b, lep_a[5], lep_b[5], bl_a[5], bl_b[5];
 
 			/////////// input part
 
-			mpx = in_mpx[0];
-			mpy = in_mpy[0];
+			mpx = STRIDE2(in_mpx[0]);
+			mpy = STRIDE2(in_mpy[0]);
 
 			WMass_a = STRIDE2(w_mass, 0);
 			tMass_a = STRIDE2(t_mass, 0);
