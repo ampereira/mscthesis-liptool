@@ -17,6 +17,10 @@
 #include "../dilep_input.h"
 #include "../utilities.h"
 
+
+#define STRIDE2(a,i) a[tid * 2 + i]
+#define STRIDE5(a,i) a[tid * 5 + i]
+
 namespace Dilep {
 	namespace MIC {
 		void __attribute__((target(mic))) Csqrt(double _ar, double _ai, double _my[]);
@@ -36,7 +40,7 @@ namespace Dilep {
 
 		std::vector<myvector>* __attribute__((target(mic))) calc_dilep(double t_mass[], double w_mass[], 
 										double in_mpx[], double in_mpy[], double in_mpz[],
-										double lep_a[], double lep_b[], 
-										double bl_a[], double bl_b[]);
+										double _lep_a[], double _lep_b[], 
+										double _bl_a[], double _bl_b[], int tid);
 	}
 }
