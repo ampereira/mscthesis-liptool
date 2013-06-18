@@ -566,7 +566,7 @@ int DilepInput::getHasSol (void) const {
 }
 
 vector<myvector> DilepInput::getResult (void) const {
-	return result;
+	return this.result;
 }
 
 // Setters
@@ -576,7 +576,7 @@ void DilepInput::setHasSol (int x) {
 }
 
 void DilepInput::setResult (vector<myvector> *x) {
-	result = *x;
+	result.assign(x->begin(), x->end());
 }
 
 void DilepInput::setZblCbl (void) {
