@@ -96,25 +96,25 @@ namespace Dilep {
 				lep_a[(i * 5) + 1] = vdi[i].getZlep().Py();
 				lep_a[(i * 5) + 2] = vdi[i].getZlep().Pz();
 				lep_a[(i * 5) + 3] = vdi[i].getZlep().E(); 
-				lep_a[(i * 5) + 4] = vdi[i].getZlep().M());
+				lep_a[(i * 5) + 4] = vdi[i].getZlep().M();
 
 				lep_b[(i * 5) + 0] = vdi[i].getClep().Px();
 				lep_b[(i * 5) + 1] = vdi[i].getClep().Py();
 				lep_b[(i * 5) + 2] = vdi[i].getClep().Pz();
 				lep_b[(i * 5) + 3] = vdi[i].getClep().E(); 
-				lep_b[(i * 5) + 4] = vdi[i].getClep().M());
+				lep_b[(i * 5) + 4] = vdi[i].getClep().M();
 
 				bl_a[(i * 5) + 0] = vdi[i].getZbl().Px();
 				bl_a[(i * 5) + 1] = vdi[i].getZbl().Py();
 				bl_a[(i * 5) + 2] = vdi[i].getZbl().Pz();
 				bl_a[(i * 5) + 3] = vdi[i].getZbl().E(); 
-				bl_a[(i * 5) + 4] = vdi[i].getZbl().M());
+				bl_a[(i * 5) + 4] = vdi[i].getZbl().M();
 
 				bl_b[(i * 5) + 0] = vdi[i].getCbl().Px();
 				bl_b[(i * 5) + 1] = vdi[i].getCbl().Py();
 				bl_b[(i * 5) + 2] = vdi[i].getCbl().Pz();
 				bl_b[(i * 5) + 3] = vdi[i].getCbl().E(); 
-				bl_b[(i * 5) + 4] = vdi[i].getCbl().M());
+				bl_b[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
 			
 			vector<myvector> *result;
@@ -157,8 +157,8 @@ namespace Dilep {
 
 			/////////// input part
 
-			mpx = STRIDE2(in_mpx[0], 0);
-			mpy = STRIDE2(in_mpy[0], 0);
+			mpx = STRIDE2(in_mpx, 0);
+			mpy = STRIDE2(in_mpy, 0);
 
 			WMass_a = STRIDE2(w_mass, 0);
 			tMass_a = STRIDE2(t_mass, 0);
