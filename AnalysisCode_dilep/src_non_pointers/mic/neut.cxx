@@ -49,7 +49,7 @@ namespace Dilep {
 			bl_a = di.getZbl();
 			bl_b = di.getCbl();
 
-			result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, lep_b, bl_a, bl_b);
+			//result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, lep_b, bl_a, bl_b);
 
 			// Check if there is any solutions for this reconstruction
 			if (result->size())
@@ -78,7 +78,9 @@ namespace Dilep {
 
 			#pragma offload target(mic) in(vdi_pointer:length(size)) out(vdi_pointer:length(size))
 			{
-				#pragma omp parallel for nowait
+				#pragma omp parallel
+				{
+				#pragma omp for nowait
 				for (unsigned i = 0; i < size; ++i) {
 					vector<myvector> *result;
 					//DilepInput di = vdi[i];
@@ -132,6 +134,7 @@ namespace Dilep {
 
 					vdi[i].setHasSol(hasSolution);
 					vdi[i].setResult(result);
+				}
 				}
 			}
 
