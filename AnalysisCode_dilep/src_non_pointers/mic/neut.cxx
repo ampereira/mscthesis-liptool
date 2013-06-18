@@ -117,9 +117,11 @@ namespace Dilep {
 				bl_b[(i * 5) + 4] = vdi[i].getCbl().M());
 			}
 			
-			#pragma offload target(mic) in(vdi_pointer:length(size)) out(vdi_pointer:length(size))
+			vector<myvector> *result;
+			#pragma offload target(mic) in(t_mass:length(2*size),w_mass:length(2*size),in_mpx:length(2*size),in_mpy:length(2*size),in_mpz:length(2*size)) \
+				in(lep_a:length(5*size),lep_b:length(5*size),bl_A:length(5*size),bl_b:length(5*size)) \
+				out(vdi_pointer:length(size))
 			{
-				vector<myvector> *result;
 				
 				#pragma omp parallel for
 				for (int i = 0; i < size; ++i) {
@@ -155,8 +157,8 @@ namespace Dilep {
 
 			/////////// input part
 
-			mpx = STRIDE2(in_mpx[0]);
-			mpy = STRIDE2(in_mpy[0]);
+			mpx = STRIDE2(in_mpx[0], 0);
+			mpy = STRIDE2(in_mpy[0], 0);
 
 			WMass_a = STRIDE2(w_mass, 0);
 			tMass_a = STRIDE2(t_mass, 0);
