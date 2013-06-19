@@ -78,8 +78,8 @@ namespace Dilep {
 
 			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], t_mass[2 * size], w_mass[2 * size];
 			double lep_a[5 * size], lep_b[5 * size], bl_a[5 * size], bl_b[5 * size], 
-			double __attribute((target(mic))) nc[16*size];
-			int __attribute((target(mic))) count[size];
+			double nc[16*size];
+			int count[size];
 
 			for (unsigned i = 0; i < size; ++i) {
 
@@ -123,9 +123,8 @@ namespace Dilep {
 			unsigned size5  = 5  * size;	
 			unsigned size16 = 16 * size;		
 
-			#pragma offload target(mic) in(w_mass:length(size2), t_mass:length(size2), in_mpx:length(size2), in_mpy:length(size2), lep_a:length(size5),lep_b:length(size5),bl_a:length(size5),bl_b:length(size5)) out(nc:length(size16), count:length(size))
+			#pragma offload target(mic) in(w_mass:length(size2), t_mass:length(size2), in_mpx:length(size2), in_mpy:length(size2), lep_a:length(size5),lep_b:length(size5),bl_a:length(size5),bl_b:length(size5)) out(nc:length(size16))
 			{
-				
 				#pragma omp parallel for
 				for (int i = 0; i < size; ++i) {
 					calc_dilep(t_mass, w_mass, in_mpx, in_mpy, lep_a, 
