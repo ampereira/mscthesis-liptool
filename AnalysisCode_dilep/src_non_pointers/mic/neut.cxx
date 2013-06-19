@@ -119,13 +119,12 @@ namespace Dilep {
 			}
 			
 
-			#pragma offload target(mic) in(t_mass:length(2*size),w_mass:length(2*size),in_mpx:length(2*size),in_mpy:length(2*size),in_mpz:length(2*size),lep_a:length(5*size),lep_b:length(5*size),bl_A:length(5*size),bl_b:length(5*size)) \
-				out(nc:length(16*size))
+			#pragma offload target(mic) in(t_mass:length(2*size),w_mass:length(2*size),in_mpx:length(2*size),in_mpy:length(2*size),lep_a:length(5*size),lep_b:length(5*size),bl_A:length(5*size),bl_b:length(5*size)) out(nc:length(16*size))
 			{
 				
 				#pragma omp parallel for
 				for (int i = 0; i < size; ++i) {
-					calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, 
+					calc_dilep(t_mass, w_mass, in_mpx, in_mpy, lep_a, 
 								lep_b, bl_a, bl_b, nc, count, i);
 				}
 			}
