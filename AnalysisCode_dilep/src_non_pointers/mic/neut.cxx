@@ -76,22 +76,9 @@ namespace Dilep {
 			int hasSolution = 0;
 
 
-			double *in_mpx, *in_mpy, *t_mass, *w_mass;
-			double *lep_a, *lep_b, *bl_a, *bl_b, *nc;
-			int *count;
-
-			in_mpx = new double [2 * size];
-			in_mpy = new double [2 * size];
-			t_mass = new double [2 * size];
-			w_mass = new double [2 * size];
-
-			lep_a = new double [5 * size];
-			lep_b = new double [5 * size];
-			bl_a  = new double [5 * size];
-			bl_b  = new double [5 * size];
-
-			nc = new double [16 * size];
-			count = new int [size];
+			double *in_mpx[2 * size], *in_mpy[2 * size], *in_mpz[2 * size], *t_mass[2 * size], *w_mass[2 * size];
+			double lep_a[5 * size], lep_b[5 * size], bl_a[5 * size], bl_b[5 * size], nc[16*size];
+			int count[size];
 
 			for (unsigned i = 0; i < size; ++i) {
 
@@ -99,6 +86,8 @@ namespace Dilep {
 				in_mpx[(i * 2) + 1] = vdi[i].getInMpx(1);
 				in_mpy[(i * 2) + 0] = vdi[i].getInMpy(0);
 				in_mpy[(i * 2) + 1] = vdi[i].getInMpy(1);
+				in_mpz[(i * 2) + 0] = vdi[i].getInMpz(0);
+				in_mpz[(i * 2) + 1] = vdi[i].getInMpz(1);
 				t_mass[(i * 2) + 0] = vdi[i].getTmass(0);
 				t_mass[(i * 2) + 1] = vdi[i].getTmass(1);
 				w_mass[(i * 2) + 0] = vdi[i].getWmass(0);
@@ -129,8 +118,11 @@ namespace Dilep {
 				bl_b[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
 			
+			unsigned size2  = 2  * size;
+			unsigned size5  = 5  * size;	
+			unsigned size16 = 16 * size;		
 
-			#pragma offload target(mic) in(w_mass:length(size), t_mass:length(size), in_mpx:length(size), in_mpy:length(size), lep_a:length(size), lep_b:length(size), bl_a:length(size), bl_b:length(size)) out(nc:length(16*size))
+			#pragma offload target(mic) in(w_mass:length(size2), t_mass:length(size2), in_mpx:length(size2), in_mpy:length(size2), lep_a:length(size5),lep_b:length(size5),bl_a:length(size5),bl_b:length(size5)) out(nc:length(16*size))
 			{
 				
 				#pragma omp parallel for
