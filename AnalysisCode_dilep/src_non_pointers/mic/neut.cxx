@@ -99,8 +99,6 @@ namespace Dilep {
 				in_mpx[(i * 2) + 1] = vdi[i].getInMpx(1);
 				in_mpy[(i * 2) + 0] = vdi[i].getInMpy(0);
 				in_mpy[(i * 2) + 1] = vdi[i].getInMpy(1);
-				in_mpz[(i * 2) + 0] = vdi[i].getInMpz(0);
-				in_mpz[(i * 2) + 1] = vdi[i].getInMpz(1);
 				t_mass[(i * 2) + 0] = vdi[i].getTmass(0);
 				t_mass[(i * 2) + 1] = vdi[i].getTmass(1);
 				w_mass[(i * 2) + 0] = vdi[i].getWmass(0);
