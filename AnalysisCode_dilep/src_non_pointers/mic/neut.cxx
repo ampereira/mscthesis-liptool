@@ -76,7 +76,7 @@ namespace Dilep {
 			int hasSolution = 0;
 
 
-			double *in_mpx[2 * size], *in_mpy[2 * size], *in_mpz[2 * size], *t_mass[2 * size], *w_mass[2 * size];
+			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], t_mass[2 * size], w_mass[2 * size];
 			double lep_a[5 * size], lep_b[5 * size], bl_a[5 * size], bl_b[5 * size], nc[16*size];
 			int count[size];
 
