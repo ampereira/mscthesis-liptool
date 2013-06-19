@@ -130,7 +130,7 @@ namespace Dilep {
 			}
 			
 
-			#pragma offload target(mic) in(w_mass:length(10), t_mass:length(2*size), in_mpx:length(2*size), in_mpy:length(2*size), lep_a:length(5*size),lep_b:length(5*size),bl_a:length(5*size),bl_b:length(5*size)) out(nc:length(16*size))
+			#pragma offload target(mic) in(w_mass:length(size), t_mass:length(size), in_mpx:length(size), in_mpy:length(size), lep_a:length(size), lep_b:length(size), bl_a:length(size), bl_b:length(size)) out(nc:length(16*size))
 			{
 				
 				#pragma omp parallel for
