@@ -4674,6 +4674,10 @@ Int_t main(Int_t argc, char *argv[]){
 	ttH::defineDilepIterations();
 	ttH::defineNumThreads();
 
+	#ifdef MIC
+	ttH::MIC::setupMIC();
+	#endif
+
 	// Start measuring overall time
 	long long int init = ttH::startTimer();
 

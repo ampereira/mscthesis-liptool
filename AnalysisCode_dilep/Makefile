@@ -19,7 +19,7 @@ ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
 NVCCFLAGS  = -g -G -arch=sm_20 -DCUDA
 CXXFLAGS   = -O3 $(ROOTCFLAGS)
-ICXXFLAGS  = -O3 -openmp -DOMP $(ROOTCFLAGS)
+ICXXFLAGS  = -O3 -openmp -DOMP -DMIC $(ROOTCFLAGS)
 #CXXFLAGS   = -g -DCUDA $(ROOTCFLAGS)
 # specific time measurement
 #CXXFLAGS  += -DMEASURE_KINFIT #-DMEASURE_DILEP

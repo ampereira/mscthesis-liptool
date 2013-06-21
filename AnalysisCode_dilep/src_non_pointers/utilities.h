@@ -9,6 +9,7 @@
 #include <cmath>
 #include <queue>
 #include <TRandom.h>
+#include <offload.h>
 
 #ifdef OMP
 	#include <omp.h>
@@ -40,7 +41,7 @@ namespace ttH {
 
 	}
 	#endif
-	
+
 	namespace KinFit {
 		long long int startTimer (void);
 		long long int stopTimer (long long int);

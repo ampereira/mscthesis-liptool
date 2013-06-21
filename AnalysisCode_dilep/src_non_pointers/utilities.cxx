@@ -98,6 +98,16 @@ namespace ttH {
 	#ifdef MIC
 	namespace MIC {
 
+		void setupMIC (void) {
+			int num_devices = _Offload_number_of_devices();
+
+			if (num_devices)
+				cout << "Using the available devices (" << num_devices << ")" << endl;
+			else {
+				cout << "No Xeon Phi available! Application will exit." << endl;
+				exit(-1);
+			}
+		}
 	}
 	#endif
 	namespace KinFit {
