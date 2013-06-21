@@ -74,13 +74,28 @@ namespace Dilep {
 			#endif
 			unsigned size = vdi.size();
 			int hasSolution = 0;
+			unsigned size2  = 2  * size;
+			unsigned size5  = 5  * size;	
+			unsigned size16 = 16 * size;
 
 
-			double in_mpx[2 * size], in_mpy[2 * size], in_mpz[2 * size], t_mass[2 * size], w_mass[2 * size];
-			double lep_a[5 * size], lep_b[5 * size], bl_a[5 * size], bl_b[5 * size];
+			double in_mpx[size2], in_mpy[size2], t_mass[size2], w_mass[size2];
+			double lep_a[size5], lep_b[size5], bl_a[size5], bl_b[size5];
 			
-			double __attribute__((target(mic))) nc[16*size];
+			double __attribute__((target(mic))) nc[size16];
 			int __attribute__((target(mic))) count[size];
+
+			double *_in_mpx, *_in_mpy, *_t_mass, *_w_mass;
+			double *_lep_a, *_lep_b, *_bl_a, *_bl_b;
+
+			_in_mpx = &in_mpx[0];
+			_in_mpy = &in_mpy[0];
+			_t_mass = &t_mass[0];
+			_w_mass = &w_mass[0];
+			_lep_a 	= &lep_a[0];
+			_lep_b 	= &lep_b[0];
+			_bl_a   = &bl_a[0];
+			_bl_b   = &bl_b[0];
 
 			for (unsigned i = 0; i < size; ++i) {
 
@@ -88,8 +103,6 @@ namespace Dilep {
 				in_mpx[(i * 2) + 1] = vdi[i].getInMpx(1);
 				in_mpy[(i * 2) + 0] = vdi[i].getInMpy(0);
 				in_mpy[(i * 2) + 1] = vdi[i].getInMpy(1);
-				in_mpz[(i * 2) + 0] = vdi[i].getInMpz(0);
-				in_mpz[(i * 2) + 1] = vdi[i].getInMpz(1);
 				t_mass[(i * 2) + 0] = vdi[i].getTmass(0);
 				t_mass[(i * 2) + 1] = vdi[i].getTmass(1);
 				w_mass[(i * 2) + 0] = vdi[i].getWmass(0);
@@ -119,20 +132,18 @@ namespace Dilep {
 				bl_b[(i * 5) + 3] = vdi[i].getCbl().E(); 
 				bl_b[(i * 5) + 4] = vdi[i].getCbl().M();
 			}
-			
-			unsigned size2  = 2  * size;
-			unsigned size5  = 5  * size;	
-			unsigned size16 = 16 * size;		
+					
 
-			#pragma offload target(mic) in(w_mass:length(size2), t_mass:length(size2), in_mpx:length(size2), in_mpy:length(size2), lep_a:length(size5),lep_b:length(size5),bl_a:length(size5),bl_b:length(size5)) 
+			#pragma offload target(mic) in(_w_mass:length(size2), _t_mass:length(size2), _in_mpx:length(size2), _in_mpy:length(size2), _lep_a:length(size5), _lep_b:length(size5), _bl_a:length(size5), _bl_b:length(size5)) 
 			//#pragma offload_transfer target(mic) in(w_mass:length(10), t_mass:length(10), in_mpx:length(10), in_mpy:length(10), lep_a:length(10), lep_b:length(10), bl_a:length(10), bl_b:length(10)) 
 			//out(nc:length(size16))
 			{
-				#pragma omp parallel for
-				for (int i = 0; i < size; ++i) {
-					calc_dilep(t_mass, w_mass, in_mpx, in_mpy, lep_a, 
-								lep_b, bl_a, bl_b, nc, count, i);
-				}
+				//#pragma omp parallel for
+				//for (int i = 0; i < size; ++i) {
+				//	calc_dilep(t_mass, w_mass, in_mpx, in_mpy, lep_a, 
+				//				lep_b, bl_a, bl_b, nc, count, i);
+				//}
+				cout << "hahah" << endl;
 			}
 
 			for (unsigned comb = 0; comb < size; ++comb) {
