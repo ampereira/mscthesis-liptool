@@ -140,12 +140,11 @@ namespace Dilep {
 			//#pragma offload_transfer target(mic) in(w_mass:length(10), t_mass:length(10), in_mpx:length(10), in_mpy:length(10), lep_a:length(10), lep_b:length(10), bl_a:length(10), bl_b:length(10)) 
 			//out(nc:length(size16))
 			{
-				//#pragma omp parallel for
-				//for (int i = 0; i < size; ++i) {
-				//	calc_dilep(t_mass, w_mass, in_mpx, in_mpy, lep_a, 
-				//				lep_b, bl_a, bl_b, nc, count, i);
-				//}
-				cout << "hahah" << endl;
+				#pragma omp parallel for
+				for (int i = 0; i < size; ++i) {
+					calc_dilep(t_mass, w_mass, in_mpx, in_mpy, lep_a, 
+								lep_b, bl_a, bl_b, nc, count, i);
+				}
 			}
 
 			for (unsigned comb = 0; comb < size; ++comb) {
