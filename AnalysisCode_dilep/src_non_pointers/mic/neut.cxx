@@ -85,18 +85,6 @@ namespace Dilep {
 			double __attribute__((target(mic))) nc[size16];
 			int __attribute__((target(mic))) count[size];
 
-			double *_in_mpx, *_in_mpy, *_t_mass, *_w_mass;
-			double *_lep_a, *_lep_b, *_bl_a, *_bl_b;
-
-			_in_mpx = &in_mpx[0];
-			_in_mpy = &in_mpy[0];
-			_t_mass = &t_mass[0];
-			_w_mass = &w_mass[0];
-			_lep_a 	= &lep_a[0];
-			_lep_b 	= &lep_b[0];
-			_bl_a   = &bl_a[0];
-			_bl_b   = &bl_b[0];
-
 			for (unsigned i = 0; i < size; ++i) {
 
 				in_mpx[(i * 2) + 0] = vdi[i].getInMpx(0);
@@ -134,7 +122,7 @@ namespace Dilep {
 			}
 					
 
-			#pragma offload target(mic) in(w_mass:length(size2))
+			#pragma offload target(mic) in(w_mass:length(size2), t_mass:length(size2))
 
 			//#pragma offload target(mic) in(_w_mass:length(size2), _t_mass:length(size2), _in_mpx:length(size2), _in_mpy:length(size2), _lep_a:length(size5), _lep_b:length(size5), _bl_a:length(size5), _bl_b:length(size5)) 
 			//#pragma offload_transfer target(mic) in(w_mass:length(10), t_mass:length(10), in_mpx:length(10), in_mpy:length(10), lep_a:length(10), lep_b:length(10), bl_a:length(10), bl_b:length(10)) 
