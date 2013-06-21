@@ -122,7 +122,7 @@ namespace Dilep {
 			}
 					
 
-			#pragma offload target(mic) in(w_mass:length(size2),t_mass:length(size2))
+			#pragma offload target(mic) in(w_mass,t_mass:length(size2))
 
 			//#pragma offload target(mic) in(_w_mass:length(size2), _t_mass:length(size2), _in_mpx:length(size2), _in_mpy:length(size2), _lep_a:length(size5), _lep_b:length(size5), _bl_a:length(size5), _bl_b:length(size5)) 
 			//#pragma offload_transfer target(mic) in(w_mass:length(10), t_mass:length(10), in_mpx:length(10), in_mpy:length(10), lep_a:length(10), lep_b:length(10), bl_a:length(10), bl_b:length(10)) 
