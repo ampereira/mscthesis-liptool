@@ -38,7 +38,7 @@ namespace ttH {
 
 	#ifdef MIC
 	namespace MIC {
-
+		void setupMIC(void);
 	}
 	#endif
 
