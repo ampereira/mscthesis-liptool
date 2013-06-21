@@ -35,6 +35,12 @@ namespace ttH {
 	long long int startTimer (void);
 	long long int stopTimer (long long int);
 
+	#ifdef MIC
+	namespace MIC {
+
+	}
+	#endif
+	
 	namespace KinFit {
 		long long int startTimer (void);
 		long long int stopTimer (long long int);

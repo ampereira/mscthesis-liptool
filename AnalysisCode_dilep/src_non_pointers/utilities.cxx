@@ -95,7 +95,11 @@ namespace ttH {
 			return -1;
 	}
 
+	#ifdef MIC
+	namespace MIC {
 
+	}
+	#endif
 	namespace KinFit {
 		int measurements = 0;
 		int totaltimeKinFit = 0;
