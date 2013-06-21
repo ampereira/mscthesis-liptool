@@ -4,7 +4,7 @@ using std::vector;
 using namespace std;
 
 namespace Dilep {
-	namespace MIC {
+	namespace Phi {
 	
 		double __attribute__((target(mic))) calcMass (double x, double y, double z, double e) {
 			double mm, mass;

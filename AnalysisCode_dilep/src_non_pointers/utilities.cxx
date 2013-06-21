@@ -96,9 +96,9 @@ namespace ttH {
 	}
 
 	#ifdef MIC
-	namespace MIC {
+	namespace Phi {
 
-		void setupMIC (void) {
+		void setupPhi (void) {
 			int num_devices = _Offload_number_of_devices();
 
 			if (num_devices)

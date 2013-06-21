@@ -23,7 +23,7 @@
 #define TO1D(nc,tid,sol,did) nc[tid*16+sol*4+did]
 
 namespace Dilep {
-	namespace MIC {
+	namespace Phi {
 		void __attribute__((target(mic))) Csqrt(double _ar, double _ai, double _my[]);
 		void __attribute__((target(mic))) cubic(double a[], double rr[], double ri[]);
 		void __attribute__((target(mic))) toz(double k[], double l[], double g[]);

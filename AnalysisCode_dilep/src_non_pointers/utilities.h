@@ -37,8 +37,8 @@ namespace ttH {
 	long long int stopTimer (long long int);
 
 	#ifdef MIC
-	namespace MIC {
-		void setupMIC(void);
+	namespace Phi {
+		void setupPhi(void);
 	}
 	#endif
 

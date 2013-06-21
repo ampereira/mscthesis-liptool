@@ -4062,7 +4062,7 @@ void ttH_dilep::ttDilepKinFit(){
 	int n_ttDKF_Best = -999;
 	int first = 0;
 
-	Dilep::MIC::dilep(inputs);
+	Dilep::Phi::dilep(inputs);
 
 
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
@@ -4675,7 +4675,7 @@ Int_t main(Int_t argc, char *argv[]){
 	ttH::defineNumThreads();
 
 	#ifdef MIC
-	ttH::MIC::setupMIC();
+	ttH::Phi::setupPhi();
 	#endif
 
 	// Start measuring overall time
