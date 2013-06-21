@@ -124,8 +124,8 @@ namespace Dilep {
 			unsigned size5  = 5  * size;	
 			unsigned size16 = 16 * size;		
 
-			//#pragma offload target(mic) in(w_mass, t_mass:length(size2), in_mpx:length(size2), in_mpy:length(size2), lep_a:length(size5),lep_b:length(size5),bl_a:length(size5),bl_b:length(size5)) 
-			//#pragma offload_transfer target(mic) in(w_mass:length(10), t_mass:length(10), in_mpx:length(10), in_mpy:length(10), lep_a:length(10), lep_b:length(10), bl_a:length(10), bl_b:length(10)) 
+			//#pragma offload target(mic) in(w_mass:length(size2), t_mass:length(size2), in_mpx:length(size2), in_mpy:length(size2), lep_a:length(size5),lep_b:length(size5),bl_a:length(size5),bl_b:length(size5)) 
+			#pragma offload_transfer target(mic) in(w_mass:length(10), t_mass:length(10), in_mpx:length(10), in_mpy:length(10), lep_a:length(10), lep_b:length(10), bl_a:length(10), bl_b:length(10)) 
 			//out(nc:length(size16))
 			{
 				#pragma omp parallel for
