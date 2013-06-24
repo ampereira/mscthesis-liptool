@@ -589,20 +589,20 @@ namespace Dilep {
 			double m_6  = out_e[1]*out_e[1] + 4.*out_e[4]*out_e[4]*k_5*k_5 + 4.*out_e[1]*out_e[4]*k_5;
 			double m_7  = 4.*out_e[1]*out_e[3] + 8.*out_e[4]*out_e[4]*k_4*k_5 + 4.*out_e[1]*out_e[4]*k_4 + 8.*out_e[3]*out_e[4]*k_5;
 			double m_8  = 4.*out_e[3]*out_e[3] + 4.*out_e[4]*out_e[4]*k_4*k_4 + 8.*out_e[3]*out_e[4]*k_4;
-			double m_80 = pow(g_4,2);
+			double m_80 = mypow(g_4,2);
 			double m_81 = 2*g_4*g_5;
-			double m_9  = pow(g_5,2) + 2.*g_4*g_6;
+			double m_9  = mypow(g_5,2) + 2.*g_4*g_6;
 			double m_10 = 2.*g_5*g_6;
 			double m_11 = g_6*g_6;
 
-			double m_12 = 	2.*out_e[0]*out_e[1]*k_1 + 2.*out_e[0]*out_e[1]*k_5*k_5 + 4.*out_e[0]*out_e[4]*k_1*k_5 + 4.*out_e[0]*out_e[4]*pow(k_5,3);
+			double m_12 = 	2.*out_e[0]*out_e[1]*k_1 + 2.*out_e[0]*out_e[1]*k_5*k_5 + 4.*out_e[0]*out_e[4]*k_1*k_5 + 4.*out_e[0]*out_e[4]*mypow(k_5,3);
 			double m_13 = 	2.*out_e[0]*out_e[1]*k_2 + 4.*out_e[0]*out_e[1]*k_4*k_5 + 4.*out_e[1]*out_e[2]*k_5 + 
 				4.*out_e[0]*(out_e[3]*k_1 + out_e[3]*k_5*k_5 + out_e[4]*k_1*k_4 + out_e[4]*k_2*k_5) + 
 				12.*out_e[0]*out_e[4]*k_4*k_5*k_5 + 8.*out_e[2]*out_e[4]*k_5*k_5;
 			double m_14 = 	2.*out_e[0]*out_e[1]*k_3 + 2.*out_e[0]*out_e[1]*k_4*k_4 + 4.*out_e[2]*out_e[1]*k_4 + 2.*out_e[1]*out_e[5] + 4.*out_e[0]*out_e[3]*k_2 + 
 				8.*out_e[0]*out_e[3]*k_4*k_5 + 8.*out_e[3]*out_e[2]*k_5 + 4.*out_e[0]*out_e[4]*k_2*k_4 + 4.*out_e[0]*out_e[4]*k_3*k_5 + 
 				12.*out_e[0]*out_e[4]*k_4*k_4*k_5 + 16.*out_e[2]*out_e[4]*k_4*k_5 + 4.*out_e[4]*out_e[5]*k_5;
-			double m_15 = 	4.*out_e[0]*out_e[3]*(k_3 + k_4*k_4) + 8.*out_e[3]*out_e[2]*k_4 + 4.*out_e[3]*out_e[5] + 4.*out_e[0]*out_e[4]*(k_3*k_4 + pow(k_4,3)) + 
+			double m_15 = 	4.*out_e[0]*out_e[3]*(k_3 + k_4*k_4) + 8.*out_e[3]*out_e[2]*k_4 + 4.*out_e[3]*out_e[5] + 4.*out_e[0]*out_e[4]*(k_3*k_4 + mypow(k_4,3)) + 
 				8.*out_e[2]*out_e[4]*k_4*k_4 + 4.*out_e[4]*out_e[5]*k_4;
 
 			double  re[5];
@@ -625,7 +625,7 @@ namespace Dilep {
 				double delta = k_1*output[j]*output[j] + k_2*output[j] + k_3;
 				if ( output[j+1]==0 && delta >=0) {
 					if ( (fx_1 + fx_2*output[j])!=0 ) {
-						rec_x1 = (fx_3*pow(output[j],2) + fx_4*output[j] + fx_5)/(fx_1 + fx_2*output[j]);
+						rec_x1 = (fx_3*mypow(output[j],2) + fx_4*output[j] + fx_5)/(fx_1 + fx_2*output[j]);
 					} else {
 						rec_x1 = sqrt(delta)+k_4+k_5*output[j];
 					}  
@@ -690,20 +690,20 @@ namespace Dilep {
 			double a = l[0];
 			double b = l[1];
 			double d = l[2];
-			g[0] = 4*pow(D,2)*( 1 + pow(B,2)) - 4*pow(a,2) -4*pow(d,2)*pow(B,2) - 8*a*d*B;
+			g[0] = 4*mypow(D,2)*( 1 + mypow(B,2)) - 4*mypow(a,2) -4*mypow(d,2)*mypow(B,2) - 8*a*d*B;
 			if ( g[0]!=0 ) { 
-				g[1] = ( 4*pow(D,2)*( 1 + pow(C,2)) - 4*pow(b,2) -4*pow(d,2)*pow(C,2) - 8*b*d*C )/g[0] ;
-				g[2] = ( (4*pow(D,2)-4*d*d)*A*B - 4*a*d*A - 2*E*a - 2*E*d*B )/g[0];
-				g[3] = ( (4*pow(D,2)-4*d*d)*A*C - 4*b*d*A - 2*E*b - 2*E*d*C )/g[0];
-				g[4] = ( (4*pow(D,2)-4*d*d)*B*C - 4*a*b   - 4*a*d*C - 4*b*d*B )/g[0];
-				g[5] = ( (4*pow(D,2)-4*d*d)*A*A - E*E - 4*E*d*A )/g[0];
+				g[1] = ( 4*mypow(D,2)*( 1 + mypow(C,2)) - 4*mypow(b,2) -4*mypow(d,2)*mypow(C,2) - 8*b*d*C )/g[0] ;
+				g[2] = ( (4*mypow(D,2)-4*d*d)*A*B - 4*a*d*A - 2*E*a - 2*E*d*B )/g[0];
+				g[3] = ( (4*mypow(D,2)-4*d*d)*A*C - 4*b*d*A - 2*E*b - 2*E*d*C )/g[0];
+				g[4] = ( (4*mypow(D,2)-4*d*d)*B*C - 4*a*b   - 4*a*d*C - 4*b*d*B )/g[0];
+				g[5] = ( (4*mypow(D,2)-4*d*d)*A*A - E*E - 4*E*d*A )/g[0];
 				g[0] = 1.0; 
 			} else {
-				g[1] = ( 4*pow(D,2)*( 1 + pow(C,2)) - 4*pow(b,2) -4*pow(d,2)*pow(C,2) - 8*b*d*C ) ;
-				g[2] = ( (4*pow(D,2)-4*d*d)*A*B - 4*a*d*A - 2*E*a - 2*E*d*B );
-				g[3] = ( (4*pow(D,2)-4*d*d)*A*C - 4*b*d*A - 2*E*b - 2*E*d*C );
-				g[4] = ( (4*pow(D,2)-4*d*d)*B*C - 4*a*b   - 4*a*d*C - 4*b*d*B );
-				g[5] = ( (4*pow(D,2)-4*d*d)*A*A - E*E - 4*E*d*A );
+				g[1] = ( 4*mypow(D,2)*( 1 + mypow(C,2)) - 4*mypow(b,2) -4*mypow(d,2)*mypow(C,2) - 8*b*d*C ) ;
+				g[2] = ( (4*mypow(D,2)-4*d*d)*A*B - 4*a*d*A - 2*E*a - 2*E*d*B );
+				g[3] = ( (4*mypow(D,2)-4*d*d)*A*C - 4*b*d*A - 2*E*b - 2*E*d*C );
+				g[4] = ( (4*mypow(D,2)-4*d*d)*B*C - 4*a*b   - 4*a*d*C - 4*b*d*B );
+				g[5] = ( (4*mypow(D,2)-4*d*d)*A*A - E*E - 4*E*d*A );
 				g[0] = 0.;  
 			}	 
 			return;
@@ -763,7 +763,7 @@ namespace Dilep {
 			/////////////////////////////////////////////
 
 			if ( a ==0 && b==0 && c!=0){
-				double alpha = pow(d,2)-4*c*e;
+				double alpha = mypow(d,2)-4*c*e;
 				if (alpha>=0) {
 					x1_r = (-1*d + sqrt(alpha))/2/c;	x1_i = 0;
 					x2_r = (-1*d - sqrt(alpha))/2/c;	x2_i = 0;
@@ -818,9 +818,9 @@ namespace Dilep {
 			////    y^4 + f*y^2 + g*y + h =0; where
 			///////////////////////////////////////////
 
-			double _f = cc - 3*pow(bb,2)/8;
-			double _g = dd + (pow(bb,3)/8) - (bb*cc/2);
-			double _h = ee - (3*pow(bb,4)/256) + (pow(bb,2)*cc/16) - (bb*dd/4);
+			double _f = cc - 3*mypow(bb,2)/8;
+			double _g = dd + (mypow(bb,3)/8) - (bb*cc/2);
+			double _h = ee - (3*mypow(bb,4)/256) + (mypow(bb,2)*cc/16) - (bb*dd/4);
 
 			////////////////////////////////////////////////////////////////////////////
 			///  (4) the normal situation is f, g and h are non-zero; then		////
@@ -837,8 +837,8 @@ namespace Dilep {
 
 			double c_1 = 1.;
 			double c_2 = _f/2;
-			double c_3 = (pow(_f,2)-4*_h)/16.;
-			double c_4 = -1*pow(_g,2)/64.;
+			double c_3 = (mypow(_f,2)-4*_h)/16.;
+			double c_4 = -1*mypow(_g,2)/64.;
 
 			double input[4]={c_1,c_2,c_3,c_4};
 			cubic(input,real,img);
@@ -973,9 +973,9 @@ namespace Dilep {
 			a2 = a[2]/3.0;
 			a3 = a[3];
 
-			g = (a0 * a0) * a3 - 3.0 * a0 * a1 * a2 + 2.0 * pow(a1, 3);
+			g = (a0 * a0) * a3 - 3.0 * a0 * a1 * a2 + 2.0 * mypow(a1, 3);
 			h = a0 * a2 - a1 * a1;
-			y1 = g * g + 4.0 * pow(h, 3);
+			y1 = g * g + 4.0 * mypow(h, 3);
 
 			if (y1 < 0.0){
 				sh = sqrt(-h);
@@ -993,14 +993,14 @@ namespace Dilep {
 				z1 = (g + y2) / 2.0;
 				z2 = (g - y2) / 2.0;
 				if (z1 < 0.0){
-					z3 = pow(-z1, 1.0/3.0);
+					z3 = mypow(-z1, 1.0/3.0);
 					z3 = -z3;
-				} else  z3 = pow(z1, 1.0/3.0);
+				} else  z3 = mypow(z1, 1.0/3.0);
 				if (z2 < 0.0){
-					z4 = pow(-z2, 1.0/3.0);
+					z4 = mypow(-z2, 1.0/3.0);
 					z4 = - z4;
 				}
-				else  z4 = pow(z2, 1.0/3.0);
+				else  z4 = mypow(z2, 1.0/3.0);
 
 				rr[0] = -(a1 + z3 + z4) / a0;
 				rr[1] = (-2.0 * a1 + z3 + z4) / (2.0 * a0);
