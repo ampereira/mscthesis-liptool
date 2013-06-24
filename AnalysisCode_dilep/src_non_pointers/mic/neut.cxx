@@ -5,6 +5,13 @@ using namespace std;
 
 namespace Dilep {
 	namespace Phi {
+		inline double __attribute__((target(mic))) mypow (double a, int b) {
+			double res = a;
+			for (int x = 0; x < b - 1; ++x)
+				res *= a;
+
+			return res;
+		}
 	
 		double __attribute__((target(mic))) calcMass (double x, double y, double z, double e) {
 			double mm, mass;
