@@ -23,7 +23,7 @@ using namespace std;
 
 
 // Conditional libraries
-#ifdef OMP
+#ifdef MIC
 #include "mic/neut.h"
 #include <omp.h>
 #elif CUDA
