@@ -89,8 +89,8 @@ namespace Dilep {
 			double in_mpx[size2], in_mpy[size2], t_mass[size2], w_mass[size2];
 			double lep_a[size5], lep_b[size5], bl_a[size5], bl_b[size5];
 			
-			double /*__attribute__((target(mic)))*/ nc[size16];
-			int /*__attribute__((target(mic)))*/ count[size];
+			double __attribute__((target(mic))) nc[size16];
+			int __attribute__((target(mic))) count[size];
 
 			for (unsigned i = 0; i < size; ++i) {
 
@@ -133,7 +133,7 @@ namespace Dilep {
 			//in(lep_a,lep_b,bl_a,bl_b:length(size5)) \
 			//out(nc:length(size16)) out(count:length(size))
 			{
-				//#pragma omp parallel for
+				#pragma omp parallel for schedule(dynamic) nowait
 				for (int i = 0; i < size; ++i) {
 					calc_dilep(t_mass, w_mass, in_mpx, in_mpy, lep_a, 
 								lep_b, bl_a, bl_b, nc, count, i);
