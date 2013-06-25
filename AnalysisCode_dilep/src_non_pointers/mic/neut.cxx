@@ -89,8 +89,8 @@ namespace Dilep {
 			double in_mpx[size2], in_mpy[size2], t_mass[size2], w_mass[size2];
 			double lep_a[size5], lep_b[size5], bl_a[size5], bl_b[size5];
 			
-			double __attribute__((target(mic))) nc[size16];
-			int __attribute__((target(mic))) count[size];
+			double /*__attribute__((target(mic)))*/ nc[size16];
+			int /*__attribute__((target(mic)))*/ count[size];
 
 			for (unsigned i = 0; i < size; ++i) {
 
