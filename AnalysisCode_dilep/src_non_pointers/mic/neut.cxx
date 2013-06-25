@@ -133,7 +133,7 @@ namespace Dilep {
 			//in(lep_a,lep_b,bl_a,bl_b:length(size5)) \
 			//out(nc:length(size16)) out(count:length(size))
 			{
-				#pragma omp parallel for
+				//#pragma omp parallel for
 				for (int i = 0; i < size; ++i) {
 					calc_dilep(t_mass, w_mass, in_mpx, in_mpy, lep_a, 
 								lep_b, bl_a, bl_b, nc, count, i);
