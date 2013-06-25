@@ -86,7 +86,7 @@ namespace Dilep {
 
 			
 						calc_dilep(t_mass, w_mass, in_mpx, in_mpy, lep_a, 
-									lep_b, bl_a, bl_b, nc, count, i);
+									lep_b, bl_a, bl_b, nc, count, size);
 					
 
 			for (unsigned comb = 0; comb < size; ++comb) {
