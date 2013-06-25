@@ -19,7 +19,7 @@ namespace Dilep {
 		inline void __attribute__((target(mic))) my_qu( double my_in[], double my_val[]);
 		inline double __attribute__((target(mic))) calcMass(double x, double y, double z, double e);
 
-		void dilep (std::vector<DilepInput> &vdi);
+		void dilep (void);
 
 		inline void __attribute__((target(mic))) calc_dilep(double t_mass[], double w_mass[], 
 													double in_mpx[], double in_mpy[], double _lep_a[], 

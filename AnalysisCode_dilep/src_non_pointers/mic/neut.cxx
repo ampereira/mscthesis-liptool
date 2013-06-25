@@ -28,7 +28,7 @@ namespace Dilep {
 
 		// Wrapper for the dilep calculation using a vector of the input class
 		// vdi vector with DilepInput varied for a jet combo
-		void dilep (std::vector<DilepInput> &vdi) {
+		void dilep (void) {
 			
 			// time measurement
 			#ifdef MEASURE_DILEP
@@ -48,7 +48,7 @@ namespace Dilep {
 			int __attribute__((target(mic))) count[size];
 
 			for (unsigned i = 0; i < size; ++i) {
-
+/*
 				in_mpx[(i * 2) + 0] = vdi[i].getInMpx(0);
 				in_mpx[(i * 2) + 1] = vdi[i].getInMpx(1);
 				in_mpy[(i * 2) + 0] = vdi[i].getInMpy(0);
@@ -81,6 +81,40 @@ namespace Dilep {
 				bl_b[(i * 5) + 2] = vdi[i].getCbl().Pz();
 				bl_b[(i * 5) + 3] = vdi[i].getCbl().E(); 
 				bl_b[(i * 5) + 4] = vdi[i].getCbl().M();
+*/
+
+				in_mpx[(i * 2) + 0] = 10;
+				in_mpx[(i * 2) + 1] = 10;
+				in_mpy[(i * 2) + 0] = 10;
+				in_mpy[(i * 2) + 1] = 10;
+				t_mass[(i * 2) + 0] = 10;
+				t_mass[(i * 2) + 1] = 10;
+				w_mass[(i * 2) + 0] = 10;
+				w_mass[(i * 2) + 1] = 10;
+
+				lep_a[(i * 5) + 0] = 10;
+				lep_a[(i * 5) + 1] = 10;
+				lep_a[(i * 5) + 2] = 10;
+				lep_a[(i * 5) + 3] = 10; 
+				lep_a[(i * 5) + 4] = 10;
+
+				lep_b[(i * 5) + 0] = 10;
+				lep_b[(i * 5) + 1] = 10;
+				lep_b[(i * 5) + 2] = 10;
+				lep_b[(i * 5) + 3] = 10; 
+				lep_b[(i * 5) + 4] = 10;
+
+				bl_a[(i * 5) + 0] = 10;
+				bl_a[(i * 5) + 1] = 10;
+				bl_a[(i * 5) + 2] = 10;
+				bl_a[(i * 5) + 3] = 10; 
+				bl_a[(i * 5) + 4] = 10;
+
+				bl_b[(i * 5) + 0] = 10;
+				bl_b[(i * 5) + 1] = 10;
+				bl_b[(i * 5) + 2] = 10;
+				bl_b[(i * 5) + 3] = 10; 
+				bl_b[(i * 5) + 4] = 10;
 			}
 					
 

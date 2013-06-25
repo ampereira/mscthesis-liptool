@@ -4062,7 +4062,7 @@ void ttH_dilep::ttDilepKinFit(){
 	int n_ttDKF_Best = -999;
 	int first = 0;
 
-	Dilep::Phi::dilep(inputs);
+	Dilep::Phi::dilep();
 
 
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
