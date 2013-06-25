@@ -126,6 +126,7 @@ namespace Dilep {
 					#pragma omp for schedule(dynamic) 
 			for (int ax = 0; ax < size; ++ax) {
 				int tid = ax;
+				bool flag = true;
 			//unsigned tid = 1;
 			double G_1, G_3;
 			double WMass_a, WMass_b, tMass_a, tMass_b, lep_a[5], lep_b[5], bl_a[5], bl_b[5];
@@ -246,7 +247,7 @@ namespace Dilep {
 			}
 
 			if ( out_a[0]==0 && out_e[0]==0){
-				return;
+				flag = false;
 			}
 
 
@@ -259,6 +260,7 @@ namespace Dilep {
 			//// x = +/-sqrt(k1*y**2 + k2*y + k3) + (k4 + k5*y)
 			////
 
+			if (flag) {
 
 			double g_1 = 4.*out_e[0]*out_e[0]*k_5*k_5 + 4.*out_e[4]*out_e[4] + 8.*out_e[0]*out_e[4]*k_5;
 			double m_1 = g_1*k_1;
@@ -360,6 +362,7 @@ namespace Dilep {
 
 			// indicates the number of solutions that this thread found
 			a[tid] = ncand;
+		}
 		}
 		}
 		}
