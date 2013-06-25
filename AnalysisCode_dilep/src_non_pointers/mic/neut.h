@@ -30,14 +30,7 @@ namespace Dilep {
 		void __attribute__((target(mic))) my_qu( double my_in[], double my_val[]);
 		double __attribute__((target(mic))) calcMass(double x, double y, double z, double e);
 
-		std::vector<myvector>* dilep(unsigned iterations, double t_mass[], double w_mass[], 
-									double in_mpx[], double in_mpy[], double in_mpz[],
-									TLorentzVector* lep_a, TLorentzVector* lep_b, 
-									TLorentzVector* bl_a, TLorentzVector* bl_b, int *hasSol);
-
 		void dilep (vector<DilepInput> &vdi);
-
-		void dilep (DilepInput &di);
 
 		void __attribute__((target(mic))) calc_dilep(double t_mass[], double w_mass[], 
 													double in_mpx[], double in_mpy[], double _lep_a[], 

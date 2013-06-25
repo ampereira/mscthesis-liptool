@@ -26,51 +26,6 @@ namespace Dilep {
 			return mass;
 		}
 
-		// Wrapper for the dilep calculation using the input class
-		void dilep (DilepInput &di) {
-			std::vector<myvector> *result = new std::vector<myvector> ();
-			int hasSolution = 0;
-
-			// time measurement
-			#ifdef MEASURE_DILEP
-			long long int time = startTimer();
-			#endif
-
-			double in_mpx[2], in_mpy[2], in_mpz[2], t_mass[2], w_mass[2];
-			TLorentzVector lep_a, lep_b, bl_a, bl_b;
-
-			// Transferring the inputs to local variables
-			in_mpx[0] = di.getInMpx(0);
-			in_mpx[1] = di.getInMpx(1);
-			in_mpy[0] = di.getInMpy(0);
-			in_mpy[1] = di.getInMpy(1);
-			in_mpz[0] = di.getInMpz(0);
-			in_mpz[1] = di.getInMpz(1);
-			t_mass[0] = di.getTmass(0);
-			t_mass[1] = di.getTmass(1);
-			w_mass[0] = di.getWmass(0);
-			w_mass[1] = di.getWmass(1);
-
-			lep_a = di.getZlep();
-			lep_b = di.getClep();
-			bl_a = di.getZbl();
-			bl_b = di.getCbl();
-
-			//result = calc_dilep(t_mass, w_mass, in_mpx, in_mpy, in_mpz, lep_a, lep_b, bl_a, bl_b);
-
-			// Check if there is any solutions for this reconstruction
-			if (result->size())
-				++hasSolution;  // increment solution counter
-
-			di.setHasSol(hasSolution);
-			di.setResult(result);
-
-			// time measurement
-			#ifdef MEASURE_DILEP
-			stopTimer(time);
-			#endif
-		}
-
 		// Wrapper for the dilep calculation using a vector of the input class
 		// vdi vector with DilepInput varied for a jet combo
 		void dilep (vector<DilepInput> &vdi) {
