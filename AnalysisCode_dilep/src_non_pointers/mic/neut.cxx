@@ -84,9 +84,7 @@ namespace Dilep {
 			}
 					
 
-			#pragma offload target(mic) //in(w_mass,t_mass,in_mpx,in_mpy:length(size2)) \
-			//in(lep_a,lep_b,bl_a,bl_b:length(size5)) \
-			//out(nc:length(size16)) out(count:length(size))
+			#pragma offload target(mic) in(w_mass,t_mass,in_mpx,in_mpy:length(size2)) in(lep_a,lep_b,bl_a,bl_b:length(size5)) out(nc:length(size16)) out(count:length(size))
 			{
 				#pragma omp parallel
 				{
@@ -392,6 +390,7 @@ namespace Dilep {
 			return neutrinoContainer;
 		}*/
 
+		inline
 		void __attribute__((target(mic))) calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double _lep_a[], 
 				double _lep_b[], double _bl_a[], double _bl_b[], 
@@ -634,6 +633,7 @@ namespace Dilep {
 		}
 
 		//////////////////////////////////////
+		inline
 		void __attribute__((target(mic))) toz(double k[], double l[], double g[]){
 			//// checked !!
 			///////////////////////////////////////////////////////////////////////////
@@ -669,6 +669,7 @@ namespace Dilep {
 
 
 		///////////////////////////////////////////
+		inline
 		void __attribute__((target(mic))) my_qu( double my_in[], double my_val[])
 		{
 
@@ -881,6 +882,7 @@ namespace Dilep {
 		////////////////////end of main
 		///////////////////////////////////////////////////////////////
 		////+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		inline
 		void __attribute__((target(mic))) Csqrt(double _ar, double _ai, double _my[])
 		{
 			///// complex sqrt
@@ -913,6 +915,7 @@ namespace Dilep {
 		//////////////////////////////////////////////////////////////////
 		/// cubic /// a[0]x^3+a[1]x^2+a[2]x+a[3]=0
 		//////////////////////////////////////////////////////////////////
+		inline
 		void __attribute__((target(mic))) cubic(double a[], double rr[], double ri[])
 		{
 			int i;
