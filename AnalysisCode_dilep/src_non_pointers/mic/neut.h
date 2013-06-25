@@ -1,11 +1,6 @@
-#include <TH1.h>
-#include <TH2.h>
-#include <TH3.h>
-#include <TStyle.h>
-#include <TCanvas.h>
+
 #include <iostream>
 #include <vector>
-#include <TROOT.h>
 #include <TLorentzVector.h>
 #include <iomanip>
 #include <math.h>
