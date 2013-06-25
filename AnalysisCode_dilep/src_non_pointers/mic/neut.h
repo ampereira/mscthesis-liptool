@@ -1,13 +1,8 @@
 
-#include <iostream>
 #include <vector>
 #include <TLorentzVector.h>
-#include <iomanip>
-#include <math.h>
+#include <cmath>
 #include <sys/time.h>
-#include <string>
-#include <fstream>
-#include <sstream>
 #include "../myvector.h"
 #include "../dilep_input.h"
 #include "../utilities.h"
