@@ -34,7 +34,7 @@ namespace Dilep {
 			#ifdef MEASURE_DILEP
 			long long int time = startTimer();
 			#endif
-			unsigned size = vdi.size();
+			unsigned size = 10;
 			int hasSolution = 0;
 			unsigned size2  = 2  * size;
 			unsigned size5  = 5  * size;	
