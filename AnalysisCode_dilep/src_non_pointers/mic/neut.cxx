@@ -144,8 +144,8 @@ namespace Dilep {
 				if(result.size())
 					++hasSolution;
 
-				vdi[comb].setHasSol(hasSolution);
-				vdi[comb].setResult(&result);
+				//vdi[comb].setHasSol(hasSolution);
+				//vdi[comb].setResult(&result);
 			}		
 
 			// time measurement
