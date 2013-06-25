@@ -1,6 +1,5 @@
 
 #include <vector>
-#include <TLorentzVector.h>
 #include <cmath>
 #include <sys/time.h>
 #include "../myvector.h"
@@ -20,7 +19,7 @@ namespace Dilep {
 		void __attribute__((target(mic))) my_qu( double my_in[], double my_val[]);
 		double __attribute__((target(mic))) calcMass(double x, double y, double z, double e);
 
-		void dilep (vector<DilepInput> &vdi);
+		void dilep (std::vector<DilepInput> &vdi);
 
 		void __attribute__((target(mic))) calc_dilep(double t_mass[], double w_mass[], 
 													double in_mpx[], double in_mpy[], double _lep_a[], 

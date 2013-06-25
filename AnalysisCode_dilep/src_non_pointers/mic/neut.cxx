@@ -28,7 +28,7 @@ namespace Dilep {
 
 		// Wrapper for the dilep calculation using a vector of the input class
 		// vdi vector with DilepInput varied for a jet combo
-		void dilep (vector<DilepInput> &vdi) {
+		void dilep (std::vector<DilepInput> &vdi) {
 			
 			// time measurement
 			#ifdef MEASURE_DILEP
