@@ -5,6 +5,7 @@
 #include "../myvector.h"
 #include "../dilep_input.h"
 #include "../utilities.h"
+#include "calc.h"
 
 
 #define STRIDE2(a,i) a[tid * 2 + i]
