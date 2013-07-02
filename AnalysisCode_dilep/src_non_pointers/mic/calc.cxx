@@ -32,6 +32,7 @@ void calc_dilep_mic(double t_mass[], double w_mass[],
 	int size16 = size * 16;
 
 //	#pragma offload target(mic) in(w_mass,t_mass,in_mpx,in_mpy:length(size2)) in(_lep_a,_lep_b,_bl_a,_bl_b:length(size5)) out(nc:length(size16)) out(a:length(size))
+	#pragma offload target(mic)
 	{
 //		#pragma omp parallel
 		{
