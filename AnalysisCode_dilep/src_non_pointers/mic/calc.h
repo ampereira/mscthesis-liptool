@@ -1,4 +1,4 @@
-
+#include <cmath>
 
 inline void __attribute__((target(mic))) Csqrt(double _ar, double _ai, double _my[]);
 inline void __attribute__((target(mic))) cubic(double a[], double rr[], double ri[]);
