@@ -21,7 +21,7 @@ double __attribute__((target(mic))) calcMass (double x, double y, double z, doub
 	return mass;
 }
 
-void __attribute__((target(mic))) calc_dilep_mic(double t_mass[], double w_mass[], 
+void calc_dilep_mic(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double _lep_a[], 
 				double _lep_b[], double _bl_a[], double _bl_b[], 
 				double nc[], int a[], int size)
@@ -39,242 +39,242 @@ void __attribute__((target(mic))) calc_dilep_mic(double t_mass[], double w_mass[
 	for (int ax = 0; ax < size; ++ax) {
 		int tid = ax;
 		bool flag = true;
-	//unsigned tid = 1;
-	double G_1, G_3;
-	double WMass_a, WMass_b, tMass_a, tMass_b, lep_a[5], lep_b[5], bl_a[5], bl_b[5];
-	double in_mpz[2] = {0.0, 0.0};
+		//unsigned tid = 1;
+		double G_1, G_3;
+		double WMass_a, WMass_b, tMass_a, tMass_b, lep_a[5], lep_b[5], bl_a[5], bl_b[5];
+		double in_mpz[2] = {0.0, 0.0};
 
 
-	WMass_a = STRIDE2(w_mass, 0);
-	tMass_a = STRIDE2(t_mass, 0);
-	WMass_b = STRIDE2(w_mass, 1);
-	tMass_b = STRIDE2(t_mass, 1);
+		WMass_a = STRIDE2(w_mass, 0);
+		tMass_a = STRIDE2(t_mass, 0);
+		WMass_b = STRIDE2(w_mass, 1);
+		tMass_b = STRIDE2(t_mass, 1);
 
-	for (unsigned i = 0; i < 5; ++i) {
-		lep_a[i] = STRIDE5(_lep_a, i);
-		lep_b[i] = STRIDE5(_lep_b, i);
+		for (unsigned i = 0; i < 5; ++i) {
+			lep_a[i] = STRIDE5(_lep_a, i);
+			lep_b[i] = STRIDE5(_lep_b, i);
 
-		bl_a[i] = STRIDE5(_bl_a, i);
-		bl_b[i] = STRIDE5(_bl_b, i);
-	}
-	
-
-	G_1 = (WMass_a - lep_a[4]) * (WMass_a + lep_a[4]);
-	G_3 = (WMass_b - lep_b[4]) * (WMass_b + lep_b[4]);
-
-	double G_5,G_6,G_7,G_8,G_9,G_10,G_11,G_12;
-	G_5 = ( bl_a[0]/bl_a[3] - lep_a[0]/lep_a[3] );
-	G_6 = ( bl_a[1]/bl_a[3] - lep_a[1]/lep_a[3] );
-	G_7 = ( bl_a[2]/bl_a[3] - lep_a[2]/lep_a[3] );
-	G_8 = ( G_1/lep_a[3] - ((tMass_a - bl_a[4]) * (tMass_a + bl_a[4]))/bl_a[3] )/2.;
-
-	G_9 =	( bl_b[0]/bl_b[3] - lep_b[0]/lep_b[3] );
-	G_10 =	( bl_b[1]/bl_b[3] - lep_b[1]/lep_b[3] );
-	G_11 =	( bl_b[2]/bl_b[3] - lep_b[2]/lep_b[3] );
-	G_12 =	( G_3/lep_b[3] - ((tMass_b - bl_b[4]) * (tMass_b + bl_b[4]))/bl_b[3] )/2.;
-
-	///////////////////////////////////////////////////////////////////
-	//// 	G_5 *x1 + G_6*y1 + G_7*z1 = G8;  		(6)
-	////  	G_9 *x2 + G_10*y2 + G_11*z2 = G12; 		(7)
-	////  	2*El_1*sqrt() - 2*(ax1+by1+cz1) = G_1;  	(8)
-	////  	2*El_2*sqrt() - 2*(Ax2+By2+Cz2) = G_3;		(9)
-	////  	x1+x2 = S;					(10)
-	////  	y1+y2 = T;					(11)
-	////  	bring z1 and z2 (from 6/7) to 7 and 8
-	///////////////////////////////////////////////////////////////////
-
-	//// 1st top decay product /////
-	
-	double in_a[5],out_a[6];
-	in_a[0] = G_8/G_7;
-	in_a[1] = -1.0*G_5/G_7;
-	in_a[2] = -1.0*G_6/G_7;
-	in_a[3] = lep_a[3];
-	in_a[4] = G_1;
-	toz(in_a, lep_a, out_a);
-
-	double in_c[5],out_c[6];
-	in_c[0] = G_12/G_11;
-	in_c[1] = -1*G_9/G_11;
-	in_c[2] = -1*G_10/G_11;
-	in_c[3] = lep_b[3];
-	in_c[4] = G_3;
-	toz(in_c, lep_b, out_c);
-	/////////////////////////////////////////////////////
-	//////change x2 y2 equation to x1 and y1 by using
-	////// 		x1+x2 = S = in_mpx[0]
-	////// 		y1+y2 = T = mpy
-	/////////////////////////////////////////////////////
-	double out_e[6];
-	out_e[0] = out_c[0];
-	out_e[1] = out_c[1];
-	out_e[2] = -1*( out_c[0]*in_mpx[0] + out_c[2] + out_c[4]*in_mpy[0]);
-	out_e[3] = -1*( out_c[1]*in_mpy[0] + out_c[3] + out_c[4]*in_mpx[0]);
-	out_e[4] = out_c[4]; 
-	out_e[5] =( out_c[0]*in_mpx[0]*in_mpx[0] + out_c[1]*in_mpy[0]*in_mpy[0] + 2*out_c[2]*in_mpx[0] + 2*out_c[3]*in_mpy[0] + out_c[5] + 2*out_c[4]*in_mpx[0]*in_mpy[0]);
-
-	///////////////////////////////////////////////////
-	///  solve 
-	/// {ax2+by2+2dx+2ey+2fxy+g=0		(12)
-	/// {Ax2+By2+2Dx+2Ey+2Fxy+G=0		(13)
-	/// out_a[6]: 0   1    2    3    4     5
-	/// out_a[6]: a   b    d    e    f     g
-	/// out_e[6]: A   B    D    E    F     G
-	/// if a!=0, everything is OK.
-	///
-	/// if a==0, then we can get x2 = f(x,y) from (13)
-	/// (12) --> [x2 - f(x,y)] + by2 + ... = 0
-	///////////////////////////////////////////////////
-	
-	double fx_1, fx_2, fx_3, fx_4, fx_5;
-	double k_1, k_2, k_3, k_4, k_5;
-
-	// bad organization of the code; diminished register spilling
-	if ( out_a[0]!=0  ){
-		fx_1 = 2.*(out_e[0]*out_a[2] - out_a[0]*out_e[2]);
-		fx_2 = 2.*(out_e[0]*out_a[4] - out_a[0]*out_e[4]);
-		fx_3 = out_a[0]*out_e[1] - out_e[0]*out_a[1];
-		fx_4 = 2.*(out_e[3]*out_a[0] - out_e[0]*out_a[3]);
-		fx_5 = out_a[0]*out_e[5] - out_a[5]*out_e[0];
-
-		k_1 = ( out_a[4]*out_a[4] - out_a[0]*out_a[1] )/out_a[0]/out_a[0];
-		k_2 = ( 2.*out_a[2]*out_a[4] - 2.*out_a[0]*out_a[3] )/out_a[0]/out_a[0];
-		k_3 = ( out_a[2]*out_a[2]-out_a[0]*out_a[5] )/out_a[0]/out_a[0];
-		k_4 = -out_a[2]/out_a[0];
-		k_5 = -out_a[4]/out_a[0];
-	} else {
-		if (out_a[0]==0 && out_e[0]!=0 ) {
-			fx_1 = 2.*(out_e[0]*(out_a[2] + out_e[2]/out_e[0]) - out_e[2]);
-			fx_2 = 2.*(out_e[0]*(out_a[4] + out_e[4]/out_e[0]) - out_e[4]);
-			fx_3 = out_e[1] - out_e[0]*(out_a[1] + out_e[1]/out_e[0]);
-			fx_4 = 2.*(out_e[3] - out_e[0]*(out_a[3] + out_e[3]/out_e[0]));
-			fx_5 = out_e[5] - (out_a[5] + out_e[5]/out_e[0])*out_e[0];
-
-			k_1 = ( (out_a[4] + out_e[4]/out_e[0])*(out_a[4] + out_e[4]/out_e[0]) - (out_a[1] + out_e[1]/out_e[0]) );
-			k_2 = ( 2.*(out_a[2] + out_e[2]/out_e[0])*(out_a[4] + out_e[4]/out_e[0]) - 2.*(out_a[3] + out_e[3]/out_e[0]) );
-			k_3 = ( (out_a[2] + out_e[2]/out_e[0])*(out_a[2] + out_e[2]/out_e[0])-(out_a[5] + out_e[5]/out_e[0]) );
-			k_4 = -(out_a[2] + out_e[2]/out_e[0]);
-			k_5 = -(out_a[4] + out_e[4]/out_e[0]);
+			bl_a[i] = STRIDE5(_bl_a, i);
+			bl_b[i] = STRIDE5(_bl_b, i);
 		}
-	}
+		
 
-	if ( out_a[0]==0 && out_e[0]==0){
-		flag = false;
-	}
+		G_1 = (WMass_a - lep_a[4]) * (WMass_a + lep_a[4]);
+		G_3 = (WMass_b - lep_b[4]) * (WMass_b + lep_b[4]);
 
+		double G_5,G_6,G_7,G_8,G_9,G_10,G_11,G_12;
+		G_5 = ( bl_a[0]/bl_a[3] - lep_a[0]/lep_a[3] );
+		G_6 = ( bl_a[1]/bl_a[3] - lep_a[1]/lep_a[3] );
+		G_7 = ( bl_a[2]/bl_a[3] - lep_a[2]/lep_a[3] );
+		G_8 = ( G_1/lep_a[3] - ((tMass_a - bl_a[4]) * (tMass_a + bl_a[4]))/bl_a[3] )/2.;
 
-	/////
-	///// the part above is 
-	///// x = (fx3*y**2 + fx4*y + fx5)/(fx1 + fx2*y)
-	///// used to get x value once y is known
-	/////
-	//// if fx1 + fx2*y == 0, then x is 
-	//// x = +/-sqrt(k1*y**2 + k2*y + k3) + (k4 + k5*y)
-	////
+		G_9 =	( bl_b[0]/bl_b[3] - lep_b[0]/lep_b[3] );
+		G_10 =	( bl_b[1]/bl_b[3] - lep_b[1]/lep_b[3] );
+		G_11 =	( bl_b[2]/bl_b[3] - lep_b[2]/lep_b[3] );
+		G_12 =	( G_3/lep_b[3] - ((tMass_b - bl_b[4]) * (tMass_b + bl_b[4]))/bl_b[3] )/2.;
 
-	if (flag) {
+		///////////////////////////////////////////////////////////////////
+		//// 	G_5 *x1 + G_6*y1 + G_7*z1 = G8;  		(6)
+		////  	G_9 *x2 + G_10*y2 + G_11*z2 = G12; 		(7)
+		////  	2*El_1*sqrt() - 2*(ax1+by1+cz1) = G_1;  	(8)
+		////  	2*El_2*sqrt() - 2*(Ax2+By2+Cz2) = G_3;		(9)
+		////  	x1+x2 = S;					(10)
+		////  	y1+y2 = T;					(11)
+		////  	bring z1 and z2 (from 6/7) to 7 and 8
+		///////////////////////////////////////////////////////////////////
 
-	double g_1 = 4.*out_e[0]*out_e[0]*k_5*k_5 + 4.*out_e[4]*out_e[4] + 8.*out_e[0]*out_e[4]*k_5;
-	double m_1 = g_1*k_1;
-	double g_2 = 8.*out_e[0]*out_e[0]*k_4*k_5 + 8.*out_e[0]*out_e[2]*k_5 + 8.*out_e[0]*out_e[4]*k_4 + 8.*out_e[2]*out_e[4];
-	double g_3 = 4.*out_e[0]*out_e[0]*k_4*k_4 + 4.*out_e[2]*out_e[2] + 8.*out_e[0]*out_e[2]*k_4;
-	double g_4 = out_e[0]*k_1 + out_e[0]*k_5*k_5;
-	double g_5 = out_e[0]*k_2 + 2.*out_e[0]*k_4*k_5 + 2.*out_e[2]*k_5;
-	double g_6 = out_e[0]*k_3 + out_e[0]*k_4*k_4 + 2.*out_e[2]*k_4 + out_e[5];
+		//// 1st top decay product /////
+		
+		double in_a[5],out_a[6];
+		in_a[0] = G_8/G_7;
+		in_a[1] = -1.0*G_5/G_7;
+		in_a[2] = -1.0*G_6/G_7;
+		in_a[3] = lep_a[3];
+		in_a[4] = G_1;
+		toz(in_a, lep_a, out_a);
 
-	double m_2 = g_1*k_2 + g_2*k_1;
-	double m_3 = g_1*k_3 + g_2*k_2 + g_3*k_1;
-	double m_4 = g_2*k_3 + g_3*k_2;
-	double m_5 = g_3*k_3;
+		double in_c[5],out_c[6];
+		in_c[0] = G_12/G_11;
+		in_c[1] = -1*G_9/G_11;
+		in_c[2] = -1*G_10/G_11;
+		in_c[3] = lep_b[3];
+		in_c[4] = G_3;
+		toz(in_c, lep_b, out_c);
+		/////////////////////////////////////////////////////
+		//////change x2 y2 equation to x1 and y1 by using
+		////// 		x1+x2 = S = in_mpx[0]
+		////// 		y1+y2 = T = mpy
+		/////////////////////////////////////////////////////
+		double out_e[6];
+		out_e[0] = out_c[0];
+		out_e[1] = out_c[1];
+		out_e[2] = -1*( out_c[0]*in_mpx[0] + out_c[2] + out_c[4]*in_mpy[0]);
+		out_e[3] = -1*( out_c[1]*in_mpy[0] + out_c[3] + out_c[4]*in_mpx[0]);
+		out_e[4] = out_c[4]; 
+		out_e[5] =( out_c[0]*in_mpx[0]*in_mpx[0] + out_c[1]*in_mpy[0]*in_mpy[0] + 2*out_c[2]*in_mpx[0] + 2*out_c[3]*in_mpy[0] + out_c[5] + 2*out_c[4]*in_mpx[0]*in_mpy[0]);
 
-	double m_6  = out_e[1]*out_e[1] + 4.*out_e[4]*out_e[4]*k_5*k_5 + 4.*out_e[1]*out_e[4]*k_5;
-	double m_7  = 4.*out_e[1]*out_e[3] + 8.*out_e[4]*out_e[4]*k_4*k_5 + 4.*out_e[1]*out_e[4]*k_4 + 8.*out_e[3]*out_e[4]*k_5;
-	double m_8  = 4.*out_e[3]*out_e[3] + 4.*out_e[4]*out_e[4]*k_4*k_4 + 8.*out_e[3]*out_e[4]*k_4;
-	double m_80 = mypow(g_4,2);
-	double m_81 = 2*g_4*g_5;
-	double m_9  = mypow(g_5,2) + 2.*g_4*g_6;
-	double m_10 = 2.*g_5*g_6;
-	double m_11 = g_6*g_6;
+		///////////////////////////////////////////////////
+		///  solve 
+		/// {ax2+by2+2dx+2ey+2fxy+g=0		(12)
+		/// {Ax2+By2+2Dx+2Ey+2Fxy+G=0		(13)
+		/// out_a[6]: 0   1    2    3    4     5
+		/// out_a[6]: a   b    d    e    f     g
+		/// out_e[6]: A   B    D    E    F     G
+		/// if a!=0, everything is OK.
+		///
+		/// if a==0, then we can get x2 = f(x,y) from (13)
+		/// (12) --> [x2 - f(x,y)] + by2 + ... = 0
+		///////////////////////////////////////////////////
+		
+		double fx_1, fx_2, fx_3, fx_4, fx_5;
+		double k_1, k_2, k_3, k_4, k_5;
 
-	double m_12 = 	2.*out_e[0]*out_e[1]*k_1 + 2.*out_e[0]*out_e[1]*k_5*k_5 + 4.*out_e[0]*out_e[4]*k_1*k_5 + 4.*out_e[0]*out_e[4]*mypow(k_5,3);
-	double m_13 = 	2.*out_e[0]*out_e[1]*k_2 + 4.*out_e[0]*out_e[1]*k_4*k_5 + 4.*out_e[1]*out_e[2]*k_5 + 
-		4.*out_e[0]*(out_e[3]*k_1 + out_e[3]*k_5*k_5 + out_e[4]*k_1*k_4 + out_e[4]*k_2*k_5) + 
-		12.*out_e[0]*out_e[4]*k_4*k_5*k_5 + 8.*out_e[2]*out_e[4]*k_5*k_5;
-	double m_14 = 	2.*out_e[0]*out_e[1]*k_3 + 2.*out_e[0]*out_e[1]*k_4*k_4 + 4.*out_e[2]*out_e[1]*k_4 + 2.*out_e[1]*out_e[5] + 4.*out_e[0]*out_e[3]*k_2 + 
-		8.*out_e[0]*out_e[3]*k_4*k_5 + 8.*out_e[3]*out_e[2]*k_5 + 4.*out_e[0]*out_e[4]*k_2*k_4 + 4.*out_e[0]*out_e[4]*k_3*k_5 + 
-		12.*out_e[0]*out_e[4]*k_4*k_4*k_5 + 16.*out_e[2]*out_e[4]*k_4*k_5 + 4.*out_e[4]*out_e[5]*k_5;
-	double m_15 = 	4.*out_e[0]*out_e[3]*(k_3 + k_4*k_4) + 8.*out_e[3]*out_e[2]*k_4 + 4.*out_e[3]*out_e[5] + 4.*out_e[0]*out_e[4]*(k_3*k_4 + mypow(k_4,3)) + 
-		8.*out_e[2]*out_e[4]*k_4*k_4 + 4.*out_e[4]*out_e[5]*k_4;
+		// bad organization of the code; diminished register spilling
+		if ( out_a[0]!=0  ){
+			fx_1 = 2.*(out_e[0]*out_a[2] - out_a[0]*out_e[2]);
+			fx_2 = 2.*(out_e[0]*out_a[4] - out_a[0]*out_e[4]);
+			fx_3 = out_a[0]*out_e[1] - out_e[0]*out_a[1];
+			fx_4 = 2.*(out_e[3]*out_a[0] - out_e[0]*out_a[3]);
+			fx_5 = out_a[0]*out_e[5] - out_a[5]*out_e[0];
 
-	double  re[5];
-	re[0] = m_1 - m_6 - m_12 - m_80;
-	re[1] = m_2 - m_7 - m_13 - m_81;
-	re[2] = m_3 - m_8 - m_9 - m_14;
-	re[3] = m_4 - m_10 - m_15;
-	re[4] = m_5 - m_11;  
+			k_1 = ( out_a[4]*out_a[4] - out_a[0]*out_a[1] )/out_a[0]/out_a[0];
+			k_2 = ( 2.*out_a[2]*out_a[4] - 2.*out_a[0]*out_a[3] )/out_a[0]/out_a[0];
+			k_3 = ( out_a[2]*out_a[2]-out_a[0]*out_a[5] )/out_a[0]/out_a[0];
+			k_4 = -out_a[2]/out_a[0];
+			k_5 = -out_a[4]/out_a[0];
+		} else {
+			if (out_a[0]==0 && out_e[0]!=0 ) {
+				fx_1 = 2.*(out_e[0]*(out_a[2] + out_e[2]/out_e[0]) - out_e[2]);
+				fx_2 = 2.*(out_e[0]*(out_a[4] + out_e[4]/out_e[0]) - out_e[4]);
+				fx_3 = out_e[1] - out_e[0]*(out_a[1] + out_e[1]/out_e[0]);
+				fx_4 = 2.*(out_e[3] - out_e[0]*(out_a[3] + out_e[3]/out_e[0]));
+				fx_5 = out_e[5] - (out_a[5] + out_e[5]/out_e[0])*out_e[0];
 
-
-
-	double output[8];
-	my_qu(re, output);
-
-	int ncand(0);
-
-	double rec_x1, rec_y1, rec_z1, rec_e1, rec_x2, rec_y2, rec_z2, rec_e2;
-
-	for (int j=0; j<8; j+=2){
-		double delta = k_1*output[j]*output[j] + k_2*output[j] + k_3;
-		if ( output[j+1]==0 && delta >=0) {
-			if ( (fx_1 + fx_2*output[j])!=0 ) {
-				rec_x1 = (fx_3*mypow(output[j],2) + fx_4*output[j] + fx_5)/(fx_1 + fx_2*output[j]);
-			} else {
-				rec_x1 = sqrt(delta)+k_4+k_5*output[j];
-			}  
-
-			rec_y1 = output[j];
-			rec_z1 = G_8/G_7 - G_5*rec_x1/G_7 - G_6*rec_y1/G_7;
-			rec_e1 = sqrt(rec_x1*rec_x1 + rec_y1*rec_y1 + rec_z1*rec_z1);
-			rec_x2 = in_mpx[0] - rec_x1;
-			rec_y2 = in_mpy[0] - rec_y1;
-			rec_z2 = G_12/G_11 - G_9*rec_x2/G_11 - G_10*rec_y2/G_11;
-			rec_e2 = sqrt(rec_x2*rec_x2 + rec_y2*rec_y2 + rec_z2*rec_z2);
-			
-			// self-consistence check and control of the solutions
-
-			double m_w11 = calcMass(rec_x1+lep_a[0], rec_y1+lep_a[1], rec_z1+lep_a[2], rec_e1+lep_a[3]);
-			double m_w12 = calcMass(rec_x2+lep_b[0], rec_y2+lep_b[1], rec_z2+lep_b[2], rec_e2+lep_b[3]);
-			double m_t11 = calcMass(rec_x1+ bl_a[0], rec_y1+ bl_a[1], rec_z1+ bl_a[2], rec_e1+ bl_a[3]);
-			double m_t12 = calcMass(rec_x2+ bl_b[0], rec_y2+ bl_b[1], rec_z2+ bl_b[2], rec_e2+ bl_b[3]);
-
-			// m_delta_mass is 1000.0
-			bool m_good_eq1 = ( fabs(in_mpx[0] -(rec_x1+rec_x2)) <= 0.01 ) * true + 
-							  ( fabs(in_mpx[0] -(rec_x1+rec_x2)) > 0.01 ) * false;
-			bool m_good_eq2 = ( fabs(in_mpy[0] -(rec_y1+rec_y2)) <= 0.01 ) * true +
-							  ( fabs(in_mpy[0] -(rec_y1+rec_y2)) > 0.01 ) * false;
-			bool m_good_eq3 = ( fabs(m_w11 - w_mass[0]) <= 1000.0 ) * true + 
-							  ( fabs(m_w11 - w_mass[0]) > 1000.0 ) * false;
-			bool m_good_eq4 = ( fabs(m_w12 - w_mass[1]) <= 1000.0 ) * true +
-							  ( fabs(m_w12 - w_mass[1]) > 1000.0 ) * false;
-			bool m_good_eq5 = ( fabs(m_t11 - t_mass[0]) <= 1000.0 ) * true +
-							  ( fabs(m_t11 - t_mass[0]) > 1000.0 ) * false;
-			bool m_good_eq6 = ( fabs(m_t12 - t_mass[1]) <= 1000.0 ) * true +
-							  ( fabs(m_t12 - t_mass[1]) <= 1000.0 ) * false;
-
-			bool cond = m_good_eq1 && m_good_eq2 && m_good_eq3 && m_good_eq4 && m_good_eq5 && m_good_eq6;
-			
-			// aqui podem nao chegar as threads todas
-			//__syncthreads();
-			nc[tid * 16 + 2*j] = cond * rec_x1;
-			nc[tid * 16 + 2*j + 1] = cond * rec_y1;
-			nc[tid * 16 + 2*j + 2] = cond * rec_z1;
-			nc[tid * 16 + 2*j + 3] = cond * rec_z2;
-			ncand += cond * 1;
+				k_1 = ( (out_a[4] + out_e[4]/out_e[0])*(out_a[4] + out_e[4]/out_e[0]) - (out_a[1] + out_e[1]/out_e[0]) );
+				k_2 = ( 2.*(out_a[2] + out_e[2]/out_e[0])*(out_a[4] + out_e[4]/out_e[0]) - 2.*(out_a[3] + out_e[3]/out_e[0]) );
+				k_3 = ( (out_a[2] + out_e[2]/out_e[0])*(out_a[2] + out_e[2]/out_e[0])-(out_a[5] + out_e[5]/out_e[0]) );
+				k_4 = -(out_a[2] + out_e[2]/out_e[0]);
+				k_5 = -(out_a[4] + out_e[4]/out_e[0]);
+			}
 		}
-	}
 
-	// indicates the number of solutions that this thread found
-	a[tid] = ncand;
-}
+		if ( out_a[0]==0 && out_e[0]==0){
+			flag = false;
+		}
+
+
+		/////
+		///// the part above is 
+		///// x = (fx3*y**2 + fx4*y + fx5)/(fx1 + fx2*y)
+		///// used to get x value once y is known
+		/////
+		//// if fx1 + fx2*y == 0, then x is 
+		//// x = +/-sqrt(k1*y**2 + k2*y + k3) + (k4 + k5*y)
+		////
+
+		if (flag) {
+
+		double g_1 = 4.*out_e[0]*out_e[0]*k_5*k_5 + 4.*out_e[4]*out_e[4] + 8.*out_e[0]*out_e[4]*k_5;
+		double m_1 = g_1*k_1;
+		double g_2 = 8.*out_e[0]*out_e[0]*k_4*k_5 + 8.*out_e[0]*out_e[2]*k_5 + 8.*out_e[0]*out_e[4]*k_4 + 8.*out_e[2]*out_e[4];
+		double g_3 = 4.*out_e[0]*out_e[0]*k_4*k_4 + 4.*out_e[2]*out_e[2] + 8.*out_e[0]*out_e[2]*k_4;
+		double g_4 = out_e[0]*k_1 + out_e[0]*k_5*k_5;
+		double g_5 = out_e[0]*k_2 + 2.*out_e[0]*k_4*k_5 + 2.*out_e[2]*k_5;
+		double g_6 = out_e[0]*k_3 + out_e[0]*k_4*k_4 + 2.*out_e[2]*k_4 + out_e[5];
+
+		double m_2 = g_1*k_2 + g_2*k_1;
+		double m_3 = g_1*k_3 + g_2*k_2 + g_3*k_1;
+		double m_4 = g_2*k_3 + g_3*k_2;
+		double m_5 = g_3*k_3;
+
+		double m_6  = out_e[1]*out_e[1] + 4.*out_e[4]*out_e[4]*k_5*k_5 + 4.*out_e[1]*out_e[4]*k_5;
+		double m_7  = 4.*out_e[1]*out_e[3] + 8.*out_e[4]*out_e[4]*k_4*k_5 + 4.*out_e[1]*out_e[4]*k_4 + 8.*out_e[3]*out_e[4]*k_5;
+		double m_8  = 4.*out_e[3]*out_e[3] + 4.*out_e[4]*out_e[4]*k_4*k_4 + 8.*out_e[3]*out_e[4]*k_4;
+		double m_80 = mypow(g_4,2);
+		double m_81 = 2*g_4*g_5;
+		double m_9  = mypow(g_5,2) + 2.*g_4*g_6;
+		double m_10 = 2.*g_5*g_6;
+		double m_11 = g_6*g_6;
+
+		double m_12 = 	2.*out_e[0]*out_e[1]*k_1 + 2.*out_e[0]*out_e[1]*k_5*k_5 + 4.*out_e[0]*out_e[4]*k_1*k_5 + 4.*out_e[0]*out_e[4]*mypow(k_5,3);
+		double m_13 = 	2.*out_e[0]*out_e[1]*k_2 + 4.*out_e[0]*out_e[1]*k_4*k_5 + 4.*out_e[1]*out_e[2]*k_5 + 
+			4.*out_e[0]*(out_e[3]*k_1 + out_e[3]*k_5*k_5 + out_e[4]*k_1*k_4 + out_e[4]*k_2*k_5) + 
+			12.*out_e[0]*out_e[4]*k_4*k_5*k_5 + 8.*out_e[2]*out_e[4]*k_5*k_5;
+		double m_14 = 	2.*out_e[0]*out_e[1]*k_3 + 2.*out_e[0]*out_e[1]*k_4*k_4 + 4.*out_e[2]*out_e[1]*k_4 + 2.*out_e[1]*out_e[5] + 4.*out_e[0]*out_e[3]*k_2 + 
+			8.*out_e[0]*out_e[3]*k_4*k_5 + 8.*out_e[3]*out_e[2]*k_5 + 4.*out_e[0]*out_e[4]*k_2*k_4 + 4.*out_e[0]*out_e[4]*k_3*k_5 + 
+			12.*out_e[0]*out_e[4]*k_4*k_4*k_5 + 16.*out_e[2]*out_e[4]*k_4*k_5 + 4.*out_e[4]*out_e[5]*k_5;
+		double m_15 = 	4.*out_e[0]*out_e[3]*(k_3 + k_4*k_4) + 8.*out_e[3]*out_e[2]*k_4 + 4.*out_e[3]*out_e[5] + 4.*out_e[0]*out_e[4]*(k_3*k_4 + mypow(k_4,3)) + 
+			8.*out_e[2]*out_e[4]*k_4*k_4 + 4.*out_e[4]*out_e[5]*k_4;
+
+		double  re[5];
+		re[0] = m_1 - m_6 - m_12 - m_80;
+		re[1] = m_2 - m_7 - m_13 - m_81;
+		re[2] = m_3 - m_8 - m_9 - m_14;
+		re[3] = m_4 - m_10 - m_15;
+		re[4] = m_5 - m_11;  
+
+
+
+		double output[8];
+		my_qu(re, output);
+
+		int ncand(0);
+
+		double rec_x1, rec_y1, rec_z1, rec_e1, rec_x2, rec_y2, rec_z2, rec_e2;
+
+		for (int j=0; j<8; j+=2){
+			double delta = k_1*output[j]*output[j] + k_2*output[j] + k_3;
+			if ( output[j+1]==0 && delta >=0) {
+				if ( (fx_1 + fx_2*output[j])!=0 ) {
+					rec_x1 = (fx_3*mypow(output[j],2) + fx_4*output[j] + fx_5)/(fx_1 + fx_2*output[j]);
+				} else {
+					rec_x1 = sqrt(delta)+k_4+k_5*output[j];
+				}  
+
+				rec_y1 = output[j];
+				rec_z1 = G_8/G_7 - G_5*rec_x1/G_7 - G_6*rec_y1/G_7;
+				rec_e1 = sqrt(rec_x1*rec_x1 + rec_y1*rec_y1 + rec_z1*rec_z1);
+				rec_x2 = in_mpx[0] - rec_x1;
+				rec_y2 = in_mpy[0] - rec_y1;
+				rec_z2 = G_12/G_11 - G_9*rec_x2/G_11 - G_10*rec_y2/G_11;
+				rec_e2 = sqrt(rec_x2*rec_x2 + rec_y2*rec_y2 + rec_z2*rec_z2);
+				
+				// self-consistence check and control of the solutions
+
+				double m_w11 = calcMass(rec_x1+lep_a[0], rec_y1+lep_a[1], rec_z1+lep_a[2], rec_e1+lep_a[3]);
+				double m_w12 = calcMass(rec_x2+lep_b[0], rec_y2+lep_b[1], rec_z2+lep_b[2], rec_e2+lep_b[3]);
+				double m_t11 = calcMass(rec_x1+ bl_a[0], rec_y1+ bl_a[1], rec_z1+ bl_a[2], rec_e1+ bl_a[3]);
+				double m_t12 = calcMass(rec_x2+ bl_b[0], rec_y2+ bl_b[1], rec_z2+ bl_b[2], rec_e2+ bl_b[3]);
+
+				// m_delta_mass is 1000.0
+				bool m_good_eq1 = ( fabs(in_mpx[0] -(rec_x1+rec_x2)) <= 0.01 ) * true + 
+								  ( fabs(in_mpx[0] -(rec_x1+rec_x2)) > 0.01 ) * false;
+				bool m_good_eq2 = ( fabs(in_mpy[0] -(rec_y1+rec_y2)) <= 0.01 ) * true +
+								  ( fabs(in_mpy[0] -(rec_y1+rec_y2)) > 0.01 ) * false;
+				bool m_good_eq3 = ( fabs(m_w11 - w_mass[0]) <= 1000.0 ) * true + 
+								  ( fabs(m_w11 - w_mass[0]) > 1000.0 ) * false;
+				bool m_good_eq4 = ( fabs(m_w12 - w_mass[1]) <= 1000.0 ) * true +
+								  ( fabs(m_w12 - w_mass[1]) > 1000.0 ) * false;
+				bool m_good_eq5 = ( fabs(m_t11 - t_mass[0]) <= 1000.0 ) * true +
+								  ( fabs(m_t11 - t_mass[0]) > 1000.0 ) * false;
+				bool m_good_eq6 = ( fabs(m_t12 - t_mass[1]) <= 1000.0 ) * true +
+								  ( fabs(m_t12 - t_mass[1]) <= 1000.0 ) * false;
+
+				bool cond = m_good_eq1 && m_good_eq2 && m_good_eq3 && m_good_eq4 && m_good_eq5 && m_good_eq6;
+				
+				// aqui podem nao chegar as threads todas
+				//__syncthreads();
+				nc[tid * 16 + 2*j] = cond * rec_x1;
+				nc[tid * 16 + 2*j + 1] = cond * rec_y1;
+				nc[tid * 16 + 2*j + 2] = cond * rec_z1;
+				nc[tid * 16 + 2*j + 3] = cond * rec_z2;
+				ncand += cond * 1;
+			}
+		}
+
+		// indicates the number of solutions that this thread found
+		a[tid] = ncand;
+	}
 }
 }
 }
