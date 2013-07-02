@@ -26,7 +26,12 @@ void __attribute__((target(mic))) calc_dilep_mic(double t_mass[], double w_mass[
 				double _lep_b[], double _bl_a[], double _bl_b[], 
 				double nc[], int a[], int size)
 		{
-	#pragma offload target(mic) in(w_mass,t_mass,in_mpx,in_mpy:length(size2)) in(lep_a,lep_b,bl_a,bl_b:length(size5)) out(nc:length(size16)) out(count:length(size))
+
+	int size2 = size * 2;
+	int size5 = size * 5;
+	int size16 = size * 16;
+
+	#pragma offload target(mic) in(w_mass,t_mass,in_mpx,in_mpy:length(size2)) in(_lep_a,_lep_b,_bl_a,_bl_b:length(size5)) out(nc:length(size16)) out(a:length(size))
 	{
 		#pragma omp parallel
 		{

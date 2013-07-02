@@ -1,5 +1,10 @@
 #include <cmath>
 
+
+#define STRIDE2(a,i) a[tid * 2 + i]
+#define STRIDE5(a,i) a[tid * 5 + i]
+
+
 inline void __attribute__((target(mic))) Csqrt(double _ar, double _ai, double _my[]);
 inline void __attribute__((target(mic))) cubic(double a[], double rr[], double ri[]);
 inline void __attribute__((target(mic))) toz(double k[], double l[], double g[]);
