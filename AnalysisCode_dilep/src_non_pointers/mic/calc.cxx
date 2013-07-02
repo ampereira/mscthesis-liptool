@@ -31,11 +31,11 @@ void __attribute__((target(mic))) calc_dilep_mic(double t_mass[], double w_mass[
 	int size5 = size * 5;
 	int size16 = size * 16;
 
-	#pragma offload target(mic) in(w_mass,t_mass,in_mpx,in_mpy:length(size2)) in(_lep_a,_lep_b,_bl_a,_bl_b:length(size5)) out(nc:length(size16)) out(a:length(size))
+//	#pragma offload target(mic) in(w_mass,t_mass,in_mpx,in_mpy:length(size2)) in(_lep_a,_lep_b,_bl_a,_bl_b:length(size5)) out(nc:length(size16)) out(a:length(size))
 	{
-		#pragma omp parallel
+//		#pragma omp parallel
 		{
-			#pragma omp for schedule(dynamic) 
+//			#pragma omp for schedule(dynamic) 
 	for (int ax = 0; ax < size; ++ax) {
 		int tid = ax;
 		bool flag = true;
