@@ -468,118 +468,118 @@ void DilepInput::applyVariance (float res) {
 
 // Getters
 
-__attribute__((target(mic))) TLorentzVector DilepInput::getZlep (void) const {
+TLorentzVector DilepInput::getZlep (void) const {
 	return z_lep;
 }
 
-__attribute__((target(mic))) TLorentzVector DilepInput::getClep (void) const {
+TLorentzVector DilepInput::getClep (void) const {
 	return c_lep;
 }
 
-__attribute__((target(mic))) TLorentzVector DilepInput::getZbj (void) const {
+TLorentzVector DilepInput::getZbj (void) const {
 	return z_bj;
 }
 
-__attribute__((target(mic))) TLorentzVector DilepInput::getCbj (void) const {
+TLorentzVector DilepInput::getCbj (void) const {
 	return c_bj;
 }
 
-__attribute__((target(mic))) TLorentzVector DilepInput::getZbl (void) const {
+TLorentzVector DilepInput::getZbl (void) const {
 	return z_bl;
 }
 
-__attribute__((target(mic))) TLorentzVector DilepInput::getCbl (void) const {
+TLorentzVector DilepInput::getCbl (void) const {
 	return c_bl;
 }
 
-__attribute__((target(mic))) TLorentzVectorWFlags DilepInput::getZlepW (void) const {
+TLorentzVectorWFlags DilepInput::getZlepW (void) const {
 	return z_lepWFlags;
 }
 
-__attribute__((target(mic))) TLorentzVectorWFlags DilepInput::getClepW (void) const {
+TLorentzVectorWFlags DilepInput::getClepW (void) const {
 	return c_lepWFlags;
 }
 
-__attribute__((target(mic))) TLorentzVectorWFlags DilepInput::getZbjW (void) const {
+TLorentzVectorWFlags DilepInput::getZbjW (void) const {
 	return z_bjWFlags;
 }
 
-__attribute__((target(mic))) TLorentzVectorWFlags DilepInput::getCbjW (void) const {
+TLorentzVectorWFlags DilepInput::getCbjW (void) const {
 	return c_bjWFlags;
 }
 
-__attribute__((target(mic))) int DilepInput::getZlepWisb (void) const {
+int DilepInput::getZlepWisb (void) const {
 	return z_lepWFlags.isb;
 }
 
-__attribute__((target(mic))) int DilepInput::getClepWisb (void) const {
+int DilepInput::getClepWisb (void) const {
 	return c_lepWFlags.isb;
 }
 
-__attribute__((target(mic))) int DilepInput::getZbjWisb (void) const {
+int DilepInput::getZbjWisb (void) const {
 	return z_bjWFlags.isb;
 }
 
-__attribute__((target(mic))) int DilepInput::getCbjWisb (void) const {
+int DilepInput::getCbjWisb (void) const {
 	return c_bjWFlags.isb;
 }
 
 
-__attribute__((target(mic))) TLorentzVectorWFlags DilepInput::getJet1HiggsW (void) const {
+TLorentzVectorWFlags DilepInput::getJet1HiggsW (void) const {
 	return jet1_HiggsWFlags;
 }
 
-__attribute__((target(mic))) TLorentzVectorWFlags DilepInput::getJet2HiggsW (void) const {
+TLorentzVectorWFlags DilepInput::getJet2HiggsW (void) const {
 	return jet2_HiggsWFlags;
 }
 
-__attribute__((target(mic))) double DilepInput::getMissPx (void) const {
+double DilepInput::getMissPx (void) const {
 	return MissPx;
 }
 
-__attribute__((target(mic))) double DilepInput::getMissPy (void) const {
+double DilepInput::getMissPy (void) const {
 	return MissPy;
 }
 
-__attribute__((target(mic))) double DilepInput::getInMpx (int x) const {
+double DilepInput::getInMpx (int x) const {
 	return in_mpx[x];
 }
 
-__attribute__((target(mic))) double DilepInput::getInMpy (int x) const {
+double DilepInput::getInMpy (int x) const {
 	return in_mpy[x];
 }
 
-__attribute__((target(mic))) double DilepInput::getInMpz (int x) const {
+double DilepInput::getInMpz (int x) const {
 	return in_mpz[x];
 }
 
-__attribute__((target(mic))) double DilepInput::getTmass (int x) const {
+double DilepInput::getTmass (int x) const {
 	return t_mass[x];
 }
 
-__attribute__((target(mic))) double DilepInput::getWmass (int x) const {
+double DilepInput::getWmass (int x) const {
 	return w_mass[x];
 }
 
-__attribute__((target(mic))) int DilepInput::getHasSol (void) const {
+int DilepInput::getHasSol (void) const {
 	return hasSolution;
 }
 
-__attribute__((target(mic))) vector<myvector> DilepInput::getResult (void) const {
+vector<myvector> DilepInput::getResult (void) const {
 	return result;
 }
 
 // Setters
 
-__attribute__((target(mic))) void DilepInput::setHasSol (int x) {
+void DilepInput::setHasSol (int x) {
 	hasSolution = x;
 }
 
-__attribute__((target(mic))) void DilepInput::setResult (vector<myvector> *x) {
+void DilepInput::setResult (vector<myvector> *x) {
 	result = *x;
 }
 
-__attribute__((target(mic))) void DilepInput::setZblCbl (void) {
+void DilepInput::setZblCbl (void) {
 	// ---------------------------------------
 	// Define TLorentzVectors for (b,l) system
 	// ---------------------------------------

@@ -62,36 +62,36 @@ public:
 	void applyVariance (float res, int seed);
 
 	// Getters
-	__attribute__((target(mic))) TLorentzVector getZlep (void) const;
-	__attribute__((target(mic))) TLorentzVector getClep (void) const;
-	__attribute__((target(mic))) TLorentzVector getZbj (void) const;
-	__attribute__((target(mic))) TLorentzVector getCbj (void) const;
-	__attribute__((target(mic))) TLorentzVector getZbl (void) const;
-	__attribute__((target(mic))) TLorentzVector getCbl (void) const;
-	__attribute__((target(mic))) TLorentzVectorWFlags getZlepW (void) const;
-	__attribute__((target(mic))) TLorentzVectorWFlags getClepW (void) const;
-	__attribute__((target(mic))) TLorentzVectorWFlags getZbjW (void) const;
-	__attribute__((target(mic))) TLorentzVectorWFlags getCbjW (void) const;
-	__attribute__((target(mic))) int getZlepWisb (void) const;
-	__attribute__((target(mic))) int getClepWisb (void) const;
-	__attribute__((target(mic))) int getZbjWisb (void) const;
-	__attribute__((target(mic))) int getCbjWisb (void) const;
-	__attribute__((target(mic))) TLorentzVectorWFlags getJet1HiggsW (void) const;
-	__attribute__((target(mic))) TLorentzVectorWFlags getJet2HiggsW (void) const;
-	__attribute__((target(mic))) double getMissPx (void) const;
-	__attribute__((target(mic))) double getMissPy (void) const;
-	__attribute__((target(mic))) double getInMpx (int) const;
-	__attribute__((target(mic))) double getInMpy (int) const;
-	__attribute__((target(mic))) double getInMpz (int) const;
-	__attribute__((target(mic))) double getTmass (int) const;
-	__attribute__((target(mic))) double getWmass (int) const;
-	__attribute__((target(mic))) int getHasSol (void) const;
-	__attribute__((target(mic))) vector<myvector> getResult (void) const;
+	TLorentzVector getZlep (void) const;
+	TLorentzVector getClep (void) const;
+	TLorentzVector getZbj (void) const;
+	TLorentzVector getCbj (void) const;
+	TLorentzVector getZbl (void) const;
+	TLorentzVector getCbl (void) const;
+	TLorentzVectorWFlags getZlepW (void) const;
+	TLorentzVectorWFlags getClepW (void) const;
+	TLorentzVectorWFlags getZbjW (void) const;
+	TLorentzVectorWFlags getCbjW (void) const;
+	int getZlepWisb (void) const;
+	int getClepWisb (void) const;
+	int getZbjWisb (void) const;
+	int getCbjWisb (void) const;
+	TLorentzVectorWFlags getJet1HiggsW (void) const;
+	TLorentzVectorWFlags getJet2HiggsW (void) const;
+	double getMissPx (void) const;
+	double getMissPy (void) const;
+	double getInMpx (int) const;
+	double getInMpy (int) const;
+	double getInMpz (int) const;
+	double getTmass (int) const;
+	double getWmass (int) const;
+	int getHasSol (void) const;
+	vector<myvector> getResult (void) const;
 
 	// Setters
-	__attribute__((target(mic))) void setHasSol (int);
-	__attribute__((target(mic))) void setResult (vector<myvector> *);
-	__attribute__((target(mic))) void setZblCbl (void);
+	void setHasSol (int);
+	void setResult (vector<myvector> *);
+	void setZblCbl (void);
 };
 
 void applyVariance (vector<DilepInput> &vdi, float res, int amount);
