@@ -284,11 +284,11 @@ namespace Dilep {
 				bFlags[(i * 5) + 4] = di[i].getClepW().M();
 
 				// z_bj
-				c[i * 5]	   = di[i].getZbj().Px();
-				c[(i * 5) + 1] = di[i].getZbj().Py();
-				c[(i * 5) + 2] = di[i].getZbj().Pz();
-				c[(i * 5) + 3] = di[i].getZbj().E();
-				c[(i * 5) + 4] = di[i].getZbj().M();
+				c[i * 5]	   = di[i].getZbl().Px();
+				c[(i * 5) + 1] = di[i].getZbl().Py();
+				c[(i * 5) + 2] = di[i].getZbl().Pz();
+				c[(i * 5) + 3] = di[i].getZbl().E();
+				c[(i * 5) + 4] = di[i].getZbl().M();
 
 				// z_bjWFlags
 				cFlags[i * 5]	    = di[i].getZbjW().Px();
@@ -298,11 +298,11 @@ namespace Dilep {
 				cFlags[(i * 5) + 4] = di[i].getZbjW().M();
 
 				// c_bj
-				d[i * 5]	   = di[i].getCbj().Px();
-				d[(i * 5) + 1] = di[i].getCbj().Py();
-				d[(i * 5) + 2] = di[i].getCbj().Pz();
-				d[(i * 5) + 3] = di[i].getCbj().E();
-				d[(i * 5) + 4] = di[i].getCbj().M();
+				d[i * 5]	   = di[i].getCbl().Px();
+				d[(i * 5) + 1] = di[i].getCbl().Py();
+				d[(i * 5) + 2] = di[i].getCbl().Pz();
+				d[(i * 5) + 3] = di[i].getCbl().E();
+				d[(i * 5) + 4] = di[i].getCbl().M();
 
 				// c_bjWFlags
 				dFlags[i * 5]	    = di[i].getCbjW().Px();
@@ -377,7 +377,7 @@ namespace Dilep {
 			//		dev_lep_a, dev_lep_b, dev_bj_a, dev_bj_b, dev_MissPx, dev_MissPy, dev_size, dev_t_mass, dev_w_mass, dev_nc, dev_count, devMTGPStates);
 			
 			calc_dilep <<< grid_size1D, block_size1D >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_lep_a, dev_lep_b,
-					dev_bl_a, dev_bl_b, dev_nc, dev_count);
+					dev_bj_a, dev_bj_b, dev_nc, dev_count);
 
 		//	cout << "Tamanhos: " << tamG << " " << tamB << endl;
 			
