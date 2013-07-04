@@ -323,7 +323,7 @@ namespace Dilep {
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
 			cudaMalloc(&dev_t_mass, size*2*sizeof(double));
-			cudaError_t retval = cudaMalloc(&dev_w_mass, size*2*sizeof(double));
+			cudaMalloc(&dev_w_mass, size*2*sizeof(double));
 			cudaMalloc(&dev_in_mpx, size*2*sizeof(double));
 			cudaMalloc(&dev_in_mpy, size*2*sizeof(double));
 
@@ -332,10 +332,6 @@ namespace Dilep {
 			cudaMalloc(&dev_bl_a, sizeof(c));
 			cudaMalloc(&dev_bl_b, sizeof(d));
 
-			if (retval != cudaSuccess) {
-				cout << "ERRO: " << cudaGetErrorString(retval) << endl;
-				exit(0);
-			}
 
 			//cudaMalloc(&dev_lep_aFlags, sizeof(aFlags));
 			//cudaMalloc(&dev_lep_bFlags, sizeof(bFlags));
@@ -353,7 +349,7 @@ namespace Dilep {
 
 			
 			// transfer the inputs to GPU memory
-			cudaMemcpy(dev_t_mass, t_mass, sizeof(t_mass), cudaMemcpyHostToDevice);
+			cudaError_t retval = cudaMemcpy(dev_t_mass, t_mass, sizeof(t_mass), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_w_mass, w_mass, sizeof(w_mass), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_in_mpx, in_mpx, sizeof(in_mpx), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_in_mpy, in_mpy, sizeof(in_mpy), cudaMemcpyHostToDevice);
@@ -363,6 +359,10 @@ namespace Dilep {
 			cudaMemcpy(dev_bl_a, c, sizeof(c), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_bl_b, d, sizeof(d), cudaMemcpyHostToDevice);
 
+			if (retval != cudaSuccess) {
+				cout << "ERRO: " << cudaGetErrorString(retval) << endl;
+				exit(0);
+			}
 			//cudaMemcpy(dev_lep_aFlags, aFlags, sizeof(aFlags), cudaMemcpyHostToDevice);
 			//cudaMemcpy(dev_lep_bFlags, bFlags, sizeof(bFlags), cudaMemcpyHostToDevice);
 			//cudaMemcpy(dev_bj_aFlags, cFlags, sizeof(cFlags), cudaMemcpyHostToDevice);
