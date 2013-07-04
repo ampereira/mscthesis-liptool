@@ -354,16 +354,12 @@ namespace Dilep {
 			cudaMemcpy(dev_in_mpx, in_mpx, sizeof(in_mpx), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_in_mpy, in_mpy, sizeof(in_mpy), cudaMemcpyHostToDevice);
 
-			cudaError_t retval = cudaMemcpy(dev_lep_a, a, sizeof(a), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_a, a, sizeof(a), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_lep_b, b, sizeof(b), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_bl_a, c, sizeof(c), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_bl_b, d, sizeof(d), cudaMemcpyHostToDevice);
 
-			if (retval != cudaSuccess) {
-				cout << "ERRO: " << cudaGetErrorString(retval) << endl;
-				exit(0);
-			}
-			//cudaMemcpy(dev_lep_aFlags, aFlags, sizeof(aFlags), cudaMemcpyHostToDevice);
+						//cudaMemcpy(dev_lep_aFlags, aFlags, sizeof(aFlags), cudaMemcpyHostToDevice);
 			//cudaMemcpy(dev_lep_bFlags, bFlags, sizeof(bFlags), cudaMemcpyHostToDevice);
 			//cudaMemcpy(dev_bj_aFlags, cFlags, sizeof(cFlags), cudaMemcpyHostToDevice);
 			//cudaMemcpy(dev_bj_bFlags, dFlags, sizeof(dFlags), cudaMemcpyHostToDevice);
@@ -386,8 +382,12 @@ namespace Dilep {
 		//	cout << "Tamanhos: " << tamG << " " << tamB << endl;
 			
 			// memory transfer of the results from the GPU
-			cudaMemcpy(nc, dev_nc, dilep_iterations*16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaError_t retval = cudaMemcpy(nc, dev_nc, dilep_iterations*16*size*sizeof(double), cudaMemcpyDeviceToHost);
 			cudaMemcpy(count, dev_count, dilep_iterations*size*sizeof(int), cudaMemcpyDeviceToHost);
+if (retval != cudaSuccess) {
+				cout << "ERRO: " << cudaGetErrorString(retval) << endl;
+				exit(0);
+			}
 
 			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
 			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
