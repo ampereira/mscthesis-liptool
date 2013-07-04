@@ -9,7 +9,10 @@
 #include <cmath>
 #include <queue>
 #include <TRandom.h>
-#include <offload.h>
+
+#ifdef MIC
+	#include <offload.h>
+#endif
 
 #ifdef OMP
 	#include <omp.h>
