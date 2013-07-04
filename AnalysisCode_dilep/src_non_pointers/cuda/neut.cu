@@ -198,7 +198,7 @@ namespace Dilep {
 		__global__
 		void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double *_MissPx, double *_MissPy, unsigned *size, double _t_mass[], double _w_mass[], double nc[], int a[]) {
+			double *_MissPx, double *_MissPy, double _t_mass[], double _w_mass[], double nc[], int a[]) {
 
 			// CPU version
 			//double _z_bl[5 * size], _c_bl[5 * size];
@@ -377,7 +377,7 @@ namespace Dilep {
 			dim3 block_size1D (tamB);
 
 			dilep_kernel <<< grid_size1D, block_size1D >>> (dev_in_mpx, dev_in_mpy, dev_lep_aFlags, dev_lep_bFlags, dev_bj_aFlags, dev_bj_bFlags,
-					dev_lep_a, dev_lep_b, dev_bj_a, dev_bj_b, dev_MissPx, dev_MissPy, dev_size, dev_t_mass, dev_w_mass, dev_nc, dev_count);
+					dev_lep_a, dev_lep_b, dev_bj_a, dev_bj_b, dev_MissPx, dev_MissPy, dev_t_mass, dev_w_mass, dev_nc, dev_count);
 			
 			//calc_dilep <<< grid_size1D, block_size1D >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_lep_a, dev_lep_b,
 			//		dev_bj_a, dev_bj_b, dev_nc, dev_count);
