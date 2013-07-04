@@ -212,7 +212,7 @@ namespace Dilep {
 			//				_z_lep, _c_lep, _z_bl, _c_bl, nc, a, tid);
 
 			// GPU version
-			double _z_bl[size], _c_bl[size];
+			double _z_bl[100000], _c_bl[100000];
 
 			applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
 					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy, *size);
