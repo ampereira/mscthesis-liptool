@@ -322,8 +322,8 @@ namespace Dilep {
 			}
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
-			cudaError_t retval = cudaMalloc(&dev_t_mass, size*2*sizeof(double));
-			cudaMalloc(&dev_w_mass, size*2*sizeof(double));
+			cudaMalloc(&dev_t_mass, size*2*sizeof(double));
+			cudaError_t retval = cudaMalloc(&dev_w_mass, size*2*sizeof(double));
 			cudaMalloc(&dev_in_mpx, size*2*sizeof(double));
 			cudaMalloc(&dev_in_mpy, size*2*sizeof(double));
 
@@ -383,7 +383,7 @@ namespace Dilep {
 			calc_dilep <<< grid_size1D, block_size1D >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_lep_a, dev_lep_b,
 					dev_bl_a, dev_bl_b, dev_nc, dev_count);
 
-			cout << "Tamanhos: " << tamG << " " << tamB << endl;
+		//	cout << "Tamanhos: " << tamG << " " << tamB << endl;
 			
 			// memory transfer of the results from the GPU
 			cudaMemcpy(nc, dev_nc, dilep_iterations*16*size*sizeof(double), cudaMemcpyDeviceToHost);
