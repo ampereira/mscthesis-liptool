@@ -382,8 +382,8 @@ namespace Dilep {
 		//	cout << "Tamanhos: " << tamG << " " << tamB << endl;
 			
 			// memory transfer of the results from the GPU
-			cudaError_t retval = cudaMemcpy(nc, dev_nc, dilep_iterations*16*size*sizeof(double), cudaMemcpyDeviceToHost);
-			cudaMemcpy(count, dev_count, dilep_iterations*size*sizeof(int), cudaMemcpyDeviceToHost);
+			cudaMemcpy(nc, dev_nc, dilep_iterations*16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaError_t retval = cudaMemcpy(count, dev_count, dilep_iterations*size*sizeof(int), cudaMemcpyDeviceToHost);
 if (retval != cudaSuccess) {
 				cout << "ERRO: " << cudaGetErrorString(retval) << endl;
 				exit(0);
