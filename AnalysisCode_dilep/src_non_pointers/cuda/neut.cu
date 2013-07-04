@@ -377,7 +377,7 @@ namespace Dilep {
 			dim3 block_size1D (tamB);
 
 			dilep_kernel <<< grid_size1D, block_size1D >>> (dev_in_mpx, dev_in_mpy, dev_lep_aFlags, dev_lep_bFlags, dev_bj_aFlags, dev_bj_bFlags,
-					dev_lep_a, dev_lep_b, dev_bj_a, dev_bj_b, dev_MissPx, dev_MissPy, dev_t_mass, dev_w_mass, dev_nc, dev_count);
+					dev_lep_a, dev_lep_b, dev_bj_a, dev_bj_b, dev_MissPx, dev_MissPy, dev_t_mass, dev_w_mass, dev_nc, dev_count, dev_size);
 			
 			//calc_dilep <<< grid_size1D, block_size1D >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_lep_a, dev_lep_b,
 			//		dev_bj_a, dev_bj_b, dev_nc, dev_count);
