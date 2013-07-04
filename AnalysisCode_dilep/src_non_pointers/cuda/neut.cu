@@ -332,8 +332,8 @@ namespace Dilep {
 			cudaMalloc(&dev_bl_a, sizeof(c));
 			cudaMalloc(&dev_bl_b, sizeof(d));
 
-			if (retval != CUDA_SUCCESS) {
-				cout << "ERRO: " << retval << endl;
+			if (retval != cudaSuccess) {
+				cout << "ERRO: " << cudaGetErrorString(retval) << endl;
 				exit(0);
 			}
 
