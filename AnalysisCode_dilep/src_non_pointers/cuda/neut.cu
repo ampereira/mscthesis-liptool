@@ -195,7 +195,7 @@ namespace Dilep {
 			calcMass(c_bl);
 		}*/
 
-	/*	__global__
+		__global__
 		void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
 			double *_MissPx, double *_MissPy, unsigned *size, double _t_mass[], double _w_mass[], double nc[], int a[]) {
@@ -218,16 +218,16 @@ namespace Dilep {
 			//		_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy, *size, state);
 
 			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
-							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
+							_z_lep, _c_lep, _z_bj, _c_bj, nc, a);
 		}
-*/
+
 
 		__host__
 		void dilep (vector<DilepInput> &di) {
 
 			unsigned size = di.size();
 			double in_mpx[2 * size], in_mpy[2 * size], t_mass[2 * size], w_mass[2 * size];
-			double a[5 * size], b[5 * size], c[5 * size], d[5 * size]; //e[5 * size], f[5 * size];	// e and f are the z/c_bl
+			double a[5 * size], b[5 * size], c[5 * size], d[5 * size]; 
 			double aFlags[5 * size], bFlags[5 * size], cFlags[5 * size], dFlags[5 * size];
 			double nc[16*size];
 			int hasSolution = 0, count[size];
@@ -376,11 +376,11 @@ namespace Dilep {
 			dim3 grid_size1D (tamG);
 			dim3 block_size1D (tamB);
 
-			//dilep_kernel <<< grid_size1D, block_size1D >>> (dev_in_mpx, dev_in_mpy, dev_lep_aFlags, dev_lep_bFlags, dev_bj_aFlags, dev_bj_bFlags,
-			//		dev_lep_a, dev_lep_b, dev_bj_a, dev_bj_b, dev_MissPx, dev_MissPy, dev_size, dev_t_mass, dev_w_mass, dev_nc, dev_count);
+			dilep_kernel <<< grid_size1D, block_size1D >>> (dev_in_mpx, dev_in_mpy, dev_lep_aFlags, dev_lep_bFlags, dev_bj_aFlags, dev_bj_bFlags,
+					dev_lep_a, dev_lep_b, dev_bj_a, dev_bj_b, dev_MissPx, dev_MissPy, dev_size, dev_t_mass, dev_w_mass, dev_nc, dev_count);
 			
-			calc_dilep <<< grid_size1D, block_size1D >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_lep_a, dev_lep_b,
-					dev_bj_a, dev_bj_b, dev_nc, dev_count);
+			//calc_dilep <<< grid_size1D, block_size1D >>> (dev_t_mass, dev_w_mass, dev_in_mpx, dev_in_mpy, dev_lep_a, dev_lep_b,
+			//		dev_bj_a, dev_bj_b, dev_nc, dev_count);
 
 			
 			// memory transfer of the results from the GPU
@@ -435,7 +435,7 @@ namespace Dilep {
 			
 		}
 
-		__global__
+		__device__
 		void calc_dilep(double t_mass[], double w_mass[], 
 				double in_mpx[], double in_mpy[], double _lep_a[], 
 				double _lep_b[], double _bl_a[], double _bl_b[], 
