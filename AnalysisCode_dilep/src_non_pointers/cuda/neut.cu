@@ -212,13 +212,12 @@ namespace Dilep {
 			//				_z_lep, _c_lep, _z_bl, _c_bl, nc, a, tid);
 
 			// GPU version
-			double _z_bl[100000], _c_bl[100000];
 
-			applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
-					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy, *size);
+			//applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
+			//		_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy, *size);
 
 			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
-							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
+							_z_lep, _c_lep, _z_bj, _c_bj, nc, a);
 		}
 
 
@@ -445,7 +444,7 @@ namespace Dilep {
 			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
 			//unsigned tid = 1;
 			double G_1, G_3;
-			double WMass_a, WMass_b, tMass_a, tMass_b, lep_a[5], lep_b[5], bl_a[5], bl_b[5];
+			double WMass_a, WMass_b, tMass_a, tMass_b, lep_a[5], lep_b[5], bl_a[5], bl_b[5], bj_a[5], bj_b[5];
 			double in_mpz[2] = {0.0, 0.0};
 
 
@@ -458,9 +457,19 @@ namespace Dilep {
 				lep_a[i] = STRIDE5(_lep_a, i);
 				lep_b[i] = STRIDE5(_lep_b, i);
 
-				bl_a[i] = STRIDE5(_bl_a, i);
-				bl_b[i] = STRIDE5(_bl_b, i);
+				bj_a[i] = STRIDE5(_bl_a, i);
+				bj_b[i] = STRIDE5(_bl_b, i);
 			}
+			
+			bl_a[0] = bj_a[0] + lep_a[0];
+			bl_a[1] = bj_a[1] + lep_a[1];
+			bl_a[2] = bj_a[2] + lep_a[2];
+			bl_a[3] = bj_a[3] + lep_a[3];
+
+			bl_b[0] = bj_b[0] + lep_b[0];
+			bl_b[1] = bj_b[1] + lep_b[1];
+			bl_b[2] = bj_b[2] + lep_b[2];
+			bl_b[3] = bj_b[3] + lep_b[3];
 			
 
 			G_1 = (WMass_a - lep_a[4]) * (WMass_a + lep_a[4]);
