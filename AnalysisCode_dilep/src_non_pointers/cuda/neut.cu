@@ -357,7 +357,7 @@ namespace Dilep {
 			cudaMemcpy(dev_lep_a, a, sizeof(a), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_lep_b, b, sizeof(b), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_bl_a, c, sizeof(c), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_b, d, sizeof(d), cudaMemcpyHostToDevice);
+			cudaError_t retval = cudaMemcpy(dev_bl_b, d, sizeof(d), cudaMemcpyHostToDevice);
 
 						//cudaMemcpy(dev_lep_aFlags, aFlags, sizeof(aFlags), cudaMemcpyHostToDevice);
 			//cudaMemcpy(dev_lep_bFlags, bFlags, sizeof(bFlags), cudaMemcpyHostToDevice);
