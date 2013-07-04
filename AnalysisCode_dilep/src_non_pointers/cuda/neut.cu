@@ -43,7 +43,7 @@ namespace Dilep {
 		__device__
 		void applyVariance (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy) {
+			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy, unsigned size) {
 
 			//unsigned tid = _tid;
 			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
@@ -198,7 +198,7 @@ namespace Dilep {
 		__global__
 		void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double *_MissPx, double *_MissPy, double _t_mass[], double _w_mass[], double nc[], int a[]) {
+			double *_MissPx, double *_MissPy, double _t_mass[], double _w_mass[], double nc[], int a[], unsigned *size) {
 
 			// CPU version
 			//double _z_bl[5 * size], _c_bl[5 * size];
@@ -215,7 +215,7 @@ namespace Dilep {
 			double _z_bl[5], _c_bl[5];
 
 			applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
-					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy);
+					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy, *size);
 
 			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
 							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
@@ -232,7 +232,7 @@ namespace Dilep {
 			double nc[16*size];
 			int hasSolution = 0, count[size];
 		
-			//unsigned *dev_size;
+			unsigned *dev_size;
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
 			double *dev_lep_a, *dev_lep_b, *dev_bj_a, *dev_bj_b;
 			double *dev_lep_aFlags, *dev_lep_bFlags, *dev_bj_aFlags, *dev_bj_bFlags;
@@ -344,7 +344,7 @@ namespace Dilep {
 			cudaMalloc(&dev_MissPx, sizeof(double));
 			cudaMalloc(&dev_MissPy, sizeof(double));
 
-			//cudaMalloc(&dev_size, sizeof(unsigned));
+			cudaMalloc(&dev_size, sizeof(unsigned));
 
 			// allocation of the results
 			cudaMalloc(&dev_nc, size*16*sizeof(double));
@@ -370,7 +370,7 @@ namespace Dilep {
 			cudaMemcpy(dev_MissPx, &_misspx, sizeof(double), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_MissPy, &_misspy, sizeof(double), cudaMemcpyHostToDevice);
 			
-			//cudaMemcpy(dev_size, &size, sizeof(unsigned), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_size, &size, sizeof(unsigned), cudaMemcpyHostToDevice);
 
 
 			dim3 grid_size1D (tamG);
