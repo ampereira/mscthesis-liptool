@@ -195,7 +195,7 @@ namespace Dilep {
 			calcMass(c_bl);
 		}*/
 
-		__global__
+	/*	__global__
 		void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
 			double *_MissPx, double *_MissPy, unsigned *size, double _t_mass[], double _w_mass[], double nc[], int a[], curandStateMtgp32 *state) {
@@ -220,7 +220,7 @@ namespace Dilep {
 			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
 							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
 		}
-
+*/
 
 		__host__
 		void dilep (vector<DilepInput> &di) {
@@ -414,8 +414,8 @@ namespace Dilep {
 			cudaFree(dev_in_mpy);
 			cudaFree(dev_lep_a);
 			cudaFree(dev_lep_b);
-			cudaFree(dev_bl_a);
-			cudaFree(dev_bl_b);
+			cudaFree(dev_bj_a);
+			cudaFree(dev_bj_b);
 			cudaFree(dev_lep_aFlags);
 			cudaFree(dev_lep_bFlags);
 			cudaFree(dev_bj_aFlags);
