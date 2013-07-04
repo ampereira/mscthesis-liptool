@@ -180,19 +180,19 @@ namespace Dilep {
 			//c_bl = c_bj + c_lep;
 			
 
-			z_bl[0] = z_bj[0] + z_lep[0];
-			z_bl[1] = z_bj[1] + z_lep[1];
-			z_bl[2] = z_bj[2] + z_lep[2];
-			z_bl[3] = z_bj[3] + z_lep[3];
+			z_bl[tid * 5 + 0] = z_bj[tid * 5 + 0] + z_lep[tid * 5 + 0];
+			z_bl[tid * 5 + 1] = z_bj[tid * 5 + tid * 5 + 1] + z_lep[tid * 5 + tid * 5 + 1];
+			z_bl[tid * 5 + 2] = z_bj[tid * 5 + tid * 5 + 2] + z_lep[tid * 5 + tid * 5 + 2];
+			z_bl[tid * 5 + 3] = z_bj[tid * 5 + tid * 5 + 3] + z_lep[tid * 5 + tid * 5 + 3];
 
-			c_bl[0] = c_bj[0] + c_lep[0];
-			c_bl[1] = c_bj[1] + c_lep[1];
-			c_bl[2] = c_bj[2] + c_lep[2];
-			c_bl[3] = c_bj[3] + c_lep[3];
+			c_bl[tid * 5 + 0] = c_bj[tid * 5 + 0] + c_lep[tid * 5 + 0];
+			c_bl[tid * 5 + 1] = c_bj[tid * 5 + 1] + c_lep[tid * 5 + 1];
+			c_bl[tid * 5 + 2] = c_bj[tid * 5 + 2] + c_lep[tid * 5 + 2];
+			c_bl[tid * 5 + 3] = c_bj[tid * 5 + 3] + c_lep[tid * 5 + 3];
 
 			// Re-calculate the masses
-			calcMass(z_bl);
-			calcMass(c_bl);
+			calcMass(&z_bl[tid * 5]);
+			calcMass(&c_bl[tid * 5]);
 		}
 
 		__global__
