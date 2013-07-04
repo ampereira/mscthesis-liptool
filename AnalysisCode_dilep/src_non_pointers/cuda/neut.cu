@@ -195,7 +195,7 @@ namespace Dilep {
 			calcMass(c_bl);
 		}*/
 
-	/*	__global__
+		__global__
 		void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
 			double *_MissPx, double *_MissPy, unsigned *size, double _t_mass[], double _w_mass[], double nc[], int a[], curandStateMtgp32 *state) {
@@ -219,7 +219,7 @@ namespace Dilep {
 
 			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
 							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
-		}*/
+		}
 
 
 		__host__
@@ -228,14 +228,14 @@ namespace Dilep {
 			unsigned size = di.size();
 			double in_mpx[2 * size], in_mpy[2 * size], t_mass[2 * size], w_mass[2 * size];
 			double a[5 * size], b[5 * size], c[5 * size], d[5 * size]; //e[5 * size], f[5 * size];	// e and f are the z/c_bl
-			//double aFlags[5 * size], bFlags[5 * size], cFlags[5 * size], dFlags[5 * size];
+			double aFlags[5 * size], bFlags[5 * size], cFlags[5 * size], dFlags[5 * size];
 			double nc[16*size];
 			int hasSolution = 0, count[size];
 		
 			//unsigned *dev_size;
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
-			double *dev_lep_a, *dev_lep_b, *dev_bl_a, *dev_bl_b;
-			//double *dev_lep_aFlags, *dev_lep_bFlags, *dev_bj_aFlags, *dev_bj_bFlags;
+			double *dev_lep_a, *dev_lep_b, *dev_bj_a, *dev_bj_b;
+			double *dev_lep_aFlags, *dev_lep_bFlags, *dev_bj_aFlags, *dev_bj_bFlags;
 			double *dev_nc; //*dev_MissPx, *dev_MissPy;
 			int *dev_count;
 
@@ -263,11 +263,11 @@ namespace Dilep {
 				a[(i * 5) + 4] = di[i].getZlep().M();
 
 				// z_lepWFlags
-				//aFlags[i * 5]	    = di[i].getZlepW().Px();
-				//aFlags[(i * 5) + 1] = di[i].getZlepW().Py();
-				//aFlags[(i * 5) + 2] = di[i].getZlepW().Pz();
-				//aFlags[(i * 5) + 3] = di[i].getZlepW().isb;
-				//aFlags[(i * 5) + 4] = di[i].getZlepW().M();
+				aFlags[i * 5]	    = di[i].getZlepW().Px();
+				aFlags[(i * 5) + 1] = di[i].getZlepW().Py();
+				aFlags[(i * 5) + 2] = di[i].getZlepW().Pz();
+				aFlags[(i * 5) + 3] = di[i].getZlepW().isb;
+				aFlags[(i * 5) + 4] = di[i].getZlepW().M();
 
 				// c_lep
 				b[i * 5]	   = di[i].getClep().Px();
@@ -277,39 +277,39 @@ namespace Dilep {
 				b[(i * 5) + 4] = di[i].getClep().M();
 
 				// c_lepWFlags
-				//bFlags[i * 5]	    = di[i].getClepW().Px();
-				//bFlags[(i * 5) + 1] = di[i].getClepW().Py();
-				//bFlags[(i * 5) + 2] = di[i].getClepW().Pz();
-				//bFlags[(i * 5) + 3] = di[i].getClepW().isb;
-				//bFlags[(i * 5) + 4] = di[i].getClepW().M();
+				bFlags[i * 5]	    = di[i].getClepW().Px();
+				bFlags[(i * 5) + 1] = di[i].getClepW().Py();
+				bFlags[(i * 5) + 2] = di[i].getClepW().Pz();
+				bFlags[(i * 5) + 3] = di[i].getClepW().isb;
+				bFlags[(i * 5) + 4] = di[i].getClepW().M();
 
 				// z_bj
-				c[i * 5]	   = di[i].getZbl().Px();
-				c[(i * 5) + 1] = di[i].getZbl().Py();
-				c[(i * 5) + 2] = di[i].getZbl().Pz();
-				c[(i * 5) + 3] = di[i].getZbl().E();
-				c[(i * 5) + 4] = di[i].getZbl().M();
+				c[i * 5]	   = di[i].getZbj().Px();
+				c[(i * 5) + 1] = di[i].getZbj().Py();
+				c[(i * 5) + 2] = di[i].getZbj().Pz();
+				c[(i * 5) + 3] = di[i].getZbj().E();
+				c[(i * 5) + 4] = di[i].getZbj().M();
 
 				// z_bjWFlags
-				//cFlags[i * 5]	    = di[i].getZbjW().Px();
-				//cFlags[(i * 5) + 1] = di[i].getZbjW().Py();
-				//cFlags[(i * 5) + 2] = di[i].getZbjW().Pz();
-				//cFlags[(i * 5) + 3] = di[i].getZbjW().isb;
-				//cFlags[(i * 5) + 4] = di[i].getZbjW().M();
+				cFlags[i * 5]	    = di[i].getZbjW().Px();
+				cFlags[(i * 5) + 1] = di[i].getZbjW().Py();
+				cFlags[(i * 5) + 2] = di[i].getZbjW().Pz();
+				cFlags[(i * 5) + 3] = di[i].getZbjW().isb;
+				cFlags[(i * 5) + 4] = di[i].getZbjW().M();
 
 				// c_bj
-				d[i * 5]	   = di[i].getCbl().Px();
-				d[(i * 5) + 1] = di[i].getCbl().Py();
-				d[(i * 5) + 2] = di[i].getCbl().Pz();
-				d[(i * 5) + 3] = di[i].getCbl().E();
-				d[(i * 5) + 4] = di[i].getCbl().M();
+				d[i * 5]	   = di[i].getCbj().Px();
+				d[(i * 5) + 1] = di[i].getCbj().Py();
+				d[(i * 5) + 2] = di[i].getCbj().Pz();
+				d[(i * 5) + 3] = di[i].getCbj().E();
+				d[(i * 5) + 4] = di[i].getCbj().M();
 
 				// c_bjWFlags
-				//dFlags[i * 5]	    = di[i].getCbjW().Px();
-				//dFlags[(i * 5) + 1] = di[i].getCbjW().Py();
-				//dFlags[(i * 5) + 2] = di[i].getCbjW().Pz();
-				//dFlags[(i * 5) + 3] = di[i].getCbjW().isb;
-				//dFlags[(i * 5) + 4] = di[i].getCbjW().M();
+				dFlags[i * 5]	    = di[i].getCbjW().Px();
+				dFlags[(i * 5) + 1] = di[i].getCbjW().Py();
+				dFlags[(i * 5) + 2] = di[i].getCbjW().Pz();
+				dFlags[(i * 5) + 3] = di[i].getCbjW().isb;
+				dFlags[(i * 5) + 4] = di[i].getCbjW().M();
 			}
 
 			unsigned tamG, tamB;
@@ -329,14 +329,14 @@ namespace Dilep {
 
 			cudaMalloc(&dev_lep_a, sizeof(a));
 			cudaMalloc(&dev_lep_b, sizeof(b));
-			cudaMalloc(&dev_bl_a, sizeof(c));
-			cudaMalloc(&dev_bl_b, sizeof(d));
+			cudaMalloc(&dev_bj_a, sizeof(c));
+			cudaMalloc(&dev_bj_b, sizeof(d));
 
 
-			//cudaMalloc(&dev_lep_aFlags, sizeof(aFlags));
-			//cudaMalloc(&dev_lep_bFlags, sizeof(bFlags));
-			//cudaMalloc(&dev_bj_aFlags, sizeof(cFlags));
-			//cudaMalloc(&dev_bj_bFlags, sizeof(dFlags));
+			cudaMalloc(&dev_lep_aFlags, sizeof(aFlags));
+			cudaMalloc(&dev_lep_bFlags, sizeof(bFlags));
+			cudaMalloc(&dev_bj_aFlags, sizeof(cFlags));
+			cudaMalloc(&dev_bj_bFlags, sizeof(dFlags));
 
 			//cudaMalloc(&dev_MissPx, sizeof(double));
 			//cudaMalloc(&dev_MissPy, sizeof(double));
@@ -356,13 +356,13 @@ namespace Dilep {
 
 			cudaMemcpy(dev_lep_a, a, sizeof(a), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_lep_b, b, sizeof(b), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_a, c, sizeof(c), cudaMemcpyHostToDevice);
-			cudaMemcpy(dev_bl_b, d, sizeof(d), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bj_a, c, sizeof(c), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bj_b, d, sizeof(d), cudaMemcpyHostToDevice);
 
-						//cudaMemcpy(dev_lep_aFlags, aFlags, sizeof(aFlags), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_lep_bFlags, bFlags, sizeof(bFlags), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_bj_aFlags, cFlags, sizeof(cFlags), cudaMemcpyHostToDevice);
-			//cudaMemcpy(dev_bj_bFlags, dFlags, sizeof(dFlags), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_aFlags, aFlags, sizeof(aFlags), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_lep_bFlags, bFlags, sizeof(bFlags), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bj_aFlags, cFlags, sizeof(cFlags), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bj_bFlags, dFlags, sizeof(dFlags), cudaMemcpyHostToDevice);
 
 			//cudaMemcpy(dev_MissPx, &_misspx, sizeof(double), cudaMemcpyHostToDevice);
 			//cudaMemcpy(dev_MissPy, &_misspy, sizeof(double), cudaMemcpyHostToDevice);
@@ -384,15 +384,9 @@ namespace Dilep {
 			// memory transfer of the results from the GPU
 
 			cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
-			cudaError_t retval = cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
 
-if (retval != cudaSuccess) {
-				cout << "ERRO: " << cudaGetErrorString(retval) << endl;
-				exit(0);
-			}
 
-			//cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
-			//cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 
@@ -422,10 +416,10 @@ if (retval != cudaSuccess) {
 			cudaFree(dev_lep_b);
 			cudaFree(dev_bl_a);
 			cudaFree(dev_bl_b);
-			//cudaFree(dev_lep_aFlags);
-			//cudaFree(dev_lep_bFlags);
-			//cudaFree(dev_bj_aFlags);
-			//cudaFree(dev_bj_bFlags);
+			cudaFree(dev_lep_aFlags);
+			cudaFree(dev_lep_bFlags);
+			cudaFree(dev_bj_aFlags);
+			cudaFree(dev_bj_bFlags);
 			//cudaFree(dev_MissPx);
 			//cudaFree(dev_MissPy);
 			//cudaFree(dev_size);
