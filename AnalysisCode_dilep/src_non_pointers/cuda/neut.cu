@@ -40,10 +40,10 @@ namespace Dilep {
 		// [3] -> E/isb
 		// [4] -> M
 
-		/*__device__
+		__device__
 		void applyVariance (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
 			double _z_bjWFlags[], double _c_bjWFlags[], double _z_lep[], double _c_lep[], double _z_bj[], double _c_bj[],
-			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy, unsigned size, curandStateMtgp32 *state) {
+			double _z_bl[], double _c_bl[], double _MissPx, double _MissPy) {
 
 			//unsigned tid = _tid;
 			unsigned tid = threadIdx.x + blockIdx.x * blockDim.x;
@@ -172,7 +172,7 @@ namespace Dilep {
 			delPy = c_bjWFlags[1] - n_Py;			
 			in_mpx[0] += delPx; in_mpx[1] += delPx; // correct miss(Px,Py) neutrino 1
 			in_mpy[0] += delPy; in_mpy[1] += delPy; // correct miss(Px,Py) neutrino 2
-
+*/
 			// ---------------------------------------
 			// Define TLorentzVectors for (b,l) system
 			// ---------------------------------------
@@ -193,7 +193,7 @@ namespace Dilep {
 			// Re-calculate the masses
 			calcMass(z_bl);
 			calcMass(c_bl);
-		}*/
+		}
 
 		__global__
 		void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],
@@ -214,11 +214,11 @@ namespace Dilep {
 			// GPU version
 			double _z_bl[5], _c_bl[5];
 
-			//applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
-			//		_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy, *size, state);
+			applyVariance(_in_mpx, _in_mpy, _z_lepWFlags, _c_lepWFlags, _z_bjWFlags, _c_bjWFlags,
+					_z_lep, _c_lep, _z_bj, _c_bj, _z_bl, _c_bl, *_MissPx, *_MissPy);
 
 			calc_dilep(_t_mass, _w_mass, _in_mpx, _in_mpy, 
-							_z_lep, _c_lep, _z_bj, _c_bj, nc, a);
+							_z_lep, _c_lep, _z_bl, _c_bl, nc, a);
 		}
 
 
@@ -287,11 +287,11 @@ namespace Dilep {
 				bFlags[(i * 5) + 4] = di[i].getClepW().M();
 
 				// z_bj
-				c[i * 5]	   = di[i].getZbl().Px();
-				c[(i * 5) + 1] = di[i].getZbl().Py();
-				c[(i * 5) + 2] = di[i].getZbl().Pz();
-				c[(i * 5) + 3] = di[i].getZbl().E();
-				c[(i * 5) + 4] = di[i].getZbl().M();
+				c[i * 5]	   = di[i].getZbj().Px();
+				c[(i * 5) + 1] = di[i].getZbj().Py();
+				c[(i * 5) + 2] = di[i].getZbj().Pz();
+				c[(i * 5) + 3] = di[i].getZbj().E();
+				c[(i * 5) + 4] = di[i].getZbj().M();
 
 				// z_bjWFlags
 				cFlags[i * 5]	    = di[i].getZbjW().Px();
@@ -301,11 +301,11 @@ namespace Dilep {
 				cFlags[(i * 5) + 4] = di[i].getZbjW().M();
 
 				// c_bj
-				d[i * 5]	   = di[i].getCbl().Px();
-				d[(i * 5) + 1] = di[i].getCbl().Py();
-				d[(i * 5) + 2] = di[i].getCbl().Pz();
-				d[(i * 5) + 3] = di[i].getCbl().E();
-				d[(i * 5) + 4] = di[i].getCbl().M();
+				d[i * 5]	   = di[i].getCbj().Px();
+				d[(i * 5) + 1] = di[i].getCbj().Py();
+				d[(i * 5) + 2] = di[i].getCbj().Pz();
+				d[(i * 5) + 3] = di[i].getCbj().E();
+				d[(i * 5) + 4] = di[i].getCbj().M();
 
 				// c_bjWFlags
 				dFlags[i * 5]	    = di[i].getCbjW().Px();
