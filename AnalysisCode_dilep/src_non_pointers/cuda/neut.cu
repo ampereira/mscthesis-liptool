@@ -322,7 +322,7 @@ namespace Dilep {
 			}
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
-			cudaMalloc(&dev_t_mass, size*2*sizeof(double));
+			int retval = cudaMalloc(&dev_t_mass, size*2*sizeof(double));
 			cudaMalloc(&dev_w_mass, size*2*sizeof(double));
 			cudaMalloc(&dev_in_mpx, size*2*sizeof(double));
 			cudaMalloc(&dev_in_mpy, size*2*sizeof(double));
@@ -331,6 +331,11 @@ namespace Dilep {
 			cudaMalloc(&dev_lep_b, sizeof(b));
 			cudaMalloc(&dev_bl_a, sizeof(c));
 			cudaMalloc(&dev_bl_b, sizeof(d));
+
+			if (retval != CUDA_SUCCESS) {
+				cout << "ERRO: " << retval << endl;
+				exit(0);
+			}
 
 			//cudaMalloc(&dev_lep_aFlags, sizeof(aFlags));
 			//cudaMalloc(&dev_lep_bFlags, sizeof(bFlags));
