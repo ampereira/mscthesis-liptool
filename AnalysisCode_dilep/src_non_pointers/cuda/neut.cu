@@ -366,7 +366,7 @@ namespace Dilep {
 			//cudaMemcpy(dev_MissPx, &_misspx, sizeof(double), cudaMemcpyHostToDevice);
 			//cudaMemcpy(dev_MissPy, &_misspy, sizeof(double), cudaMemcpyHostToDevice);
 			
-			cudaMemcpy(dev_size, &size, sizeof(unsigned), cudaMemcpyHostToDevice);
+			//cudaMemcpy(dev_size, &size, sizeof(unsigned), cudaMemcpyHostToDevice);
 
 
 			dim3 grid_size1D (tamG);
