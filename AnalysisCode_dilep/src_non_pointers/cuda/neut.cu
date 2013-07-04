@@ -229,8 +229,8 @@ namespace Dilep {
 			double in_mpx[2 * size], in_mpy[2 * size], t_mass[2 * size], w_mass[2 * size];
 			double a[5 * size], b[5 * size], c[5 * size], d[5 * size]; //e[5 * size], f[5 * size];	// e and f are the z/c_bl
 			//double aFlags[5 * size], bFlags[5 * size], cFlags[5 * size], dFlags[5 * size];
-			double nc[16*size];
-			int hasSolution = 0, count[size];
+			double nc[16*size*dilep_iterations];
+			int hasSolution = 0, count[size*dilep_iterations];
 		
 			//unsigned *dev_size;
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
@@ -385,7 +385,7 @@ namespace Dilep {
 
 			cudaMemcpy(count, dev_count, dilep_iterations*size*sizeof(int), cudaMemcpyDeviceToHost);
 			cudaMemcpy(nc, dev_nc, dilep_iterations*16*size*sizeof(double), cudaMemcpyDeviceToHost);
-			
+
 if (retval != cudaSuccess) {
 				cout << "ERRO: " << cudaGetErrorString(retval) << endl;
 				exit(0);
