@@ -229,8 +229,8 @@ namespace Dilep {
 			double in_mpx[2 * size], in_mpy[2 * size], t_mass[2 * size], w_mass[2 * size];
 			double a[5 * size], b[5 * size], c[5 * size], d[5 * size]; //e[5 * size], f[5 * size];	// e and f are the z/c_bl
 			//double aFlags[5 * size], bFlags[5 * size], cFlags[5 * size], dFlags[5 * size];
-			double nc[16*size*dilep_iterations];
-			int hasSolution = 0, count[size*dilep_iterations];
+			double nc[16*size];
+			int hasSolution = 0, count[size];
 		
 			//unsigned *dev_size;
 			double *dev_t_mass, *dev_w_mass, *dev_in_mpx, *dev_in_mpy;
@@ -313,12 +313,12 @@ namespace Dilep {
 			}
 
 			unsigned tamG, tamB;
-			if (size * dilep_iterations > 256) {
-				tamG = (size * dilep_iterations) / 256;
+			if (size > 256) {
+				tamG = (size) / 256;
 				tamB = 256;
 			} else {
 				tamG = 1;
-				tamB = size * dilep_iterations;
+				tamB = size;
 			}
 
 			// GPU memory allocation of the inputs and outputs of the dilep kernel
@@ -344,8 +344,8 @@ namespace Dilep {
 			//cudaMalloc(&dev_size, sizeof(unsigned));
 
 			// allocation of the results
-			cudaMalloc(&dev_nc, dilep_iterations*size*16*sizeof(double));
-			cudaMalloc(&dev_count, dilep_iterations*size*sizeof(int));
+			cudaMalloc(&dev_nc, size*16*sizeof(double));
+			cudaMalloc(&dev_count, size*sizeof(int));
 
 			
 			// transfer the inputs to GPU memory
@@ -357,7 +357,7 @@ namespace Dilep {
 			cudaMemcpy(dev_lep_a, a, sizeof(a), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_lep_b, b, sizeof(b), cudaMemcpyHostToDevice);
 			cudaMemcpy(dev_bl_a, c, sizeof(c), cudaMemcpyHostToDevice);
-			cudaError_t retval = cudaMemcpy(dev_bl_b, d, sizeof(d), cudaMemcpyHostToDevice);
+			cudaMemcpy(dev_bl_b, d, sizeof(d), cudaMemcpyHostToDevice);
 
 						//cudaMemcpy(dev_lep_aFlags, aFlags, sizeof(aFlags), cudaMemcpyHostToDevice);
 			//cudaMemcpy(dev_lep_bFlags, bFlags, sizeof(bFlags), cudaMemcpyHostToDevice);
@@ -383,8 +383,8 @@ namespace Dilep {
 			
 			// memory transfer of the results from the GPU
 
-			cudaMemcpy(count, dev_count, dilep_iterations*size*sizeof(int), cudaMemcpyDeviceToHost);
-			cudaMemcpy(nc, dev_nc, dilep_iterations*16*size*sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(count, dev_count, size*sizeof(int), cudaMemcpyDeviceToHost);
+			cudaError_t retval = cudaMemcpy(nc, dev_nc, 16*size*sizeof(double), cudaMemcpyDeviceToHost);
 
 if (retval != cudaSuccess) {
 				cout << "ERRO: " << cudaGetErrorString(retval) << endl;
@@ -396,7 +396,7 @@ if (retval != cudaSuccess) {
 			// reconstruction of the normal output of dilep
 			// o num de combs*vars e o num de threads
 
-			for (unsigned comb = 0; comb < dilep_iterations*size; ++comb) {
+			for (unsigned comb = 0; comb < size; ++comb) {
 				vector<myvector> result;
 
 				for (int sol = 0 ; sol < count[comb] && sol<4 ; sol++) {
