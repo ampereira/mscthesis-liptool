@@ -315,9 +315,9 @@ namespace Dilep {
 			}
 
 			unsigned tamG, tamB;
-			if (size > 256) {
-				tamG = (size) / 256;
-				tamB = 256;
+			if (size > 192) {
+				tamG = (size) / 192;
+				tamB = 192;
 			} else {
 				tamG = 1;
 				tamB = size;
@@ -421,9 +421,9 @@ namespace Dilep {
 			cudaFree(dev_lep_bFlags);
 			cudaFree(dev_bj_aFlags);
 			cudaFree(dev_bj_bFlags);
-			//cudaFree(dev_MissPx);
-			//cudaFree(dev_MissPy);
-			//cudaFree(dev_size);
+			cudaFree(dev_MissPx);
+			cudaFree(dev_MissPy);
+			cudaFree(dev_size);
 			cudaFree(dev_nc);
 			cudaFree(dev_count);
 
