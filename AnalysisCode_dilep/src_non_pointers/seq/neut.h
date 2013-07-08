@@ -25,10 +25,10 @@ namespace Dilep {
 		void my_qu( double my_in[], double my_val[]);
 		double calcMass(double x, double y, double z, double e);
 
-		std::vector<myvector>* dilep(unsigned iterations, double t_mass[], double w_mass[], 
+		std::vector<myvector>* dilep(double t_mass[], double w_mass[], 
 									double in_mpx[], double in_mpy[], double in_mpz[],
 									TLorentzVector* lep_a, TLorentzVector* lep_b, 
-									TLorentzVector* bl_a, TLorentzVector* bl_b, int *hasSol);
+									TLorentzVector* bl_a, TLorentzVector* bl_b);
 
 		void dilep (vector<DilepInput> &vdi);
 
