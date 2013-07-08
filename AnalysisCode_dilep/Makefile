@@ -72,7 +72,7 @@ build/dilep_input.o: src/dilep_input.cxx src/dilep_input.h
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/dilep_input.cxx -o build/dilep_input.o
 
 build/utilities.o: src/utilities.cxx src/utilities.h
-	$(ICXX) $(ICXXFLAGS) $(INCLUDES) -c src/utilities.cxx -o build/utilities.o
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/utilities.cxx -o build/utilities.o
 
 build/dilep_input_mic.o: src/dilep_input.cxx src/dilep_input.h
 	$(ICXX) $(ICXXFLAGS) $(INCLUDES) -c src/dilep_input.cxx -o build/dilep_input_mic.o
