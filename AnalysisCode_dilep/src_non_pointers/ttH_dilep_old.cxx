@@ -4142,7 +4142,7 @@ void ttH_dilep::ttDilepKinFit(){
 			// ---------------------------------------
 			// Find tt dileptonic solutions
 			// ---------------------------------------
-			result = Dilep::CPU::calc_dilep(t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl);
+			result = Dilep::CPU::dilep(t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl);
 	                if ( result->size() > 0 ) HasSolution++;  // increment solution counter
 	
 			// ---------------------------------------
