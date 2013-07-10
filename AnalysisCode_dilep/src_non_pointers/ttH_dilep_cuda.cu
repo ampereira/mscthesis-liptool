@@ -43,6 +43,7 @@ using namespace std;
 #include "utilities.h"
 #include "ttDKF_Best_Sol.h"
 
+
 extern int dilep_iterations;
 extern int num_threads;
 //extern TRandom3 t_rnd;
@@ -3782,7 +3783,6 @@ if(TruthHasSolution > 0)
 }
 
 
-
 }
 
 // #############################################################################
@@ -3965,6 +3965,7 @@ void ttH_dilep::ttDilepKinFit(){
 	// ---------------------------------------
 
 	std::vector<DilepInput> inputs;
+	DilepInput *div;
 
 	if ( ttDKF_JetCombChoice == 1 ){ 
 		for ( int j1=0; j1 < ttDKF_njets ; j1++){
@@ -4014,9 +4015,10 @@ void ttH_dilep::ttDilepKinFit(){
 									//TRandom3 *_t_rnd = new TRandom3 (SEED);
 									//DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 									for (int iii = 0; iii < dilep_iterations; ++iii) {
-										DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
+										div = new DilepInput(z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 										//di.applyVariance(0.02);
-										inputs.push_back(di);
+
+										inputs.push_back(*div);
 									}
 								}
 							}
@@ -4026,6 +4028,7 @@ void ttH_dilep::ttDilepKinFit(){
 			}
 		}
 	}
+
 
 	// WARNING: numa primeira fase apenas para num combos <= num parallel tasks
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
@@ -4064,7 +4067,9 @@ void ttH_dilep::ttDilepKinFit(){
 	int n_ttDKF_Best = -999;
 	int first = 0;
 
-	Dilep::GPU::dilep(inputs);
+	cout << EveNumber << " - " << inputs.size() << endl;
+
+	Dilep::GPU::dilep(inputs, MissPx, MissPy);
 
 
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
