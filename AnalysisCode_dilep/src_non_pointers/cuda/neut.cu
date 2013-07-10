@@ -222,9 +222,9 @@ namespace Dilep {
 
 
 		__host__
-		void dilep (vector<DilepInput> *di) {
+		void dilep (vector<DilepInput> &di) {
 
-			unsigned size = di->size();
+			unsigned size = di.size();
 			double in_mpx[2 * size], in_mpy[2 * size], t_mass[2 * size], w_mass[2 * size];
 			double a[5 * size], b[5 * size], c[5 * size], d[5 * size]; 
 			double aFlags[5 * size], bFlags[5 * size], cFlags[5 * size], dFlags[5 * size];
@@ -238,8 +238,8 @@ namespace Dilep {
 			double *dev_nc, *dev_MissPx, *dev_MissPy;
 			int *dev_count;
 
-			double _misspx = di->at(0).getMissPx();
-			double _misspy = di->at(0).getMissPy();
+			double _misspx = di[0].getMissPx();
+			double _misspy = di[0].getMissPy();
 
 			// time measurement
 			#ifdef MEASURE_DILEP
@@ -248,70 +248,70 @@ namespace Dilep {
 
 			for (unsigned i = 0; i < size; ++i) {
 
-				in_mpx[i * 2]		= di->at(i).getInMpx(0);
-				in_mpx[(i * 2) + 1] = di->at(i).getInMpx(1);
-				in_mpy[i * 2]		= di->at(i).getInMpy(0);
-				in_mpy[(i * 2) + 1] = di->at(i).getInMpy(1);
-				t_mass[i * 2]		= di->at(i).getTmass(0);
-				t_mass[(i * 2) + 1] = di->at(i).getTmass(1);
-				w_mass[i * 2]		= di->at(i).getWmass(0);
-				w_mass[(i * 2) + 1] = di->at(i).getWmass(1);
+				in_mpx[i * 2]		= di[i].getInMpx(0);
+				in_mpx[(i * 2) + 1] = di[i].getInMpx(1);
+				in_mpy[i * 2]		= di[i].getInMpy(0);
+				in_mpy[(i * 2) + 1] = di[i].getInMpy(1);
+				t_mass[i * 2]		= di[i].getTmass(0);
+				t_mass[(i * 2) + 1] = di[i].getTmass(1);
+				w_mass[i * 2]		= di[i].getWmass(0);
+				w_mass[(i * 2) + 1] = di[i].getWmass(1);
 				
 				// z_lep
-				a[i * 5]	   = di->at(i).getZlep().Px();
-				a[(i * 5) + 1] = di->at(i).getZlep().Py();
-				a[(i * 5) + 2] = di->at(i).getZlep().Pz();
-				a[(i * 5) + 3] = di->at(i).getZlep().E();
-				a[(i * 5) + 4] = di->at(i).getZlep().M();
+				a[i * 5]	   = di[i].getZlep().Px();
+				a[(i * 5) + 1] = di[i].getZlep().Py();
+				a[(i * 5) + 2] = di[i].getZlep().Pz();
+				a[(i * 5) + 3] = di[i].getZlep().E();
+				a[(i * 5) + 4] = di[i].getZlep().M();
 
 				// z_lepWFlags
-				aFlags[i * 5]	    = di->at(i).getZlepW().Px();
-				aFlags[(i * 5) + 1] = di->at(i).getZlepW().Py();
-				aFlags[(i * 5) + 2] = di->at(i).getZlepW().Pz();
-				aFlags[(i * 5) + 3] = di->at(i).getZlepW().isb;
-				aFlags[(i * 5) + 4] = di->at(i).getZlepW().M();
+				aFlags[i * 5]	    = di[i].getZlepW().Px();
+				aFlags[(i * 5) + 1] = di[i].getZlepW().Py();
+				aFlags[(i * 5) + 2] = di[i].getZlepW().Pz();
+				aFlags[(i * 5) + 3] = di[i].getZlepW().isb;
+				aFlags[(i * 5) + 4] = di[i].getZlepW().M();
 
 				// c_lep
-				b[i * 5]	   = di->at(i).getClep().Px();
-				b[(i * 5) + 1] = di->at(i).getClep().Py();
-				b[(i * 5) + 2] = di->at(i).getClep().Pz();
-				b[(i * 5) + 3] = di->at(i).getClep().E();
-				b[(i * 5) + 4] = di->at(i).getClep().M();
+				b[i * 5]	   = di[i].getClep().Px();
+				b[(i * 5) + 1] = di[i].getClep().Py();
+				b[(i * 5) + 2] = di[i].getClep().Pz();
+				b[(i * 5) + 3] = di[i].getClep().E();
+				b[(i * 5) + 4] = di[i].getClep().M();
 
 				// c_lepWFlags
-				bFlags[i * 5]	    = di->at(i).getClepW().Px();
-				bFlags[(i * 5) + 1] = di->at(i).getClepW().Py();
-				bFlags[(i * 5) + 2] = di->at(i).getClepW().Pz();
-				bFlags[(i * 5) + 3] = di->at(i).getClepW().isb;
-				bFlags[(i * 5) + 4] = di->at(i).getClepW().M();
+				bFlags[i * 5]	    = di[i].getClepW().Px();
+				bFlags[(i * 5) + 1] = di[i].getClepW().Py();
+				bFlags[(i * 5) + 2] = di[i].getClepW().Pz();
+				bFlags[(i * 5) + 3] = di[i].getClepW().isb;
+				bFlags[(i * 5) + 4] = di[i].getClepW().M();
 
 				// z_bj
-				c[i * 5]	   = di->at(i).getZbj().Px();
-				c[(i * 5) + 1] = di->at(i).getZbj().Py();
-				c[(i * 5) + 2] = di->at(i).getZbj().Pz();
-				c[(i * 5) + 3] = di->at(i).getZbj().E();
-				c[(i * 5) + 4] = di->at(i).getZbj().M();
+				c[i * 5]	   = di[i].getZbj().Px();
+				c[(i * 5) + 1] = di[i].getZbj().Py();
+				c[(i * 5) + 2] = di[i].getZbj().Pz();
+				c[(i * 5) + 3] = di[i].getZbj().E();
+				c[(i * 5) + 4] = di[i].getZbj().M();
 
 				// z_bjWFlags
-				cFlags[i * 5]	    = di->at(i).getZbjW().Px();
-				cFlags[(i * 5) + 1] = di->at(i).getZbjW().Py();
-				cFlags[(i * 5) + 2] = di->at(i).getZbjW().Pz();
-				cFlags[(i * 5) + 3] = di->at(i).getZbjW().isb;
-				cFlags[(i * 5) + 4] = di->at(i).getZbjW().M();
+				cFlags[i * 5]	    = di[i].getZbjW().Px();
+				cFlags[(i * 5) + 1] = di[i].getZbjW().Py();
+				cFlags[(i * 5) + 2] = di[i].getZbjW().Pz();
+				cFlags[(i * 5) + 3] = di[i].getZbjW().isb;
+				cFlags[(i * 5) + 4] = di[i].getZbjW().M();
 
 				// c_bj
-				d[i * 5]	   = di->at(i).getCbj().Px();
-				d[(i * 5) + 1] = di->at(i).getCbj().Py();
-				d[(i * 5) + 2] = di->at(i).getCbj().Pz();
-				d[(i * 5) + 3] = di->at(i).getCbj().E();
-				d[(i * 5) + 4] = di->at(i).getCbj().M();
+				d[i * 5]	   = di[i].getCbj().Px();
+				d[(i * 5) + 1] = di[i].getCbj().Py();
+				d[(i * 5) + 2] = di[i].getCbj().Pz();
+				d[(i * 5) + 3] = di[i].getCbj().E();
+				d[(i * 5) + 4] = di[i].getCbj().M();
 
 				// c_bjWFlags
-				dFlags[i * 5]	    = di->at(i).getCbjW().Px();
-				dFlags[(i * 5) + 1] = di->at(i).getCbjW().Py();
-				dFlags[(i * 5) + 2] = di->at(i).getCbjW().Pz();
-				dFlags[(i * 5) + 3] = di->at(i).getCbjW().isb;
-				dFlags[(i * 5) + 4] = di->at(i).getCbjW().M();
+				dFlags[i * 5]	    = di[i].getCbjW().Px();
+				dFlags[(i * 5) + 1] = di[i].getCbjW().Py();
+				dFlags[(i * 5) + 2] = di[i].getCbjW().Pz();
+				dFlags[(i * 5) + 3] = di[i].getCbjW().isb;
+				dFlags[(i * 5) + 4] = di[i].getCbjW().M();
 			}
 
 			unsigned tamG, tamB;
@@ -405,8 +405,8 @@ namespace Dilep {
 				if(result.size())
 					++hasSolution;
 
-				di->at(comb).setHasSol(hasSolution);
-				di->at(comb).setResult(&result);
+				di[comb].setHasSol(hasSolution);
+				di[comb].setResult(&result);
 			}
 
 			cudaFree(dev_t_mass);

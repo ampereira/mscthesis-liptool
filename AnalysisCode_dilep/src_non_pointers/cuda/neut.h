@@ -52,7 +52,7 @@ namespace Dilep {
 
 		//void dilep (DilepInput &di);
 
-		__host__ void dilep (vector<DilepInput> *di);
+		__host__ void dilep (vector<DilepInput> &di);
 		//__host__ void dilep (vector<DilepInput> &di);
 		//void dilep (vector<DilepInput> &vdi, int x);
 
