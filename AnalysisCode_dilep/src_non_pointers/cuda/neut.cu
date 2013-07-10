@@ -222,7 +222,7 @@ namespace Dilep {
 
 
 		__host__
-		void dilep (vector<DilepInput> &di) {
+		void dilep (vector<DilepInput> &di, double _misspx, double _misspy) {
 
 			unsigned size = di.size();
 			double in_mpx[2 * size], in_mpy[2 * size], t_mass[2 * size], w_mass[2 * size];

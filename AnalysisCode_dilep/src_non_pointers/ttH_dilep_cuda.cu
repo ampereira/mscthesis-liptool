@@ -44,8 +44,6 @@ using namespace std;
 #include "ttDKF_Best_Sol.h"
 
 
-extern double _misspx;
-extern double _misspy;
 extern int dilep_iterations;
 extern int num_threads;
 //extern TRandom3 t_rnd;
