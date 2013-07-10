@@ -43,6 +43,8 @@ using namespace std;
 #include "utilities.h"
 #include "ttDKF_Best_Sol.h"
 
+
+extern double _misspx, _misspy;
 extern int dilep_iterations;
 extern int num_threads;
 //extern TRandom3 t_rnd;
@@ -3781,7 +3783,6 @@ if(TruthHasSolution > 0)
 
 }
 
-double _misspx, _misspy;
 
 }
 

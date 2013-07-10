@@ -1,7 +1,5 @@
 #include "neut.h"
 
-extern double _misspx;
-extern double _misspy;
 
 using std::vector;
 using namespace std;

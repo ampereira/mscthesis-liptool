@@ -37,6 +37,7 @@
 #define CUDA_CALL(x) x
 
 extern int dilep_iterations;
+double _misspx, _misspy;
 
 
 namespace Dilep {
