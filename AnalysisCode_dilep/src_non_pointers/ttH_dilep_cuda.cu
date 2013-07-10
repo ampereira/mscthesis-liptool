@@ -4028,8 +4028,6 @@ void ttH_dilep::ttDilepKinFit(){
 		}
 	}
 
-	_misspx = MissPx;
-	_misspy = MissPy;
 
 	// WARNING: numa primeira fase apenas para num combos <= num parallel tasks
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
@@ -4068,7 +4066,7 @@ void ttH_dilep::ttDilepKinFit(){
 	int n_ttDKF_Best = -999;
 	int first = 0;
 
-	Dilep::GPU::dilep(inputs);
+	Dilep::GPU::dilep(inputs, MissPx, MissPy);
 
 
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
