@@ -238,8 +238,8 @@ namespace Dilep {
 			double *dev_nc, *dev_MissPx, *dev_MissPy;
 			int *dev_count;
 
-			double _misspx = di[0].getMissPx();
-			double _misspy = di[0].getMissPy();
+			double _misspx = di.at(0).getMissPx();
+			double _misspy = di.at(0).getMissPy();
 
 			// time measurement
 			#ifdef MEASURE_DILEP
