@@ -3781,7 +3781,7 @@ if(TruthHasSolution > 0)
 
 }
 
-
+double _misspx, _misspy;
 
 }
 
@@ -4016,7 +4016,7 @@ void ttH_dilep::ttDilepKinFit(){
 									for (int iii = 0; iii < dilep_iterations; ++iii) {
 										DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 										//di.applyVariance(0.02);
-										
+
 										inputs.push_back(di);
 									}
 								}
@@ -4027,6 +4027,9 @@ void ttH_dilep::ttDilepKinFit(){
 			}
 		}
 	}
+
+	_misspx = MissPx;
+	_misspy = MissPy;
 
 	// WARNING: numa primeira fase apenas para num combos <= num parallel tasks
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento

@@ -1,5 +1,7 @@
 #include "neut.h"
 
+extern double _misspx;
+extern double _misspy;
 
 using std::vector;
 using namespace std;
@@ -238,9 +240,6 @@ namespace Dilep {
 			double *dev_nc, *dev_MissPx, *dev_MissPy;
 			int *dev_count;
 
-			double _misspx = di.at(0).getMissPx();
-			double _misspy = di.at(0).getMissPy();
-cout << _misspx << " " << _misspy << endl;
 			// time measurement
 			#ifdef MEASURE_DILEP
 			long long int time = startTimer();
