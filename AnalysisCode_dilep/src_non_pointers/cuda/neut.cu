@@ -240,7 +240,7 @@ namespace Dilep {
 
 			double _misspx = di.at(0).getMissPx();
 			double _misspy = di.at(0).getMissPy();
-
+cout << _misspx << " " << _misspy << endl;
 			// time measurement
 			#ifdef MEASURE_DILEP
 			long long int time = startTimer();
