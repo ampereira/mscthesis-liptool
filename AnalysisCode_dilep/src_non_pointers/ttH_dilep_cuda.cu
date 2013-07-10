@@ -43,7 +43,6 @@ using namespace std;
 #include "utilities.h"
 #include "ttDKF_Best_Sol.h"
 
-
 extern int dilep_iterations;
 extern int num_threads;
 //extern TRandom3 t_rnd;
@@ -3783,6 +3782,7 @@ if(TruthHasSolution > 0)
 }
 
 
+
 }
 
 // #############################################################################
@@ -4013,12 +4013,11 @@ void ttH_dilep::ttDilepKinFit(){
 
 									//TRandom3 *_t_rnd = new TRandom3 (SEED);
 									//DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
-									//for (int iii = 0; iii < dilep_iterations; ++iii) {
+									for (int iii = 0; iii < dilep_iterations; ++iii) {
 										DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 										//di.applyVariance(0.02);
-
 										inputs.push_back(di);
-									//}
+									}
 								}
 							}
 						}
@@ -4027,7 +4026,6 @@ void ttH_dilep::ttDilepKinFit(){
 			}
 		}
 	}
-
 
 	// WARNING: numa primeira fase apenas para num combos <= num parallel tasks
 	// inputs.size() * dilep_iterations e igual ao num total de iteracoes por evento
@@ -4066,19 +4064,12 @@ void ttH_dilep::ttDilepKinFit(){
 	int n_ttDKF_Best = -999;
 	int first = 0;
 
-	cout << EveNumber << " - " << inputs.size() << endl;
-	vector<DilepInput> coisos;
-
-	for(int as = 0; as < inputs.size(); ++as)
-		for(int ad = 0; ad < dilep_iterations; ++ad)
-			coisos.push_back(inputs[as]);
-
-	Dilep::GPU::dilep(coisos, MissPx, MissPy);
+	Dilep::GPU::dilep(inputs);
 
 
-	for (unsigned counter = 0; counter < coisos.size(); ++counter) {
+	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
 
-		DilepInput di = coisos[counter];
+		DilepInput di = inputs[counter];
 		// ---------------------------------------
 		// Get info from all possible solutions
 		// ---------------------------------------

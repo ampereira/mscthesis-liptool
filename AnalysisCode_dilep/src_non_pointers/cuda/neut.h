@@ -52,7 +52,7 @@ namespace Dilep {
 
 		//void dilep (DilepInput &di);
 
-		__host__ void dilep (vector<DilepInput> &di, double _misspx, double _misspy);
+		__host__ void dilep (vector<DilepInput> &di);
 		//void dilep (vector<DilepInput> &vdi, int x);
 
 		__global__ void dilep_kernel (double _in_mpx[], double _in_mpy[], double _z_lepWFlags[], double _c_lepWFlags[],

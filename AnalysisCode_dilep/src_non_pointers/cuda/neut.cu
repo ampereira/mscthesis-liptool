@@ -222,7 +222,7 @@ namespace Dilep {
 
 
 		__host__
-		void dilep (vector<DilepInput> &di, double _misspx, double _misspy) {
+		void dilep (vector<DilepInput> &di) {
 
 			unsigned size = di.size();
 			double in_mpx[2 * size], in_mpy[2 * size], t_mass[2 * size], w_mass[2 * size];
@@ -237,6 +237,9 @@ namespace Dilep {
 			double *dev_lep_aFlags, *dev_lep_bFlags, *dev_bj_aFlags, *dev_bj_bFlags;
 			double *dev_nc, *dev_MissPx, *dev_MissPy;
 			int *dev_count;
+
+			double _misspx = di[0].getMissPx();
+			double _misspy = di[0].getMissPy();
 
 			// time measurement
 			#ifdef MEASURE_DILEP
