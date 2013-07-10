@@ -4069,7 +4069,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 	cout << EveNumber << " - " << inputs.size() << endl;
 
-	Dilep::GPU::dilep(inputs, MissPx, MissPy);
+	Dilep::GPU::dilep(inputs);
 
 
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
