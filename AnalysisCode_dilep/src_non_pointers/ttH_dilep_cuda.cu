@@ -4066,9 +4066,9 @@ void ttH_dilep::ttDilepKinFit(){
 	int n_ttDKF_Best = -999;
 	int first = 0;
 
-	cout << EveNumber << " - " << inputs.size() << endl;
+	cout << EveNumber << " - " << inputs->size() << endl;
 
-	Dilep::GPU::dilep(inputs, MissPx, MissPy);
+	Dilep::GPU::dilep(inputs);
 
 
 	for (unsigned counter = 0; counter < inputs->size(); ++counter) {
