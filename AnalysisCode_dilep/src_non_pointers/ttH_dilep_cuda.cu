@@ -4067,13 +4067,18 @@ void ttH_dilep::ttDilepKinFit(){
 	int first = 0;
 
 	cout << EveNumber << " - " << inputs.size() << endl;
+	vector<DilepInput> coisos;
 
-	Dilep::GPU::dilep(inputs, MissPx, MissPy);
+	for(int as = 0; as < inputs.size(); ++as)
+		for(int ad = 0; ad < dilep_iterations; ++ad)
+			coisos.push_back(inputs[as]);
+
+	Dilep::GPU::dilep(coisos, MissPx, MissPy);
 
 
-	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
+	for (unsigned counter = 0; counter < coisos.size(); ++counter) {
 
-		DilepInput di = inputs[counter];
+		DilepInput di = coisos[counter];
 		// ---------------------------------------
 		// Get info from all possible solutions
 		// ---------------------------------------
