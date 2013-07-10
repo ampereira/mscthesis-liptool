@@ -3964,7 +3964,7 @@ void ttH_dilep::ttDilepKinFit(){
 	//			     2 jet for H->bbbar
 	// ---------------------------------------
 
-	std::vector<DilepInput> inputs;
+	std::vector<DilepInput> *inputs;
 
 	if ( ttDKF_JetCombChoice == 1 ){ 
 		for ( int j1=0; j1 < ttDKF_njets ; j1++){
@@ -4017,7 +4017,7 @@ void ttH_dilep::ttDilepKinFit(){
 										DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 										//di.applyVariance(0.02);
 
-										inputs.push_back(di);
+										inputs->push_back(di);
 									}
 								}
 							}
@@ -4071,9 +4071,9 @@ void ttH_dilep::ttDilepKinFit(){
 	Dilep::GPU::dilep(inputs, MissPx, MissPy);
 
 
-	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
+	for (unsigned counter = 0; counter < inputs->size(); ++counter) {
 
-		DilepInput di = inputs[counter];
+		DilepInput di = inputs->at(counter);
 		// ---------------------------------------
 		// Get info from all possible solutions
 		// ---------------------------------------
