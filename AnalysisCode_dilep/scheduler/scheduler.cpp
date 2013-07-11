@@ -5,6 +5,8 @@
 #include <omp.h>
 #include <unistd.h>
 #include <sstream>
+#include <sys/time.h>
+#include <ofstream>
 
 #include "app.h"
 
@@ -77,7 +79,7 @@ int main (int argc, char **argv) {
 	s2 << argv[2];
 	s1 >> iterations;
 	s2 >> num_threads;
-	
+
 	setup(iterations, num_threads);
 
 	long long int t = startTimer ();
