@@ -21,15 +21,24 @@ void setup (unsigned its, unsigned threads) {
 
 // necessario alterar para receber os argumentos como input
 
-int main (void) {
+int main (int argc, char **argv) {
 	// inputs
-	unsigned iterations = 1;
-	unsigned num_threads = 4;
+	unsigned iterations;
+	unsigned num_threads;
 	unsigned num_parallel_apps = 2;
 	unsigned num_total_runs = 10;
 	string app ("ttH_dilep_omp");
 	string inputs ("--OutputFileName=ttH125_dilepbb_em --SetSystematicsFileName=../../RefSys/Ref.txt --Sample=901 --User=\"CutTriggerEleMuo=1\" --User=\"lepSample=23\"");
 
+	if (argc < 3) {
+		cout << "Not enough arguments" << endl;
+		exit(-1);
+	}
+	stringstream s1, s2;
+	s1 << argv[1];
+	s2 << argv[2];
+	s1 >> iterations;
+	s2 >> num_threads;
 
 	vector<App> applications;
 
