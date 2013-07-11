@@ -35,9 +35,7 @@ int main (void) {
 	{
 		#pragma omp for schedule(dynamic)
 		for (int i = 0; i < applications.size(); ++i) {
-			cout << omp_get_thread_num() << " ";
-			sleep(2);
-			//applications[i].run();
+			applications[i].run();
 		}
 	}
 
