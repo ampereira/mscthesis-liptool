@@ -4,17 +4,19 @@
 #include <vector>
 #include <omp.h>
 #include <unistd.h>
+#include <sstream>
 
 #include "app.h"
 
 using namespace std;
 
 void setup (unsigned its, unsigned threads) {
-	string c1 = string(its);
-	string c2 = string(threads);
+	stringstream a1, a2;
+	a1 << its;
+	a2 << threads;
 
-	setenv("DILEP_ITER", c1.c_str(), true);
-	setenv("NUM_THREADS", c2.c_str(), true);
+	setenv("DILEP_ITER", a1.string().c_str(), true);
+	setenv("NUM_THREADS", a2.string().c_str(), true);
 }
 
 // necessario alterar para receber os argumentos como input
