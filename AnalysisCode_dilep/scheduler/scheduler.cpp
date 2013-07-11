@@ -28,9 +28,9 @@ int main (void) {
 		applications.push_back(a);
 	}
 
-	omp_set_num_threads(num_parallel_apps);
+	//omp_set_num_threads(num_parallel_apps);
 
-	#pragma omp parallel
+	#pragma omp parallel num_threads(2)
 	{
 		#pragma omp for schedule(dynamic)
 		for (int i = 0; i < applications.size(); ++i) {
