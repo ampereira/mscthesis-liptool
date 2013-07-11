@@ -4071,6 +4071,10 @@ for (int iii = 0; iii < dilep_iterations; ++iii) {
 	Dilep::GPU::dilep(inputs);
 
 
+	#ifdef MEASURE_KINFIT
+		ttH::KinFit::stopTimer(time);
+	#endif
+
 	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
 
 		DilepInput di = inputs[counter];
@@ -4361,10 +4365,6 @@ for (int iii = 0; iii < dilep_iterations; ++iii) {
 	
 
 
-
-	#ifdef MEASURE_KINFIT
-		ttH::KinFit::stopTimer(time);
-	#endif
 
 	// -------------------------------------------------------------------
 	// Redefine HasSolution if no other reconstruction criteria met

@@ -30,9 +30,22 @@ void calc_dilep_mic(double t_mass[], double w_mass[],
 	int size2 = size * 2;
 	int size5 = size * 5;
 	int size16 = size * 16;
-
-	#pragma offload target(mic:0) in(w_mass,t_mass,in_mpx,in_mpy:length(size2)) in(_lep_a,_lep_b,_bl_a,_bl_b:length(size5)) out(nc:length(size16)) out(a:length(size))
+	int ds = 0;
+	#pragma offload target(mic)
 	{
+		for(int j = 0; j < 10; ++j)
+			ds++;
+	}
+/*
+	//#pragma offload target(mic:0) in(w_mass,t_mass,in_mpx,in_mpy:length(size2)) in(_lep_a,_lep_b,_bl_a,_bl_b:length(size5)) out(nc:length(size16)) out(a:length(size))
+	#pragma offload target(mic)
+	{
+		for (int j = 0; j < size2; ++j){
+			in_mpx = 123.0;
+			in_mpy = 123.0;
+		}
+		for (int j = 0; j < size5; ++j){
+		}
 //		#pragma omp parallel
 		{
 //			#pragma omp for schedule(dynamic) 
@@ -278,6 +291,7 @@ void calc_dilep_mic(double t_mass[], double w_mass[],
 }
 }
 }
+*/
 }
 
 //////////////////////////////////////
