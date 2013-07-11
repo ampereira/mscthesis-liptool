@@ -10,11 +10,11 @@
 using namespace std;
 
 void setup (unsigned its, unsigned threads) {
-	string c1 = "export DILEP_ITER=" + its;
-	string c2 = "export NUM_THREADS=" + threads;
+	string c1 = its;
+	string c2 = threads;
 
-	putenv((char *) c1.c_str());
-	putenv((char *) c2.c_str());
+	setenv("DILEP_ITER", c1, true);
+	setenv("NUM_THREADS", c2, true);
 }
 
 // necessario alterar para receber os argumentos como input
