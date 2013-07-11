@@ -30,10 +30,13 @@ int main (void) {
 
 	omp_set_num_threads(num_threads);
 
-	#pragma omp parallel for scheduler(dynamic)
-	for (int i = 0; i < applications.size(); ++i) {
-		cout << omp_get_thread_num() << " ";
-		applications[i].run();
+	#pragma omp parallel
+	{
+		#pragma omp for scheduler(dynamic)
+		for (int i = 0; i < applications.size(); ++i) {
+			cout << omp_get_thread_num() << " ";
+			applications[i].run();
+		}
 	}
 
 }
