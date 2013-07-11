@@ -37,7 +37,7 @@ int main (void) {
 		applications.push_back(a);
 	}
 
-	setup();
+	setup(iterations, num_threads);
 
 	omp_set_num_threads(num_parallel_apps);
 
