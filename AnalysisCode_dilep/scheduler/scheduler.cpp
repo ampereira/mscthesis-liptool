@@ -13,8 +13,8 @@ void setup (unsigned its, unsigned threads) {
 	string c1 = "export DILEP_ITER=" + its;
 	string c2 = "export NUM_THREADS=" + threads;
 
-	system(c1.c_str());
-	system(c2.c_str());
+	putenv(c1.c_str());
+	putenv(c2.c_str());
 }
 
 // necessario alterar para receber os argumentos como input
