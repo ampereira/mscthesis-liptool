@@ -9,6 +9,14 @@
 
 using namespace std;
 
+void setup (unsigned its, unsigned threads) {
+	string c1 = "export DILEP_ITER=" + its;
+	string c2 = "export NUM_THREADS=" + threads;
+
+	system(c1.c_str());
+	system(c2.c_str());
+}
+
 // necessario alterar para receber os argumentos como input
 
 int main (void) {
@@ -28,6 +36,8 @@ int main (void) {
 		App a (app, inputs);
 		applications.push_back(a);
 	}
+
+	setup();
 
 	omp_set_num_threads(num_parallel_apps);
 
