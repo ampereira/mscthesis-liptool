@@ -60,6 +60,7 @@ void setup (unsigned its, unsigned threads) {
 
 	setenv("DILEP_ITER", a1.str().c_str(), true);
 	setenv("NUM_THREADS", a2.str().c_str(), true);
+	//setenv("OMP_PROC_BIND", "true", true);
 }
 
 // necessario alterar para receber os argumentos como input
@@ -67,7 +68,7 @@ void setup (unsigned its, unsigned threads) {
 int main (int argc, char **argv) {
 	// inputs
 	unsigned num_threads;
-	unsigned num_parallel_apps = 2;
+	unsigned num_parallel_apps = 4;
 	unsigned num_total_runs = 10;
 	string app ("ttH_dilep_omp");
 	string inputs ("--OutputFileName=ttH125_dilepbb_em --SetSystematicsFileName=../../RefSys/Ref.txt --Sample=901 --User=\"CutTriggerEleMuo=1\" --User=\"lepSample=23\"");
