@@ -28,14 +28,14 @@ int main (void) {
 		applications.push_back(a);
 	}
 
-	omp_set_num_threads(num_threads);
+	omp_set_num_threads(num_parallel_apps);
 
 	#pragma omp parallel
 	{
 		#pragma omp for schedule(dynamic)
 		for (int i = 0; i < applications.size(); ++i) {
 			cout << omp_get_thread_num() << " ";
-			applications[i].run();
+			//applications[i].run();
 		}
 	}
 
