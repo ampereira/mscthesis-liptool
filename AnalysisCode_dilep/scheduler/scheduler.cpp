@@ -15,8 +15,8 @@ void setup (unsigned its, unsigned threads) {
 	a1 << its;
 	a2 << threads;
 
-	setenv("DILEP_ITER", a1.string().c_str(), true);
-	setenv("NUM_THREADS", a2.string().c_str(), true);
+	setenv("DILEP_ITER", a1.str().c_str(), true);
+	setenv("NUM_THREADS", a2.str().c_str(), true);
 }
 
 // necessario alterar para receber os argumentos como input
