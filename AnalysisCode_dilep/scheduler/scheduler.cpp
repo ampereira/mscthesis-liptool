@@ -10,6 +10,44 @@
 
 using namespace std;
 
+// Time measurement functions
+long long int startTimer (void) {
+	long long int time;
+	timeval t;
+
+	
+	gettimeofday(&t, NULL);
+	time = t.tv_sec * 1000000 + t.tv_usec;
+
+	return time;
+}
+
+long long int stopTimer (long long int init) {
+	timeval t;
+	long long int end;
+	char *buff = NULL;
+	char *flag = NULL;
+
+	gettimeofday(&t, NULL);
+
+	ofstream file;
+	string filename = "time_scheduler";
+
+	stringstream ss;
+	ss << dilep_iterations;
+
+	filename.append(ss.str());
+	filename.append(".txt");
+
+	end = t.tv_sec * APP_TIME_RESOLUTION + t.tv_usec;
+	end -= init;
+
+	file.precision(15);
+	file.open(filename.c_str(), fstream::app);
+	file << end << endl;
+	file.close();
+}
+
 void setup (unsigned its, unsigned threads) {
 	stringstream a1, a2;
 	a1 << its;
@@ -39,7 +77,10 @@ int main (int argc, char **argv) {
 	s2 << argv[2];
 	s1 >> iterations;
 	s2 >> num_threads;
+	
+	setup(iterations, num_threads);
 
+	long long int t = startTimer ();
 	vector<App> applications;
 
 	// build apps vector
@@ -47,8 +88,6 @@ int main (int argc, char **argv) {
 		App a (app, inputs);
 		applications.push_back(a);
 	}
-
-	setup(iterations, num_threads);
 
 	omp_set_num_threads(num_parallel_apps);
 
@@ -59,5 +98,9 @@ int main (int argc, char **argv) {
 			applications[i].run();
 		}
 	}
+
+	stopTimer (t);
+
+	return 0;
 
 }
