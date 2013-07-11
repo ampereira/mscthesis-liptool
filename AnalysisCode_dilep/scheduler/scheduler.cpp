@@ -6,9 +6,12 @@
 #include <unistd.h>
 #include <sstream>
 #include <sys/time.h>
-#include <ofstream>
+#include <fstream>
 
 #include "app.h"
+
+unsigned iterations;
+
 
 using namespace std;
 
@@ -36,12 +39,12 @@ long long int stopTimer (long long int init) {
 	string filename = "time_scheduler";
 
 	stringstream ss;
-	ss << dilep_iterations;
+	ss << iterations;
 
 	filename.append(ss.str());
 	filename.append(".txt");
 
-	end = t.tv_sec * APP_TIME_RESOLUTION + t.tv_usec;
+	end = t.tv_sec * 1000000 + t.tv_usec;
 	end -= init;
 
 	file.precision(15);
@@ -63,7 +66,6 @@ void setup (unsigned its, unsigned threads) {
 
 int main (int argc, char **argv) {
 	// inputs
-	unsigned iterations;
 	unsigned num_threads;
 	unsigned num_parallel_apps = 2;
 	unsigned num_total_runs = 10;
