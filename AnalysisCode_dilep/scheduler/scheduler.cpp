@@ -25,8 +25,15 @@ int main (void) {
 	// build apps vector
 	for (int i = 0; i < num_total_runs; ++i) {
 		App a (app, inputs);
-		a.run();
 		applications.push_back(a);
+	}
+
+	omp_set_num_threads(num_threads);
+
+	#pragma omp parallel for scheduler(dynamic)
+	for (int i = 0; i < applications.size(); ++i) {
+		cout << omp_get_thread_num() << " ";
+		applications[i].run();
 	}
 
 }
