@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <omp.h>
+#include <unistd.h>
 
 #include "app.h"
 
