@@ -10,8 +10,8 @@
 using namespace std;
 
 void setup (unsigned its, unsigned threads) {
-	string c1 = its;
-	string c2 = threads;
+	string c1 = string(its);
+	string c2 = string(threads);
 
 	setenv("DILEP_ITER", c1.c_str(), true);
 	setenv("NUM_THREADS", c2.c_str(), true);
