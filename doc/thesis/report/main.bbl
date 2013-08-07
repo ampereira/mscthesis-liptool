@@ -16,6 +16,375 @@
   {}
 \endgroup
 
+\entry{CERN}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{C{ERN} {E}uropean {O}rganization for {N}uclear {R}esearch}
+  \verb{url}
+  \verb http://public.web.cern.ch/public/
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:PS}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{The Proton Synchrotron}
+  \verb{url}
+  \verb http://home.web.cern.ch/about/accelerators/proton-synchrotron
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:LHC}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{The {L}arge {H}adron {C}ollider}
+  \verb{url}
+  \verb http://public.web.cern.ch/public/en/lhc/lhc-en.html
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:CMS}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{Compact Muon Solenoid experiment}
+  \verb{url}
+  \verb http://cms.web.cern.ch/
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:ATLAS}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{A{TLAS} experiment}
+  \verb{url}
+  \verb http://atlas.ch/
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:LHCb}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{The Large Hadron Collider beauty experiment}
+  \verb{url}
+  \verb http://lhcb-public.web.cern.ch/lhcb-public/
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:MoEDAL}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{The Monopole & Exotics Detector at the LHC}
+  \verb{url}
+  \verb http://moedal.web.cern.ch/
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:TOTEM}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{Total Cross Section, Elastic Scattering and Diffraction
+  Dissociation at the LHC}
+  \verb{url}
+  \verb http://totem.web.cern.ch/Totem/
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:LHCf}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{The Large Hadron Collider forward experiment}
+  \verb{url}
+  \verb http://home.web.cern.ch/about/experiments/lhcf
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:ALICE}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{A Large Ion Collider Experiment}
+  \verb{url}
+  \verb http://aliceinfo.cern.ch/
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:DATA1}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{Computing}
+  \verb{url}
+  \verb http://home.web.cern.ch/about/computing
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:DATA2}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{Animation shows LHC data processing}
+  \verb{url}
+  \verb http://home.web.cern.ch/about/updates/2013/04/animation-shows-lhc-data-
+  \verb processing
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:WLHCCG}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{R}esearch}{R.}%
+     {European}{E.}%
+     {{O}rganization for~{N}uclear}{O.~f.~N.}%
+     {}{}}%
+  }
+  \strng{namehash}{REOfN1}
+  \strng{fullhash}{REOfN1}
+  \field{title}{The Worldwide LHC Computing Grid}
+  \verb{url}
+  \verb http://wlcg.web.cern.ch/
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{LIP}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{P}artículas}{P.}%
+     {Laboratório}{L.}%
+     {de~{E}xperimentação e {F}ísica {E}xperimental~de}{d.~E. e. F. E.~d.}%
+     {}{}}%
+  }
+  \strng{namehash}{PLdEeFEd1}
+  \strng{fullhash}{PLdEeFEd1}
+  \field{title}{Laboratório de {E}xperimentação e {F}ísica {E}xperimental
+  de {P}artículas}
+  \verb{url}
+  \verb http://www.lip.pt/
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{MooreLaw}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Moore}{M.}%
+     {Gordon~E.}{G.~E.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{MGE1}
+  \strng{fullhash}{MGE1}
+  \field{title}{Cramming more components onto integrated circuits.}
+  \field{journaltitle}{Electronics, 38(8)}
+  \field{year}{1965}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{Intel:MIC}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Intel}{I.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {Intel}%
+  }
+  \strng{namehash}{I1}
+  \strng{fullhash}{I1}
+  \field{title}{The Intel® Xeon PhiTM Coprocessor 5110P}
+  \field{type}{techreport}
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{Texas:DSP}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Instruments}{I.}%
+     {Texas}{T.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{IT1}
+  \strng{fullhash}{IT1}
+  \field{title}{Digital {S}ignal {P}rocessors}
+  \verb{url}
+  \verb http://www.ti.com/lsds/ti/dsp/overview.page
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{TOP500}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {500}{.}%
+     {TOP}{T.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{T1}
+  \strng{fullhash}{T1}
+  \field{title}{June 2013}
+  \verb{url}
+  \verb http://www.top500.org/lists/2013/06/
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:ROOT}{online}{}
+  \name{author}{2}{}{%
+    {{}%
+     {F.~Rademakers}{F.~R.}%
+     {B.~Bellenot O. Couet A. Naumann G. Ganis L. Moneta V. Vasilev A. Gheata
+  P.~Russo}{B.~B. O. C. A. N. G. G. L. M. V. V. A. G. P.~R.}%
+     {}{}%
+     {P.~Canal}{P.~C.}}%
+    {{}%
+     {Brun}{B.}%
+     {R.}{R.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{FRPCBBOCANGGLMVVAGPRBR1}
+  \strng{fullhash}{FRPCBBOCANGGLMVVAGPRBR1}
+  \field{title}{R{OOT}}
+  \verb{url}
+  \verb http://root.cern.ch/drupal/
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{Callgrind}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Developers}{D.}%
+     {Valgrind}{V.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{DV1}
+  \strng{fullhash}{DV1}
+  \field{title}{{Callgrind: a call-graph generating cache and branch prediction
+  profiler}}
+  \verb{url}
+  \verb http://valgrind.org/docs/manual/cl-manual.html
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
 \lossort
 \endlossort
 
