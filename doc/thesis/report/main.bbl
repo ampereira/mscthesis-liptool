@@ -342,22 +342,375 @@
   \warn{\item Invalid format of field 'month'}
 \endentry
 
-\entry{CERN:ROOT}{online}{}
-  \name{author}{2}{}{%
+\entry{NVIDIA:Fermi}{report}{}
+  \name{author}{1}{}{%
     {{}%
-     {F.~Rademakers}{F.~R.}%
-     {B.~Bellenot O. Couet A. Naumann G. Ganis L. Moneta V. Vasilev A. Gheata
-  P.~Russo}{B.~B. O. C. A. N. G. G. L. M. V. V. A. G. P.~R.}%
+     {NVIDIA}{N.}%
      {}{}%
-     {P.~Canal}{P.~C.}}%
-    {{}%
-     {Brun}{B.}%
-     {R.}{R.}%
      {}{}%
      {}{}}%
   }
-  \strng{namehash}{FRPCBBOCANGGLMVVAGPRBR1}
-  \strng{fullhash}{FRPCBBOCANGGLMVVAGPRBR1}
+  \list{organization}{1}{%
+    {NVIDIA}%
+  }
+  \strng{namehash}{N1}
+  \strng{fullhash}{N1}
+  \field{title}{NVIDIA's Next Generation CUDA Compute Architectur: Fermi}
+  \field{type}{techreport}
+  \field{year}{2009}
+\endentry
+
+\entry{NVIDIA:Tegra}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Corporation}{C.}%
+     {NVIDIA}{N.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{CN1}
+  \strng{fullhash}{CN1}
+  \field{title}{Tegra}
+  \verb{url}
+  \verb http://www.nvidia.com/object/tegra.html
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{ARM}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Jr.}{J.}%
+     {Sixto~Ortiz}{S.~O.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{JSO1}
+  \strng{fullhash}{JSO1}
+  \field{title}{Chipmakers ARM for Battle in Traditional Computing Market.}
+  \field{journaltitle}{Computer, 44(4):14-17}
+  \field{year}{2011}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{OpenMP}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Corporation}{C.}%
+     {OpenACC}{O.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{CO1}
+  \strng{fullhash}{CO1}
+  \field{title}{{OpenACC: Directives for Accelerators}}
+  \verb{url}
+  \verb http://openmp.org/wp/
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{Intel:TBB}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Reinders}{R.}%
+     {James}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {Intel}%
+  }
+  \strng{namehash}{RJ1}
+  \strng{fullhash}{RJ1}
+  \field{title}{Intel Threading Building Blocks}
+  \field{type}{techreport}
+  \field{year}{2007}
+\endentry
+
+\entry{Cilk}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Technology}{T.}%
+     {Massachussets~Institute}{M.~I.}%
+     {of}{o.}%
+     {}{}}%
+  }
+  \strng{namehash}{TMIo1}
+  \strng{fullhash}{TMIo1}
+  \field{title}{{The Cilk Project}}
+  \verb{url}
+  \verb http://supertech.csail.mit.edu/cilk/
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{MPI}{article}{}
+  \name{author}{14}{}{%
+    {{}%
+     {Gabriel}{G.}%
+     {Edgar}{E.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Fagg}{F.}%
+     {Graham~E.}{G.~E.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Bosilca}{B.}%
+     {George}{G.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Angskun}{A.}%
+     {Thara}{T.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Dongarra}{D.}%
+     {Jack~J.}{J.~J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Squyres}{S.}%
+     {Jeffrey~M.}{J.~M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Sahay}{S.}%
+     {Vishal}{V.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Kambadur}{K.}%
+     {Prabhanjan}{P.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Barrett}{B.}%
+     {Brian}{B.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Lumsdaine}{L.}%
+     {Andrew}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Castain}{C.}%
+     {Ralph~H.}{R.~H.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Daniel}{D.}%
+     {David~J.}{D.~J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Graham}{G.}%
+     {Richard~L.}{R.~L.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Woodall}{W.}%
+     {Timothy~S.}{T.~S.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{GE+1}
+  \strng{fullhash}{GEFGEBGATDJJSJMSVKPBBLACRHDDJGRLWTS1}
+  \field{booktitle}{Proceedings, 11th European PVM/MPI Users' Group Meeting}
+  \field{pages}{97\bibrangedash 104}
+  \field{title}{Open {MPI}: Goals, Concept, and Design of a Next Generation
+  {MPI} Implementation}
+  \list{location}{1}{%
+    {Budapest, Hungary}%
+  }
+  \field{year}{2004}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{OpenACC}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{OpenACC Corporation}}{O.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{O1}
+  \strng{fullhash}{O1}
+  \field{title}{{OpenACC}}
+  \verb{url}
+  \verb http://www.openacc-standard.org/
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{OpenACC:HPCWire}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Wire}{W.}%
+     {HPC}{H.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{WH1}
+  \strng{fullhash}{WH1}
+  \field{title}{OpenACC Group Reports Expanding Support for Accelerator
+  Programming Standard}
+  \verb{url}
+  \verb http://www.hpcwire.com/hpcwire/2012-06-20/openacc_group_reports_expandi
+  \verb ng_support_for_accelerator_programming_standard.html
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{OpenACC:OpenMP}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Corporation}{C.}%
+     {OpenACC}{O.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{CO1}
+  \strng{fullhash}{CO1}
+  \field{title}{{How does the OpenACC API relate to OpenMP API}}
+  \verb{url}
+  \verb http://www.openacc-standard.org/node/49
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{GAMA}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Barbosa}{B.}%
+     {João}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {Informatics Department, University of Minho}%
+  }
+  \strng{namehash}{BJ1}
+  \strng{fullhash}{BJ1}
+  \field{title}{GAMA framework: Hardware Aware Scheduling in Heterogeneous
+  Environments}
+  \field{type}{techreport}
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{Intel:VTune}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Intel}{I.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {Intel Corporation}%
+  }
+  \strng{namehash}{I1}
+  \strng{fullhash}{I1}
+  \field{title}{Profiling Runtime Generated and Interpreted Code with Intel
+  VTune Amplifier}
+  \field{type}{techreport}
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{PAPI}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Browne}{B.}%
+     {S.}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Deane}{D.}%
+     {C.}{C.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Ho}{H.}%
+     {G.}{G.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Muccima}{M.}%
+     {P.}{P.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{BS+1}
+  \strng{fullhash}{BSDCHGMP1}
+  \field{title}{PAPI: A Portable Interface to Hardware Performance Counters}
+  \field{journaltitle}{Proceedings of Department of Defense HPCMP Users Group
+  Conference}
+  \field{year}{1999}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{GDB}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Foundation}{F.}%
+     {Free~Software}{F.~S.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{FFS1}
+  \strng{fullhash}{FFS1}
+  \field{title}{GDB: The GNU Project Debugger}
+  \verb{url}
+  \verb http://www.gnu.org/software/gdb/
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{NVIDIA:gdb}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {NVIDIA}{N.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {NVIDIA}%
+  }
+  \strng{namehash}{N1}
+  \strng{fullhash}{N1}
+  \field{title}{CUDA-GDB: The NVIDIA CUDA Debugger User Manual}
+  \field{type}{techreport}
+  \field{year}{2008}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:ROOT}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{F. Rademakers and P. Canal and B. Bellenot and O. Couet and A. Naumann
+  and G. Ganis and L. Moneta and V. Vasilev and A. Gheata and P. Russo and R.
+  Brun}}{F.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{F1}
+  \strng{fullhash}{F1}
   \field{title}{R{OOT}}
   \verb{url}
   \verb http://root.cern.ch/drupal/
@@ -366,23 +719,238 @@
   \warn{\item Invalid format of field 'month'}
 \endentry
 
-\entry{Callgrind}{online}{}
-  \name{author}{1}{}{%
+\entry{BLAS}{article}{}
+  \name{author}{13}{}{%
     {{}%
-     {Developers}{D.}%
-     {Valgrind}{V.}%
+     {Blackford}{B.}%
+     {L.~S.}{L.~S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Demmel}{D.}%
+     {J.}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Dongarra}{D.}%
+     {J.}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Duff}{D.}%
+     {I.}{I.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Hammarling}{H.}%
+     {S.}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Henry}{H.}%
+     {G.}{G.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Heroux}{H.}%
+     {M.}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Kaufman}{K.}%
+     {L.}{L.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Lumsdaine}{L.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Petitet}{P.}%
+     {A.}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Pozo}{P.}%
+     {R.}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Remington}{R.}%
+     {K.}{K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Whaley}{W.}%
+     {R.~C.}{R.~C.}%
      {}{}%
      {}{}}%
   }
-  \strng{namehash}{DV1}
-  \strng{fullhash}{DV1}
-  \field{title}{{Callgrind: a call-graph generating cache and branch prediction
-  profiler}}
+  \strng{namehash}{BLS+1}
+  \strng{fullhash}{BLSDJDJDIHSHGHMKLLAPAPRRKWRC1}
+  \field{title}{An Updated Set of Basic Linear Algebra Subprograms (BLAS)}
+  \field{journaltitle}{ACM Trans. Math. Soft., 28-2}
+  \field{year}{2002}
+\endentry
+
+\entry{MKL}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Corporation}{C.}%
+     {Intel}{I.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{CI1}
+  \strng{fullhash}{CI1}
+  \field{title}{{Intel Math Kernel Library}}
   \verb{url}
-  \verb http://valgrind.org/docs/manual/cl-manual.html
+  \verb http://software.intel.com/en-us/intel-mkl/
   \endverb
   \field{year}{2013}
   \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{CERN:PROOF}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {{F. Rademakers and P. Canal and B. Bellenot and O. Couet and A. Naumann
+  and G. Ganis and L. Moneta and V. Vasilev and A. Gheata and P. Russo and R.
+  Brun}}{F.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{F1}
+  \strng{fullhash}{F1}
+  \field{title}{P{ROOF}}
+  \verb{url}
+  \verb http://root.cern.ch/drupal/content/proof
+  \endverb
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{MersenneTwister}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Matsumoto}{M.}%
+     {Makoto}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Saito}{S.}%
+     {Mutsuo}{M.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{MMSM1}
+  \strng{fullhash}{MMSM1}
+  \field{title}{Variants of Mersenne Twister Suitable for Graphic Processors}
+  \field{journaltitle}{ACM Transactions on Modeling and Computer Simulations:
+  Special Issue on Uniform Random Number Generation}
+  \field{year}{1998}
+\endentry
+
+\entry{NVIDIA:MersenneTwister}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Matsumoto}{M.}%
+     {Makoto}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Nishimura}{N.}%
+     {Takuji}{T.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{MMNT1}
+  \strng{fullhash}{MMNT1}
+  \field{title}{Mersenne Twister: A 623-dimensionally equidistributed uniform
+  pseudorandom number generator}
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{NVIDIA:cuRand}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {NVIDIA}{N.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {NVIDIA}%
+  }
+  \strng{namehash}{N1}
+  \strng{fullhash}{N1}
+  \field{title}{CUDA CURAND Library}
+  \field{type}{techreport}
+  \field{year}{2010}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{AcceptanceRandom}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Hoermann}{H.}%
+     {W.}{W.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Derﬂinger}{D.}%
+     {G.}{G.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{HWDG1}
+  \strng{fullhash}{HWDG1}
+  \field{title}{The ACR Method for generating normal random variables}
+  \field{journaltitle}{OR Spektrum 12, 181-185}
+  \field{year}{1990}
+\endentry
+
+\entry{BoxMuller}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Box}{B.}%
+     {G.~E.~P.}{G.~E.~P.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Muller}{M.}%
+     {Mervin~E.}{M.~E.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{BGEPMME1}
+  \strng{fullhash}{BGEPMME1}
+  \field{title}{A Note on the Generation of Random Normal Deviates}
+  \field{journaltitle}{Annals of Mathematical Statistics, Volume 29, 610-611}
+  \field{year}{1958}
+\endentry
+
+\entry{Ziggurat}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Marsaglia}{M.}%
+     {George}{G.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Tsang}{T.}%
+     {Wai~Wan}{W.~W.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{MGTWW1}
+  \strng{fullhash}{MGTWW1}
+  \field{title}{The Ziggurat Method for Generating Random Variables}
+  \field{journaltitle}{Journal of Statistical Software}
+  \field{year}{2000}
 \endentry
 
 \lossort

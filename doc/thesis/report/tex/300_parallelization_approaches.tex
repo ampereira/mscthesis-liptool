@@ -1,6 +1,27 @@
 \pdfbookmark{Parallelization Approaches}{parallelization approaches}
 \chapter{Parallelization Approaches}
-\label{Parallelization:Sequential}
+\label{ParallelizationApproaches}
+
+
+
+
+
+
+Each input file has around 1 GByte that makes perfectly possible to be stored on RAM memory. However, for each event its information is read from the file and loaded to hundreds of global variables and then it is submited through the cuts. If all the events were read at once, it would be possible to take advantage of the higher bandwidth of sequential reads to the hard drive. Even the overhead of creating such data structure for the events would be compensated by the faster acesses and possibility of easier parallelization of the analysis at the event level, since the events have no dependencies between them.
+
+
+
+The kinematical reconstruction is performed in the \dilep routine. The \ttbar system obeys a set of properties of an theoretical expected model. To reconstruct both of the Top Quarks it is needed to know the characteristics of all resultant particles from their decay. However, since the neutrinos do not react with the detector, and their characteristics are not recorded, it is needed to infer them, using the properties of momentum and energy conservation of the system. Once the neutrinos characteristics are determined, it is possible to reconstruct the Top Quarks.
+
+\dilep analitically solves a system of 6 equations to infer the neutrinos characteristics and then reconstruct the Top Quarks. The routine is dependent on only one class from ROOT, TLorentzVector, making it easy to port to GPU, aside from the process of marshaling and unmarshaling the data, namely the TLorentzVector classes from ROOT, into a format that is usable in \cuda. Executions of \dilep on different inputs are completely independent, since this function does not alter the global state of the \tth analysis.
+
+
+
+
+
+
+
+
 
 The section of code which takes more time is the \ttDilepKinFit function. The main objective is to run as many kinematical reconstructions per event, with a slight variation to the particle characteristics, and as they increase the \ttDilepKinFit execution time also increases. So, since it is the critical section of the application, the efforts on performance optimizations will be focused on this portion of the code.
 
