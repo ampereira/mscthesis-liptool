@@ -2,6 +2,10 @@
 \chapter{\tth Application}
 \label{Application}
 
+\begin{quote}
+\textit{The \tth application for event reconstruction is presented in this chapter. Its dependencies are presented. The flow of the application is presented in section \ref{Application:Flow}, accompanied by a schematic representation. Its main functions are presented and the schematic flow is compared against a callgraph of the application to help understanding what happens in each of the most important functions. The critical region is identified in section \ref{CriticalRegion} and characterized in subsection \ref{ComputationalCharactrization}. Some initial optimizations to the code are presented in subsection \ref{InitialOptimizations}.}
+\end{quote}
+
 The LIP research group developed the \tth application to solve the problem presented in section \ref{Motivation}, which runs in the Tier-3 CERN computational resources. Its name derived from the problem it was design to solve: the \textit{tt} is relative to the reconstruction of the \ttbar system; the \textit{H} is derived from the Higgs boson reconstruction; the \textit{dilep} is the name of the function responsable for the kinematical reconstruction, as it needs two leptons (di-lep) as input.
 
 The application has two main dependencies in external libraries. The most important is on ROOT \cite{CERN:ROOT}, a object oriented framework, developed at CERN, which provides a set of funcionalities oriented for handling, analyzing and displaying results for large amounts of data collected at the LHC. It provides an API for reading and storing data in the standard formats accepted by all the tiers centers, classes for representing physic elements, mathematical routines, pseudorandom number generators, histograming, curve fitting minimization and data visualization methods. It is originally designed and developed mostly by physicists self taught on programming. This results in a framework that has room for improvement, such as code restructuration in some modules related to the data analysis. Other possible optimizations could pass through replacing some mathematical functionalities by dependencies on faster libraries, such as BLAS \cite{BLAS} or MKL \cite{MKL}. ROOT has an extension for data distribution on distributed memory systems, the Parallel ROOT Facility (PROOF) \cite{CERN:PROOF}.
@@ -102,11 +106,38 @@ While the I/O and all event processing, with the exception of KinFit, execution 
 
 Figure \ref{fig:ArithmeticIntensity} presents the complexity for various computational purposes. The problems with \textit{O(1)} complexity are not likely to get any benefit from parallelization, opposed to problems with \textit{O(N)} complexity that is more easy to extract performance from parallelization.
 
-The Instruction Mix is pr
+The rest of the computational characterization resorted to the analysis of hardware performance counters, using the Performance API \cite{PAPI}, and was performed for the application with no and 256 variations, on the compute-601 system. The instruction mix is presented in figure \ref{fig:InstMix}. By the analysis of the charts is evident that this functions performance cannot be evaluated using the FLOPS metric, as float point operations only account for 14\% and 12\% of the total instructions, for no and 512 variations respectively. \ttDilepKinFit is very diverse in terms of instructions, with loads, branches and stores being the most used. The number of variations does not have a significant impact on the type of instructions issued.
 
-Instruction mix para 1 e 256
-Computational intensity
-Miss rate
+\begin{figure}[!htp]
+	\begin{center}
+		\raisebox{-0.5\height}{\includegraphics[scale=0.6]{../../common/graphs/inst_mix.png}}
+		\raisebox{-0.5\height}{\includegraphics[scale=0.6]{../../common/graphs/inst_mix_256.png}}
+		\caption{Instruction mix for the \ttDilepKinFit with no and 512 variations, left and right images respectively.}
+		\label{fig:InstMix}
+	\end{center}
+\end{figure}
+
+The miss rate, for the 3 cache levels, is presented in figure \ref{fig:MissRate}. The miss rate on L1 cache remains constant in 70\% when changing the number of variations. This value is high but it is justified by the huge amount of different computations necessary to reconstruct an event, where data is only reused between one instruction to the other (considering a small scope due to the small cache size), rather than reused by a large set of instructions. The L2 cache miss rate is fairly low and decreases with the number of variations. As it has a larger size than L1 cache, the data is reused more often without causing a miss to the L3 cache. Due to the reuse of data in the L2 cache, and considering the large size of the L3 cache, the miss rate increases with the number of variations. This is not a consequence of a poor cache management but results from the decrease of the L2 cache miss rate, where most L2 cache misses are caused by fetch instructions of new data not yet on cache. The use of more cores, in a shared memory environment, may result in a decrease in the miss rate, specially on L2 cache, as each core will process a smaller set of the data.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=0.8]{../../common/graphs/miss_rate.png}  
+		\caption{Miss rate on L1, L2 and L3 cache of \ttDilepKinFit for various number of variations.}
+		\label{fig:MissRate}
+	\end{center}
+\end{figure}
+
+Operational intensity \cite{Roofline} is a performance metric to characterize the bottlenecks of a given algorithm, based on the assumption that accesses to the system RAM memory are the main performance limitation, also classifying it as memory or compute bound. It requires a Roofline model\footnote{Roofline models for the test systems are presented and explained in appendix \ref{App:Roofline}.} for the system on which the operational intensity is calculated. The operational intensity is the amount of float point operations performed per each byte of data that is fetch from the system RAM memory. However, this is not a reliable metric for this specific problem as only 17\% of the instructions of \ttDilepKinFit is float point arithmetic (refer to chart \ref{fig:InstMix}). Instead, the computational intensity is considered a more reliable metric as it considers all kinds of instructions, with the exception of loads and stores which are not relevant for the algorithm structure.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=1]{../../common/601_papi.pdf}  
+		\caption{Roofline of the compute-601 system with the computational intensity of \ttDilepKinFit for 1 and 512 variations.}
+		\label{fig:Roofline}
+	\end{center}
+\end{figure}
+
+In figure \ref{fig:Roofline} is presented the Roofline model for the compute-601 system with the computational intensity for \ttDilepKinFit with no and 512 variations. For both number of variations is obvious that this is a compute bound problem, only limited by the peak computational performance of the CPU. This indicates that the optimizations must be focused on increasing the computational throughput rather than on memory accesses. Note that this not include optimizations for accessing the CPU cache.
 
 \subsection{Initial optimizations}
 \label{InitialOptimizations}
@@ -115,11 +146,11 @@ One limiting factor for the \ttDilepKinFit function is the pseudo-random number 
 
 The pseudo-random number generator used by the \texttt{TRandom3} class is the Mersenne Twister \cite{MersenneTwister}, currently one of the most used generators for applications highly dependable on random numbers. This algorithm produces 32-bit uniformly distributed pseudo-random numbers with a period of $2^{19937}$. It has a relatively heavy state which is an integrant part on the algorithm flow. The generator is thread safe as long as different states are being used in different threads. The state can be shared among the threads but, however, changes to it must be done sequentially, serializing the number generation. In this case, the number generated by one thread will affect the number generated by the remaining, and it is not safe to implement in a parallel application.
 
-Since the period of the Mersenne Twister is $2^{19937}$ (approximately $4.3 * 10^{6001}$) and the maximum amount of numbers generated, for 512 variations per combination, is $1.5 * 10^{9}$, it is not necessary to reset the seed of the \texttt{TRandom3} generator, which can reduce the \ttDilepKinFit execution time significantly. Figure \ref{fig:TRandomOptim} illustrates the speedup obtained through this optimization.
+Since the period of the Mersenne Twister is $2^{19937}$ (approximately $4.3 * 10^{6001}$) and the maximum amount of numbers generated, for 512 variations per combination, is $1.5 * 10^{9}$, it is not necessary to reset the seed of the \texttt{TRandom3} generator, which can reduce the \ttDilepKinFit execution time significantly. Figure \ref{fig:TRandomOptim} illustrates the speedup obtained through this optimization. For a larger number of variations (from 16 to 512) the application is 1.7 to almost 2 times faster, without affecting the credibility of the results.
 
 \begin{figure}[!htp]
 	\begin{center}
-		\includegraphics[scale=0.6]{../../common/graphs/.png}  
+		\includegraphics[scale=0.7]{../../common/graphs/speedup_trandom_optim.png}  
 		\caption{Speedup of the \tth application with the \texttt{TRandom} optimization.}
 		\label{fig:TRandomOptim}
 	\end{center}

@@ -832,6 +832,28 @@
   \warn{\item Invalid format of field 'month'}
 \endentry
 
+\entry{Roofline}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {SamueL~Williams}{S.~W.}%
+     {Andrew~Waterman}{A.~W.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Patterson}{P.}%
+     {David}{D.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{SWAWPD1}
+  \strng{fullhash}{SWAWPD1}
+  \field{title}{Roofline: An insightful Visual Performance model for multicore
+  Architectures}
+  \field{journaltitle}{Communications of the ACM, 65-76}
+  \field{year}{2009}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
 \entry{MersenneTwister}{article}{}
   \name{author}{2}{}{%
     {{}%
@@ -951,6 +973,22 @@
   \field{title}{The Ziggurat Method for Generating Random Variables}
   \field{journaltitle}{Journal of Statistical Software}
   \field{year}{2000}
+\endentry
+
+\entry{AMDAHL}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Amdahl}{A.}%
+     {Gene~M.}{G.~M.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{AGM1}
+  \strng{fullhash}{AGM1}
+  \field{title}{Validity of the single processor approach to achieving large
+  scale computing capabilities}
+  \field{journaltitle}{AFIPS spring joint computer conference, (30) 483-485}
+  \field{year}{1967}
 \endentry
 
 \lossort

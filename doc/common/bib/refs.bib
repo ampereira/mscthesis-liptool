@@ -127,11 +127,19 @@
 }
 @online{
   CERN:ROOT,
-  author = "F. Rademakers, P. Canal, B. Bellenot, O. Couet, A. Naumann, G. Ganis, L. Moneta, V. Vasilev, A. Gheata, P. Russo and R. Brun",
+  author = "{F. Rademakers and P. Canal and B. Bellenot and O. Couet and A. Naumann and G. Ganis and L. Moneta and V. Vasilev and A. Gheata and P. Russo and R. Brun}",
   title =  "R{OOT}",
   year =   "2012",
   month =  "November",
   url =    "http://root.cern.ch/drupal/"
+}
+@online{
+  CERN:PROOF,
+  author = "{F. Rademakers and P. Canal and B. Bellenot and O. Couet and A. Naumann and G. Ganis and L. Moneta and V. Vasilev and A. Gheata and P. Russo and R. Brun}",
+  title =  "P{ROOF}",
+  year =   "2012",
+  month =  "November",
+  url =    "http://root.cern.ch/drupal/content/proof"
 }
 @online{
   OpenACC,
@@ -140,6 +148,23 @@
   year =        "2012",
   month =       "November",
   url =         "http://www.openacc-standard.org/",
+}
+@article{
+  MPI,
+  author       = {Edgar Gabriel and Graham E. Fagg and George Bosilca
+                  and Thara Angskun and Jack J. Dongarra and Jeffrey
+                  M. Squyres and Vishal Sahay and Prabhanjan Kambadur
+                  and Brian Barrett and Andrew Lumsdaine and Ralph
+                  H. Castain and David J. Daniel and Richard L. Graham
+                  and Timothy S. Woodall },
+  title        = {Open {MPI}: Goals, Concept, and Design of a Next
+                  Generation {MPI} Implementation},
+  booktitle    = {Proceedings, 11th European PVM/MPI Users' Group
+                  Meeting},
+  year         = 2004,
+  address      = {Budapest, Hungary},
+  pages        = {97--104},
+  month        = {September}
 }
 @online{
   Texas:DSP,
@@ -211,6 +236,21 @@
   month = "January",
   url = "http://www.openacc-standard.org/node/49"
 }
+@techreport{
+  Intel:TBB,
+  title={Intel Threading Building Blocks},
+  author={James Reinders},
+  organization={Intel},
+  year={2007}
+}
+@online {
+  Cilk,
+  author =       "Massachussets Institute of Technology",
+  title =        "{The Cilk Project}",
+  year = "2013",
+  month = "June",
+  url = "http://supertech.csail.mit.edu/cilk/"
+}
 @online {
   Callgrind,
   author =       "Valgrind Developers",
@@ -218,6 +258,30 @@
   year = "2013",
   month = "January",
   url = "http://valgrind.org/docs/manual/cl-manual.html"
+}
+@online {
+  MKL,
+  author =       "Intel Corporation",
+  title =        "{Intel Math Kernel Library}",
+  year = "2013",
+  month = "January",
+  url = "http://software.intel.com/en-us/intel-mkl/"
+}
+@article{
+  ARM,
+  title={Chipmakers ARM for Battle in Traditional Computing Market.},
+  author={Sixto Ortiz Jr.},
+  journal={Computer, 44(4):14-17},
+  month={April},
+  year={2011}
+}
+@article{
+  PAPI,
+  title={PAPI: A Portable Interface to Hardware Performance Counters},
+  author={S. Browne and C. Deane and G. Ho and P. Muccima},
+  journal={Proceedings of Department of Defense HPCMP Users Group Conference},
+  month={June},
+  year={1999}
 }
 @article{
   LIP:Ibergrid,
@@ -227,12 +291,69 @@
   year={2012}
 }
 @article{
+  AMDAHL,
+  title={Validity of the single processor approach to achieving large scale computing capabilities},
+  author={Gene M. Amdahl},
+  journal={AFIPS spring joint computer conference, (30) 483-485},
+  year={1967}
+}
+@article{
   MooreLaw,
   title={Cramming more components onto integrated circuits.},
   author={Gordon E. Moore},
   journal={Electronics, 38(8)},
   month={April},
   year={1965}
+}
+@article{
+  AcceptanceRandom,
+  title={The ACR Method for generating normal random variables},
+  author={W. Hoermann and G. Derﬂinger},
+  journal={OR Spektrum 12, 181-185},
+  year={1990}
+}
+@article{
+  Ziggurat,
+  title={The Ziggurat Method for Generating Random Variables},
+  author={George Marsaglia and Wai Wan Tsang},
+  journal={Journal of Statistical Software},
+  year={2000}
+}
+@article{
+  BoxMuller,
+  title={A Note on the Generation of Random Normal Deviates},
+  author={G. E. P. Box and Mervin E. Muller},
+  journal={Annals of Mathematical Statistics, Volume 29, 610-611},
+  year={1958}
+}
+@article{
+  MersenneTwister,
+  title={Variants of Mersenne Twister Suitable for Graphic Processors},
+  author={Makoto Matsumoto and Mutsuo Saito},
+  journal={ACM Transactions on Modeling and Computer Simulations: Special Issue on Uniform Random Number Generation},
+  year={1998}
+}
+@article{
+  NVIDIA:MersenneTwister,
+  title={Mersenne Twister: A 623-dimensionally equidistributed uniform pseudorandom number generator},
+  author={Makoto Matsumoto and Takuji Nishimura},
+  month={March},
+  year={2012}
+}
+@article{
+  Roofline,
+  title={Roofline: An insightful Visual Performance model for multicore Architectures},
+  author={SamueL Williams, Andrew Waterman and David Patterson},
+  journal={Communications of the ACM, 65-76},
+  month={April},
+  year={2009}
+}
+@article{
+  BLAS,
+  title={An Updated Set of Basic Linear Algebra Subprograms (BLAS)},
+  author={L. S. Blackford and J. Demmel and J. Dongarra and I. Duff and S. Hammarling and G. Henry and M. Heroux and L. Kaufman and A. Lumsdaine and A. Petitet and R. Pozo and K. Remington and R. C. Whaley},
+  journal={ACM Trans. Math. Soft., 28-2},
+  year={2002}
 }
 @techreport{
   NVIDIA:gdb,
@@ -241,6 +362,14 @@
   organization={NVIDIA},
   month={November},
   year={2008}
+}
+@techreport{
+  NVIDIA:cuRand,
+  title={CUDA CURAND Library},
+  author={NVIDIA},
+  organization={NVIDIA},
+  month={August},
+  year={2010}
 }
 @techreport{
   Intel:MIC:Elgar,
@@ -282,6 +411,14 @@
   month =  "November",
   url =    "https://developer.nvidia.com/cublas"
 }
+@online{
+  NVIDIA:Tegra,
+  author = "NVIDIA Corporation",
+  title =  "Tegra",
+  year =   "2013",
+  month =  "July",
+  url =    "http://www.nvidia.com/object/tegra.html"
+}
 @techreport{
   Intel:E52650,
   title={Intel Xeon Processor E5-1600/E5-2600/E5-4600 Product Families Datasheet},
@@ -297,6 +434,14 @@
   organization={Intel Corporation},
   month={January},
   year={2009}
+}
+@techreport{
+  Intel:VTune,
+  title={Profiling Runtime Generated and Interpreted Code with Intel VTune Amplifier},
+  author={Intel},
+  organization={Intel Corporation},
+  month={January},
+  year={2013}
 }
 @online{
   STREAM,

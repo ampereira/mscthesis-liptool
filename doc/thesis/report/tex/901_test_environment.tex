@@ -11,7 +11,7 @@ The second system, compute-601 node, has the same amount of RAM at the same spee
 
 The third is also an Intel system, compute-401 node, have 8 GB RAM with a maximum bandwidth of 18.4 GB/s. The CPUs are \intel Xeon E5520 (Nehalem architecture). The two CPUs are interconnected by a QPI interface with the same bandwidth as the previous system, 24 GB/s.
 
-The fourth system features two \amd Opteron 6174, being the system with more physical cores. It has 64 GB of DDR3 RAM at 1333 MHz, with a maximum measured bandwidth of ZZ GB/s. \amd uses HyperTransport (HT) 3.0 technology, a point-to-point interconnection similar to QPI capable of transmitting 4 byte packets through two links, for an aggregate bandwidth of 51.2 GB/s. The characteristics of the CPUs on the three systems are presented in table \ref{tab:CPUS}.
+The fourth system features two \amd Opteron 6174, being the system with more physical cores. It has 64 GB of DDR3 RAM at 1333 MHz, with a maximum measured bandwidth of 39.8 GB/s. \amd uses HyperTransport (HT) 3.0 technology, a point-to-point interconnection similar to QPI capable of transmitting 4 byte packets through two links, for an aggregate bandwidth of 51.2 GB/s. The characteristics of the CPUs on the three systems are presented in table \ref{tab:CPUS}.
 
 \begin{table}[!htp]
 	\begin{center}
@@ -34,4 +34,4 @@ The fourth system features two \amd Opteron 6174, being the system with more phy
 	\end{center}
 \end{table}
 
-The compiler used was the GNU compiler version 4.8, using the -O3 optimizations and the AVX/SSE 4.2/SSE 4a (depending on the CPU architecture) instruction set on the code regions that the compiler sees fit. The compiler features the OpenMP version 3.2 used in the shared memory implementation. For the GPU implementation was used the CUDA 5 SDK, in conjunction with the GNU compiler version 4.6.3 for the code to run on the CPU (any later versions are not supported by the \nvidia NVCC compiler). The ROOT \ref{CERN:ROOT} version used was the 5.34/05. Was used the Performance API version 5.0 for measuring the hardware counters of the different CPUs for the characterization of \ttDilepKinFit.
+The compiler used was the GNU compiler version 4.8, using the -O3 optimizations and the AVX/SSE 4.2/SSE 4a (depending on the CPU architecture) instruction set on the code regions that the compiler sees fit. The compiler used for the \intel Xeon Phi implementation was the \intel Compiler (ICC) version 13.1. Both compilers feature the OpenMP version 3.2 used in the shared memory implementation. For the GPU implementation was used the CUDA 5 SDK, in conjunction with the GNU compiler version 4.6.3 for the code to run on the CPU (any later versions are not supported by the \nvidia NVCC compiler). The ROOT \ref{CERN:ROOT} version used was the 5.34/05. Was used the Performance API version 5.0 for measuring the hardware counters of the different CPUs for the characterization of \ttDilepKinFit.

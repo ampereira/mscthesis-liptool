@@ -7,7 +7,7 @@
 
 The speedup that can be achieve by parallelizing an application is not only dependent on the number of parallel tasks but also on the percentage of the code that will run in parallel. This means that it is possible to have an extremely optimized implementation of the parallelization but if only a small part of the code is parallel the speedup will be small.
 
-Amdahl's Law \ref{AMDAHL} defines the maximum attainable speedup of parallelizing an application, comparing a multithreaded application using $N$ processors with its serial counterpart. The law takes into account the portion of the code, $P$, that can be paralelized and defines the maximum speedup $S$ that can be obtained.
+Amdahl's Law \cite{AMDAHL} defines the maximum attainable speedup of parallelizing an application, comparing a multithreaded application using $N$ processors with its serial counterpart. The law takes into account the portion of the code, $P$, that can be paralelized and defines the maximum speedup $S$ that can be obtained.
 
 \begin{center}
 	\begin{equation}
@@ -21,7 +21,18 @@ Equation \ref{eq:Amdahl} defines the maximum attainable speedup resultant from t
 \section{Roofline Model}
 \label{App:Roofline}
 
-The Roofline model \ref{Roofline} was used characterize the system in terms of attainable peak performance. This model uses two metrics for the performance calculation: the peak CPU performance and the memory bandwidth. With the peak values of these two metrics a roofline is drawn, being the theoretical limit for the performance on the system. Then, other ceilings can be added, which further limit the maximum attainable performance. The classic Roofline uses float point computation as the peak CPU performance metric. It may be a good metric for heavy computational algorithms, such as matrix multiplication, but the type operations on the critical region (\ttDilepKinFit function) are much more varied, as shown by the instruction mix presented in section \ref{ComputationalCharactrization}. Instead, the computational intensity was used for measuring the CPU peak performance, as it considers all types of instructions.
+The Roofline model \cite{Roofline} was used characterize the system in terms of attainable peak performance. This model uses two metrics for the performance calculation: the peak CPU performance and the memory bandwidth. With the peak values of these two metrics a roofline is drawn, being the theoretical limit for the performance on the system. Then, other ceilings can be added, which further limit the maximum attainable performance. The classic Roofline uses float point computation as the peak CPU performance metric, which is usually advertised as peak performance by CPU manufacturers. It may be a good metric for heavy computational algorithms, such as matrix multiplication, but the type operations on the critical region (\ttDilepKinFit function) are much more varied, as shown by the instruction mix presented in section \ref{ComputationalCharactrization}. Instead, the computational intensity was used for measuring the CPU peak performance, as it considers all types of instructions.
+
+The peak computational intensity is calculated with the formula \ref{eq:CompIntensity}. The clock frequency and number of cores are easily obtained by consulting the CPU specifications, while the number of instructions issued per clock cycle is more difficult to obtain. It is based on the super scalarity degree of the processor, i.e., the number of instructions that can be decoded per clock cycle, and then it must be confirmed if it matches with the number of arithmetic/memory units.
+
+\begin{center}
+	\begin{equation}
+		C = Clock Freq. * # of Cores * # of Instructions per Clock
+		\label{eq:CompIntensity}
+	\end{equation}
+\end{center}
+
+The tilted ceiling of the Roofline model refers to the maximum memory bandwidth of the system and it was determined using the stream benchmark. The values are presented in appendix \ref{App:TestEnv}.
 
 Figure \ref{fig:Roofline} illustrates the Roofline model for the four systems used.
 
