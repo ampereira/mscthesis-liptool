@@ -2,6 +2,10 @@
 \chapter{Parallelization Approaches}
 \label{ParallelizationApproaches}
 
+\begin{quote}
+\textit{For different parallelization alternatives are presented in this chapter. For homogeneous systems, a shared memory parallelization is discussed in section \ref{Parallelization:SharedMem}, where the abstract heuristic used is shown, and the implementation and a performance analysis are presented in subsections \ref{SharedMemImplementation} and \ref{SharedMemPerformance}, respectively. For heterogeneous systems using hardware accelerators, two alternatives are presented: using GPU as an accelerator, in section \ref{Parallelization:GPU}, with its implementation and performance discussed and analyzed in subsections \ref{GPUImplementation} and \ref{GPUPerformance}; using the \intel Xeon Phi as an accelerator in section \ref{Parallelization:MIC} and its implementation discussed in subsection \ref{MICImplementation}. A software scheduler for managing workload distribution among applications for homogeneous shared memory systems is presented in section \ref{Parallelization:Scheduler}. Its implementation details and performance analysis are shown in subsections \ref{SchedulerImplementation} and \ref{SchedulerPerformance}.}
+\end{quote}
+
 As presented in chapter \ref{Application}, the critical region of the \tth application is the \ttDilepKinFit, which its execution time increases linearly with the number of variations per combination. With the initial optimizations already applied to the original application, presented in section \ref{InitialOptimizations}, the next step is to resort to parallelization. This chapter presents four parallelization approaches, two on homogeneous systems and two on heterogeneous systems, one using GPU and other using \intel Xeon Phi as hardware accelerators.
 
 Although the critical region is the \ttDilepKinFit function, the best parallelization strategy is to simultaneously perform the reconstruction of different events. All event processing is data independent so no synchronizations are necessary, reducing the parallelization overhead. Figure \ref{fig:EventParallelization} presents a schematic representation of this parallelization approach. However, as explained in section \ref{Application:Flow}, all the event data is stored globally to the application and partially in the LipMiniAnalysis library. Every time an event is loaded the global data is overwritten, which, in a parallel shared memory environment, causes the intermidiate results of the event processing of one thread to be overwritten by the processing of other thread.
@@ -130,7 +134,7 @@ Even with the performance increase provided by the optimizations in section \ref
 	\end{center}
 \end{figure}
 
-Similar to the non-pointer version, the dynamic scheduling provides the best performance for high number of threads. However, for 2, 4 and 8 threads the low overhead of the static scheduler gives this implementation an advantage against the dynamic scheduler version. When both CPUs are used the performance of the static scheduler version degrades relatively to the dynamic scheduler. The difference between the overheads of the two schedulers is evident when comparing both implementations using only one thread. The most important result is the efficiency of the static scheduler implementation for 2, 4 and 8 threads, as they present superscalar speedup\footnote{Superscalar speedup occurs when the speedup is higher than the number of CPU cores used.}, mostly due to the pseudo-random number generation optimizations allied to the low overhead of constructing the data structure, as opposed to the higher overhead of the non-pointer version.
+Similar to the non-pointer version, the dynamic scheduling provides the best performance for high number of threads. However, for 2, 4 and 8 threads the low overhead of the static scheduler gives this implementation an advantage against the dynamic scheduler version. When both CPUs are used the performance of the static scheduler version degrades relatively to the dynamic scheduler. The difference between the overheads of the two schedulers is evident when comparing both implementations using only one thread. The most important result is the efficiency of the static scheduler implementation for 2, 4 and 8 threads, as they present superscalar speedup\footnote{Superscalar speedup occurs when the speedup is higher than the number of CPU cores used.}, mostly due to the pseudo-random number generation optimizations allied to the low overhead of constructing the data structure, as opposed to the higher overhead of the non-pointer version. It was not possible to test the speedup of only one CPU using multithreading as the current implementation of OpenMP does not allow to manually match the threads to the cores, and by default multithreading is only used when all available physical cores are occupied.
 
 \begin{figure}[!htp]
 	\begin{center}
@@ -147,7 +151,7 @@ Considering only the dynamic scheduler non-pointer and the static scheduler poin
 \begin{figure}[!htp]
 	\begin{center}
 		\includegraphics[scale=0.6]{../../common/graphs/dilep_throughput.png}
-		\caption{Theoretical speedup (Amdahl's Law) for various number of cores.}
+		\caption{Kinematical reconstruction throughput for various number of variations and threads.}
 		\label{fig:DilepThroughput}
 	\end{center}
 \end{figure}
@@ -157,7 +161,7 @@ One possible metric to measure the increase of throughput in the \ttDilepKinFit 
 \begin{figure}[!htp]
 	\begin{center}
 		\includegraphics[scale=0.6]{../../common/graphs/throughput.png}
-		\caption{Theoretical speedup (Amdahl's Law) for various number of cores.}
+		\caption{Event processing throughput for various number of variations and threads.}
 		\label{fig:EventThroughput}
 	\end{center}
 \end{figure}
@@ -171,7 +175,7 @@ One of the concerns for research groups is the amount of events that their appli
 
 Scientific computer clusters are not always made of high end computing nodes, such as the compute-701 test system used. A simpler performance analysis on 3 dual-socket test systems common among research groups is presented in this subsection. Only the speedup and execution time will be compared, as an in-depth analysis was already made for the compute-701 system in section \ref{SharedMemPerformance}.
 
-Only the two best implementations, non-pointer with dynamic scheduler and pointer with static scheduler, are tested for three different number of threads: one per core using one CPU; one per core using both CPUs; one per hardware thread if hardware multithreading is supported. The test systems used are the compute-401, compute-511 and compute-601 nodes of the SeARCH cluster\footnote{See appendix \ref{App:TestEnv} for the characterization of all test systems.}.
+Only the two best implementations, non-pointer and pointer with dynamic scheduler, as the latter proved to be more efficient in these systems with the dynamic scheduler instead of the static, are tested for three different number of threads: one per core using one CPU; one per core using both CPUs; one per hardware thread if hardware multithreading is supported. The test systems used are the compute-401, compute-511 and compute-601 nodes of the SeARCH cluster\footnote{See appendix \ref{App:TestEnv} for the characterization of all test systems.}.
 
 \begin{figure}[!htp]
 	\begin{center}
@@ -182,6 +186,8 @@ Only the two best implementations, non-pointer with dynamic scheduler and pointe
 	\end{center}
 \end{figure}
 
+Much like the compute-711, the best performance is obtained on the non-pointer version for 16 threads. However, the multithreading gains are not as significative as with the the compute-711 system. The best efficiency is obtained using 4 threads, the entire cores of one CPU, for the pointer version, attaining a speedup of 4.8 for 512 threads.
+
 \begin{figure}[!htp]
 	\begin{center}
 		\raisebox{-0.5\height}{\includegraphics[scale=0.6]{../../common/graphs/speedup_pointer_511.png}}
@@ -190,6 +196,8 @@ Only the two best implementations, non-pointer with dynamic scheduler and pointe
 		\label{fig:Speedup511}
 	\end{center}
 \end{figure}
+
+The speedup for the compute-511, in figure \ref{fig:Speedup511}, is very similar in the two versions, with a slight advantage for the pointer version. However, for 24 threads it is far from the peak performance as the system as a total of 24 physical cores. This is due to the poor memory management characteristic of AMD CPUs, which is specially evident in a NUMA organization. Even though the speedup is quite good for 12 threads, the execution time is the worse of all the systems, as presented in figure \ref{fig:ExecTimes}.
 
 \begin{figure}[!htp]
 	\begin{center}
@@ -200,37 +208,212 @@ Only the two best implementations, non-pointer with dynamic scheduler and pointe
 	\end{center}
 \end{figure}
 
+The compute-601 system behavior is also similar to the compute-711. The pointer version offers the best, and superscalar, speedups when using only one CPU with 6 threads, and for a higher number of threads the speedups are always worse. However, the best performance is achieved by the non-pointer version for 24 threads, but only for 256 and 512 variations. For any other amount of variations the best is to use 12 threads.
+
 \begin{figure}[!htp]
 	\begin{center}
 		\raisebox{-0.5\height}{\includegraphics[scale=0.6]{../../common/graphs/exec_times_pointer.png}}
 		\raisebox{-0.5\height}{\includegraphics[scale=0.6]{../../common/graphs/exec_times_nonpointer.png}}
-		\caption{Execution times of the \tth application for pointer static (left) and non-pointer dynamic (right) scheduler implementations.}
+		\caption{Execution times of the \tth application for pointer static (left) and non-pointer dynamic (right) scheduler implementations for 512 variations.}
 		\label{fig:ExecTimes}
 	\end{center}
 \end{figure}
+
+Figure \ref{fig:ExecTimes} presents the execution time for all test systems. For each system, the bars represent, from left to right, the original application, parallel with number of threads equal to the number of cores in one CPU, number of threads equal to the total number of physical cores and number of threads equal to the total number of cores with multithreading, if available. For the pointer version, the best system is the compute-711 for 8 threads. The compute-511 system is the second best for 24 threads. However, it presents the worst efficiency as it has more physical cores than any other system. The best overall results occur when using the non-pointer version with all available hardware threads for the compute-711. The second best system is the compute-601. Note that the compute-711 is the most recent high end system of all tested. The slower system is the compute-401, which is also the oldest and with fewer cores and memory bandwidth. All the systems present the same behavior: for the pointer version, the execution time increases when using more than one CPU, due to the hazardous non unified memory accesses; for the non-pointer version, the execution time diminishes with the increase of threads, with hardware multithreading slightly increasing the performance due to better resource usage.
 
 \pdfbookmark{GPU Parallelization}{gpu parallelization}
 \section{GPU Parallelization}
 \label{Parallelization:GPU}
 
-An early analysis of the code was made before designing the the workflow for the GPU parallelization. The implementation of this version will be restricted by the dependencies that \ttDilepKinFit has on ROOT classes, namely on its third stage of the generalist parallelizable workflow (figure \ref{fig:SeqPipeline}, right). It uses several functions and classes from ROOT, which can possibly be adapted to the GPU but the amount of time and work necessary to do so makes it unviable. The kinematic reconstruction also uses ROOT classes, namely TLorentzVectors, however it is read-only so it can be transformed in a data structure fit to be used on GPU. Note that this transformation will have a cost associated, which can slightly affect the performance.
+Programming for GPUs still present a series of important limitations imposed by the drivers due to the hardware characteristics. It uses C language for programming and it is not possible to use C++ classes. Also, libraries must be programmed specifically for the hardware accelerator, which prevents the use of any functions of LipMiniAnalysis and ROOT frameworks. This restricts the region of \ttDilepKinFit suitable to parallelize on GPU due to many dependencies on ROOT functions and classes.
+
+The kinematical reconstruction uses the \texttt{TLorentzVector} class from ROOT for holding the Bottom Quarks and leptons information. However, it is possible to eliminate these dependencies, but adding an additional overhead. The implementation details are presented in subsection \ref{GPUImplementation}. The other parts of \ttDilepKinFit are heavely dependent on ROOT and are not possible to port to GPU and the kinematical reconstructions and variation computation have the particularity of always being executed, unlike the Higgs Boson reconstruction. Considering these factors, a parallel workflow was devised and is presented in figure \ref{fig:GPUPipeline}.
 
 \begin{figure}[!htp]
 	\begin{center}
 		\includegraphics[scale=0.5]{../../common/img/gpu_pipeline.png}
-		\caption{Schematic representation of the \ttDilepKinFit workflow.}
+		\caption{Schematic representation of the \ttDilepKinFit workflow on GPU.}
 		\label{fig:GPUPipeline}
 	\end{center}
 \end{figure}
 
-The first two stages of the the workflow presented in figure \ref{fig:SeqPipeline} (right), the computation of the variances and the kinematical reconstruction, can be adapted to run on the GPU. After computing the data structure holding the jets and leptons combinations, it must be transferred to the GPU (device) memory and then launch the kernel, where each task (which is refers to one combination) is assigned to one thread. The variation of the combinations is done by each thread, on the assigned combination, the kinematical reconstruction is computed and the results are transferred back to the CPU (host) memory. Then, the third stage of the workflow, the Higgs boson reconstruction, is performed on the host. Note that this process, copying the memory to the device and back to the host is done one time for each event processed. The schematic representation of the workflow for this implementation is presented in figure \ref{fig:GPUPipeline}.
+As with the parallelization of shared memory environments, selecting all the combinations of Bottom Quark jets and leptons must be serialized. After, a process of data marshalling occurs to transform all the information of the \texttt{TLorentzVector} classes into standard arrays. Then, these arrays must be copied to the GPU memory so that they can be varied. The Mersenne Twister implementation available in the \nvidia cuRand library was used as the pseudo-random number generator (already discussed in section \ref{InitialOptimizations}). Then, the kinematical reconstruction is performed and the results are transferred back to the CPU memory. In the CPU, the data unmarshalling, i.e., transforming the results from the arrays into the ROOT classes to be used by the rest of the application, is executed and the Higgs Boson reconstruction is parallelized, similar to the shared memory implementation.
 
-This implementation has two factors which will restrict the performance. The first is the overhead associated to the transformation of the data (ROOT classes) to a suitable data structure to be used by the device. This happens with the input and output of the kernel. Even though this process can be tuned, which will be explained in section \ref{GPUImplementation}, there is no alternatives to study, algorithm-wise. The second factor is the synchronization and data transfer between host and device. The transfer time is affected by the amount of data to transfer, but it cannot be reduced since it is always necessary to transfer the jet/lepton combinations. Note that they are only transferred once per event, where the kernel threads copy the information so they can change it. However, the synchronization can be removed. The kernel can be launched and the threads are blocked while waiting for work, and then each time the one thread of the host computes a combination it is transferred to the device memory and the respective threads start the computation. Meanwhile, there is another thread in the host waiting for the results and starting the parallel computation of the Higgs boson reconstruction each time a group of kernel threads finish. If this asynchronous communication can be correctly implemented it might offer significant better performance than the synchronous version.
+There are several factors which will restrict the performance. The data marshalling and unmarshalling will add a sginificant overhead to \ttDilepKinFit, however it cannot be avoided. Even though the amount of data to transfer is small, with a similar size to the data structure used in the shared memory implementation, it occurs in every event and the kernel execution can only begin after all the data is copied. Assynchronous memory transfers can be used but they will not benefit the performance as it forces blocks of threads to run serialized to others, limited by the combinations that arrive to the GPU memory. It would increase the performance if all the threads would work on the data as it arrives, but it is not the case with this algorithm. The kernel itself is very complex with the variations and kinematical reconstruction. The computations are not homogeneous, with many operations performed in different data, which will result in a very high resource usage (namely registers and L1 cache). Register spilling might limit the performance as high register usage is an inherent characteristic to the kernel which cannot be optimized. Finally, the data structure used in the shared memory implementation is also present, as it is used to store all the combinations, so that they can be marshalled and transferred to the GPU memory, and is later used in the parallel Higgs Boson reconstruction. The best solution merge is also a required step.
+
+During the GPU execution, the CPU is idle waiting for the results, and vice-versa. This inefficient usage of the computational resources is caused by the inexistence of a data structure holding all the event information. Figure \ref{fig:GPUExecFlows} presents the current and optimal execution flows between CPU and GPU. The optimal flow could be implemented if the event data was loaded to a data structure, rather than overwritting all information on memory. This would require a restructure of the application and LipMiniAnalysis, which is not possible in the timeframe of this dissertation work, but could render the usage of hardware accelerators a valid option for event processing within the LIP research group.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\raisebox{-0.5\height}{\includegraphics[scale=0.6]{../../common/img/gpu_flow.png}}
+		\raisebox{-0.5\height}{\includegraphics[scale=0.6]{../../common/img/gpu_optimal_flow.png}}
+		\caption{Execution flows for the implemented workflow (left) and optimum workflow (right) of the \tth application.}
+		\label{fig:GPUExecFlows}
+	\end{center}
+\end{figure}
+
+\subsection{Implementation}
+\label{GPUImplementation}
+
+The data marshalling is performed on the data structure built when selecting the combinations, using the same process as with the shared memory parallelization implementation. On the variation computation and kinematical reconstruction, the most important data is the information of the combinations, namely the energy, mass and momentums of the Bottom Quark jets and leptons. The energy and momentums are double precision float point values of the \texttt{TLorentzVector} class, while the mass is computed based on those values. The mass function was copied from the ROOT source code to be implemented on GPU. The rest of the information is copied to various arrays, one per each particle. Other data, such as four \texttt{TLorentzVectorWFlags} class instances, per event, from the LipMiniAnalysis library, and other control information (scalars) are also copied to specific arrays.
+
+The variation computation uses the Mersenne Twister algorithm available in the \nvidia cuRand library \cite{NVIDIA:cuRand}, which produces uniformly distributed pseudo-random numbers. The transformation algorithm used in the ROOT \texttt{TRandom3} class, to map the values from a uniform to gaussian distribution, was ported from the ROOT source to the GPU. The objective is to keep the changes in the \ttDilepKinFit algorithms to a minimum. Was used one precomputed state per block of threads for the Mersenne Twister algorithm, which allows up to 256 threads to simultaneously generate pseudo-random numbers. The required numbers are generated at the beggining of the variation function, so that all the calls to the generator occur simultaneously, increasing the parallelism which benefits this kind of hardware 
+accelerators.
+
+Both the variation computation and kinematical reconstruction source code was modified to work on the input arrays, rather than resorting to ROOT classes. The results from the kinematical reconstruction are also stored in an array. However, since the kinematical reconstruction can return none, two or four instances of the \texttt{TLorentzVector} class, depending on the solution found, it is necessary an additional array to store the output size of each thread. Without this information, solutions can be assigned to the wrong combinations during the data unmarshalling. The varied parameters are also copied to the CPU memory and the data structure is updated.
+
+The parallelization of the Higgs Boson reconstruction was implemented using OpenMP, with the dynamic scheduler as the workload is irregular since some variations of the combinations might not be reconstructable. The best solution merge is similar to the one presented in section \ref{SharedMemImplementation}.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=0.6]{../../common/graphs/block_size_gpu.png}
+		\caption{Optimal number of threads for the GPU kernel, according to the \nvidia CUDA Occupancy Calculator.}
+		\label{fig:GPUCalc}
+	\end{center}
+\end{figure}
+
+The number of threads per block is limited to 256 due to the pseudo-random number generator restraints. The best block size for a kernel can be calculated using the \nvidia CUDA Occupancy Calculator \cite{NVIDIA:Calculator}, and depends on the number of registers that the kernel uses, the GPU architecture and cache size. The result of the calculation is presented in figure \ref{fig:GPUCalc}, which indicates that the best configuration uses 256 CUDA threads per block. The number of CUDA threads is equal to the number of variations times combinations, which varies between events, and, if possible, the threads are organized in blocks of 256.
+
+\subsection{Performance Analysis}
+\label{GPUPerformance}
+
+The GPU implementation was tested in the compute-511 system with a \nvidia Tesla C2050\footnote{See appendix \ref{App:TestEnv} for more hardware details.}. The focus is on evaluating the limiting factors as it was not expected great performance due to the details already referred in \ref{Parallelization:GPU}.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=0.7]{../../common/graphs/speedup_gpu.png}
+		\caption{Speedup of the \tth application for the GPU parallel implementation.}
+		\label{fig:GPUSpeedup}
+	\end{center}
+\end{figure}
+
+Figure \ref{fig:GPUSpeedup} illustrates the speedup for this implementation. For all different variations tested, the implementation is always slower than the original application. All the data (un)marshalling, transfer and unefficient usage of resources greatly restricts the potential performance gains.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=0.7]{../../common/graphs/percentage_time_gpu.png}
+		\caption{Relative execution time of \tth application on CPU and GPU.}
+		\label{fig:GPUPercentage}
+	\end{center}
+\end{figure}
+
+Figure \ref{fig:GPUPercentage} shows the relative execution time of the application that is spent on the GPU and on the CPU. Since the CPU and GPU cannot work simultaneously, the graph also shows the percentage of time that each of the resources is idle. On average, the GPU is idle 70\% of the time, wasting important computational resources.
+
+ver mem transfers
+
+register spilling?
+
+Even though the speedups do not motivate any efforts on optimizing this implementation, the low GPU usage is due to the global event data and a restructuration of the application, and LipMiniAnalysis library, would greatly improve the implementation. Introducing a data structure holding all the event information would allow the workflow presented in the right image of figure \ref{fig:GPUExecFlows} to be implemented and explore all the potential performance increase offered by the GPU.
 
 \section{MIC Parallelization}
 \label{Parallelization:MIC}
 
+The \intel Xeon Phi has two operating modes. The first, named native, is supposed to run all the application on the device, requiring all code to be compiled with the \intel compiler with specific flags. In this mode, the device reserves one core to run the Operating System, and is required to copy all libraries, application and input files to the Xeon Phi memory prior to execution. In the second mode (offload) the CPU operates the Xeon Phi as an accelerator, similar to GPUs. The objective is to do preliminary tests comparing both operating modes.
+
+Since the native Xeon Phi execution model is similar to a multicore CPU, the same workflow of the shared memory implementation is the best suitable for the problem. In theory, no changes to the shared memory implementation would be necessary to run on the device. Figure \ref{fig:MICWorkflows} illustrates the workflows for the native and offload device operative modes.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\raisebox{-0.5\height}{\includegraphics[scale=0.6]{../../common/img/parallel_kinfit.png}}
+		\raisebox{-0.5\height}{\includegraphics[scale=0.5]{../../common/img/mic_offload.png}}
+		\caption{Workflows for the native (left) and offload implementation (right) on the \intel Xeon Phi.}
+		\label{fig:MICWorkflows}
+	\end{center}
+\end{figure}
+
+For the offload mode, the implementation will suffer from the same problems as the GPU implementation. For each event, it is required to copy the data structure holding all the combination information. Even though it is possible to use C++ classes on the accelerator, it is not possible to have a library simultaneously compiled for the CPU and Xeon Phi without modfying the source code. As it is not possible to do so in the ROOT and LipMiniAnalysis libraries within the timeframe of the dissertation work. This restricts the application to only the variation computation and kinematical reconstruction to be implemented on the Xeon Phi. Also, by not using the ROOT classes, the same data (un)marshalling processes used in the GPU implementation are required. The Higgs Boson reconstruction is performed in parallel on CPU.
+
+The resource usage will be similar to the GPU implementation, where the CPU is idle when the Xeon Phi is computing, and vice-versa. The purpose is to evaluate the usability of the accelerator, as \intel claims that porting (unefficient) code to the device is easy and requires little effort.
+
+\subsection{Implementation}
+\label{MICImplementation}
+
+The implementation for running natively requires the compilation of the ROOT library, since both LipMiniAnalysis and the application depends on it. ROOT offers specific compilation for \intel Xeon Phi devices, developed by CERN OpenLab. However, it does not work on the compute-711 test system. Much of the development time for this implementation was spent trying to solve the bug on the many ROOT makefiles. By analyzing the device characteristics, with only 1 GHz of clock frequency, it would not offer a significant performance gains relatively to the CPU shared memory implementation. Therefore, this implementation was left on hold to be continued later on.
+
+The parallel GPU implementation was adapted with the necessary modifications to run on the Xeon Phi. Where each CUDA thread would process one variation per combination, on the Xeon Phi these tasks are grouped to match the device threads. The data (un)marshalling is similar to the GPU implementation and the data transfers are implemented using compiler pragma directives. These directives offer a simple way to implement the data transfers but only work with standard C structures, such as arrays.
+
+Even though the Xeon Phi was already tested with static benchmarks and relatively simple algorithms, the drivers offered huge limitations for the implementation of such complex algorithms. During the preliminary implementation, the drivers returned many different errors when offloading the functions that did not even got a description. \intel support advised to look into parts of the open source section of the drivers to identify the errors source. The implementation was stalled by a timeout error from the driver, even though the device was properly installed and was fully working according to the \intel control tools.
+
+Both native and offload implementations were left on hold since it was for the LIP research group best interest to focus on the shared memory and application scheduler implementations.
+
 \section{Scheduler Parallelization}
 \label{Parallelization:Scheduler}
-throughput scheduler
-TESTES COM NOVO STATIC SCHEDULER NO POINTER
+
+The idea for an application scheduler derived from the high performance and efficiency delivered by the shared memory pointer implementation running on a single CPU. The event data is organized in files with 1 GB size, and huge amounts of those files need to be processed everytime they arrive from the Tier-2 computational resources. A scheduler would be an application that manages the execution of those files among a given amount of the same or different applications. As an example, instead of using one application executing with 16 threads on the compute-711 system (consider the shared memory implementation on section \ref{Parallelization:SharedMem}, two applications with 8 threads of the pointer version could be used and provide better efficiency and process the same amount of data in less time.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=0.7]{../../common/img/scheduler_workflow.png}
+		\caption{Schematic representation of the application scheduler.}
+		\label{fig:SchedulerWorkflow}
+	\end{center}
+\end{figure}
+
+Figure \ref{fig:SchedulerWorkflow} presents the schematic representation for the proposed scheduler workflow designed for a shared memory environment. Although it will be tested with the parallel shared memory implementation (pointer version, due to its efficiency) of the \tth application, it is designed to virtually work with any kind of application and input data files. The as a set of configurable parameters:
+
+\begin{description}
+	\item[Application:] the name of the binary file of the application, or applications, to execute.
+	\item[Input parameters:] the input parameters of the applications to execute, without the input data file specified. Multiple parameters are required if different applications are used.
+	\item[Input data files:] range of the input data files to process. They are usually numbered (for example sample\_001 to sample\_500). Multiple files can be specified if different applications are used.
+	\item[Number of applications:] the maximum number of applications running simultaneously on the system.
+	\item[Threads:] the number of threads to run per application. A standard way to set the threads must be implemented by the application. If it uses OpenMP, it is possible to do so through environment variables.
+\end{description}
+
+The amount of applications to run simultaneously and the number of threads per application will directly affect the overall performance of the scheduler. If not properly configured, it can lead to resource starvation, in the case that the total number of threads is not enough to use all available resources, or overwhelm the system, where a high number of threads is used and degrades the performance. At the moment, he best parameters for an application can only be obtained by benchmarking the application and different configurations for the scheduler on a specific system.
+
+The purpose of the scheduler is to provide a simple way of increasing the usage of the available computational resources to be used by physicists. For the scheduler to be adopted by them it needs to be easy to used and offer a considerable performance increase. A proper scheduling technic would require the use of micro-benchmarks with similar characteristics of the applications to run to assess the best configuration parameters. This would require a study of different types of applications to identify their characteristics and chose, or develop, the best micro-benchmarks for each situation, allowing the scheduler to provide efficient resource usage independent of the system. Since this is only one of many proposed parallelization strategies, there was not enough time to develop nothing more than a prototype, which needs to be manually tuned for each system.
+
+The load balancing, i.e., distributing the input files among the applications to be processed, requires an algorithm best suited for dynamic workload. Each input data file has a set of different events, meaning that the execution of the same application with different files is irregular. This irregularity benefits the usage of a dynamic load balancing strategy rather than a static, if the overhead of the first is low enough to not limit the performance. An application execution is never less than a few seconds, providing a coarse task granularity. This means that the overhead induced by using a dynamic load balance strategy is not relevant compared to the time that takes to process a parallel task.
+
+\subsection{Implementation}
+\label{SchedulerImplementation}
+
+Even though the application scheduler was designed considering many features presented in section \ref{Parallelization:Scheduler}, it was only possible to develop a prototype within the dissertation timeframe to serve as a proof of concept. The scheduler is fully operational but with some limitations, later explained, needing more features to be implemented and refined before being ready to use by physicists.
+
+The current prototype reads the configurable parameters from a text file (an example file is presented in \ref{fig:SchedulerFile}). This file is read at the beggining of the scheduler execution and will control its behavior and have an effect on the performance. The prototype is only prepared to read and parse the configuration file for running one application with the same set of parameters, but with different input data files.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=0.8]{../../common/img/scheduler_config.png}
+		\caption{Example scheduler configuration file.}
+		\label{fig:SchedulerFile}
+	\end{center}
+\end{figure}
+
+The file structure is simple and intuitive, however, it was only designed for applications similar to \tth. The order of the parameters is irrelevant as long as they are properly identified. \textit{bin} and \textit{parameters} refer to the name of the binary file of the application and its parameters, without the flag specifying the file to process. The files are indicated in the \textit{files} field, where they can be enumerated or the \textit{to} connector indicates all the files between the files named \textit{900} and \textit{950}. The \textit{file\_dir} and \textit{file\_flag} field indicate the directory in which the files are stored and the flag used in the application to specify the file to process, respectively. \textit{number\_of\_bins} and \textit{number\_of\_threads} indicate the amount of applications to run simultaneously and the number of threads per application. In the specific case of this application it is possible to define the number of variations per combination, set by an environment variable.
+
+A data structure is created holding the information for each application execution (element of the structure), which is equal to the number of input data files to process. The string with the application parameters is concatenated with the input data file flag and name and stored in the data structure. Also, each element of the structure has the number of threads associated. This allows the scheduler to be abstract enough to work with different applications with irregular parameters and threads. The number of threads of the application is set through environment variables, when it is prepared to be executed, because the parallel \tth application uses OpenMP and it allows to do so. Also, it is the best way to configure the application at runtime without changing its input parameters.
+
+OpenMP was used to parallelized the various applications execution. The number of threads is the number of applications to run simultaneously, as each thread is responsible for the its application setup and execution. The threads operate in a work stealing pattern, getting hold of an element of the scheduler data structure and executing it until all elements are processed. The OpenMP dynamic scheduler is used as it is designed to efficiently handle this kinds of irregular loads and its overhead is not significant compared to each application execution time.
+
+The implementation of micro-benchmarks to infer the best configuration of the scheduler would depend on the computational characteristics of the applications to manage. The tests performed in subsection \ref{SchedulerPerformance} are based on the parallel \tth performance analyzed on section \ref{SharedMemPerformance}, but this is not valid for other test systems and applications. The benchmarks could be synthetic algorithms designed to evaluate the system performance, which need to be adequate to the type of applications tested, or the application itself running with one of the input data files, but guaranteeing that its execution time would be low. The latter alternative would induce an higher overhead but could provide a more accurate evaluation of the test system.
+
+Little changes to the configuration file would be necessary to consider multiple different applications. Its structure is modular, so, to insert a different application, the fields in figure \ref{fig:SchedulerFile} would be replicated. This would also require little changes to the current parser on the scheduler and the data structure is already prepared to deal with no application in particular.
+
+\subsection{Performance Analysis}
+\label{SchedulerPerformance}
+
+The performance analysis of the scheduler prototype is presented in this section. All tests are performed on the compute-711 system using the \tth application, with a set of 10 input data files and for different numbers of variations per combination. The scheduler runs the most efficient parallel implementation of \tth, the pointer version, avoiding the use of threads of the same applciation in different CPUs, as NUMA is the main limiting factor for this implementation. Different combinations of number of simultaneous applications and threads per application are compared agains the sequential \tth and the non-pointer parallel implementation using the same total number of threads (for example, 4 applications with 4 threads \textit{vs} single application wiht 16 threads), as it is the fastest using both CPUs on the system.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\raisebox{-0.5\height}{\includegraphics[scale=0.6]{../../common/graphs/speedup_scheduler.png}}
+		\raisebox{-0.5\height}{\includegraphics[scale=0.64]{../../common/graphs/speedup_scheduler_vs_np.png}}
+		\caption{Speedup of the scheduler with different setups (simultaneous applications \textit{x} number of threads per application) versus the original application and the non-pointer (n.p.) parallel implementation.}
+		\label{fig:SchedulerSpeedups}
+	\end{center}
+\end{figure}
+
+Figure \ref{fig:SchedulerSpeedups} presents the speedup of the scheduler for three setups compared to the original sequential application (left graph). The scheduler performance using 4 applications with 4 threads each (\textit{4x4}) and 2 applications with 8 threads (\textit{2x8}) is very similar, with a slight advantage for the first setup. It achieves a maximum speedup of 25 for 512 variations per combination, while the best performance achieved by the non-pointer parallel implementation, presented in section \ref{SharedMemPerformance}, has a speedup of 14.6. Note that the speedup is higher than the number of cores because of the PRNG optimizations are not implemented in the original application. The scheduler transposes the efficiency of the parallel pointer implementation on a single CPU to a dual-socket system. The advantage of the \textit{4x4} setup is due to the higher number of applications for the scheduler to manage, providing a better load distribution. The worst performance occurs for the \textit{2x16} setup, where all the hardware threads are used, plus 2 other threads are require by the scheduler to manage the applications execution. The use of hardware multithread does not benefit the parallel pointer implementation due to the use of pointers to shared data.
+
+The graph on the right of figure \ref{fig:SchedulerSpeedups} presents the speedup of the 3 setups of the scheduler compared to the non-pointer parallel implementation for the same total number of threads. The best performance increase occurs for the \textit{4x4} setup, with a relatively constant speedup of 3 for all different variations. For the \textit{2x8} setup, the speedup increases with the number of variations, similar to the \textit{2x16} setup. Overall, the scheduler with the parallel pointer implementation offers better performance and, consequently, more efficient resource usage than the best implementation on shared memory.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=0.7]{../../common/graphs/throughput_scheduler.png}
+		\caption{Event processing throughput for various number of variations and different scheduler setups.}
+		\label{fig:SchedulerThroughput}
+	\end{center}
+\end{figure}
+
+The highest event throughput, presented in figure \ref{fig:SchedulerThroughput}, occurs for the \textit{4x4} setup, as expected from the observed speedups, with 27700 events processed per second for 512 variations. The \textit{2x8} setup has a peak throughput of 25800 events per second, close to the \textit{4x4} setup. The highest throughput for a single parallel implementation was 14300 events per second, presented in figure \ref{fig:EventThroughput}. The scheduler provides almost a 2-fold increase in event processing, presenting itself as the most viable option for processing in a dual-socket system.

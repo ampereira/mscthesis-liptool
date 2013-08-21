@@ -832,6 +832,24 @@
   \warn{\item Invalid format of field 'month'}
 \endentry
 
+\entry{Valgrind}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Developers}{D.}%
+     {Valgrind}{V.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{DV1}
+  \strng{fullhash}{DV1}
+  \field{title}{Valgrind}
+  \verb{url}
+  \verb http://valgrind.org/
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
 \entry{Roofline}{article}{}
   \name{author}{2}{}{%
     {{}%
@@ -989,6 +1007,67 @@
   scale computing capabilities}
   \field{journaltitle}{AFIPS spring joint computer conference, (30) 483-485}
   \field{year}{1967}
+\endentry
+
+\entry{NVIDIA:Calculator}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Corporation}{C.}%
+     {NVIDIA}{N.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{CN1}
+  \strng{fullhash}{CN1}
+  \field{title}{NVIDIA CUDA Occupancy Calculator}
+  \verb{url}
+  \verb developer.download.nvidia.com/compute/cuda/CUDA_Occupancy_calculator.xl
+  \verb s
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{Intel:E52650}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Intel}{I.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {Intel Corporation}%
+  }
+  \strng{namehash}{I1}
+  \strng{fullhash}{I1}
+  \field{title}{Intel Xeon Processor E5-1600/E5-2600/E5-4600 Product Families
+  Datasheet}
+  \field{type}{techreport}
+  \field{year}{2012}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{STREAM}{online}{}
+  \name{author}{1}{}{%
+    {{}%
+     {McCalpin}{M.}%
+     {John~D.}{J.~D.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {University of Virginia}%
+  }
+  \strng{namehash}{MJD1}
+  \strng{fullhash}{MJD1}
+  \field{title}{STREAM: Sustainable Memory Bandwidth in High Performance
+  Computers}
+  \verb{url}
+  \verb http://www.cs.virginia.edu/stream/
+  \endverb
+  \field{year}{2013}
+  \warn{\item Invalid format of field 'month'}
 \endentry
 
 \lossort
