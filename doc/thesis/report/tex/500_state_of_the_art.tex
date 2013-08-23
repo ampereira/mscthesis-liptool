@@ -8,16 +8,16 @@
 \section{Hardware}
 \label{Hardware}
 
-Computer systems started with a very simple design, where a processing chip (CPU) is connected to a data storage unit (memory). The complexity of the processing chips increased, as well as the memory, specifically with the use of an hierarchy model, and current systems are usually made from multicore CPUs and various types of memory.
+Computer systems originally had a very simple design, where a processing chip (CPU) is connected to a data storage unit (memory). The complexity of the processing chips increased, as well as the memory with the introduction of an hierarchy model. Current computing systems are usually made from multicore CPUs, various types of volatile and non-volatile memory and, in some cases, hardware accelerators.
 
 \subsection{Homogeneous systems}
 \label{HomogeneousSystems}
 
-The most common are homogeneous systems, constituted from one or more CPU chips with their own memory bank (RAM memory) and interconnected by a specific interface, which is manufacturer-specific. Although the system uses a shared memory model, where all the data is always available for each CPU, in the case of a multiple CPU system, since the memory is distributed in one bank per CPU the system will have a Non Unified Memory Access (NUMA) pattern. This means that the access time of a CPU to a piece of memory in its memory bank will be faster than accessing memory on the other CPU bank. It is important to have the data on the CPU memory bank that the application will run to avoid the increased costs of NUMA.
+The most common systems are homogeneous, constituted from one or more CPU chips with their own memory bank (RAM memory) and interconnected by a manufacturer-specific interface. Although these systems use a shared memory model, where all the data is shared among CPUs, when considering a multiple CPU system, each CPU with its own memory bank, the system will have a Non Unified Memory Access (NUMA) pattern. This means that the access time of a CPU to a piece of memory in its memory bank will be faster than accessing memory on the other CPU bank. It is important to have the data on the CPU memory bank that the application will run to avoid the increased costs of NUMA.
 
 \begin{figure}[!htp]
 	\begin{center}
-		\includegraphics[scale=0.5]{../../common/img/numa_qpi.png}
+		\includegraphics[scale=0.4]{../../common/img/homoplats.png}
 		\caption{Schematic representation of a homogeneous system.}
 		\label{fig:HomogeneousSystem}
 	\end{center}
@@ -50,8 +50,8 @@ A schematic representation of a modern CPU chip is presented in figure \ref{fig:
 
 \begin{figure}[!htp]
 	\begin{center}
-		\includegraphics[scale=0.5]{../../common/img/numa_qpi.png}
-		\caption{Schematic representation of a modern multicore CPU chip.}
+		\includegraphics[scale=4]{../../common/img/cpu_scheme.jpg}
+		\caption{Schematic representation on a die of a CPU chip.}
 		\label{fig:CPUChip}
 	\end{center}
 \end{figure}
@@ -63,7 +63,7 @@ With the emerging use of hardware designed for specific computing domains, hardw
 
 \begin{figure}[!htp]
 	\begin{center}
-		\includegraphics[scale=0.5]{../../common/img/numa_qpi.png}
+		\includegraphics[scale=0.4]{../../common/img/hetplats2.png}
 		\caption{Schematic representation of a heterogeneous system.}
 		\label{fig:HeterogeneousSystem}
 	\end{center}
@@ -96,7 +96,7 @@ The relevant architectural details of this architecture, specifically for the Te
 
 \begin{figure}[!htp]
 	\begin{center}
-		\includegraphics[scale=0.3]{../../common/img/fermi_arch.png}
+		\includegraphics[scale=0.25]{../../common/img/fermi_arch.png}
 		\caption{Schematic representation of the \nvidia Fermi architecture.}
 		\label{fig:FermiArchitecture}
 	\end{center}
@@ -117,7 +117,7 @@ The Intel Many Integrated Core (MIC architecture), currently known as Intel Xeon
 
 \begin{figure}[!htp]
 	\begin{center}
-		\includegraphics[scale=0.3]{../../common/img/mic_arch.png}
+		\includegraphics[scale=0.4]{../../common/img/mic_arch.png}
 		\caption{Schematic representation of the \intel MIC architecture.}
 		\label{fig:MICArchitecture}
 	\end{center}
@@ -190,7 +190,7 @@ The CUDA thread is the most basic data independent element, which can run simult
 
 \begin{figure}[!htp]
 	\begin{center}
-		\includegraphics[scale=0.7]{../../common/img/cuda_hierarchy.png}
+		\includegraphics[scale=0.8]{../../common/img/cuda_hierarchy.png}
 		\caption{Schematic representation of CUDA thread hierarchy.}
 		\label{fig:CUDAHierarchy}
 	\end{center}
