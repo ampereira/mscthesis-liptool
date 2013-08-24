@@ -893,6 +893,25 @@
   \field{year}{1998}
 \endentry
 
+\entry{NVIDIA:cuRand}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {NVIDIA}{N.}%
+     {}{}%
+     {}{}%
+     {}{}}%
+  }
+  \list{organization}{1}{%
+    {NVIDIA}%
+  }
+  \strng{namehash}{N1}
+  \strng{fullhash}{N1}
+  \field{title}{CUDA CURAND Library}
+  \field{type}{techreport}
+  \field{year}{2010}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
 \entry{NVIDIA:MersenneTwister}{article}{}
   \name{author}{2}{}{%
     {{}%
@@ -911,25 +930,6 @@
   \field{title}{Mersenne Twister: A 623-dimensionally equidistributed uniform
   pseudorandom number generator}
   \field{year}{2012}
-  \warn{\item Invalid format of field 'month'}
-\endentry
-
-\entry{NVIDIA:cuRand}{report}{}
-  \name{author}{1}{}{%
-    {{}%
-     {NVIDIA}{N.}%
-     {}{}%
-     {}{}%
-     {}{}}%
-  }
-  \list{organization}{1}{%
-    {NVIDIA}%
-  }
-  \strng{namehash}{N1}
-  \strng{fullhash}{N1}
-  \field{title}{CUDA CURAND Library}
-  \field{type}{techreport}
-  \field{year}{2010}
   \warn{\item Invalid format of field 'month'}
 \endentry
 
