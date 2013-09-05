@@ -1,19 +1,19 @@
-\chapter{Technological Background}
+\chapter{Computing Background}
 \label{TechnologicalBackground}
 
 \begin{quote}
-\textit{This chapter presents the current technological state of the art in terms hardware and software. Hardware-wise, both homogeneous and heterogeneous system architectures and details are presented in sections \ref{HomogeneousSystems} and \ref{HeterogeneousSystems}, respectively. A contextualization of current hardware accelerators is also made in the latter. Software-wise is presented in section \ref{Software}. Various frameworks and libraries are presented for homogeneous systems and accelerators in sections \ref{pThreads}, \ref{OpenMP}, \ref{MPI} and \ref{CUDA}. Section \ref{HeterogeneousFrameworks} presents the available frameworks for parallelization in heterogeneous systems. Finally, current solutions for profiling and debugging parallel applications is presented in section \ref{ProfilingDebugging}.}
+\textit{This chapter presents the current technological state of the art in terms hardware and software. Hardware-wise, both homogeneous and heterogeneous system architectures and details are presented in sections \ref{HomogeneousSystems} and \ref{HeterogeneousSystems}, respectively. A contextualization of current hardware accelerators is also made in the latter. Software-wise background is presented in section \ref{Software}. Various frameworks and libraries are presented for homogeneous systems and accelerators in sections \ref{pThreads}, \ref{OpenMP}, \ref{MPI} and \ref{CUDA}. Section \ref{HeterogeneousFrameworks} presents the available frameworks for parallelization in heterogeneous systems. Finally, current solutions for profiling and debugging parallel applications is presented in section \ref{ProfilingDebugging}.}
 \end{quote}
 
 \section{Hardware}
 \label{Hardware}
 
-Computer systems originally had a very simple design, where a processing chip (CPU) is connected to a data storage unit (memory). The complexity of the processing chips increased, as well as the memory with the introduction of an hierarchy model. Current computing systems are usually made from multicore CPUs, various types of volatile and non-volatile memory and, in some cases, hardware accelerators.
+Computer systems originally had a very simple design, where a processing chip (CPU) is connected to a data storage unit (memory). The complexity of the processing chips increased, as well as the memory with the introduction of a cache hierarchy model. Current computing systems are usually made from multicore CPUs, various types of volatile and non-volatile memory and, in some cases, coupled with hardware accelerators.
 
 \subsection{Homogeneous systems}
 \label{HomogeneousSystems}
 
-The most common systems are homogeneous, constituted from one or more CPU chips with their own memory bank (RAM memory) and interconnected by a manufacturer-specific interface. Although these systems use a shared memory model, where all the data is shared among CPUs, when considering a multiple CPU system, each CPU with its own memory bank, the system will have a Non Unified Memory Access (NUMA) pattern. This means that the access time of a CPU to a piece of memory in its memory bank will be faster than accessing memory on the other CPU bank. It is important to have the data on the CPU memory bank that the application will run to avoid the increased costs of NUMA.
+The most common systems are homogeneous, constituted from one or more CPU chips with their own memory bank (RAM memory) and interconnected by a specific interface. Although these systems use a shared memory model, where all the data is shared among CPUs, when considering a multiple CPU system, each Chas its own memory bank, causing the system to have a Non Unified Memory Access (NUMA) pattern. This means that the access time of a CPU to a piece of memory in its memory bank will be faster than accesses to the other CPU bank. It is important to have the data stored on the CPU memory bank that the application will run to avoid the increased costs of NUMA.
 
 \begin{figure}[!htp]
 	\begin{center}
@@ -28,22 +28,22 @@ Figure \ref{fig:HomogeneousSystem} shcematizes the structure of a homogeneous sy
 \subsubsection*{CPU chips}
 \label{CPUChips}
 
-Gordon Moore predicted, in 1965, that for the following ten years the number of transistors on CPU chips would double every 1.5 years \cite{MooreLaw}. This was later known as the Moore's Law and it is expected to remain valid at least up to 2015. Initially, this allowed the increase in CPU chips clock frequency by the same factor as the transistors. Software developers did not expend much effort optimizing their applications and only relied on the hardware improvements to make them faster.
+Gordon Moore predicted, in 1965, that for the following ten years the number of transistors on CPU chips would double every 1.5 years \cite{MooreLaw}. This was later known as the Moore's Law and it is expected to remain valid at least up to 2015. Initially, this allowed the increase in CPU chips clock frequency by the same factor as the transistors. Software developers did not spend much effort optimizing their applications and only relied on the hardware improvements to make them faster.
 
 Due to thermal dissipation issues, the clock frequencies of CPU chips started to stall in 2005. Manufacturers shifted from making CPUs faster to increasing their throughput by adding more cores to a single chip, reducing their energy consumption and operating temperature. This marked the beggining of the multicore and parallel computing era, where every new generation of CPUs get wider, while their clock frequencies remain steady.
 
-The CPU chips are designed as general purpose computing devices, based on a simple design consisting of small processing units with a very fast hierarchized memory attached (cache, which purpose is to avoid slow accesses to global memory), and all the necessary data load/store and control units. They are capable of delivering a good performance in a wide range of operations, from executing simple integer arithmetic to complex branching and SIMD (single instruction multiple data, later explained) instructions. A single CPU core implements various mechanisms for improving the performance of applications, at the hardware level, with the most important explained next:
+The CPU chips are designed as general purpose computing devices, based on a simple design consisting of small processing units with a very fast hierarchized memory attached (cache, which purpose is to avoid the slow accesses to global memory), and all the necessary data load/store and control units. They are capable of delivering a good performance in a wide range of operations, from executing simple integer arithmetic to complex branching and SIMD (single instruction multiple data, later explained) instructions. A single CPU core implements various mechanisms for improving the performance of applications, at the hardware level, with the most important explained next:
 
 \begin{description}
 	\item[\textit{ILP}] instruction level parallelism (ILP) is the overlapping of instructions, performed at the hardware or software level, which otherwise would run sequentially. At the software level it is denominated as static parallelism, where compilers try to identify which instructions are independent, i.e., the result of one does not affect the outcome of the other, and can be executed at the same time, if the hardware has resources to do so. At the hardware level, ILP can be referred as dynamic parallelism as the hardware dynamically identifies which instructions execution can be overlapped while the application is running. Three mechanisms allow for ILP:
 	\begin{description}
 		\item[\textit{Out of order execution}] is the execution of instructions in different order as they are organized in the application binary, without violating any data dependencies. This technic exposes ILP, which otherwise would not be possible.
-		\item[\textit{Super Scalarity}] is a mechanism which allows dispatching a certain amount of instructions to the respective arithmetic units in each clock cycle, increasing the throughput of the CPU. Instructions that are not data dependent can run simultaneously, as long as they use different arithmetic units.
+		\item[\textit{Super Scalarity}] is a mechanism that allows dispatching a certain amount of instructions to the respective arithmetic units in each clock cycle, increasing the throughput of the CPU. Instructions that are not data dependent can run simultaneously, as long as they use different arithmetic units.
 		\item[\textit{Pipelining}] is the division of an instruction execution in stages. The stages range from loading the data, instruction execution in, also pipelined, arithmetic units and writing the results back to memory. For example, this allows for an instruction to be loaded while other is being executed. Moreover, inside an arithmetic unit, multiple instructions can be simultaneously executed, as long as they are in different stages.
 	\end{description}
-	\item[\textit{Speculative execution}] is the usage of branch prediction (predict which branch of a conditional jump will be executed, before knowing the condition result), which can use complex algorithms for predicting conditions, and start executing instructions in the chosen branch. If the prediction fails, the results are trashed and the other branch is executed. Current hardware is capable of executing both branches of a conditional jump and accept the one correct once the condition is resolved.
+	\item[\textit{Speculative execution}] is the usage of branch prediction, which can use complex algorithms for predicting the conditions, and execute instructions in the predicted branch before knowing the true condition outcome. If the prediction fails, the results are trashed and the other branch is executed. Current hardware is capable of executing both branches of a conditional jump and accept the one correct once the condition is resolved.
 	\item[\textit{Vector instructions}] are a special set of intructions based on the SIMD model, where a single instruction is applied to a large set of data simultaneously. CPU instruction sets offer special registers and instructions that allow to take a chunk of data and execute an instruction to modify it in a special arithmetic unit. One of the most common examples is addition of two vectors. The hardware is capable of adding a given number of elements of the vectors simultaneously. This optimization is often done at compile time.
-	\item[\textit{Multithreading}] is the execution of multiple hardware threads in the same core. This is possible by replicating part of the CPU resources, such as registers, and can lead to a more efficient utilization of the CPU core hardware. If one thread is waiting for data to execute the next instruction, other thread can resume execution while the first is stalled. It also allows a better usage of resources which would otherwise be idle during the execution of a single thread. If multiple threads are working on the same data, multithreading can reduce the synchronization between them and lead to a better cache usage.
+	\item[\textit{Multithreading}] is the execution of multiple hardware threads in the same core. This is possible by replicating part of the CPU resources, such as registers, and can lead to a more efficient utilization of the CPU core hardware. If one thread is waiting for data to execute the next instruction, other thread can resume execution while the former is stalled. It also allows a better usage of resources that would otherwise be idle during the execution of a single thread. If multiple threads are working on the same data, multithreading can reduce the synchronization between them and lead to a better cache usage.
 \end{description}
 
 A schematic representation of a modern CPU chip on its die is presented in figure \ref{fig:CPUChip}. It is constituted of several, possibly multithreaded, cores, each with their own private level 1 and 2 caches and a level 3 cache shared among all cores. This level 3 cache allows fast comunication and synchronization of data between cores of the same CPU.
@@ -59,7 +59,7 @@ A schematic representation of a modern CPU chip on its die is presented in figur
 \subsection{Heterogeneous systems}
 \label{HeterogeneousSystems}
 
-With the emerging use of hardware specifically designed for some computing domains, denominated hardware accelerators, which purpose is to efficiently solve a given problem, a new type of computing platform is becoming increasingly popular. This marked the beggining of heterogeneous systems, where one or more CPU chips, operating in a shared memory environment similar to homogeneous systems, are accompanied by one or more hardware accelerators. The CPUs and accelerators operate in a distributed memory model, meaning that data must be explicitly passed from the CPU to the accelerator memory, and vice-versa.
+With the emerging use of hardware specifically designed for some computing domains, denominated hardware accelerators, which purpose is to efficiently solve a given problem, a new type of computing platform is becoming increasingly popular. This marked the beginning of heterogeneous systems, where one or more CPU chips, operating in a shared memory environment similar to homogeneous systems, are accompanied by one or more hardware accelerators. The CPUs and accelerators operate in a distributed memory model, meaning that data must be explicitly passed from the CPU to the accelerator, and vice-versa.
 
 \begin{figure}[!htp]
 	\begin{center}
@@ -108,7 +108,7 @@ Within each SM there is a block of configurable 64 KB memory. In this architectu
 
 One important detail for efficient memory usage is the control of coalesced memory accesses. As the load units fetch memory in blocks of 128 bits, it is possible to reduce the amount of loads by synchronizing and grouping threads that need to load data which is in contiguous positions. This grouping is made by the memory controller, but only if the threads need the contiguous data simultaneously.
 
-\subsubsection*{Intel Many Core Architecture}
+\subsubsection*{Intel Many Core architecture}
 \label{MIC}
 
 The \intel Many Integrated Core (MIC) architecture, with the current production device known as Intel Xeon Phi, has a different conceptual design than the \nvidia GPUs. A chip can have up to 61 multithreaded cores, with 4 threads per core. Rather than extract performance by resorting to massive parallelism of simple tasks, the design favors vectorization as each core has 32 512 bit wide vector registers \cite{Intel:MIC}.
@@ -150,18 +150,22 @@ Programming for multicore environments requires some knowledge of the underlying
 
 Heterogeneous systems combine the flexibility of multicore CPUs with the specific capabilities of many-core accelerator devices, connected by PCI-Express interfaces. However, most computational algorithms and applications are designed with the specific characteristics of CPUs in mind. Even multithreaded applications usually cannot be easily ported to these devices expecting high performance. To optimize the code for these devices it is necessary a deep understanding of the architectural principles behind their design.
 
-The most important aspect for ensuring the correcteness of an application is to control data races, i.e., concurrent accesses of different threads to shared data. As an example, when modifying shared data, the programmer must ensure that different threads are not simultaneously changing the same piece of memory by serializing the operations. Further control is required if the order of the operations is important. If one thread wants to change a piece of data while other wants to read it, it is necessary to define which of the threads has the priority, as it can affect the outcome of the rest of both threads operations.
+The most important aspect for ensuring the correcteness of an application on a shared memory environment is to control data races, i.e., concurrent accesses of different threads to shared data. As an example, when modifying shared data, the programmer must ensure that different threads are not simultaneously changing the same piece of memory by serializing the operations. Further control is required if the order of the operations is important. If one thread wants to change a piece of data while other wants to read it, it is necessary to define which of the threads has the priority, as it can affect the outcome of the rest of both threads operations.
 
 The workload balance between the cores of a single CPU chip is an important aspect to extract performance and get the most efficient usage of the available resources. A bad workload balance may cause some cores of the CPU to be used most of the time while others remain idle, making the application to take more time than necessary to execute. A good load balancing strategy ensures that all the cores are used as most as possible. Considering a multi-CPU system, it is important to manage the data in such a way that it is available in the memory bank of the CPU that will need it to avoid the NUMA latency. The same concepts apply when balancing the load between CPU and hardware accelerators, with the increased complexity of the high latency data transfers of the PCI-Express interface.
 
-Some computer science groups developed libraries that attempt to abstract the programmer from specific architectural and implementation details of these systems, providing an easy API as similar as possible to current sequential programming paradigms. Some frameworks that attempt to abstract the inherent complexity of heterogeneous systems are already in the final stages of development. The most used are presented through the next subsections.
+Some computer science groups developed libraries that attempt to abstract the programmer from specific architectural and implementation details of these systems, providing an easy API as similar as possible to current sequential programming paradigms. Some frameworks that attempt to abstract the inherent complexity of heterogeneous systems are already in the final stages of development.
 
-\subsection{pThreads}
+\subsection{Shared memory environment}
+
+Homogeneous systems often operate in a shared memory environment. Using multiple CPUs may cause the memory banks to be physically divided but hardware mechanisms, such as CPU interconnections, allow for a common addressing space. Libraries and frameworks for parallelizing for this environment are presented next.
+
+\subsubsection*{pThreads}
 \label{pThreads}
 
 Threads are the elemental unit that can be scheduled by the operating system. POSIX Threads (pThreads) are the standard implementation for UNIX based operating systems with POSIX conformity, such as most Linux distributions and Mac OS. The pThreads API provides the user with primitive for thread management and synchronization. Since this API forces the user to deal with several implementation details, such as data races and deadlocks, the industry demanded the development of high level libraries, which are usually based on pThreads.
 
-\subsection{OpenMP, TBB and Cilk}
+\subsubsection*{OpenMP, TBB and Cilk}
 \label{OpenMP}
 
 OpenMP \cite{OpenMP}, \intel Threading Building Blocks (TBB) \cite{Intel:TBB} and Cilk \cite{Cilk} are the response for the industry demands for a higher abstraction level APIs.
@@ -172,12 +176,19 @@ The OpenMP API is designed for multi-platform shared memory parallel programming
 
 Cilk is a runtime system for multithreading programming in C++. It maintains a stack with the remaining work, employing a work stealing heuristic very similar to Intel TBB.
 
-\subsection{Message Passing Interface}
+\subsection{Distributed memory environment}
+\label{HeterogeneousFrameworks}
+
+Heterogeneous systems use distributed memory address space for handling the data between CPU and accelerator device. Even though the CPUs work on a shared memory space, data must be explicitly passed to the accelerators. Frameworks for parallelizing on the devices and on the heterogeneous platforms as a whole are presented next.
+
+\subsection*{Message passing interface}
 \label{MPI}
 
 The Message Passing Interface (MPI) \cite{MPI}, designed by a consorcium of both academic and industry researchers, has the objective of providing a simple API for parallel programming in distributed memory environments. It relies on point-to-point and group messaging communication, and is available in Fortran and C. The data must be explicitly split and passed among the processes by the programmer. It is often used in conjunction with a shared memory parallel programming API, such as OpenMP, for work sharing between computing nodes, with the latter ensuring the parallelization inside each node.
 
-\subsection{CUDA}
+\intel adapted an MPI version to work on both CPUs and Xeon Phi, considering the device as a set of CPUs. Comunications between the CPU and device are explicitly handled by the programmer. The other method for working with this device is to use compiler directives for data communication and code parallelization.
+
+\subsubsection*{CUDA}
 \label{CUDA}
 
 The Compute Unified Device Architecture (CUDA) is a computing model for hardware accelerators launched in 2007 by \nvidia. It aims to provide a framework for programming devices similar architecture to the \nvidia GPUs. It has a specific instruction set architecture (ISA) and allows programmers to use GPUs for other purposes than image rendering.
@@ -195,9 +206,6 @@ The CUDA thread is the most basic data independent parallel element, which can r
 \end{figure}
 
 When programming these devices, conditional jumps must be avoided if they cause different CUDA threads within the same warp execute different branches. Within an SM it is not possible to have 2 threads executing different instructions at the same time. So, if there is a divergence between the threads within the warp, the divergent branches will be executed sequentially, doubling the warp execution time.
-
-\subsection{Parallelization frameworks for heterogeneous systems}
-\label{HeterogeneousFrameworks}
 
 \subsubsection*{OpenACC}
 \label{OpenACC}

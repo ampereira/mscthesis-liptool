@@ -1,4 +1,4 @@
-\chapter{\tth Application}
+\chapter{Top Quark and Higgs Boson Reconstructions}
 \label{Application}
 
 \begin{quote}
@@ -13,7 +13,7 @@ The second dependency is on the LipMiniAnalysis library. It is a modified versio
 
 During the following sections the flow of the application and an early profiling, identifying and characterizing the bottlenecks, will be presented.
 
-\section{Application Flow}
+\section{The \tth application flow}
 \label{Application:Flow}
 
 This section describes the workflow of the \tth analysis. The application flow is schematized in figure \ref{fig:SchematicFlow1}. It has two main steps repeated for every event in the input data file: 
@@ -66,7 +66,7 @@ When not performing variations, a third of the execution time is spent in writin
 	\end{center}
 \end{table}
 
-\section{Critical region computational characterization \& optimization}
+\section{The computing critical region}
 \label{CriticalRegion}
 
 This section focus on the computational characterization of the \ttDilepKinFit function. It will be analyzed in terms of instruction mix, arithmetic and computational intensity and miss rate, with the purpose of understanding how this region of the code behaves, for various variations per combination, and classify it as a memory or compute bound algorithm. The test system used in this section is the compute-711\footnote{See appendix \ref{App:TestEnv} for characterization of all the systems used.}. Some initial optimizations, as well as other changes, made to the original application will be addressed in section \ref{InitialOptimizations}.

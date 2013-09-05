@@ -18,7 +18,7 @@ Although the critical region is only the \ttDilepKinFit function, the best paral
 	\end{center}
 \end{figure}
 
-Each input file has around 1 GByte size, which allows to store all events on RAM memory. The use of a proper data structure for storing the event information would benefit the application modularity and enable the possibility of this parallelization approach. In the current implementation, each event data is loaded from the input data file before processing it. With a global data structure, the application would benefit from the performance of sequential read of the hard drives, compensating the overhead of the data structure creation. The complexity of the changes necessary to both the application source code and LipMiniAnalysis library render this approach unreliable for the timeframe of this thesis dissertation.
+Each input file has around 1 GByte size, which allows to store all events on RAM memory. The use of a proper data structure for storing the event information would benefit the application modularity and enable the possibility of this parallelization approach. In the current implementation, each event data is loaded from the input data file before processing it. With a global data structure, the application would benefit from the performance of sequential read of the hard drives, compensating the overhead of the data structure creation. The complexity of the changes necessary to both the application source code and LipMiniAnalysis library render this approach unreliable for the timeframe of this thesis dissertation. An implementation for a classic distributed memory system, constituted by multiple CPUs on different systems, was not considered due to the thin granularity of the task to parallelize. This factor, allied to the high amount of comunications required, would induce a high overhead that would greatly limit the performance improvements. If the application handled a private memory state for each event, the parallelization proposed above would be reliable to implement on this kind of environments.
 
 The \ttDilepKinFit handles mostly private data to the function. The global data modified by this function can be controlled without any modifications to the LipMiniAnalysis library. Looking at the information presented in section \ref{ComputationalCharactrization}, specifically in figure \ref{fig:KinFitGraph}, most performance gains are expected to occur for 16 to 512 variations per combination as for that problem size the \ttDilepKinFit occupies most of the application execution time.
 
@@ -93,7 +93,7 @@ OpenMP offers a set of different schedulers, from which the most relevant are th
 
 \intel VTune tool was used to analyze and identify the bottlenecks of the parallel implementation. With the help of this profiler, the constructor of the data structure of the combinations was identified as the main performance bottleneck. When analyzing the data structure source code, its evident that some of its parameters are only read and not modified during each event processing. Instead of copying these parameters for each element of the data structure, it is possible to use a pointer to their memory position in the global state. The access to this data can be parallel as it is read-only. However, it may decrease the performance when using various CPUs, as threads in one CPU may have to access data in other CPU, causing NUMA accesses. The performance of this implementation, addressed as pointer version, is compared against the previous implementation, addressed as non-pointer version, in subsection \ref{SharedMemPerformance}.
 
-\subsection{Performance Analysis}
+\subsection{Performance analysis}
 \label{SharedMemPerformance}
 
 The performance analysis of the various shared memory implementations will be presented in this section. Many metrics for evaluating performance will be used, such as speedup and throughput, always compared to the original application, and the results will be analyzed and discussed. The compute-711 system was used to conduct the tests in this section.
@@ -223,8 +223,7 @@ The compute-601 system behavior is also similar to the compute-711. The pointer 
 
 Figure \ref{fig:ExecTimes} presents the execution time for all test systems. For each system, the bars represent, from left to right, the original application, parallel with number of threads equal to the number of cores in one CPU, number of threads equal to the total number of physical cores and number of threads equal to the total number of cores with multithreading, if available. For the pointer version, the best system is the compute-711 for 8 threads. The compute-511 system is the second best for 24 threads. However, it presents the worst efficiency as it has more physical cores than any other system. The best overall results occur when using the non-pointer version with all available hardware threads for the compute-711. Note that the compute-711 is the most recent high end system of all tested. The slower system is the compute-401, which is also the oldest and with fewer cores and smaller memory bandwidth. All the systems present the same behavior: for the pointer version, the execution time increases when using more than one CPU, due to the hazardous non unified memory accesses; for the non-pointer version, the execution time diminishes with the increase of threads, with hardware multithreading slightly increasing the performance due to better resource usage.
 
-\pdfbookmark{GPU Parallelization}{gpu parallelization}
-\section{GPU Parallelization}
+\section{Using the \nvidia CUDA/GPU accelerator}
 \label{Parallelization:GPU}
 
 Programming for GPUs still presents a series of important limitations imposed by the drivers due to the hardware characteristics. It uses C language for programming and it is not possible to use C++ classes. Also, libraries must be programmed specifically for the hardware accelerator, which prevents the use of any functions of LipMiniAnalysis and ROOT frameworks. This restricts the region of \ttDilepKinFit suitable to parallelize on GPU due to many dependencies on ROOT functions and classes.
@@ -275,7 +274,7 @@ The parallelization of the Higgs Boson reconstruction was implemented using Open
 
 The number of threads per block is limited to 256 due to the pseudo-random number generator restraints. The best block size for a kernel can be calculated using the \nvidia CUDA Occupancy Calculator \cite{NVIDIA:Calculator}, and depends on the number of registers that the kernel uses, the GPU architecture and cache size. The result of the calculation is presented in figure \ref{fig:GPUCalc}, which indicates that the best configuration uses 256 CUDA threads per block. The number of CUDA threads is equal to the number of variations times combinations, which varies between events, and, if possible, the threads may be organized in blocks of 256.
 
-\subsection{Performance Analysis}
+\subsection{Performance analysis}
 \label{GPUPerformance}
 
 The GPU implementation was tested in the compute-511 system with a \nvidia Tesla C2050\footnote{See appendix \ref{App:TestEnv} for more hardware details.}. The focus is on evaluating the limiting factors as it was not expected great performance due to the details already referred in \ref{Parallelization:GPU}.
@@ -302,7 +301,7 @@ Figure \ref{fig:GPUPercentage} shows the relative execution time of the applicat
 
 Even though the speedups do not motivate any efforts on optimizing this implementation, the low GPU usage is due to the global event data and a restructuration of the application, and LipMiniAnalysis library, would greatly improve the implementation. Introducing a data structure holding all the event information would allow the workflow presented in the right image of figure \ref{fig:GPUExecFlows} to be implemented and explore all the potential performance increase offered by the GPU.
 
-\section{MIC Parallelization}
+\section{Using the \intel MIC Xeon Phi accelerator}
 \label{Parallelization:MIC}
 
 The \intel Xeon Phi has two operating modes. The native mode is supposed to run all the application on the device, requiring all code to be compiled with the \intel compiler and specific flags. In this mode, the device reserves one core to run the operating system, and it is required to copy all libraries, binaries and input files to the Xeon Phi memory prior to execution. In the offload mode the CPU operates the Xeon Phi as an accelerator, similar to GPUs. The objective is to do preliminary tests comparing both operating modes.
@@ -318,7 +317,7 @@ Since the native Xeon Phi execution model is similar to a multicore CPU, the wor
 	\end{center}
 \end{figure}
 
-For the offload mode, the implementation will suffer from the same problems as the GPU implementation. For each event, it is required to copy the data structure holding all the combination information. Even though it is possible to use C++ classes on the accelerator, it is not possible to have a library simultaneously compiled for the CPU and Xeon Phi without modfying the source code. However, that is not possible to do in the ROOT and LipMiniAnalysis libraries within the timeframe of the dissertation work. This restricts the region of the application to parallelize on the Xeon Phi to only the variations computation and kinematical reconstruction. Also, by not using the ROOT classes, the same data (un)marshalling processes used in the GPU implementation are required. The Higgs Boson reconstruction is performed in parallel on CPU.
+For the offload mode, the implementation will suffer from the same problems as the GPU implementation. For each event, it is required to copy the data structure holding all the combination information. Even though it is possible to use C++ classes on the accelerator, it is not possible to have a library simultaneously compiled for the CPU and Xeon Phi without modfying the source code. However, that is not possible to do in the ROOT and LipMiniAnalysis libraries within the timeframe of the dissertation work. This restricts the region of the application to parallelize on the Xeon Phi to only the variations computation and kinematical reconstruction. Also, by not using the ROOT classes, the same data (un)marshalling processes used in the GPU implementation are required. The Higgs Boson reconstruction is performed in parallel on CPU. This implementation was performed using the \intel compiler directives, avoiding the overhead added by using MPI, which is also based on these directives.
 
 The resource usage efficiency will be similar to the GPU implementation, where the CPU is idle when the Xeon Phi is computing, and vice-versa. The purpose is to evaluate the usability of the accelerator, as \intel claims that porting (unefficient) code to the device is straight forward.
 
@@ -333,7 +332,7 @@ Even though the Xeon Phi was already tested with static benchmarks and relativel
 
 Both native and offload implementations were left on hold since it was for the LIP research group best interest to focus on the shared memory and application scheduler implementations.
 
-\section{Scheduler Parallelization}
+\section{Using an application scheduler}
 \label{Parallelization:Scheduler}
 
 The idea for an application scheduler derived from the high performance and efficiency delivered by the shared memory pointer implementation running on a single CPU. Huge amounts of eventy data files, which usually have 1 GB size, need to be processed everytime a new batch arrives from the Tier-2 computational centers. This scheduler is an application that manages the execution of those files among a given amount of the same, or different, applications. As an example, instead of using one application to execute with 16 threads on the compute-711 system (consider the shared memory implementation on section \ref{Parallelization:SharedMem}), two applications with 8 threads of the pointer version could run simultaneously, providing better resource usage and process the same amount of data in less time.
