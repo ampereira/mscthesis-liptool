@@ -271,6 +271,22 @@
   \warn{\item Invalid format of field 'month'}
 \endentry
 
+\entry{thesis:Zuca}{report}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Silva}{S.}%
+     {Rafael}{R.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{SR1}
+  \strng{fullhash}{SR1}
+  \field{title}{Use of parallel platforms in the analysis of big data from LHC
+  collisions}
+  \field{type}{techreport}
+  \field{year}{2013}
+\endentry
+
 \entry{MooreLaw}{article}{}
   \name{author}{1}{}{%
     {{}%
