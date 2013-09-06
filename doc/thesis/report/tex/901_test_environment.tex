@@ -1,20 +1,21 @@
-\appendix
-\pdfbookmark{Test Environment}{test environment}
+%\appendix
 \chapter{Test Environment}
 \label{App:TestEnv}
 
 This appendix focuses on characterizing the hardware and software used in all performance measurements of the application for the different implementations developed.
 
-For the shared memory implementation testing was used four dual-socket multicore systems with CPUs of different architectures on the SeARCH cluster, with the purpose of testing a wide range of systems commonly available in small physics research group clusters. The first, named compute-711 node, has two \intel Xeon E5-2670 (Sandy Bridge architecture) \cite{Intel:E52650}, using the Quick Path Interconnect (QPI) interface between CPUs, in a Non Unified Memory Access model (NUMA), meaning that the latency of a CPU acessing its own memory bank is lower than accessing the other CPU memory bank. The QPI interface can perform up to 8 GT/s (giga transfers per second) of 2 bytes packets, in each of the two unidirectional links, with a total bandwidth of 32 GB/s. The system features 64 GB of DDR3 RAM with a speed of 1333 MHz, for a maximum bandwidth of 52.7 GB/s. All RAM bandwidths were measured using the STREAM benchmark \cite{STREAM}.
+Four dual-socket multicore systems with CPUs of different architectures on the SeARCH cluster were used to test the shared memory implementation, with the purpose of testing a wide range of systems commonly available in small physics research group clusters. The first, named compute-711 node, has two \intel Xeon E5-2670 (Sandy Bridge architecture) \cite{Intel:E52650}, using the Quick Path Interconnect (QPI) interface between CPUs, in a Non Unified Memory Access model (NUMA), meaning that the latency of a CPU acessing its own memory bank is lower than accessing the other CPU memory bank. The QPI interface can perform up to 8 GT/s (giga transfers per second) of 2 bytes packets, in each of the two unidirectional links, for a total bandwidth of 32 GB/s. The system features 64 GB of DDR3 RAM with a speed of 1333 MHz, for a maximum bandwidth of 52.7 GB/s. All RAM bandwidths were measured using the STREAM benchmark \cite{STREAM}.
 
-The second system, compute-601 node, has the same amount of RAM at the same speed, with a maximum bandwidth of 28.6 GB/s. The two CPUs are \intel Xeon X5650 (Nehalem architecture). The difference of memory bandwidth is due to the different memory controllers, while the one in Nehalem has 3 memory channels the one in Sandy Bridge has 4. The two CPUs are interconnect by a QPI interface, but with a different speed than the Sandy Bridge, performing 6 GT/s in each of the two unidirectional channels, for a total bandwidth of 24 GB/s.
+The second system, named compute-601 node, has the same amount of RAM at the same speed, with a maximum bandwidth of 28.6 GB/s. The two CPUs are \intel Xeon X5650 (Nehalem architecture). The difference of memory bandwidth is due to the different memory controllers, with the one in Nehalem having 3 memory channels, as opposed to the 4 memory channels in the Sandy Bridge CPUs. The two CPUs are interconnect by a QPI interface, but with a different speed than the Sandy Bridge, performing 6 GT/s in each of the two unidirectional channels, for a total bandwidth of 24 GB/s.
 
-The third is also an \intel system, compute-401 node, with 8 GB RAM and a maximum bandwidth of 18.4 GB/s. The CPUs are the Xeon E5520 (Nehalem architecture). The two CPUs are interconnected by a QPI interface with the same bandwidth of 24 GB/s as the previous system.
+The third system is also powered by an \intel processor, the compute-401 node, with 8 GB RAM and a maximum bandwidth of 18.4 GB/s. The CPUs are the Xeon E5520 (Nehalem architecture). The two CPUs are interconnected by a QPI interface with the same bandwidth of 24 GB/s.
 
 The fourth system features two \amd Opteron 6174 CPUs, being the system with the most physical cores. It has 64 GB of DDR3 RAM at 1333 MHz, with a maximum measured bandwidth of 39.8 GB/s. \amd uses HyperTransport (HT) 3.0 technology, a point-to-point interconnection similar to QPI capable of transmitting 4 byte packets through two links, for an aggregate bandwidth of 51.2 GB/s. The characteristics of the CPUs on the three systems are presented in table \ref{tab:CPUS}.
 
+\begin{footnotesize}
 \begin{table}[!htp]
 	\begin{center}
+	\smaller
 		\begin{tabular}{|c|c|c|c|c|}
 			\hline
 			\textbf{CPU} & \intel Xeon E5-2670 & \intel Xeon X5650 & \intel Xeon E5520 & \amd Opteron 6174 \\ \hline
@@ -33,9 +34,10 @@ The fourth system features two \amd Opteron 6174 CPUs, being the system with the
 		\label{tab:CPUS}
 	\end{center}
 \end{table}
+\end{footnotesize}
 
-The \nvidia Tesla C2070 has 14 Streaming Multiprocessors (SM) with 32 CUDA cores each, making a total of 448 CUDA cores working at a frequency of 1.15 GHz. Each SM has 64 KB of L1 cache, with two configurations for individual cache and shared memory for the CUDA threads inside a block (16 KB / 48 KB and vice-versa). The 768 KB of the L2 cache are shared among all SMs. The GPU features 6 GB of GDDR5 memory. \nvidia claims a theoretical peak performance of 1.17 TFLOPS (double precision).
+The \nvidia Tesla C2070 has 14 Streaming Multiprocessors (SM) with 32 CUDA cores each, making a total of 448 CUDA cores running at a clock frequency of 1.15 GHz. Each SM has 64 KB of L1 cache, with two configurations for private cache and shared memory for the CUDA threads inside a block (16 KB / 48 KB and vice-versa). The 768 KB of the L2 cache is shared among all SMs. The GPU board features 6 GB of GDDR5 memory. \nvidia claims a theoretical peak performance of 1.17 TFLOPS (double precision floating point arithmetic).
 
-The \intel Xeon Phi features 60 multithread cores, with 4 threads per core, working at 1 GHz. It has an aggregated L2 cache size of 30 MB, spread among the cores. The private L1 cache has 64 KB size for data and another 64 KB for instructions. The cores communicate using a bidireccional ring network. The chip has 8 GB GDDR5 memory, capable of a bandwidth of 320 GB/s.
+The \intel Xeon Phi has 60 multithread cores, with 4 threads per core, running at a clock frequency of 1 GHz. It has an aggregated L2 cache size of 30 MB, spread among all cores. The private L1 cache has 64 KB size for data and another 64 KB for instructions. The cores communicate using a bidireccional ring network. The chip has 8 GB GDDR5 memory, capable of a bandwidth of 320 GB/s.
 
-The compiler used was the GNU compiler version 4.8, using the -O3 optimizations and the AVX/SSE 4.2/SSE 4a instruction set (depending on the CPU architecture) where the compiler sees fit. The compiler used for the \intel Xeon Phi implementation was the \intel Compiler (ICC) version 13.1. Both compilers feature the OpenMP version 3.2 used in the shared memory implementation. For the GPU implementation was used the CUDA 5 SDK, in conjunction with the GNU compiler version 4.6.3 for the code to run on the CPU (any later versions are not supported by the \nvidia NVCC compiler). The ROOT \cite{CERN:ROOT} version used was the 5.34/05. Was used the Performance API version 5.0 for measuring the hardware counters of the different CPUs for the characterization of \ttDilepKinFit.
+The GNU compiler version 4.8 was used with the -O3 optimizations and the AVX/SSE 4.2/SSE 4a instruction set (depending on the CPU architecture) where the compiler sees fit. The \intel Compiler (ICC) version 13.1 was used for the \intel Xeon Phi implementation. Both compilers feature the OpenMP version 3.2 used in the shared memory implementation. The GPU implementation required the use of the CUDA 5 SDK, in conjunction with the GNU compiler version 4.6.3 for the code to run on the CPU (any later versions are not supported by the \nvidia NVCC compiler). The ROOT \cite{CERN:ROOT} version 5.34/05 was used. The Performance API version 5.0 was used to measure the hardware counters of the CPU to the characterize the \ttDilepKinFit function.

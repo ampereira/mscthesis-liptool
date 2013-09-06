@@ -6,8 +6,7 @@
 
 \setlength\columnsep{.5cm}
 \setlength\parindent{1.5em}
-%\parskip=2\baselineskip \advance\parskip by 0pt plus 2pt
-%\setlength{\parskip}{2cm}
+%\setlength\parskip{1.5\baselineskip}
 % set footnote font size to 8pt (scriptsize for class 12pt)
 \let\oldfootnotesize\footnotesize
 \renewcommand*{\footnotesize}{\oldfootnotesize\scriptsize}
@@ -47,11 +46,12 @@
 	%\input{tex/400_implementation}
 	\subfile{tex/400_conclusion.tex}
 
+	\oldappendix
+	\subfile{tex/901_test_environment.tex}
+	\subfile{tex/902_test_methodology.tex}
+	\subfile{tex/903_roofline.tex}
+
 	\backmatter
 	\printbibliography
-	\appendix
-	\subfile{tex/901_test_environment.tex}
-	\subfile{tex/903_roofline.tex}
-	\subfile{tex/902_test_methodology.tex}
 
 \end{document}

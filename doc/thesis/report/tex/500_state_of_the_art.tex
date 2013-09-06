@@ -51,7 +51,7 @@ A schematic representation of a modern CPU chip on its die is presented in figur
 \begin{figure}[!htp]
 	\begin{center}
 		\includegraphics[scale=4]{../../common/img/cpu_scheme.jpg}
-		\caption{Schematic representation on a die of a CPU chip.}
+		\caption{Schematic representation on a die of a CPU chip (image retrieved from \url{www.anandtech.com}).}
 		\label{fig:CPUChip}
 	\end{center}
 \end{figure}
@@ -84,6 +84,14 @@ The GPU architecture is based on the SIMD model. Its original purpose is to proc
 
 As the GPU manufacturers allowed more flexibility to program their devices, the High Performance Computing (HPC) community started to use them to solve specific massively data parallel problems. One of the most known examples is matrix algebra, such as additions and multiplications. However, GPUs had some important features only oriented for computer graphics that affected its use in other situations. One example is that initially the GPU only supported single precision floating point arithmetic. Due to the increase demand for these devices by the HPC community, manufacturers began to generalize more of the GPUs features, such as supporting double precision floating point arithmetic, and later began producing accelerators specificaly oriented for the scientific computing. \nvidia is the number one GPU manufacturer for scientific computing GPUs, with a wide range of available hardware known as the Tesla. These devices have more GDDR RAM, processing units and a slightly different structural design suitable for use in cluster computational nodes, with a different size and cooling mechanisms. The chip architecture suffered some changes too, increasing the cache size and the amount of processing units. The \nvidia Tesla C2070 (based on the Fermi architecture \cite{NVIDIA:Fermi}) was used during this dissertation work.
 
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=0.3]{../../common/img/fermi_arch.png}
+		\caption{Schematic representation of the \nvidia Fermi architecture (image retrieved from \url{www.benchmarkreviews.com}).}
+		\label{fig:FermiArchitecture}
+	\end{center}
+\end{figure}
+
 The \nvidia GPU architecture has two main components: computing units (Streaming Multiprocessors, also known as SM) and the memory module (global external memory, GDDR5 RAM, and a 2-level in-chip cache and shared memory block). Each SM contains a set of CUDA cores, \nvidia designation for their basic processing units that perform both integer and float point arithmetic (additions, multiplications and divisions). These SMs also have some specialized processing units for square root, sins and cosines computation, as well as a warp scheduler (warps are later explained) that matches the CUDA threads to CUDA cores, load and store units, register files and the L1 cache/shared memory. The L2 cache is shared among all SMs in a GPU chip.
 
 A warp is a set of CUDA threads (it has a size of 32 CUDA threads in the Fermi architecture), scheduled by the SM scheduler to run on its SM at any given time, out of a pool with 48 warps ready to rin. A warp can only be constituted by CUDA threads from the same block\footnote{The GPU thread hierarchy and organization is presented in section \ref{CUDA}.}.
@@ -91,14 +99,6 @@ A warp is a set of CUDA threads (it has a size of 32 CUDA threads in the Fermi a
 Accesses to the GPU global memory have a high latency that can cause the CUDA threads to be stalled waiting for data. The strategy behind the GPU architectures is to provide the device with a huge amount of threads, allowing the schedulers to keep a scoreboard of which warps are ready to execute and which are waiting for data to load. This grants the scheduler with enough threads to always have a warp ready for execution, preventing the starvation of the SMs.
 
 Since the GPU is connected by PCI-Express interface, the bandwidth for communications between CPU and GPU is restricted to only 12 GB/s (6 GB/s in each direction of the channel). Memory transfers between the CPU and GPU must be minimal as it greatly restricts the performance.
-
-\begin{figure}[!htp]
-	\begin{center}
-		\includegraphics[scale=0.3]{../../common/img/fermi_arch.png}
-		\caption{Schematic representation of the \nvidia Fermi architecture.}
-		\label{fig:FermiArchitecture}
-	\end{center}
-\end{figure}
 
 In the Tesla C2070, with its architecture shown in figure \ref{fig:FermiArchitecture}, each one of the 14 SM in the chip have 32 CUDA, making a total of 448 CUDA cores. Each SM has 4 Special Functional Units (SFU) to process special operations such as square roots and trignometric arithmetic.
 
@@ -127,11 +127,12 @@ Unlike conventional CPUs, the MIC cores do not share any cache, therefore cache 
 
 The MIC architecture has some simplifications compared to the CPU architecture, so that it is possible to fit so many cores inside a single chip. MIC does not support out of order execution, which greatly compromises the use of ILP. Also, the clock frequency is limited to 1 GHz, less than half of the modern CPUs.
 
-The Xeon Phi has two operating modes:
+The Xeon Phi has three operating modes:
 
 \begin{description}
 	\item[Native:] the device acts as system itself, with one core reserved for the operative system. The application and all libraries must be compiled specifically to run on the device, as well as copied to the its memory, along with the necessary input data, prior to execution. No further interaction with the CPU is required.
-	\item[Offload] the device acts an accelerator, accessory to the CPU. Only part of the application is set to run on the Xeon Phi, and data must be explicitly passed between CPU and device each time code will execute in it. All library functions called inside the device must be explicitly compiled and it is not possible to have an entire library compiled simultaneously for the Xeon Phi and CPU.
+	\item[Offload:] the device acts an accelerator, accessory to the CPU. Only part of the application is set to run on the Xeon Phi, and data must be explicitly passed between CPU and device each time code will execute in it. All library functions called inside the device must be explicitly compiled and it is not possible to have an entire library compiled simultaneously for the Xeon Phi and CPU.
+	\item[Message passing:] using the Message Passing Interface (MPI), the device acts as an individual computing system in the network. It requires explicit memory transfers between CPU and device and offers the code abstraction to work with other distributed memory systems, such as clusters.
 \end{description}
 
 \subsubsection*{Other hardware accelerators}
@@ -200,7 +201,7 @@ The CUDA thread is the most basic data independent parallel element, which can r
 \begin{figure}[!htp]
 	\begin{center}
 		\includegraphics[scale=0.9]{../../common/img/cuda_hierarchy.png}
-		\caption{Schematic representation of CUDA thread hierarchy.}
+		\caption{Schematic representation of CUDA thread hierarchy (image retrieved from \url{www.benchmarkreviews.com}).}
 		\label{fig:CUDAHierarchy}
 	\end{center}
 \end{figure}

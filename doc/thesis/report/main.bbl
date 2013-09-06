@@ -446,21 +446,28 @@
   \field{year}{2007}
 \endentry
 
-\entry{Cilk}{online}{}
-  \name{author}{1}{}{%
+\entry{Cilk}{article}{}
+  \name{author}{2}{}{%
     {{}%
-     {Technology}{T.}%
-     {Massachussets~Institute}{M.~I.}%
-     {of}{o.}%
+     {Robert D.~Blumofe}{R.~D.~B.}%
+     {Charles E. Leiserson Keith H.~Randall}{C.~E. L. K. H.~R.}%
+     {}{}%
+     {Christopher F.~Joerg}{C.~F.~J.}}%
+    {{}%
+     {Zhou}{Z.}%
+     {Yuli}{Y.}%
+     {}{}%
      {}{}}%
   }
-  \strng{namehash}{TMIo1}
-  \strng{fullhash}{TMIo1}
-  \field{title}{{The Cilk Project}}
-  \verb{url}
-  \verb http://supertech.csail.mit.edu/cilk/
-  \endverb
-  \field{year}{2013}
+  \list{organization}{1}{%
+    {Massachussets Institute of Technology}%
+  }
+  \strng{namehash}{RDBCFJCELKHRZY1}
+  \strng{fullhash}{RDBCFJCELKHRZY1}
+  \field{title}{Cilk: An Efficient Multithreaded Runtime System}
+  \field{journaltitle}{5th ACM SIGPLAN Symposium on Principles and Practice of
+  Parallel Programming, pp. 207-216}
+  \field{year}{1995}
   \warn{\item Invalid format of field 'month'}
 \endentry
 
