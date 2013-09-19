@@ -60,7 +60,7 @@ For a high number of variations of the input parameters, it is clear that the ps
 	\begin{center}
 		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
 			\hline
-			\textbf{# of variations/combination} & 1 & 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 \\ \hline
+			\textbf{\# of variations/combination} & 1 & 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 \\ \hline
 			\textbf{\% of time} & 46.9 & 62 & 76.9 & 87 & 92.9 & 96.3 & 98 & 98.9 & 99.6 & 99.7 \\ \hline
 		\end{tabular}
 		\caption{Percentage of the total execution time spent on the \ttDilepKinFit function for various numbers of variations per combination.}
@@ -130,7 +130,7 @@ Operational intensity \cite{Roofline} is a performance metric used to characteri
 	\end{center}
 \end{figure}
 
-Figure \ref{fig:Roofline} presents the Roofline model for the compute-601 system with the computational intensity for \ttDilepKinFit with 1 and 512 variations. For both number of variations it is obvious that this is a compute bound problem, only limited by the peak computational performance of the CPU. This indicates that the optimizations must be focused on increasing the computational throughput rather than on RAM memory access patterns. Note that cache optimizations are related to the computational throughput.
+Figure \ref{fig:Roofline} presents the Roofline model for the compute-601 system with the computational intensity for \ttDilepKinFit with 1 and 512 variations. For both number of variations it is obvious that this is a compute bound problem, only limited by the peak computational performance of the CPU. For 512 variations the computational intensity is lower than for 1 variation, however the \ttDilepKinFit execution time still increases linearly, as shown in figure \ref{fig:KinFitGraph}, because it is still only limited by the CPU roofline. More of the CPU resources are being used to keep up with the linear increase in time, relatively to 1 variation that underuses the said resources. This indicates that the optimizations must be focused on increasing the computational throughput rather than on RAM memory access patterns. Note that cache optimizations are related to the computational throughput.
 
 \subsection{Initial optimizations}
 \label{InitialOptimizations}

@@ -29,7 +29,7 @@ The kinematical reconstruction is performed on the \dilep function. The \ttbar s
 \section{Shared Memory Parallelization}
 \label{Parallelization:SharedMem}
 
-The left scheme of figure \ref{fig:SeqPipeline} illustrates the current workflow of the \ttDilepKinFit. The best approach is to parallelize the loop that iterates through all the jets/leptons combinations. However, the computation of the combinations cannot be performed in parallel as for chosing one combination it is necessary to know all the combinations chosen so far. Also, the combinations information is stored globally to the application so a data structure must be created to allow reconstructions of different combinations to be performed simultaneously.
+The left scheme of figure \ref{fig:SeqPipeline} illustrates the workflow of the \ttDilepKinFit in the original \tth application. The best approach is to parallelize the loop that iterates through all the jets/leptons combinations. However, the computation of the combinations cannot be performed in parallel as for chosing one combination it is necessary to know all the combinations chosen so far. Also, the combinations information is stored globally to the application so a data structure must be created to allow reconstructions of different combinations to be performed simultaneously.
 
 \begin{figure}[!htp]
 	\begin{center}
@@ -222,6 +222,8 @@ Figure \ref{fig:ExecTimes} presents the execution time for all test systems. For
 		\label{fig:Speedup601}
 	\end{center}
 \end{figure}
+
+Concluding, the non-pointer implementation offers the best performance for multiple CPU systems, but not fully exploiting all the available resources. The pointer version offers efficient resource usage, higher than in the non-pointer version, which translates in the best performance but only for single CPU systems.
 
 \section{Using the \nvidia CUDA/GPU accelerator}
 \label{Parallelization:GPU}
