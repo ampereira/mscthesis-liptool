@@ -7,6 +7,7 @@
 #include <sstream>
 #include <sys/time.h>
 #include <fstream>
+#include <hwloc.h>
 
 #include "app.h"
 
@@ -53,6 +54,7 @@ long long int stopTimer (long long int init) {
 	file.close();
 }
 
+
 void setup (unsigned its, unsigned threads) {
 	stringstream a1, a2;
 	a1 << its;
@@ -68,20 +70,22 @@ void setup (unsigned its, unsigned threads) {
 int main (int argc, char **argv) {
 	// inputs
 	unsigned num_threads;
-	unsigned num_parallel_apps = 2;
-	unsigned num_total_runs = 10;
+	unsigned num_parallel_apps;
+	unsigned num_total_runs = 16;
 	string app ("ttH_dilep_omp");
 	string inputs ("--OutputFileName=ttH125_dilepbb_em --SetSystematicsFileName=../../RefSys/Ref.txt --Sample=901 --User=\"CutTriggerEleMuo=1\" --User=\"lepSample=23\"");
 
-	if (argc < 3) {
+	if (argc < 4) {
 		cout << "Not enough arguments" << endl;
 		exit(-1);
 	}
-	stringstream s1, s2;
+	stringstream s1, s2, s3;
 	s1 << argv[1];
 	s2 << argv[2];
+	s3 << argv[3];
 	s1 >> iterations;
 	s2 >> num_threads;
+	s3 >> num_parallel_apps;
 
 	setup(iterations, num_threads);
 

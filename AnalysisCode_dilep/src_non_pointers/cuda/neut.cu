@@ -370,8 +370,12 @@ namespace Dilep {
 			cudaMemcpy(dev_MissPy, &_misspy, sizeof(double), cudaMemcpyHostToDevice);
 			
 			cudaMemcpy(dev_size, &size, sizeof(unsigned), cudaMemcpyHostToDevice);
+			// time measurement
+			#ifdef MEASURE_DILEP
+			stopTimer(time);
+			#endif
 
-
+	
 			dim3 grid_size1D (tamG);
 			dim3 block_size1D (tamB);
 
@@ -427,10 +431,6 @@ namespace Dilep {
 			cudaFree(dev_nc);
 			cudaFree(dev_count);
 
-			// time measurement
-			#ifdef MEASURE_DILEP
-			stopTimer(time);
-			#endif
 			
 		}
 

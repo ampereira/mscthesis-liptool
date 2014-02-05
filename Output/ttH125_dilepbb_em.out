@@ -34,8 +34,8 @@
                                                                               
  #################################################################################
 
-  Date and Time:  Wed 05 Jun 2013 11:03:32
-  Host name: compute-701-1.local
+  Date and Time:  Wed 05 Feb 2014 15:44:26
+  Host name: compute-541-1.local
 
  #################################################################################
 
@@ -71,13 +71,13 @@ Will run for the following ref/systematics:
   Initializing time was 0.00 s 
 
 Size of Original File: 1747730
-Free Space in /dev/shm: 32649928704
+Free Space in /dev/shm: 33832337408
 Copy Size : 1747730
-  Read time was 1.00 s 
-  Speed was 1747730.00 B/s 
-Used File: /dev/shm/LipMiniAnalysisTempFile8502862004
-Error File Removing: /dev/shm/LipMiniAnalysisTempFile8502862004
-  Partial time was 41.00 s 
+  Read time was 0.00 s 
+  Speed was inf B/s 
+Used File: /dev/shm/LipMiniAnalysisTempFile0706127265
+Error File Removing: /dev/shm/LipMiniAnalysisTempFile0706127265
+  Partial time was 2.00 s 
 
 
  ################################################################################
@@ -117,8 +117,8 @@ Summary for 0 ../Output/
      17:     2814.7 +-      -nan (      2791 ;  48.94 +- 0.926 % )
      18:     2707.5 +-      -nan (      2686 ;  47.10 +- 0.909 % )
      19:     1867.0 +-      -nan (      1858 ;  32.58 +- 0.756 % )
-     20:     1783.0 +-      -nan (      1774 ;  31.11 +- 0.739 % )
-     21:     1507.0 +-      -nan (      1498 ;  26.27 +- 0.679 % )
+     20:     1732.6 +-      -nan (      1725 ;  30.25 +- 0.728 % )
+     21:     1462.6 +-      -nan (      1455 ;  25.51 +- 0.669 % )
 
   ----------------------------------------------------------------------------
   161871_Pythia8_AU2CTEQ6L1_ttH125_dilepbb (RunNumber = 161871):
@@ -151,7 +151,7 @@ Summary for 0 ../Output/
      17:     2814.7 +-     53.28 (      2791 ;  48.94 +- 0.926 % )
      18:     2707.5 +-     52.24 (      2686 ;  47.10 +- 0.909 % )
      19:     1867.0 +-     43.31 (      1858 ;  32.58 +- 0.756 % )
-     20:     1783.0 +-     42.33 (      1774 ;  31.11 +- 0.739 % )
-     21:     1507.0 +-     38.94 (      1498 ;  26.27 +- 0.679 % )
-  Now is Wed 05 Jun 2013 11:04:14
-  Total time was 42.000 s 
+     20:     1732.6 +-     41.72 (      1725 ;  30.25 +- 0.728 % )
+     21:     1462.6 +-     38.34 (      1455 ;  25.51 +- 0.669 % )
+  Now is Wed 05 Feb 2014 15:44:29
+  Total time was 3.000 s 

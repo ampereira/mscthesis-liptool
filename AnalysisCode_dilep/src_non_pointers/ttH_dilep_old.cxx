@@ -1,6 +1,10 @@
 #define ttH_dilep_cxx
 #include "ttH_dilep.h"
 
+#ifdef PAL
+#include "../PAPI-Abstraction-Library/src/pal.hpp"
+#endif
+
 #include <cstdlib>
 #include <string>
 #include <set>
@@ -23,6 +27,8 @@ extern unsigned dilep_iterations;
 #include <fstream>
 
 #include <cmath>
+
+int m_id;
 
 
 // #############################################################################
@@ -2582,7 +2588,14 @@ void ttH_dilep::DoCuts(){
     long long int time = ttH::KinFit::startTimer();
 #endif
 
+#ifdef PAL
+	iPAL::Counters::start_measure(m_id);
+#endif
+
         ttDilepKinFit();
+#ifdef PAL
+	iPAL::Counters::stop_measure(m_id);
+#endif
 
 #ifdef MEASURE_KINFIT
     ttH::KinFit::stopTimer(time);
@@ -4020,7 +4033,7 @@ void ttH_dilep::ttDilepKinFit(){
 		 // loop over several resolution experiments
 		 for ( int iRes=0; iRes< myNumResTest ; iRes++){
          // Initialize random number seed
-            rnd.SetSeed( EveNumber + JetVec.size()*100 + iRes);
+            //rnd.SetSeed( EveNumber + JetVec.size()*100 + iRes);
 
 			// new four-vectors			
 			double n_Px; double n_Py; double n_Pz;	double n_Pt; double n_E;	
@@ -4144,7 +4157,6 @@ void ttH_dilep::ttDilepKinFit(){
 			// ---------------------------------------
 			result = Dilep::CPU::dilep(t_m, w_m, in_mpx, in_mpy, in_mpz, &z_lep, &c_lep, &z_bl, &c_bl);
 	                if ( result->size() > 0 ) HasSolution++;  // increment solution counter
-	
 			// ---------------------------------------
 			// Get info from all possible solutions
 			// ---------------------------------------
@@ -4772,19 +4784,27 @@ Int_t main(Int_t argc, char *argv[]){
 // #############################################################################
 	
 	ttH::defineDilepIterations();
+#ifdef PAL
+	vector<string> vst;
 
-		long long int init = ttH::startTimer();
+	m_id = iPAL::Counters::get_measure();
+#endif	
+	long long int init = ttH::startTimer();
 	// run the analysis
-	ttH_dilep *t = new ttH_dilep();
+//rnd.SetSeed(123);
+		ttH_dilep *t = new ttH_dilep();
 	t->Start(argc, argv);
 
 		// Stop measuring overall time
 		ttH::stopTimer(init);
+		
+#ifdef PAL		
+	iPAL::Counters::print_results(m_id, "results_papi.txt");
+#endif
 
 #ifdef MEASURE_KINFIT
     ttH::KinFit::printTimer();
 #endif
-
 	// exits
 	return(0);
 

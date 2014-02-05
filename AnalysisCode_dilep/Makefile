@@ -17,8 +17,9 @@ ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 #ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lHtml -lEG -lPhysics -lTreePlayer
 ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
-NVCCFLAGS  = -g -G -arch=sm_20 -DCUDA
-CXXFLAGS   = -O3 $(ROOTCFLAGS)
+NVCCFLAGS  = -DMEASURE_DILEP --ptxas-options=-v -Xcompiler -fopenmp -arch=sm_20 -DCUDA
+CXXFLAGS   = -O3 -mavx -DOMP $(ROOTCFLAGS)
+#CXXFLAGS   = -g -DOMP $(ROOTCFLAGS)
 ICXXFLAGS  = -O3 -openmp -DOMP -DMIC $(ROOTCFLAGS)
 #CXXFLAGS   = -g -DCUDA $(ROOTCFLAGS)
 # specific time measurement
@@ -88,7 +89,7 @@ build/neut_mic.o: src/mic/neut.cxx src/myvector.h src/mic/neut.h
 	$(ICXX) -Wall -Wextra $(ICXXFLAGS) $(INCLUDES) -c src/mic/neut.cxx -o build/neut_mic.o
 
 build/neut_cuda.o: src/cuda/neut.cu src/myvector.h src/cuda/neut.h
-	$(NVCC) $(NVCCFLAGS) $(INCLUDES) -c src/cuda/neut.cu -o build/neut_cuda.o -lcurand
+	$(NVCC) $(NVCCFLAGS) $(INCLUDES) -c src/cuda/neut.cu -o build/neut_cuda.o
 #	$(CXX) $(CXXFLAGS) $(INCLUDES) -c src/cuda/neut.cxx -o build/neut_cuda.o
 
 ttH_dilep_seq: src/ttH_dilep_old.cxx src/ttH_dilep.h $(COMMONANALYSISCODE) build/dilep_input.o build/utilities.o build/neut_seq.o $(LipMiniAnalysis)/libLipMiniAnalysis.a

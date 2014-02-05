@@ -1,6 +1,6 @@
 #define ttH_dilep_cxx
 #include "ttH_dilep.h"
-
+int casc = 0;
 #include <cstdlib>
 #include <string>
 #include <set>
@@ -4017,6 +4017,8 @@ void ttH_dilep::ttDilepKinFit(){
 									//TRandom3 *_t_rnd = new TRandom3 (SEED);
 									//DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
+									cout << sizeof(DilepInput) << endl;
+									casc++;
 									inputs.push_back(di);
 								}
 							}
@@ -4088,7 +4090,7 @@ void ttH_dilep::ttDilepKinFit(){
 		int first = 0;
 		DilepInput di;
 
-	#pragma omp for schedule(dynamic) nowait
+	#pragma omp for schedule(static) nowait
 	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
 		
 		// Calculates the new id of the task
@@ -4751,7 +4753,7 @@ Int_t main(Int_t argc, char *argv[]){
 #ifdef MEASURE_KINFIT
 	ttH::KinFit::printTimer();
 #endif
-
+	cout << casc << endl;
 	// exits
 	return(0);
 
