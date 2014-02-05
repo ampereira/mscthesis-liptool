@@ -56,7 +56,7 @@
 #include "TVector3.h"
 
 class Ntu {
-public :
+public:
   TChain *tree;
   TChain *tree2;
   TChain *tree3;

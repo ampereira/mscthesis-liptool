@@ -13,7 +13,7 @@ ROOTCFLAGS    = $(shell $(ROOTSYS)/bin/root-config --cflags)
 ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lHtml -lEG -lPhysics -lTreePlayer
 
-CXXFLAGS   = -O3 $(ROOTCFLAGS)
+CXXFLAGS   = -Wall -Wextra -O3 $(ROOTCFLAGS)
 #CXXFLAGS   = -g $(ROOTCFLAGS)
 
 LIBS       = $(ROOTLIBS)

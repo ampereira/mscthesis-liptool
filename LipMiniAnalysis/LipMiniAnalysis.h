@@ -141,7 +141,7 @@ private:
 // #############################################################################
 class LipMiniAnalysis {
 // #############################################################################
-public :
+public:
 
   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
   Int_t           fCurrent; //!current Tree number in a TChain
@@ -264,6 +264,7 @@ public :
   virtual void Loop();
 
   // Variables which are filled for each event
+  // IMPORTANTE
   int Isub;
   int LumiBlock; 
   int RunNumber; 
