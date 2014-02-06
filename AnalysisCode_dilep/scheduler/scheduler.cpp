@@ -116,7 +116,13 @@ int main (int argc, char **argv) {
 			{
 				char *num = getenv("LAWL");
 				int n = atoi(num);
-				cout << omp_get_thread_num() << " - " << n << endl;
+				cout << omp_get_thread_num() << " - " << endl;
+				
+				if (omp_get_thread_num() == 0) {
+					system ("echo $LAWL i");
+				} else {
+					system ("echo $LAWL j");
+				}
 			}
 			cout << omp_get_thread_num() << " perder tempo 2" << endl;
 			exit(0);
