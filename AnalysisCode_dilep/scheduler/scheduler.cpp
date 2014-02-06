@@ -7,7 +7,7 @@
 #include <sstream>
 #include <sys/time.h>
 #include <fstream>
-#include <hwloc.h>
+//#include <hwloc.h>
 
 #include "app.h"
 
