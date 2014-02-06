@@ -66,7 +66,10 @@ void setup (unsigned its, unsigned threads) {
 }
 
 // necessario alterar para receber os argumentos como input
-
+pid_t gettid( void )
+{
+    return syscall( __NR_gettid );
+}
 int main (int argc, char **argv) {
 	// inputs
 	unsigned num_threads;
@@ -104,29 +107,16 @@ int main (int argc, char **argv) {
 	{
 		#pragma omp for schedule(dynamic)
 		for (int i = 0; i < applications.size(); ++i) {
-			if (omp_get_thread_num() == 0) {
-				
-					system ("export LAWL=0");
-			} else {
-				
-					system ("export LAWL=1");
-			}
-
-			cout << omp_get_thread_num() << " perder tempo " << endl;
-
-			#pragma omp critical
+			cpu_set_t set;
+			int proc_num = omp_get_thread_num();
+			CPU_ZERO( &set );
+			CPU_SET( proc_num, &set );
+			printf("proc_num=(%d)\n",proc_num) ;
+			if (sched_setaffinity( gettid(), sizeof( cpu_set_t ), &set ))
 			{
-				
-				cout << omp_get_thread_num() << " - " << endl;
-				
-				if (omp_get_thread_num() == 0) {
-					system ("echo $LAWL i");
-				} else {
-					system ("echo $LAWL j");
-				}
+			    perror( "sched_setaffinity" );
+			    return NULL;
 			}
-			cout << omp_get_thread_num() << " perder tempo 2" << endl;
-			exit(0);
 			//applications[i].run();
 		}
 	}
