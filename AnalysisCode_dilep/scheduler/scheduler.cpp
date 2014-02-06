@@ -105,9 +105,11 @@ int main (int argc, char **argv) {
 		#pragma omp for schedule(dynamic)
 		for (int i = 0; i < applications.size(); ++i) {
 			if (omp_get_thread_num() == 0) {
-				setenv("LAWL", "0", true);
+				
+					system ("export LAWL=0");
 			} else {
-				setenv("LAWL", "1", true);
+				
+					system ("export LAWL=1");
 			}
 
 			cout << omp_get_thread_num() << " perder tempo " << endl;
