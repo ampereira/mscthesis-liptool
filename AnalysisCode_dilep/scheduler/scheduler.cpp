@@ -37,7 +37,7 @@ long long int stopTimer (long long int init) {
 	gettimeofday(&t, NULL);
 
 	ofstream file;
-	string filename = "time_scheduler";
+	string filename = "time_scheduler_";
 
 	stringstream ss;
 	ss << iterations;
@@ -71,7 +71,7 @@ int main (int argc, char **argv) {
 	// inputs
 	unsigned num_threads;
 	unsigned num_parallel_apps;
-	unsigned num_total_runs = 16;
+	unsigned num_total_runs = 16;	// number of files
 	string app ("ttH_dilep_omp");
 	string inputs ("--OutputFileName=ttH125_dilepbb_em --SetSystematicsFileName=../../RefSys/Ref.txt --Sample=901 --User=\"CutTriggerEleMuo=1\" --User=\"lepSample=23\"");
 

@@ -1,0 +1,15 @@
+#!/bin/sh
+
+export DILEP_ITER=256
+
+#for i in PAPI_TOT_INS PAPI_FP_INS PAPI_LD_INS PAPI_SR_INS PAPI_BR_INS PAPI_L1_DCM PAPI_L2_DCM PAPI_VEC_SP PAPI_VEC_DP PAPI_L3_TCM
+for i in perf::PERF_COUNT_HW_CACHE_L1D:WRITE perf::PERF_COUNT_HW_CACHE_L1D:READ
+do
+	export PAL_COUNTER=$i
+	for j in 1 2 4 8 16 32 64 128 256 512
+	do
+		export DILEP_ITER=$j
+		./run.sh seq
+	done
+done
+

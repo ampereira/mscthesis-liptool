@@ -12,4 +12,8 @@ main.log
 main.aux
 main.fdb_latexmk
 *.o
-test_*
+test_401
+test_411
+test_611
+test_cuda
+test_sandy
