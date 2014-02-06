@@ -9,8 +9,11 @@
 #include <fstream>
 //#include <hwloc.h>
 #define _GNU_SOURCE             /* See feature_test_macros(7) */
-       #include <sched.h>
-
+#include <sched.h>
+#include <stdio.h>
+#include <linux/unistd.h>
+#include <sys/syscall.h>
+#include <unistd.h>
 #include "app.h"
 
 unsigned iterations;
