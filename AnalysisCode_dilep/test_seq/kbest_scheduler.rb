@@ -12,7 +12,7 @@ class Kbest
 		@max_runs = 4
 		@d_iter = iterations
 		@threads = n_t
-		procs = n_procs
+		@procs = n_procs
 	end
 
 # validated
