@@ -20,7 +20,7 @@ class Kbest
 #       app 4 times for the specified number of dilep
 #       iterations
 	def runapp
-		cmd = "./scheduler #{@d_iter} #{@threads} #{procs}"
+		cmd = "./scheduler #{@d_iter} #{@threads} #{@procs}"
 		system(cmd)
 	end
 
