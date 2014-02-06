@@ -18,7 +18,7 @@ scheduler: scheduler.cpp app.o
 	$(CXX) $(CXXFLAGS) -fopenmp scheduler.cpp app.o -o scheduler
 
 scheduler_bind: scheduler.cpp app.o
-	$(CXX) $(CXXFLAGS) -pthread scheduler_core_bind.cpp app.o -o scheduler -lhwloc
+	$(CXX) $(CXXFLAGS) -pthread scheduler_core_bind.cpp app.o -o scheduler
 
 clean:
 	rm -rf *.o scheduler

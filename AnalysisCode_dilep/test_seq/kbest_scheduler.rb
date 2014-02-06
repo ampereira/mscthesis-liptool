@@ -99,7 +99,7 @@ end
 
 # Run the scritp!
 if __FILE__ == $0
-	kb = Kbest.new ARGV[0] ARGV[1] ARGV[2]
+	kb = Kbest.new(ARGV[0], ARGV[1], ARGV[2]);
 	kb.run
 end
 
