@@ -104,7 +104,22 @@ int main (int argc, char **argv) {
 	{
 		#pragma omp for schedule(dynamic)
 		for (int i = 0; i < applications.size(); ++i) {
-			applications[i].run();
+			if (omp_get_thread_num() == 0) {
+				setenv("LAWL", "0", true);
+			} else {
+				setenv("LAWL", "1", true);
+			}
+			#pragma omp barrier
+
+			#pragma omp critical
+			{
+				char *num = getenv("LAWL");
+				int n = atoi(num);
+				cout << omp_get_thread_num() << " - " << n << endl;
+			}
+			#pragma omp barrier
+			exit()0;
+			//applications[i].run();
 		}
 	}
 
