@@ -109,7 +109,8 @@ int main (int argc, char **argv) {
 			} else {
 				setenv("LAWL", "1", true);
 			}
-			#pragma omp barrier
+
+			cout << omp_get_thread_num() << " perder tempo " << endl;
 
 			#pragma omp critical
 			{
@@ -117,8 +118,8 @@ int main (int argc, char **argv) {
 				int n = atoi(num);
 				cout << omp_get_thread_num() << " - " << n << endl;
 			}
-			#pragma omp barrier
-			exit()0;
+			cout << omp_get_thread_num() << " perder tempo 2" << endl;
+			exit(0);
 			//applications[i].run();
 		}
 	}
