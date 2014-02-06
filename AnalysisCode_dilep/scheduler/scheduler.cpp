@@ -116,8 +116,7 @@ int main (int argc, char **argv) {
 
 			#pragma omp critical
 			{
-				char *num = getenv("LAWL");
-				int n = atoi(num);
+				
 				cout << omp_get_thread_num() << " - " << endl;
 				
 				if (omp_get_thread_num() == 0) {
