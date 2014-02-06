@@ -5,13 +5,14 @@ require 'date'
 class Kbest
 
 # validated
-	def initialize(iterations, n_t)
+	def initialize(iterations, n_t, n_procs)
 		@threshold = 1.05
 		@k = 4
 		@min_runs = 2
 		@max_runs = 4
 		@d_iter = iterations
 		@threads = n_t
+		procs = n_procs
 	end
 
 # validated
@@ -19,7 +20,7 @@ class Kbest
 #       app 4 times for the specified number of dilep
 #       iterations
 	def runapp
-		cmd = "./scheduler #{@d_iter}"
+		cmd = "./scheduler #{@d_iter} #{@threads} #{procs}"
 		system(cmd)
 	end
 
@@ -98,7 +99,7 @@ end
 
 # Run the scritp!
 if __FILE__ == $0
-	kb = Kbest.new ARGV.first
+	kb = Kbest.new ARGV[0] ARGV[1] ARGV[2]
 	kb.run
 end
 
