@@ -115,7 +115,7 @@ int main (int argc, char **argv) {
 			if (sched_setaffinity( gettid(), sizeof( cpu_set_t ), &set ))
 			{
 			    perror( "sched_setaffinity" );
-			    return NULL;
+			  //  return NULL;
 			}
 			//applications[i].run();
 		}
