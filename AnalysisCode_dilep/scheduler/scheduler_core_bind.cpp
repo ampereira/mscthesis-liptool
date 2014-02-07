@@ -139,7 +139,7 @@ void setupWorkers (void) {
 
 	for (unsigned i = 0; i < num_parallel_apps; ++i) {
 		void *v = &i;
-		cout << "id... " << (unsigned)*v << endl;
+		//cout << "id... " << (unsigned)*v << endl;
 		thread_ids[i] = pthread_create(&threads[i], NULL, worker, v);
 	}
 }
