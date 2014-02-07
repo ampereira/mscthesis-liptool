@@ -107,7 +107,7 @@ void readInputs (int argc, char **argv) {
 // What each thread will execute
 void* worker (void *ptr) {
 	int ret;
-	unsigned id = *((unsigned*) ptr);
+	int id = *((int*) ptr);
 
 	cpu_set_t cpuset;
 	CPU_ZERO(&cpuset);
