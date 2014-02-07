@@ -107,11 +107,11 @@ void readInputs (int argc, char **argv) {
 // What each thread will execute
 void* worker (void *ptr) {
 	int ret;
-	unsigned *id = (unsigned*) ptr;
+	unsigned id = *((unsigned*) ptr);
 
 	cpu_set_t cpuset;
 	CPU_ZERO(&cpuset);
-	CPU_SET(*id, &cpuset);
+	CPU_SET(id, &cpuset);
 	pthread_t self = pthread_self();
 	pthread_setaffinity_np(self, sizeof(cpu_set_t), &cpuset);
 
@@ -138,9 +138,8 @@ void setupWorkers (void) {
 	thread_ids = new int [num_parallel_apps];
 
 	for (unsigned i = 0; i < num_parallel_apps; ++i) {
-		void *v = &i;
 		//cout << "id... " << (unsigned)*v << endl;
-		thread_ids[i] = pthread_create(&threads[i], NULL, worker, v);
+		thread_ids[i] = pthread_create(&threads[i], NULL, worker, &i);
 	}
 }
 
