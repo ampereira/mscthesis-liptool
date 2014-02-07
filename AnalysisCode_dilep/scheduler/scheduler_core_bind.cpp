@@ -113,7 +113,7 @@ void* worker (void *ptr) {
 	// get a thread id, fifo
 	pthread_mutex_lock(&mutex);
 
-	int id = t_id;
+	int id = t_id++;
 
 	pthread_mutex_unlock(&mutex);
 
@@ -125,21 +125,17 @@ void* worker (void *ptr) {
 	while (true) {
 		pthread_mutex_lock(&mutex);
 		index = counter++;
-
-
-		cout << "Thread with id " << self << " working on index " << index << endl;
-		cout << "Core: " << pthread_getaffinity_np(self, sizeof(cpu_set_t), &cpuset) << endl;
-
 		pthread_mutex_unlock(&mutex);
 
-		// checks if the dataset is processed
-		cout << "tau " << index << " " << data_size << endl << endl;
 
-		if (!(index < data_size)) {
-			cout << self << " entrou " << index << endl << endl;
+		if (!(index < data_size))
 			pthread_exit(&ret);
-		}
 
+
+		pthread_mutex_lock(&mutex);
+		cout << "Thread with id " << self << " working on index " << index << endl;
+		cout << "Core: " << pthread_getaffinity_np(self, sizeof(cpu_set_t), &cpuset) << endl;
+		pthread_mutex_unlock(&mutex);
 		//applications[index].run();
 	}
 }
