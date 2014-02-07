@@ -114,6 +114,7 @@ void* worker (void *ptr) {
 	pthread_mutex_lock(&mutex);
 
 	int id = t_id++;
+	thread_ids[id] = 
 
 	pthread_mutex_unlock(&mutex);
 
@@ -137,6 +138,7 @@ void* worker (void *ptr) {
 		cout << "Core: " << pthread_getaffinity_np(self, sizeof(cpu_set_t), &cpuset) << endl;
 		pthread_mutex_unlock(&mutex);
 		//applications[index].run();
+		system("./s2.sh");
 	}
 }
 

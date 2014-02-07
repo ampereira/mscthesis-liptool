@@ -113,16 +113,12 @@ int main (int argc, char **argv) {
 	{
 		#pragma omp for schedule(dynamic)
 		for (int i = 0; i < applications.size(); ++i) {
-			cpu_set_t set;
-			int proc_num = omp_get_thread_num();
-			CPU_ZERO( &set );
-			CPU_SET( proc_num, &set );
-			printf("proc_num=(%d)\n",proc_num) ;
-			if (sched_setaffinity( gettid(), sizeof( cpu_set_t ), &set ))
-			{
-			    perror( "sched_setaffinity" );
-			  //  return NULL;
-			}
+			
+			if (omp_get_thread_num() == 0)
+				sleep(200);
+				system("./s2.sh");
+			else
+				system("./s3.sh");
 			//applications[i].run();
 		}
 	}
