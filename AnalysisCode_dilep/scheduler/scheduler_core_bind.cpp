@@ -133,7 +133,7 @@ void* worker (void *ptr) {
 
 
 		pthread_mutex_lock(&mutex);
-		cout << "Thread with id " << self << " working on index " << index << endl;
+		cout << "Thread with id " << self << " working on index " << id << endl;
 		cout << "Core: " << pthread_getaffinity_np(self, sizeof(cpu_set_t), &cpuset) << endl;
 		pthread_mutex_unlock(&mutex);
 		//applications[index].run();
