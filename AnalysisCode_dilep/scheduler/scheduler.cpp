@@ -118,7 +118,7 @@ int main (int argc, char **argv) {
 				system("./s2.sh 0");
 			}else{
 				sleep(1);
-				system("./s3.sh 1");
+				system("./s2.sh 1");
 			}
 			//applications[i].run();
 		}
