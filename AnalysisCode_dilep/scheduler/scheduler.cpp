@@ -116,8 +116,10 @@ int main (int argc, char **argv) {
 			
 			if (omp_get_thread_num() == 0) {
 				system("./s2.sh");
-			}else
+			}else{
+				sleep(1);
 				system("./s3.sh");
+			}
 			//applications[i].run();
 		}
 	}
