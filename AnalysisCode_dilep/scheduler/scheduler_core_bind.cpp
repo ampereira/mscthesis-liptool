@@ -107,12 +107,14 @@ void readInputs (int argc, char **argv) {
 // What each thread will execute
 void* worker (void *ptr) {
 	int ret;
-	int id = *((int*) ptr);
+	int id;
+	pthread_t self = pthread_self();
+
+	for (int id = 0; thread_ids[i] != self; ++id);
 
 	cpu_set_t cpuset;
 	CPU_ZERO(&cpuset);
 	CPU_SET(id, &cpuset);
-	pthread_t self = pthread_self();
 	pthread_setaffinity_np(self, sizeof(cpu_set_t), &cpuset);
 
 	while (true) {
