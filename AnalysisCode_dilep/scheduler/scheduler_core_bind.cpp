@@ -26,6 +26,7 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 // Threads to run
 pthread_t *threads;
 int *thread_ids;
+int t_id = 0;
 
 
 using namespace std;
@@ -107,8 +108,14 @@ void readInputs (int argc, char **argv) {
 // What each thread will execute
 void* worker (void *ptr) {
 	int ret;
-	int id = 0;
 	pthread_t self = pthread_self();
+
+	// get a thread id, fifo
+	pthread_mutex_lock(&mutex);
+
+	int id = t_id;
+
+	pthread_mutex_unlock(&mutex);
 
 	cpu_set_t cpuset;
 	CPU_ZERO(&cpuset);
@@ -119,7 +126,7 @@ void* worker (void *ptr) {
 		pthread_mutex_lock(&mutex);
 		index = counter++;
 
-		cout << "Thread with id " << thread_ids[1] << " working on index " << index << endl;
+		cout << "Thread with id " << id << " working on index " << index << endl;
 		cout << "Core: " << pthread_getaffinity_np(self, sizeof(cpu_set_t), &cpuset) << endl << endl;
 
 		pthread_mutex_unlock(&mutex);
@@ -137,10 +144,8 @@ void setupWorkers (void) {
 	threads = new pthread_t [num_parallel_apps];
 	thread_ids = new int [num_parallel_apps];
 
-	int cores[2] = {0, 1};
-
 	for (unsigned i = 0; i < num_parallel_apps; ++i) {
-		thread_ids[i] = pthread_create(&threads[i], NULL, worker, &cores[i]);
+		pthread_create(&threads[i], NULL, worker, &cores[i]);
 	}
 }
 
