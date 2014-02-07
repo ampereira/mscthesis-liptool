@@ -7,8 +7,8 @@
 #include <sstream>
 #include <sys/time.h>
 #include <fstream>
-#include <pthread.h>
-#include <sys/syscall.h>
+#include <hwloc.h>
+
 #include "app.h"
 
 unsigned iterations;
@@ -25,6 +25,7 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 // Threads to run
 pthread_t *threads;
 int *thread_ids;
+hwloc_topology_t topo;
 
 
 using namespace std;
@@ -108,26 +109,36 @@ void* worker (void *ptr) {
 	unsigned index;
 	int ret;
 
-	cpu_set_t cpuset;
-	CPU_ZERO(&cpuset);
-	CPU_SET(0, &cpuset);
+	// Prints additional control information
+	#ifdef VERBOSE
+
 	pthread_t self = pthread_self();
-	pthread_setaffinity_np(self, sizeof(cpu_set_t), &cpuset);
+	hwloc_bitmap_t cpuset = hwloc_bitmap_alloc();
+	char *s;
+
+	hwloc_get_cpubind(topo, cpuset, HWLOC_CPUBIND_THREAD);
+	hwloc_bitmap_asprintf(&s, cpuset);
+
+	pthread_mutex_lock(&mutex);
+	cout << "Thread with id " << self << " bound on " << s << " core" << endl;
+	pthread_mutex_unlock(&mutex);
+	free(s);
+
+	#endif
 
 	while (true) {
 		pthread_mutex_lock(&mutex);
 		index = counter++;
-
+		#ifdef VERBOSE
 		cout << "Thread with id " << self << " working on index " << index << endl;
-		cout << "Core: " << pthread_getaffinity_np(self, sizeof(cpu_set_t), &cpuset) << endl << endl;
-
+		#endif
 		pthread_mutex_unlock(&mutex);
 
 		// checks if the dataset is processed
 		if (index >= data_size)
 			pthread_exit(&ret);
 
-		//applications[index].run();
+		applications[index].run();
 	}
 }
 
@@ -135,9 +146,29 @@ void* worker (void *ptr) {
 void setupWorkers (void) {
 	threads = new pthread_t [num_parallel_apps];
 	thread_ids = new int [num_parallel_apps];
+	unsigned nbcores, cores[num_parallel_apps];
+	hwloc_obj_t core_binds[num_parallel_apps];
+
+	int err;
+	
+	err = hwloc_topology_init(&topo);
+	assert(!err);
+	err = hwloc_topology_load(topo);
+	assert(!err);
+
+	switch (num_parallel_apps) {
+		case 2 : cores[0] = 0; cores[1] = 8; break;
+		case 4 : cores[0] = 0; cores[1] = 4; cores[2] = 8; cores[3] = 12; break;
+		case 8 : cores[0] = 0; cores[1] = 2; cores[2] = 4; cores[3] = 6;
+				 cores[4] = 8; cores[5] = 10; cores[6] = 12; cores[7] = 14; break;
+	}
+
+	nbcores = hwloc_get_nbobjs_by_type(topo, HWLOC_OBJ_CORE);
 
 	for (unsigned i = 0; i < num_parallel_apps; ++i) {
 		thread_ids[i] = pthread_create(&threads[i], NULL, worker, NULL);
+		core_binds[i] = hwloc_get_obj_by_type(topo, HWLOC_OBJ_CORE, cores[i]);
+		//hwloc_set_thread_cpubind(topo, threads[i], core_binds[i]->cpuset, HWLOC_CPUBIND_THREAD);
 	}
 }
 
@@ -147,6 +178,8 @@ void destroyWorkers (void) {
 	for (unsigned i = 0; i < num_parallel_apps; ++i) {
 		pthread_join(threads[i], NULL);
 	}
+
+	hwloc_topology_destroy(topo);
 }
 
 
