@@ -119,7 +119,7 @@ void* worker (void *ptr) {
 
 	cpu_set_t cpuset;
 	CPU_ZERO(&cpuset);
-	CPU_SET(id, &cpuset);
+	CPU_SET(3, &cpuset);
 	pthread_setaffinity_np(self, sizeof(cpu_set_t), &cpuset);
 
 	while (true) {
