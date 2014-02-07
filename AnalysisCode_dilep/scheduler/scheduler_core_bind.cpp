@@ -127,12 +127,13 @@ void* worker (void *ptr) {
 		index = counter++;
 
 
-		cout << "Thread with id " << counter - 1 << " working on index " << index << " data size " << data_size << endl;
-		cout << "Core: " << pthread_getaffinity_np(self, sizeof(cpu_set_t), &cpuset) << endl << endl;
+		cout << "Thread with id " << t_id << " working on index " << index << endl;
+		cout << "Core: " << pthread_getaffinity_np(self, sizeof(cpu_set_t), &cpuset) << endl;
 
 		pthread_mutex_unlock(&mutex);
 
 		// checks if the dataset is processed
+		cout << "tau " << index << " " << data_size << endl << endl;
 		if (index >= data_size)
 			pthread_exit(&ret);
 
