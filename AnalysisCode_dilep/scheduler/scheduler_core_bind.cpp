@@ -13,7 +13,6 @@
 
 unsigned iterations;
 unsigned data_size;
-unsigned index;
 unsigned num_threads;
 unsigned num_parallel_apps;
 
@@ -109,6 +108,7 @@ void readInputs (int argc, char **argv) {
 void* worker (void *ptr) {
 	int ret;
 	pthread_t self = pthread_self();
+	unsigned index;
 
 	// get a thread id, fifo
 	pthread_mutex_lock(&mutex);
@@ -125,6 +125,7 @@ void* worker (void *ptr) {
 	while (true) {
 		pthread_mutex_lock(&mutex);
 		index = counter++;
+
 
 		cout << "Thread with id " << t_id << " working on index " << index << endl;
 		cout << "Core: " << pthread_getaffinity_np(self, sizeof(cpu_set_t), &cpuset) << endl << endl;
