@@ -108,7 +108,7 @@ void readInputs (int argc, char **argv) {
 void* worker (void *ptr) {
 	int ret;
 	unsigned id;
-	&id = (unsigned*) *ptr;
+	&id = (unsigned*) ptr;
 
 	cpu_set_t cpuset;
 	CPU_ZERO(&cpuset);
