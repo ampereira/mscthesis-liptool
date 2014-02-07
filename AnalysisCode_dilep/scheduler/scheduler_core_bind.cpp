@@ -126,7 +126,7 @@ void* worker (void *ptr) {
 		pthread_mutex_lock(&mutex);
 		index = counter++;
 
-		cout << "Thread with id " << id << " working on index " << index << endl;
+		cout << "Thread with id " << t_id << " working on index " << index << endl;
 		cout << "Core: " << pthread_getaffinity_np(self, sizeof(cpu_set_t), &cpuset) << endl << endl;
 
 		pthread_mutex_unlock(&mutex);
@@ -145,7 +145,7 @@ void setupWorkers (void) {
 	thread_ids = new int [num_parallel_apps];
 
 	for (unsigned i = 0; i < num_parallel_apps; ++i) {
-		pthread_create(&threads[i], NULL, worker, &cores[i]);
+		pthread_create(&threads[i], NULL, worker, NULL);
 	}
 }
 
