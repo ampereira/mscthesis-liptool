@@ -115,7 +115,6 @@ int main (int argc, char **argv) {
 		for (int i = 0; i < applications.size(); ++i) {
 			
 			if (omp_get_thread_num() == 0) {
-				sleep(200);
 				system("./s2.sh");
 			}else
 				system("./s3.sh");
