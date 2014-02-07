@@ -13,6 +13,7 @@
 
 unsigned iterations;
 unsigned data_size;
+unsigned index;
 unsigned num_threads;
 unsigned num_parallel_apps;
 
@@ -105,12 +106,11 @@ void readInputs (int argc, char **argv) {
 
 // What each thread will execute
 void* worker (void *ptr) {
-	unsigned index;
 	int ret;
 
 	cpu_set_t cpuset;
 	CPU_ZERO(&cpuset);
-	CPU_SET(0, &cpuset);
+	CPU_SET((unsigned) *ptr, &cpuset);
 	pthread_t self = pthread_self();
 	pthread_setaffinity_np(self, sizeof(cpu_set_t), &cpuset);
 
@@ -137,7 +137,7 @@ void setupWorkers (void) {
 	thread_ids = new int [num_parallel_apps];
 
 	for (unsigned i = 0; i < num_parallel_apps; ++i) {
-		thread_ids[i] = pthread_create(&threads[i], NULL, worker, NULL);
+		thread_ids[i] = pthread_create(&threads[i], NULL, worker, (void*) &i);
 	}
 }
 
