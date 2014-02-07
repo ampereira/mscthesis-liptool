@@ -110,10 +110,6 @@ void* worker (void *ptr) {
 	int id = 0;
 	pthread_t self = pthread_self();
 
-		pthread_mutex_lock(&mutex);
-	for (; thread_ids[id] != self; ++id);
-		pthread_mutex_unlock(&mutex);
-
 	cpu_set_t cpuset;
 	CPU_ZERO(&cpuset);
 	CPU_SET(id, &cpuset);
