@@ -80,7 +80,7 @@ void readInputs (int argc, char **argv) {
 	string app ("ttH_dilep_omp");
 	string inputs ("--OutputFileName=ttH125_dilepbb_em --SetSystematicsFileName=../../RefSys/Ref.txt --Sample=901 --User=\"CutTriggerEleMuo=1\" --User=\"lepSample=23\"");
 
-	data_size = 16;
+	data_size = 2;	// number of files to process
 
 	if (argc < 4) {
 		cout << "Not enough arguments" << endl;
