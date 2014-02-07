@@ -162,7 +162,8 @@ void destroyWorkers (void) {
 int main (int argc, char **argv) {
 
 	long long int t = startTimer ();
-	
+	int num_cores = sysconf(_SC_NPROCESSORS_ONLN);
+	cout << num_cores << endl<<endl;
 
 	readInputs(argc, argv);
 
