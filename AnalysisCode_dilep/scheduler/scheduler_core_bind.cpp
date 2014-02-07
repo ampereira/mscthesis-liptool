@@ -137,9 +137,10 @@ void setupWorkers (void) {
 	threads = new pthread_t [num_parallel_apps];
 	thread_ids = new int [num_parallel_apps];
 
+	int cores[2] = {0, 1};
+
 	for (unsigned i = 0; i < num_parallel_apps; ++i) {
-		//cout << "id... " << (unsigned)*v << endl;
-		thread_ids[i] = pthread_create(&threads[i], NULL, worker, &i);
+		thread_ids[i] = pthread_create(&threads[i], NULL, worker, &cores[i]);
 	}
 }
 
