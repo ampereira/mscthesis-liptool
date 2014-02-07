@@ -75,11 +75,12 @@ pid_t gettid( void )
 {
     return syscall( __NR_gettid );
 }
+
 int main (int argc, char **argv) {
 	// inputs
 	unsigned num_threads;
 	unsigned num_parallel_apps;
-	unsigned num_total_runs = 16;	// number of files
+	unsigned num_total_runs = 2;	// number of files
 	string app ("ttH_dilep_omp");
 	string inputs ("--OutputFileName=ttH125_dilepbb_em --SetSystematicsFileName=../../RefSys/Ref.txt --Sample=901 --User=\"CutTriggerEleMuo=1\" --User=\"lepSample=23\"");
 
