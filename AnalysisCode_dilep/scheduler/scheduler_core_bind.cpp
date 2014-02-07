@@ -134,8 +134,11 @@ void* worker (void *ptr) {
 
 		// checks if the dataset is processed
 		cout << "tau " << index << " " << data_size << endl << endl;
-		if (index >= data_size)
+
+		if (index >= data_size) {
+			cout << "entrou" << endl << endl;
 			pthread_exit(&ret);
+		}
 
 		//applications[index].run();
 	}
