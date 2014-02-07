@@ -110,7 +110,7 @@ void* worker (void *ptr) {
 	int id;
 	pthread_t self = pthread_self();
 
-	for (int id = 0; thread_ids[id] != self; ++id);
+	for (id = 0; thread_ids[id] != self; ++id);
 
 	cpu_set_t cpuset;
 	CPU_ZERO(&cpuset);
