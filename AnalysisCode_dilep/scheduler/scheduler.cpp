@@ -8,7 +8,6 @@
 #include <sys/time.h>
 #include <fstream>
 //#include <hwloc.h>
-#define _GNU_SOURCE             /* See feature_test_macros(7) */
 #include <sched.h>
 #include <stdio.h>
 #include <linux/unistd.h>
@@ -106,7 +105,7 @@ int main (int argc, char **argv) {
 	vector<App> applications;
 
 	// build apps vector
-	for (int i = 0; i < num_total_runs; ++i) {
+	for (unsigned i = 0; i < num_total_runs; ++i) {
 		App a (app, inputs[i]);
 		applications.push_back(a);
 	}
@@ -116,7 +115,7 @@ int main (int argc, char **argv) {
 	#pragma omp parallel
 	{
 		#pragma omp for schedule(dynamic)
-		for (int i = 0; i < applications.size(); ++i) {
+		for (unsigned i = 0; i < applications.size(); ++i) {
 			applications[i].run();
 		}
 	}
