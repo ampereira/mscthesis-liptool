@@ -83,15 +83,9 @@ int main (int argc, char **argv) {
 	string app ("run_aff.sh");
 	string inputs[num_parallel_apps];
 
-	string ss1 ("\"0 1\"");
-	string ss2 ("\"2 3\"");
-
-	cout << "chegou1" << endl;
-
 	// Change according to the 
-	inputs[0] = ss1;
-	cout << "chegou2" << endl;
-	inputs[1] = ss2;
+	inputs[0] = "\"0 1\"";
+	inputs[1] = "\"2 3\"";
 
 	if (argc < 4) {
 		cout << "Not enough arguments" << endl;
