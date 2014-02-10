@@ -84,8 +84,8 @@ int main (int argc, char **argv) {
 	string inputs[num_parallel_apps];
 
 	// Change according to the 
-	inputs[0] = "\"0 1\"";
-	inputs[1] = "\"2 3\"";
+	inputs[0] = "\"0 1\" 0";
+	inputs[1] = "\"2 3\" 1";
 
 	if (argc < 4) {
 		cout << "Not enough arguments" << endl;
