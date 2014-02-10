@@ -39,7 +39,7 @@ long long int stopTimer (long long int init) {
 	gettimeofday(&t, NULL);
 
 	ofstream file;
-	string filename = "time_scheduler_";
+	string filename = "time_scheduler_");
 
 	stringstream ss;
 	ss << iterations;
@@ -71,120 +71,120 @@ void setup (unsigned its, unsigned threads) {
 
 // No software multithreading for now
 // Optimized for 2 x 8core systems with MT
-string* setInputs (unsigned processes, unsigned threads) {
-	string inputs[processes];
+vector<string> setInputs (unsigned processes, unsigned threads) {
+	vector<string> inputs[processes];
 
 	switch (processes) {
 		case 1: break;
 		case 2: switch (threads) {
 				// 1 CPU
-				case 1: inputs[0] = "\"0\"";
-						inputs[1] = "\"1\"";
+				case 1: inputs.push_back("\"0\"");
+						inputs.push_back("\"1\"");
 						break;
-				case 2: inputs[0] = "\"0 1\"";
-						inputs[1] = "\"2 3\"";
+				case 2: inputs.push_back("\"0 1\"");
+						inputs.push_back("\"2 3\"");
 						break;
-				case 4: inputs[0] = "\"0 1 2 3\"";
-						inputs[1] = "\"4 5 6 7\"";
+				case 4: inputs.push_back("\"0 1 2 3\"");
+						inputs.push_back("\"4 5 6 7\"");
 						break;
 				// 2 CPUs
-				case 8: inputs[0] = "\"0 1 2 3 4 5 6 7\"";      
-						inputs[1] = "\"8 9 10 11 12 13 14 15\"";
+				case 8: inputs.push_back("\"0 1 2 3 4 5 6 7\"");      
+						inputs.push_back("\"8 9 10 11 12 13 14 15\"");
 						break;
-				case 16:inputs[0] = "\"0 1 2 3 4 5 6 7 16 17 18 19 20 21 22 23\"";
-						inputs[1] = "\"8 9 10 11 12 13 14 15 24 25 26 27 28 29 30 31\"";
+				case 16:inputs.push_back("\"0 1 2 3 4 5 6 7 16 17 18 19 20 21 22 23\"");
+						inputs.push_back("\"8 9 10 11 12 13 14 15 24 25 26 27 28 29 30 31\"");
 						break;
 			}
 		case 4: switch (threads) {
 				// 1 CPU
-				case 1: inputs[0] = "\"0\"";
-						inputs[1] = "\"1\"";
-						inputs[2] = "\"2\"";
-						inputs[3] = "\"3\"";
+				case 1: inputs.push_back("\"0\"");
+						inputs.push_back("\"1\"");
+						inputs.push_back("\"2\"");
+						inputs.push_back("\"3\"");
 						break;
-				case 2: inputs[0] = "\"0 1\"";
-						inputs[1] = "\"2 3\"";
-						inputs[2] = "\"4 5\"";
-						inputs[3] = "\"6 7\"";
+				case 2: inputs.push_back("\"0 1\"");
+						inputs.push_back("\"2 3\"");
+						inputs.push_back("\"4 5\"");
+						inputs.push_back("\"6 7\"");
 						break;
 				// 2 CPUs
-				case 4: inputs[0] = "\"0 1 2 3\"";
-						inputs[1] = "\"4 5 6 7\"";
-						inputs[2] = "\"8 9 10 11\"";
-						inputs[3] = "\"12 13 14 15\"";
+				case 4: inputs.push_back("\"0 1 2 3\"");
+						inputs.push_back("\"4 5 6 7\"");
+						inputs.push_back("\"8 9 10 11\"");
+						inputs.push_back("\"12 13 14 15\"");
 						break;
-				case 8: inputs[0] = "\"0 1 2 3 16 17 18 19\"";
-						inputs[1] = "\"4 5 6 7 20 21 22 23\"";
-						inputs[2] = "\"8 9 10 11 24 25 26 27\"";
-						inputs[3] = "\"12 13 14 15 28 29 30 31\"";
+				case 8: inputs.push_back("\"0 1 2 3 16 17 18 19\"");
+						inputs.push_back("\"4 5 6 7 20 21 22 23\"");
+						inputs.push_back("\"8 9 10 11 24 25 26 27\"");
+						inputs.push_back("\"12 13 14 15 28 29 30 31\"");
 						break;
 			}
 		case 8: switch (threads) {
 				// 1 CPU
-				case 1: inputs[0] = "\"0\"";
-						inputs[1] = "\"1\"";
-						inputs[2] = "\"2\"";
-						inputs[3] = "\"3\"";
-						inputs[4] = "\"4\"";
-						inputs[5] = "\"5\"";
-						inputs[6] = "\"6\"";
-						inputs[7] = "\"7\"";
+				case 1: inputs.push_back("\"0\"");
+						inputs.push_back("\"1\"");
+						inputs.push_back("\"2\"");
+						inputs.push_back("\"3\"");
+						inputs.push_back("\"4\"");
+						inputs.push_back("\"5\"");
+						inputs.push_back("\"6\"");
+						inputs.push_back("\"7\"");
 						break;
 				// 2 CPUs
-				case 2: inputs[0] = "\"0 1\"";
-						inputs[1] = "\"2 3\"";
-						inputs[2] = "\"4 5\"";
-						inputs[3] = "\"6 7\"";
-						inputs[4] = "\"8 9\"";
-						inputs[5] = "\"10 11\"";
-						inputs[6] = "\"12 13\"";
-						inputs[7] = "\"14 15\"";
+				case 2: inputs.push_back("\"0 1\"");
+						inputs.push_back("\"2 3\"");
+						inputs.push_back("\"4 5\"");
+						inputs.push_back("\"6 7\"");
+						inputs.push_back("\"8 9\"");
+						inputs.push_back("\"10 11\"");
+						inputs.push_back("\"12 13\"");
+						inputs.push_back("\"14 15\"");
 						break;
-				case 4: inputs[0] = "\"0 1 16 17\"";
-						inputs[1] = "\"2 3 18 19\"";
-						inputs[2] = "\"4 5 20 21\"";
-						inputs[3] = "\"6 7 22 23\"";
-						inputs[4] = "\"8 9 24 25\"";
-						inputs[5] = "\"10 11 26 27\"";
-						inputs[6] = "\"12 13 28 29\"";
-						inputs[7] = "\"14 15 30 31\"";
+				case 4: inputs.push_back("\"0 1 16 17\"");
+						inputs.push_back("\"2 3 18 19\"");
+						inputs.push_back("\"4 5 20 21\"");
+						inputs.push_back("\"6 7 22 23\"");
+						inputs.push_back("\"8 9 24 25\"");
+						inputs.push_back("\"10 11 26 27\"");
+						inputs.push_back("\"12 13 28 29\"");
+						inputs.push_back("\"14 15 30 31\"");
 						break;
 			}
 		case 16:switch (threads) {
 				// 2 CPUs
-				case 1: inputs[0] = "\"0\"";
-						inputs[1] = "\"1\"";
-						inputs[2] = "\"2\"";
-						inputs[3] = "\"3\"";
-						inputs[4] = "\"4\"";
-						inputs[5] = "\"5\"";
-						inputs[6] = "\"6\"";
-						inputs[7] = "\"7\"";
-						inputs[8] = "\"8\"";
-						inputs[9] = "\"9\"";
-						inputs[10] = "\"10\"";
-						inputs[11] = "\"11\"";
-						inputs[12] = "\"12\"";
-						inputs[13] = "\"13\"";
-						inputs[14] = "\"14\"";
-						inputs[15] = "\"15\"";
+				case 1: inputs.push_back("\"0\"");
+						inputs.push_back("\"1\"");
+						inputs.push_back("\"2\"");
+						inputs.push_back("\"3\"");
+						inputs.push_back("\"4\"");
+						inputs.push_back("\"5\"");
+						inputs.push_back("\"6\"");
+						inputs.push_back("\"7\"");
+						inputs.push_back("\"8\"");
+						inputs.push_back("\"9\"");
+						inputs.push_back("\"10\"");
+						inputs.push_back("\"11\"");
+						inputs.push_back("\"12\"");
+						inputs.push_back("\"13\"");
+						inputs.push_back("\"14\"");
+						inputs.push_back("\"15\"");
 						break;
-				case 2: inputs[0] = "\"0 16\"";
-						inputs[1] = "\"1 17\"";
-						inputs[2] = "\"2 18\"";
-						inputs[3] = "\"3 19\"";
-						inputs[4] = "\"4 20\"";
-						inputs[5] = "\"5 21\"";
-						inputs[6] = "\"6 22\"";
-						inputs[7] = "\"7 23\"";
-						inputs[8] = "\"8 24\"";
-						inputs[9] = "\"9 25\"";
-						inputs[10] = "\"10 26\"";
-						inputs[11] = "\"11 27\"";
-						inputs[12] = "\"12 28\"";
-						inputs[13] = "\"13 29\"";
-						inputs[14] = "\"14 30\"";
-						inputs[15] = "\"15 31\"";
+				case 2: inputs.push_back("\"0 16\"");
+						inputs.push_back("\"1 17\"");
+						inputs.push_back("\"2 18\"");
+						inputs.push_back("\"3 19\"");
+						inputs.push_back("\"4 20\"");
+						inputs.push_back("\"5 21\"");
+						inputs.push_back("\"6 22\"");
+						inputs.push_back("\"7 23\"");
+						inputs.push_back("\"8 24\"");
+						inputs.push_back("\"9 25\"");
+						inputs.push_back("\"10 26\"");
+						inputs.push_back("\"11 27\"");
+						inputs.push_back("\"12 28\"");
+						inputs.push_back("\"13 29\"");
+						inputs.push_back("\"14 30\"");
+						inputs.push_back("\"15 31\"");
 						break;
 			}
 	}
@@ -198,7 +198,7 @@ int main (int argc, char **argv) {
 	unsigned num_parallel_apps;
 	unsigned num_total_runs = 2;	// number of files
 	string app ("run_aff.sh");
-	string *inputs;
+	vector<string> inputs;
 
 	if (argc < 4) {
 		cout << "Not enough arguments" << endl;
