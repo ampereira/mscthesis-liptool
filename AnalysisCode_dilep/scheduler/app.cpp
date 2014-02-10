@@ -7,7 +7,11 @@ App::App (string _name, string _args) {
 }
 
 void App::run (void) {
+	#ifdef VERBOSE
 	string command = string("time ./") + name + string(" ") + args;
-	//cout << command << endl;
+	#else
+	string command = string("./") + name + string(" ") + args;
+	#endif
+	
 	system (command.c_str());
 }

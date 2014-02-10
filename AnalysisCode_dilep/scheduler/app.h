@@ -15,7 +15,6 @@ public:
 	App (string, string);
 
 	void run (void);
-
 };
 
 #endif
