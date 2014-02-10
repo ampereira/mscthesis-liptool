@@ -101,6 +101,12 @@ int main (int argc, char **argv) {
 
 	setup(iterations, num_threads);
 
+	cout << "Execution specifications" << endl;
+	cout << "\tFiles: " << num_total_runs << endl;
+	cout << "\tProcesses: " << num_parallel_apps << endl;
+	cout << "\tThreads: " << num_threads << endl;
+	cout << "\tIterations: " << iterations << endl << endl;
+
 	long long int t = startTimer ();
 	vector<App> applications;
 
