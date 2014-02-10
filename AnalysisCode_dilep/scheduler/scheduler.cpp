@@ -196,7 +196,7 @@ int main (int argc, char **argv) {
 	// inputs
 	unsigned num_threads;
 	unsigned num_parallel_apps;
-	unsigned num_total_runs = 2;	// number of files
+	unsigned num_total_runs = 16;	// number of files
 	string app ("run_aff.sh");
 	vector<string> inputs;
 

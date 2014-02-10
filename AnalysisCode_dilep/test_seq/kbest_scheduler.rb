@@ -8,8 +8,8 @@ class Kbest
 	def initialize(iterations, n_t, n_procs)
 		@threshold = 1.05
 		@k = 4
-		@min_runs = 2
-		@max_runs = 4
+		@min_runs = 12
+		@max_runs = 32
 		@d_iter = iterations
 		@threads = n_t
 		@procs = n_procs
