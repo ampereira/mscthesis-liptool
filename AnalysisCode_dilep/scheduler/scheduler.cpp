@@ -72,7 +72,7 @@ void setup (unsigned its, unsigned threads) {
 // No software multithreading for now
 // Optimized for 2 x 8core systems with MT
 vector<string> setInputs (unsigned processes, unsigned threads) {
-	vector<string> inputs[processes];
+	vector<string> inputs;
 
 	switch (processes) {
 		case 1: break;
