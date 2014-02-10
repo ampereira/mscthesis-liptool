@@ -39,7 +39,7 @@ long long int stopTimer (long long int init) {
 	gettimeofday(&t, NULL);
 
 	ofstream file;
-	string filename = "time_scheduler_");
+	string filename = "time_scheduler_";
 
 	stringstream ss;
 	ss << iterations;
