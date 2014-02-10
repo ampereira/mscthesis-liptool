@@ -94,7 +94,8 @@ vector<string> setInputs (unsigned processes, unsigned threads) {
 				case 16:inputs.push_back("\"0 1 2 3 4 5 6 7 16 17 18 19 20 21 22 23\"");
 						inputs.push_back("\"8 9 10 11 12 13 14 15 24 25 26 27 28 29 30 31\"");
 						break;
-			}
+				}
+				break;
 		case 4: switch (threads) {
 				// 1 CPU
 				case 1: inputs.push_back("\"0\"");
@@ -118,7 +119,8 @@ vector<string> setInputs (unsigned processes, unsigned threads) {
 						inputs.push_back("\"8 9 10 11 24 25 26 27\"");
 						inputs.push_back("\"12 13 14 15 28 29 30 31\"");
 						break;
-			}
+				}
+				break;
 		case 8: switch (threads) {
 				// 1 CPU
 				case 1: inputs.push_back("\"0\"");
@@ -149,7 +151,8 @@ vector<string> setInputs (unsigned processes, unsigned threads) {
 						inputs.push_back("\"12 13 28 29\"");
 						inputs.push_back("\"14 15 30 31\"");
 						break;
-			}
+				}
+				break;
 		case 16:switch (threads) {
 				// 2 CPUs
 				case 1: inputs.push_back("\"0\"");
@@ -186,7 +189,40 @@ vector<string> setInputs (unsigned processes, unsigned threads) {
 						inputs.push_back("\"14 30\"");
 						inputs.push_back("\"15 31\"");
 						break;
-			}
+				} break;
+		case 32:inputs.push_back("\"0\"");
+				inputs.push_back("\"1\"");
+				inputs.push_back("\"2\"");
+				inputs.push_back("\"3\"");
+				inputs.push_back("\"4\"");
+				inputs.push_back("\"5\"");
+				inputs.push_back("\"6\"");
+				inputs.push_back("\"7\"");
+				inputs.push_back("\"8\"");
+				inputs.push_back("\"9\"");
+				inputs.push_back("\"10\"");
+				inputs.push_back("\"11\"");
+				inputs.push_back("\"12\"");
+				inputs.push_back("\"13\"");
+				inputs.push_back("\"14\"");
+				inputs.push_back("\"15\"");
+				inputs.push_back("\"16\"");
+				inputs.push_back("\"17\"");
+				inputs.push_back("\"18\"");
+				inputs.push_back("\"19\"");
+				inputs.push_back("\"20\"");
+				inputs.push_back("\"21\"");
+				inputs.push_back("\"22\"");
+				inputs.push_back("\"23\"");
+				inputs.push_back("\"24\"");
+				inputs.push_back("\"25\"");
+				inputs.push_back("\"26\"");
+				inputs.push_back("\"27\"");
+				inputs.push_back("\"28\"");
+				inputs.push_back("\"29\"");
+				inputs.push_back("\"30\"");
+				inputs.push_back("\"31\"");
+				break;
 	}
 
 	return inputs;
