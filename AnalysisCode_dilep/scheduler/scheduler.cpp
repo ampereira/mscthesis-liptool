@@ -81,8 +81,12 @@ int main (int argc, char **argv) {
 	unsigned num_threads;
 	unsigned num_parallel_apps;
 	unsigned num_total_runs = 2;	// number of files
-	string app ("ttH_dilep_omp");
-	string inputs ("--OutputFileName=ttH125_dilepbb_em --SetSystematicsFileName=../../RefSys/Ref.txt --Sample=901 --User=\"CutTriggerEleMuo=1\" --User=\"lepSample=23\"");
+	string app ("run_aff.sh");
+	string inputs[num_parallel_apps];
+
+	// Change according to the 
+	inputs[0] = new string("\"0 1\"");
+	inputs[1] = new string("\"2 3\"");
 
 	if (argc < 4) {
 		cout << "Not enough arguments" << endl;
@@ -103,7 +107,7 @@ int main (int argc, char **argv) {
 
 	// build apps vector
 	for (int i = 0; i < num_total_runs; ++i) {
-		App a (app, inputs);
+		App a (app, inputs[i]);
 		applications.push_back(a);
 	}
 
@@ -113,14 +117,7 @@ int main (int argc, char **argv) {
 	{
 		#pragma omp for schedule(dynamic)
 		for (int i = 0; i < applications.size(); ++i) {
-			
-			if (omp_get_thread_num() == 0) {
-				system("./s2.sh 0");
-			}else{
-				sleep(1);
-				system("./s2.sh 1");
-			}
-			//applications[i].run();
+			applications[i].run();
 		}
 	}
 
