@@ -3,7 +3,7 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra
 
-default: scheduler_bind
+default: scheduler
 
 debug: CXXFLAGS += -g -DVERBOSE
 debug: scheduler_bind

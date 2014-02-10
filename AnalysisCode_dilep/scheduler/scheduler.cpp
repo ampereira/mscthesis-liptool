@@ -36,8 +36,6 @@ long long int startTimer (void) {
 long long int stopTimer (long long int init) {
 	timeval t;
 	long long int end;
-	char *buff = NULL;
-	char *flag = NULL;
 
 	gettimeofday(&t, NULL);
 
@@ -57,6 +55,8 @@ long long int stopTimer (long long int init) {
 	file.open(filename.c_str(), fstream::app);
 	file << end << endl;
 	file.close();
+
+	return end;
 }
 
 
@@ -85,8 +85,8 @@ int main (int argc, char **argv) {
 	string inputs[num_parallel_apps];
 
 	// Change according to the 
-	inputs[0] = new string("\"0 1\"");
-	inputs[1] = new string("\"2 3\"");
+	inputs[0] = "\"0 1\"";
+	inputs[1] = "\"2 3\"";
 
 	if (argc < 4) {
 		cout << "Not enough arguments" << endl;
