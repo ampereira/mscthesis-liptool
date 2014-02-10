@@ -200,10 +200,6 @@ int main (int argc, char **argv) {
 	string app ("run_aff.sh");
 	string *inputs;
 
-	// Change according to the 
-	inputs[0] = "\"0 1\"";
-	inputs[1] = "\"2 3\"";
-
 	if (argc < 4) {
 		cout << "Not enough arguments" << endl;
 		exit(-1);
