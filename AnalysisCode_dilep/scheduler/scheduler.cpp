@@ -71,7 +71,7 @@ void setup (unsigned its, unsigned threads) {
 
 // No software multithreading for now
 // Optimized for 2 x 8core systems with MT
-string* setInputs (unsigned processes, unsigned threads) {
+string[] setInputs (unsigned processes, unsigned threads) {
 	string inputs[processes];
 
 	switch (processes) {
