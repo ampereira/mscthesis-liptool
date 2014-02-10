@@ -86,8 +86,11 @@ int main (int argc, char **argv) {
 	string ss1 ("\"0 1\"");
 	string ss2 ("\"2 3\"");
 
+	cout << "chegou1" << endl;
+
 	// Change according to the 
 	inputs[0] = ss1;
+	cout << "chegou2" << endl;
 	inputs[1] = ss2;
 
 	if (argc < 4) {
