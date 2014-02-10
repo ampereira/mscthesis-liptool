@@ -75,7 +75,8 @@ vector<string> setInputs (unsigned processes, unsigned threads) {
 	vector<string> inputs;
 
 	switch (processes) {
-		case 1: break;
+		case 1: inputs.push_back("\"0\"");
+				break;
 		case 2: switch (threads) {
 				// 1 CPU
 				case 1: inputs.push_back("\"0\"");
