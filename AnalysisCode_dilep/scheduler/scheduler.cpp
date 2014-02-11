@@ -163,6 +163,41 @@ vector<string> setInputs10core (unsigned processes, unsigned threads) {
 						break;
 				}
 				break;
+		case 5: switch (threads) {
+				// 1 CPU
+				case 1: inputs.push_back("\"0\"");
+						inputs.push_back("\"1\"");
+						inputs.push_back("\"2\"");
+						inputs.push_back("\"3\"");
+						inputs.push_back("\"4\"");
+						break;
+				case 2: inputs.push_back("\"0 1\"");
+						inputs.push_back("\"2 3\"");
+						inputs.push_back("\"4 5\"");
+						inputs.push_back("\"6 7\"");
+						inputs.push_back("\"8 9\"");
+						break;
+				// 2 CPUs
+				case 4: inputs.push_back("\"0 1 2 3\"");
+						inputs.push_back("\"4 5 6 7\"");
+						inputs.push_back("\"8 9 10 11\"");
+						inputs.push_back("\"12 13 14 15\"");
+						inputs.push_back("\"16 17 18 19\"");
+						break;
+				case 5: inputs.push_back("\"0 1 2 3 20\"");
+						inputs.push_back("\"4 5 6 7 24\"");
+						inputs.push_back("\"8 9 10 11 28\"");
+						inputs.push_back("\"12 13 14 15 32\"");
+						inputs.push_back("\"16 17 18 19 36\"");
+						break;
+				case 8: inputs.push_back("\"0 1 2 3 20 21 22 23\"");
+						inputs.push_back("\"4 5 6 7 24 25 26 27\"");
+						inputs.push_back("\"8 9 10 11 28 29 30 31\"");
+						inputs.push_back("\"12 13 14 15 32 33 34 35\"");
+						inputs.push_back("\"16 17 18 19 36 37 38 39\"");
+						break;
+				}
+				break;
 		case 8: switch (threads) {
 				// 1 CPU
 				case 1: inputs.push_back("\"0\"");
