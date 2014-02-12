@@ -628,7 +628,7 @@ int main (int argc, char **argv) {
 
 	// build apps vector
 	for (unsigned i = 0; i < num_total_runs; ++i) {
-		App a (app, inputs[i]);
+		App a (app);
 		applications.push_back(a);
 	}
 
@@ -639,7 +639,7 @@ int main (int argc, char **argv) {
 		#pragma omp for schedule(dynamic)
 		for (unsigned i = 0; i < applications.size(); ++i) {
 			cout << "tau " << applications.size() << endl;
-			applications[i].run();
+			applications[i].run(inputs[omp_get_thread_num()]);
 		}
 	}
 

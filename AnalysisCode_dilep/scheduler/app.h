@@ -13,8 +13,10 @@ class App {
 
 public:
 	App (string, string);
+	App (string);
 
 	void run (void);
+	void run (string);
 };
 
 #endif
