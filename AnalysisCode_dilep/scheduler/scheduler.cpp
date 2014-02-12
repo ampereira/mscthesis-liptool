@@ -638,7 +638,6 @@ int main (int argc, char **argv) {
 	{
 		#pragma omp for schedule(dynamic)
 		for (unsigned i = 0; i < applications.size(); ++i) {
-			cout << "tau " << applications.size() << endl;
 			applications[i].run(inputs[omp_get_thread_num()]);
 		}
 	}
