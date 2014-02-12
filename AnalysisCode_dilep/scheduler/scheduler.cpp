@@ -614,10 +614,6 @@ int main (int argc, char **argv) {
 	s2 >> num_threads;
 	s3 >> num_parallel_apps;
 
-
-	num_total_runs = num_parallel_apps;
-
-
 	setup(iterations, num_threads);
 	inputs = setInputs10core(num_parallel_apps, num_threads);
 
