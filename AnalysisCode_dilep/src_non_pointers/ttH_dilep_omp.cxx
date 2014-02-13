@@ -4100,7 +4100,7 @@ void ttH_dilep::ttDilepKinFit(){
 
 	#ifdef FIRST_VERSION
 	#pragma omp for schedule(static) nowait
-	for (unsigned counter = 0; counter < inputs.size() * dilep_iterations; ++counter) {
+	for (unsigned counter = 0; counter < inputs.size(); ++counter) {
 		
 		// Calculates the new id of the task
 	
