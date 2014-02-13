@@ -4017,10 +4017,12 @@ void ttH_dilep::ttDilepKinFit(){
 									//TRandom3 *_t_rnd = new TRandom3 (SEED);
 									//DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 									#ifdef FIRST_VERSION
+									for (int aj = 0; aj < dilep_iterations; ++aj) {
 									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 									casc++;
 									di.applyVariance(RESOLUTION);
 									inputs.push_back(di);
+									}
 									#else
 									DilepInput di (z_lep, c_lep, z_bj, c_bj, z_bjWFlags, c_bjWFlags, z_lepWFlags, c_lepWFlags, jet1_HiggsWFlags, jet2_HiggsWFlags, in_mpx, in_mpy, in_mpz, MissPx, MissPy, t_m, w_m);
 									casc++;
