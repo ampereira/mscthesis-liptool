@@ -18,7 +18,7 @@ ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 ROOTGLIBS  = $(shell root-config --glibs) -lMinuit -lEG -lPhysics -lTreePlayer
 
 NVCCFLAGS  = -DMEASURE_DILEP --ptxas-options=-v -Xcompiler -fopenmp -arch=sm_20 -DCUDA
-CXXFLAGS   = -O3 -mavx -DOMP $(ROOTCFLAGS)
+CXXFLAGS   = -O3 -DOMP $(ROOTCFLAGS)
 #CXXFLAGS   = -g -DOMP $(ROOTCFLAGS)
 ICXXFLAGS  = -O3 -openmp -DOMP -DMIC $(ROOTCFLAGS)
 #CXXFLAGS   = -g -DCUDA $(ROOTCFLAGS)

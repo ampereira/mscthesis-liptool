@@ -4040,6 +4040,9 @@ void ttH_dilep::ttDilepKinFit(){
 //	long long int time = ttH::KinFit::startTimer();
 //#endif
 
+	ofstream mf ("struct_size.txt", ios::out | ios::app);
+	mf << ((sizeof(DilepInput) * inputs.size()) + (sizeof(TLorentzVector) * 2) + (sizeof(TLorentzVectorWFlags) * 2) + (sizeof(TLorentzVectorWFlags) * 6)) << endl;
+	mf.close();
 	
 	omp_set_num_threads(num_threads);
 
